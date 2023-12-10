@@ -1,0 +1,5 @@
+﻿<Project>
+  <PropertyGroup>
+    <OutputPath>$(AppData)\OuterWildsModManager\OWML\Mods\Ixrec.ArchipelagoRandomizer</OutputPath>
+  </PropertyGroup>
+</Project>
