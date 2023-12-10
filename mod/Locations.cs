@@ -198,7 +198,7 @@ internal class Locations
             Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item '{item}'");
             switch (item)
             {
-                case "Translator": break; // todo
+                case "Translator": Translator.SetHasTranslator(true); break;
                 case "Signalscope": Signalscope.SetHasSignalscope(true); break;
                 case "Scout Launcher": break; // todo
                 case "Camera": break; // todo
