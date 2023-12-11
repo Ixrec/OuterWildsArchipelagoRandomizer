@@ -12,8 +12,12 @@ internal class Jellyfish
 
     public static void Setup()
     {
-        // we don't want to retain these references beyond a scene transition / loop reset
-        jellyfishInsulatingVolumes.Clear();
+        LoadManager.OnCompleteSceneLoad += (_scene, _loadScene) =>
+        {
+            // we don't want to retain these references beyond a scene transition / loop reset, or else
+            // they become invalid and lead to NullReferenceExceptions when we try using them later
+            jellyfishInsulatingVolumes.Clear();
+        };
     }
 
     [HarmonyPrefix]
