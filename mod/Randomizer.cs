@@ -27,6 +27,7 @@ namespace ArchipelagoRandomizer
             Tornadoes.Setup();
             QuantumImaging.Setup();
             Jellyfish.Setup();
+            QuantumShrineDoor.Setup();
 
             ModHelper.Console.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
         }
