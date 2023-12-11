@@ -26,10 +26,7 @@ internal class Translator
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.Translator && !hasTranslator)
-        {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"blocked attempt to equip Translator");
             return false;
-        }
         return true;
     }
 
