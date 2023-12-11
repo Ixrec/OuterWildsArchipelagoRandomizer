@@ -196,8 +196,7 @@ internal class Signalscope
 
         if (wasScanned && !isUsable && notAlreadyShowingNotification)
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"preventing AudioSignalDetectionTrigger.Update {__instance._signal.GetName()}");
-
+            // Randomizer.Instance.ModHelper.Console.WriteLine($"preventing AudioSignalDetectionTrigger.Update {__instance._signal.GetName()}");
             return false; // skip vanilla implementation
         }
         return true;

@@ -56,13 +56,16 @@ internal class QuantumImaging
 
         foreach (var qo in relevantQuantumObjects)
         {
+            var distance = Vector3.Distance(qo.transform.position, __instance.transform.position);
             if (
                 qo is not null &&
+                qo.gameObject is not null && // no idea why CompareTag() NREs inside Unity code without this
                 !qo.CompareTag("Ship") &&
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
-                (Vector3.Distance(qo.transform.position, __instance.transform.position) < qo._maxSnapshotLockRange)
+                (distance < qo._maxSnapshotLockRange)
             ) {
-                Randomizer.Instance.ModHelper.Console.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible and within {qo._maxSnapshotLockRange} distance units");
+                Randomizer.Instance.ModHelper.Console.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible " +
+                    $"and is {distance} distance units away (within the object's 'max snapshot lock range' of {qo._maxSnapshotLockRange})");
                 NotificationManager.SharedInstance.PostNotification(new NotificationData(
                     OWInput.IsInputMode(InputMode.ShipCockpit) ? NotificationTarget.Ship : NotificationTarget.Player,
                     "UNEXPECTED CAMERA ERROR"

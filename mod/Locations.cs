@@ -172,7 +172,7 @@ internal class Locations
             Randomizer.Instance.ModHelper.Console.WriteLine($"Marking '{locationName}' as checked");
             locationChecked[locationName] = true;
 
-            var item = locationToVanillaItem[locationName] ?? "Nothing";
+            var item = locationToVanillaItem.ContainsKey(locationName) ? locationToVanillaItem[locationName] : "Nothing";
             // todo: replace this with Archipelago integration
             Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item '{item}'");
 
