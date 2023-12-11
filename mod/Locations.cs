@@ -186,16 +186,12 @@ internal class Locations
             Randomizer.Instance.ModHelper.Console.WriteLine($"Marking '{locationName}' as checked");
             locationChecked[locationName] = true;
 
-            if (!locationToVanillaItem.ContainsKey(locationName))
-            {
-                Randomizer.Instance.ModHelper.Console.WriteLine($"'{locationName}' missing from locationToVanillaItem dictionary", OWML.Common.MessageType.Error);
-                return;
-            }
-
             var item = locationToVanillaItem[locationName] ?? "Nothing";
             // todo: replace this with Archipelago integration
-            // todo: make an in-game console for this message
             Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item '{item}'");
+
+            InGameConsole.Instance.AddNotification($"You found your <color=\"orange\">{item}</color>");
+
             switch (item)
             {
                 case "Translator": Translator.SetHasTranslator(true); break;

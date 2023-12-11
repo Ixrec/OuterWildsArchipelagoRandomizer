@@ -20,14 +20,15 @@ namespace ArchipelagoRandomizer
 
         private void Start()
         {
+            // Starting here, you'll have access to OWML's mod helper.
+            InGameConsole.Setup();
+
             WarpPlatforms.Setup();
             Tornadoes.Setup();
             QuantumImaging.Setup();
             Jellyfish.Setup();
 
-            // Starting here, you'll have access to OWML's mod helper.
             ModHelper.Console.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
         }
     }
-
 }
