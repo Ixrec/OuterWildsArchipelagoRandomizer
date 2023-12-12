@@ -52,7 +52,7 @@ Most of this code is about item-ifying parts of the vanilla game.
 
 - item-ify a few more starting tools and knowledge
 - read and write save data, including checking for discrepancies
-- create an in-game console for displaying Archipelago messages
+- ~~create an in-game console for displaying Archipelago messages~~
 - teach this mod the Archipelago client protocol, probably using an existing AP client library for .NET
 - write an apworld with items, locations and all the "logic" rules for which items are needed to reach which locations
 
