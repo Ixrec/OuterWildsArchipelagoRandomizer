@@ -51,7 +51,7 @@ internal class Locations
         // get one or the other fact, so I want both facts to map to this "location".
         { "COMET_SHUTTLE_X2", "Frozen Shuttle Log (Text Wheel)" },
         { "COMET_SHUTTLE_X3", "Frozen Shuttle Log (Text Wheel)" },
-        { "COMET_INTERIOR_X4", "Interloper Core (Text Wheel)" },
+        { "COMET_INTERIOR_X4", "Ruptured Core (Text Wheel)" }, // spoiler-free name, as opposed to e.g. "Interloper Core"
 
         { "QUANTUM_MOON_X1", "Land on the Quantum Moon" },
         { "QM_SHUTTLE_X2", "Solanum's Shuttle Log (Text Wheel)" },
