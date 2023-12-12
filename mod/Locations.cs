@@ -122,7 +122,7 @@ internal class Locations
         { "TH: Get the Translator from Hal", "Translator" },
         { "TH: Bramble Seed Crater", "Scout Launcher" },
         { "BH: Southern Observatory (Text Wall)", "Tornado Aerodynamic Adjustments" },
-        { "BH: Black Hole Forge (2nd Scroll)", "Warp Core Installation Codes" },
+        { "BH: Black Hole Forge (2nd Scroll)", "Warp Core Instruction Manual" },
         { "BH: Tower of Quantum Knowledge (Top Floor Text Wall)", "Quantum Shrine Door Codes" },
         { "White Hole Station (Text Wall)", "Nomai Warp Codes" },
         { "GD: Tower of Quantum Trials Rule Pedestal", "Rule of Quantum Imaging" },
@@ -186,7 +186,7 @@ internal class Locations
                 case "Scout Launcher": break; // todo
                 case "Camera": break; // todo
                 case "Nomai Warp Codes": WarpPlatforms.SetHasNomaiWarpCodes(true); break;
-                case "Warp Core Installation Codes": WarpCoreInstallation.SetHasWarpCoreInstallationCodes(true); break;
+                case "Warp Core Instruction Manual": WarpCoreInstructions.SetHasWarpCoreInstructions(true); break;
                 case "Rule of Quantum Imaging": QuantumImaging.SetHasImagingKnowledge(true); break;
                 case "Rule of Quantum Entanglement": QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
                 case "Quantum Shrine Door Codes": QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;

@@ -3,21 +3,21 @@
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class WarpCoreInstallation
+internal class WarpCoreInstructions
 {
-    public static bool hasWarpCoreInstallationCodes = false;
+    public static bool hasWarpCoreInstructions = false;
 
-    public static void SetHasWarpCoreInstallationCodes(bool hasWarpCoreInstallationCodes)
+    public static void SetHasWarpCoreInstructions(bool hasWarpCoreInstallationCodes)
     {
-        if (WarpCoreInstallation.hasWarpCoreInstallationCodes != hasWarpCoreInstallationCodes)
-            WarpCoreInstallation.hasWarpCoreInstallationCodes = hasWarpCoreInstallationCodes;
+        if (WarpCoreInstructions.hasWarpCoreInstructions != hasWarpCoreInstallationCodes)
+            WarpCoreInstructions.hasWarpCoreInstructions = hasWarpCoreInstallationCodes;
     }
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ItemTool), nameof(ItemTool.SocketItem))]
     private static bool SocketItem(ItemTool __instance, OWItemSocket socket)
     {
-        if (__instance._heldItem is WarpCoreItem && !hasWarpCoreInstallationCodes)
+        if (__instance._heldItem is WarpCoreItem && !hasWarpCoreInstructions)
         {
             var type = (__instance._heldItem as WarpCoreItem).GetWarpCoreType();
             if (type == WarpCoreType.Vessel || type == WarpCoreType.VesselBroken)
@@ -32,7 +32,7 @@ internal class WarpCoreInstallation
     [HarmonyPatch(typeof(ItemTool), nameof(ItemTool.StartUnsocketItem))]
     private static bool StartUnsocketItem(ItemTool __instance, OWItemSocket socket)
     {
-        if (socket.GetSocketedItem() is WarpCoreItem && !hasWarpCoreInstallationCodes)
+        if (socket.GetSocketedItem() is WarpCoreItem && !hasWarpCoreInstructions)
         {
             var type = (socket.GetSocketedItem() as WarpCoreItem).GetWarpCoreType();
             if (type == WarpCoreType.Vessel || type == WarpCoreType.VesselBroken)
@@ -63,7 +63,7 @@ internal class WarpCoreInstallation
     {
         // We only need to edit the prompt if ItemTool was going to say "Insert/Remove Warp Core" and we don't have the codes yet.
         // ItemTool (re)sets all three of its prompts every Update, so we don't need to worry about any other state changes here.
-        if ((newState == ItemTool.PromptState.SOCKET || newState == ItemTool.PromptState.UNSOCKET) && !hasWarpCoreInstallationCodes)
+        if ((newState == ItemTool.PromptState.SOCKET || newState == ItemTool.PromptState.UNSOCKET) && !hasWarpCoreInstructions)
         {
             OWItem item = (newState == ItemTool.PromptState.SOCKET) ?
                 __instance._heldItem :
@@ -76,7 +76,7 @@ internal class WarpCoreInstallation
                 {
                     __instance._interactButtonPrompt.SetVisibility(false);
 
-                    __instance._messageOnlyPrompt.SetText("Requires Warp Core Installation Codes");
+                    __instance._messageOnlyPrompt.SetText("Requires Warp Core Instruction Manual");
                     __instance._messageOnlyPrompt.SetVisibility(true);
                     return;
                 }
