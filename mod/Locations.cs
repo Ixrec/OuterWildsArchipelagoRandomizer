@@ -186,10 +186,10 @@ internal class Locations
                 case "Scout Launcher": break; // todo
                 case "Camera": break; // todo
                 case "Nomai Warp Codes": WarpPlatforms.SetHasNomaiWarpCodes(true); break;
-                case "Warp Core Installation Codes": break; // todo
+                case "Warp Core Installation Codes": WarpCoreInstallation.SetHasWarpCoreInstallationCodes(true); break;
                 case "Rule of Quantum Imaging": QuantumImaging.SetHasImagingKnowledge(true); break;
                 case "Rule of Quantum Entanglement": QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
-                case "Quantum Shrine Door Codes": break; // todo
+                case "Quantum Shrine Door Codes": QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;
                 case "Tornado Aerodynamic Adjustments": Tornadoes.SetHasTornadoKnowledge(true); break;
                 case "Silent Running Mode": Anglerfish.SetHasAnglerfishKnowledge(true); break;
                 case "Jellyfish Insulation": Jellyfish.SetHasJellyfishKnowledge(true); break;
