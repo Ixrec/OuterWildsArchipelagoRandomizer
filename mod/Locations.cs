@@ -22,13 +22,13 @@ internal class Locations
         // when we add flavor text, probably change this location to trigger on talking to Gossan after the repairs
         { "TH_ZERO_G_CAVE_X2", "TH: Zero-G Repairs" },
         { "TH_IMPACT_CRATER_X1", "TH: Bramble Seed Crater" },
-        { "TH_NOMAI_MINE_X1", "TH: Nomai Mines (Text Wall)" },
+        { "TH_NOMAI_MINE_X1", "TH: Mines (Text Wall)" },
 
         { "TM_EYE_LOCATOR_X2", "AR: Signal Locator (Text Wall)" },
 
         { "BH_TORNADO_SIMULATION_X2", "BH: Southern Observatory (Text Wall)" },
         { "BH_MURAL_2_X1", "BH: Old Settlement Murals" },
-        { "BH_BLACK_HOLE_FORGE_X6", "BH: Black Hole Forge (2nd Scroll)" },
+        { "BH_BLACK_HOLE_FORGE_X6", "BH: Forge (2nd Scroll)" },
         { "BH_QUANTUM_RESEARCH_TOWER_X1", "BH: Tower (Top Floor Text Wall)" },
 
         { "VM_VOLCANO_X3", "Volcanic Testing Site (Text Wall)" },
@@ -57,7 +57,7 @@ internal class Locations
         { "QM_SHUTTLE_X2", "Solanum's Shuttle Log (Text Wheel)" },
         { "QM_SIXTH_LOCATION_X1", "QM: Explore the Sixth Location" }, // spoiler-free name, as opposed to e.g. "Meet Solanum"
 
-        { "DB_FROZEN_JELLYFISH_X3", "DB: Frozen Jellyfish Note" },
+        { "DB_FROZEN_JELLYFISH_X3", "DB: Feldspar's Note" },
         { "DB_NOMAI_GRAVE_X3", "DB: Nomai Grave (Text Wheel)" },
         { "DB_VESSEL_X1", "DB: Find The Vessel" },
     };
@@ -71,11 +71,11 @@ internal class Locations
     };
 
     static Dictionary<SignalName, string> signalToLocation = new Dictionary<SignalName, string>{
-        { SignalName.Traveler_Chert, "ET: Chert's Drum Signal" },
-        { SignalName.Traveler_Esker, "AR: Esker's Whistling Signal" },
-        { SignalName.Traveler_Riebeck, "BH: Riebeck's Banjo Signal" },
-        { SignalName.Traveler_Gabbro, "GD: Gabbro's Flute Signal" },
-        { SignalName.Traveler_Feldspar, "DB: Feldspar's Harmonica Signal" },
+        { SignalName.Traveler_Chert, "ET: Drum Signal" },
+        { SignalName.Traveler_Esker, "AR: Whistling Signal" },
+        { SignalName.Traveler_Riebeck, "BH: Banjo Signal" },
+        { SignalName.Traveler_Gabbro, "GD: Flute Signal" },
+        { SignalName.Traveler_Feldspar, "DB: Harmonica Signal" },
         { SignalName.Quantum_TH_MuseumShard, "TH: Museum Shard Signal" },
         { SignalName.Quantum_TH_GroveShard, "TH: Grove Shard Signal" },
         { SignalName.Quantum_CT_Shard, "ET: Cave Shard Signal" },
@@ -122,22 +122,22 @@ internal class Locations
         { "TH: Get the Translator from Hal", "Translator" },
         { "TH: Bramble Seed Crater", "Scout Launcher" },
         { "BH: Southern Observatory (Text Wall)", "Tornado Aerodynamic Adjustments" },
-        { "BH: Black Hole Forge (2nd Scroll)", "Warp Core Instruction Manual" },
+        { "BH: Forge (2nd Scroll)", "Warp Core Installation Manual" },
         { "BH: Tower (Top Floor Text Wall)", "Shrine Door Codes" },
         { "White Hole Station (Text Wall)", "Nomai Warp Codes" },
         { "GD: Tower Rule (Pedestal Text)", "Imaging Rule" },
         { "GD: See the Coordinates", "Coordinates" },
-        { "DB: Frozen Jellyfish Note", "Jellyfish Insulation" },
+        { "DB: Feldspar's Note", "Electrical Insulation" },
 
         { "Distress Beacon Frequency", "Distress Beacon Frequency" },
         { "Quantum Fluctuations Frequency", "Quantum Fluctuations Frequency" },
         { "Hide & Seek Frequency", "Hide & Seek Frequency" },
 
-        { "ET: Chert's Drum Signal", "Chert's Drum Signal" },
-        { "AR: Esker's Whistling Signal", "Esker's Whistling Signal" },
-        { "BH: Riebeck's Banjo Signal", "Riebeck's Banjo Signal" },
-        { "GD: Gabbro's Flute Signal", "Gabbro's Flute Signal" },
-        { "DB: Feldspar's Harmonica Signal", "Feldspar's Harmonica Signal" },
+        { "ET: Drum Signal", "Chert's Signal" },
+        { "AR: Whistling Signal", "Esker's Signal" },
+        { "BH: Banjo Signal", "Riebeck's Signal" },
+        { "GD: Flute Signal", "Gabbro's Signal" },
+        { "DB: Harmonica Signal", "Feldspar's Signal" },
         { "TH: Museum Shard Signal", "Museum Shard Signal" },
         { "TH: Grove Shard Signal", "Grove Shard Signal" },
         { "ET: Cave Shard Signal", "Cave Shard Signal" },
@@ -186,13 +186,13 @@ internal class Locations
                 case "Scout Launcher": break; // todos
                 case "Camera": break; // todo
                 case "Nomai Warp Codes": WarpPlatforms.SetHasNomaiWarpCodes(true); break;
-                case "Warp Core Instruction Manual": WarpCoreInstructions.SetHasWarpCoreInstructions(true); break;
+                case "Warp Core Installation Manual": WarpCoreManual.SetHasWarpCoreManual(true); break;
                 case "Imaging Rule": QuantumImaging.SetHasImagingKnowledge(true); break;
                 case "Entanglement Rule": QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
                 case "Shrine Door Codes": QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;
                 case "Tornado Aerodynamic Adjustments": Tornadoes.SetHasTornadoKnowledge(true); break;
                 case "Silent Running Mode": Anglerfish.SetHasAnglerfishKnowledge(true); break;
-                case "Jellyfish Insulation": Jellyfish.SetHasJellyfishKnowledge(true); break;
+                case "Electrical Insulation": Jellyfish.SetHasJellyfishKnowledge(true); break;
                 case "Coordinates": break; // todo
 
                 // todo: can we disable the OW Ventures frequency?
@@ -200,11 +200,11 @@ internal class Locations
                 case "Quantum Fluctuations Frequency": Signalscope.LearnFrequency(SignalFrequency.Quantum); break;
                 case "Hide & Seek Frequency": Signalscope.LearnFrequency(SignalFrequency.HideAndSeek); break;
 
-                case "Chert's Drum Signal": Signalscope.LearnSignal(SignalName.Traveler_Chert); break;
-                case "Esker's Whistling Signal": Signalscope.LearnSignal(SignalName.Traveler_Esker); break;
-                case "Riebeck's Banjo Signal": Signalscope.LearnSignal(SignalName.Traveler_Riebeck); break;
-                case "Gabbro's Flute Signal": Signalscope.LearnSignal(SignalName.Traveler_Gabbro); break;
-                case "Feldspar's Harmonica Signal": Signalscope.LearnSignal(SignalName.Traveler_Feldspar); break;
+                case "Chert's Signal": Signalscope.LearnSignal(SignalName.Traveler_Chert); break;
+                case "Esker's Signal": Signalscope.LearnSignal(SignalName.Traveler_Esker); break;
+                case "Riebeck's Signal": Signalscope.LearnSignal(SignalName.Traveler_Riebeck); break;
+                case "Gabbro's Signal": Signalscope.LearnSignal(SignalName.Traveler_Gabbro); break;
+                case "Feldspar's Signal": Signalscope.LearnSignal(SignalName.Traveler_Feldspar); break;
                 case "Museum Shard Signal": Signalscope.LearnSignal(SignalName.Quantum_TH_MuseumShard); break;
                 case "Grove Shard Signal": Signalscope.LearnSignal(SignalName.Quantum_TH_GroveShard); break;
                 case "Cave Shard Signal": Signalscope.LearnSignal(SignalName.Quantum_CT_Shard); break;
