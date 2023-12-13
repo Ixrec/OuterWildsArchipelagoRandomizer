@@ -11,25 +11,25 @@ internal class Locations
         { "S_SUNSTATION_X2", "Sun Station (Projection Stone Text)" },
 
         { "CT_HIGH_ENERGY_LAB_X3", "ET: High Energy Lab (Lower Text Wall)" },
-        { "CT_SUNLESS_CITY_X3", "ET: Sunless City Eye Shrine (Entrance Text Wall)" },
+        { "CT_SUNLESS_CITY_X3", "ET: Sunless City Shrine (Entrance Text Wall)" },
         { "CT_QUANTUM_MOON_LOCATOR_X2", "ET: Quantum Moon Locator (Text Scroll)" },
-        { "CT_ANGLERFISH_FOSSIL_X2", "ET: Anglerfish Fossil (Children's Text)" },
+        { "CT_ANGLERFISH_FOSSIL_X2", "ET: Fossil (Children's Text)" },
         { "CT_LAKEBED_CAVERN_X1", "ET: Lakebed Cave (Floor Text)" },
-        { "CT_LAKEBED_CAVERN_X3", "ET: Coleus' Cave Wall Text" },
+        { "CT_LAKEBED_CAVERN_X3", "ET: Coleus' Cave (Text Wall)" },
 
         { "TT_TIME_LOOP_DEVICE_X1", "Enter the Ash Twin Project" },
 
         // when we add flavor text, probably change this location to trigger on talking to Gossan after the repairs
-        { "TH_ZERO_G_CAVE_X2", "TH: Do the Zero-G Cave Repairs" },
+        { "TH_ZERO_G_CAVE_X2", "TH: Zero-G Repairs" },
         { "TH_IMPACT_CRATER_X1", "TH: Bramble Seed Crater" },
         { "TH_NOMAI_MINE_X1", "TH: Nomai Mines (Text Wall)" },
 
-        { "TM_EYE_LOCATOR_X2", "Attlerock: Eye Signal Locator (Text Wall)" },
+        { "TM_EYE_LOCATOR_X2", "AR: Signal Locator (Text Wall)" },
 
         { "BH_TORNADO_SIMULATION_X2", "BH: Southern Observatory (Text Wall)" },
         { "BH_MURAL_2_X1", "BH: Old Settlement Murals" },
         { "BH_BLACK_HOLE_FORGE_X6", "BH: Black Hole Forge (2nd Scroll)" },
-        { "BH_QUANTUM_RESEARCH_TOWER_X1", "BH: Tower of Quantum Knowledge (Top Floor Text Wall)" },
+        { "BH_QUANTUM_RESEARCH_TOWER_X1", "BH: Tower (Top Floor Text Wall)" },
 
         { "VM_VOLCANO_X3", "Volcanic Testing Site (Text Wall)" },
 
@@ -39,12 +39,12 @@ internal class Locations
         { "OPC_INTACT_MODULE_X2", "GD: Control Module Logs (Text Wheels)" },
         { "GD_OCEAN_R3", "GD: Bramble Island Log" },
         { "GD_CONSTRUCTION_YARD_X1", "GD: Construction Yard (Text Wall)" },
-        { "GD_STATUE_WORKSHOP_X1", "GD: Statue Island Workshop" },
+        { "GD_STATUE_WORKSHOP_X1", "GD: Statue Island Workshop (Text Wheel)" },
         { "GD_OCEAN_X1", "GD: Enter the Ocean Depths" },
         { "GD_OCEAN_X2", "GD: Enter the Core" },
-        { "GD_QUANTUM_TOWER_X2", "GD: Tower of Quantum Trials Rule Pedestal" },
-        { "GD_QUANTUM_TOWER_X4", "GD: Complete the Tower of Quantum Trials" },
-        { "OPC_EYE_COORDINATES_X1", "GD: Probe Tracking Module Coordinates" }, // spoiler-free name, as opposed to e.g. "Eye of the Universe Coordinates"
+        { "GD_QUANTUM_TOWER_X2", "GD: Tower Rule (Pedestal Text)" },
+        { "GD_QUANTUM_TOWER_X4", "GD: Complete the Tower (Text Wall)" },
+        { "OPC_EYE_COORDINATES_X1", "GD: See the Coordinates" }, // spoiler-free name, as opposed to e.g. "Eye of the Universe Coordinates"
 
         // Both text wheels provide similar information about the shuttle's mission, but
         // depending on whether you find it at Interloper or Ember Twin you can only
@@ -53,9 +53,9 @@ internal class Locations
         { "COMET_SHUTTLE_X3", "Frozen Shuttle Log (Text Wheel)" },
         { "COMET_INTERIOR_X4", "Ruptured Core (Text Wheel)" }, // spoiler-free name, as opposed to e.g. "Interloper Core"
 
-        { "QUANTUM_MOON_X1", "Land on the Quantum Moon" },
+        { "QUANTUM_MOON_X1", "QM: Land" },
         { "QM_SHUTTLE_X2", "Solanum's Shuttle Log (Text Wheel)" },
-        { "QM_SIXTH_LOCATION_X1", "Explore the Sixth Location" }, // spoiler-free name, as opposed to e.g. "Meet Solanum"
+        { "QM_SIXTH_LOCATION_X1", "QM: Explore the Sixth Location" }, // spoiler-free name, as opposed to e.g. "Meet Solanum"
 
         { "DB_FROZEN_JELLYFISH_X3", "DB: Frozen Jellyfish Note" },
         { "DB_NOMAI_GRAVE_X3", "DB: Nomai Grave (Text Wheel)" },
@@ -72,7 +72,7 @@ internal class Locations
 
     static Dictionary<SignalName, string> signalToLocation = new Dictionary<SignalName, string>{
         { SignalName.Traveler_Chert, "ET: Chert's Drum Signal" },
-        { SignalName.Traveler_Esker, "Attlerock: Esker's Whistling Signal" },
+        { SignalName.Traveler_Esker, "AR: Esker's Whistling Signal" },
         { SignalName.Traveler_Riebeck, "BH: Riebeck's Banjo Signal" },
         { SignalName.Traveler_Gabbro, "GD: Gabbro's Flute Signal" },
         { SignalName.Traveler_Feldspar, "DB: Feldspar's Harmonica Signal" },
@@ -85,8 +85,8 @@ internal class Locations
         { SignalName.EscapePod_BH, "BH: Escape Pod 1 Signal" },
         { SignalName.EscapePod_CT, "ET: Escape Pod 2 Signal" },
         { SignalName.EscapePod_DB, "DB: Escape Pod 3 Signal" },
-        { SignalName.HideAndSeek_Galena, "TH: Hide & Seek - Galena's Radio Signal" },
-        { SignalName.HideAndSeek_Tephra, "TH: Hide & Seek - Tephra's Radio Signal" },
+        { SignalName.HideAndSeek_Galena, "TH: Galena's Radio Signal" },
+        { SignalName.HideAndSeek_Tephra, "TH: Tephra's Radio Signal" },
         // DLC will add: SignalName.RadioTower, SignalName.MapSatellite
         // leaving out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // leaving out Nomai and Prisoner because I believe those are only available during the finale
@@ -94,7 +94,7 @@ internal class Locations
 
     // these three locations have unique triggers
 
-    static string launchCodesLocation = "TH: Learn the Launch Codes from Hornfels";
+    static string launchCodesLocation = "TH: Talk to Hornfels";
 
     static string enterShipLocation = "Enter Your Spaceship";
 
@@ -116,17 +116,17 @@ internal class Locations
     // TODO: actual randomization
     // for now, anything not in this map awards 'Nothing'
     static Dictionary<string, string> locationToVanillaItem = new Dictionary<string, string> {
-        { "ET: Anglerfish Fossil (Children's Text)", "Silent Running Mode" },
-        { "ET: Lakebed Cave (Floor Text)", "Rule of Quantum Entanglement" },
-        { "TH: Do the Zero-G Cave Repairs", "Signalscope" }, // todo: make this trigger after talking to Gossan *and* the "fact" is revealed
+        { "ET: Fossil (Children's Text)", "Silent Running Mode" },
+        { "ET: Lakebed Cave (Floor Text)", "Entanglement Rule" },
+        { "TH: Zero-G Repairs", "Signalscope" }, // todo: make this trigger after talking to Gossan *and* the "fact" is revealed
         { "TH: Get the Translator from Hal", "Translator" },
         { "TH: Bramble Seed Crater", "Scout Launcher" },
         { "BH: Southern Observatory (Text Wall)", "Tornado Aerodynamic Adjustments" },
         { "BH: Black Hole Forge (2nd Scroll)", "Warp Core Instruction Manual" },
-        { "BH: Tower of Quantum Knowledge (Top Floor Text Wall)", "Quantum Shrine Door Codes" },
+        { "BH: Tower (Top Floor Text Wall)", "Shrine Door Codes" },
         { "White Hole Station (Text Wall)", "Nomai Warp Codes" },
-        { "GD: Tower of Quantum Trials Rule Pedestal", "Rule of Quantum Imaging" },
-        { "GD: Probe Tracking Module Coordinates", "Coordinates" },
+        { "GD: Tower Rule (Pedestal Text)", "Imaging Rule" },
+        { "GD: See the Coordinates", "Coordinates" },
         { "DB: Frozen Jellyfish Note", "Jellyfish Insulation" },
 
         { "Distress Beacon Frequency", "Distress Beacon Frequency" },
@@ -134,7 +134,7 @@ internal class Locations
         { "Hide & Seek Frequency", "Hide & Seek Frequency" },
 
         { "ET: Chert's Drum Signal", "Chert's Drum Signal" },
-        { "Attlerock: Esker's Whistling Signal", "Esker's Whistling Signal" },
+        { "AR: Esker's Whistling Signal", "Esker's Whistling Signal" },
         { "BH: Riebeck's Banjo Signal", "Riebeck's Banjo Signal" },
         { "GD: Gabbro's Flute Signal", "Gabbro's Flute Signal" },
         { "DB: Feldspar's Harmonica Signal", "Feldspar's Harmonica Signal" },
@@ -147,10 +147,10 @@ internal class Locations
         { "BH: Escape Pod 1 Signal", "Escape Pod 1 Signal" },
         { "ET: Escape Pod 2 Signal", "Escape Pod 2 Signal" },
         { "DB: Escape Pod 3 Signal", "Escape Pod 3 Signal" },
-        { "TH: Hide & Seek - Galena's Radio Signal", "Galena's Radio Signal" },
-        { "TH: Hide & Seek - Tephra's Radio Signal", "Tephra's Radio Signal" },
+        { "TH: Galena's Radio Signal", "Galena's Radio Signal" },
+        { "TH: Tephra's Radio Signal", "Tephra's Radio Signal" },
 
-        { "TH: Learn the Launch Codes from Hornfels", "Launch Codes" },
+        { "TH: Talk to Hornfels", "Launch Codes" },
         { "Enter Your Spaceship", "Spaceship" }
     };
 
@@ -183,13 +183,13 @@ internal class Locations
                 case "Translator": Translator.SetHasTranslator(true); break;
                 case "Signalscope": Signalscope.SetHasSignalscope(true); break;
                 case "Spaceship": break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
-                case "Scout Launcher": break; // todo
+                case "Scout Launcher": break; // todos
                 case "Camera": break; // todo
                 case "Nomai Warp Codes": WarpPlatforms.SetHasNomaiWarpCodes(true); break;
                 case "Warp Core Instruction Manual": WarpCoreInstructions.SetHasWarpCoreInstructions(true); break;
-                case "Rule of Quantum Imaging": QuantumImaging.SetHasImagingKnowledge(true); break;
-                case "Rule of Quantum Entanglement": QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
-                case "Quantum Shrine Door Codes": QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;
+                case "Imaging Rule": QuantumImaging.SetHasImagingKnowledge(true); break;
+                case "Entanglement Rule": QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
+                case "Shrine Door Codes": QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;
                 case "Tornado Aerodynamic Adjustments": Tornadoes.SetHasTornadoKnowledge(true); break;
                 case "Silent Running Mode": Anglerfish.SetHasAnglerfishKnowledge(true); break;
                 case "Jellyfish Insulation": Jellyfish.SetHasJellyfishKnowledge(true); break;

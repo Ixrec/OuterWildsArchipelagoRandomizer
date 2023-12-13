@@ -85,7 +85,7 @@ internal class QuantumShrineDoor
         }
         else
         {
-            doorIR.ChangePrompt("Requires Quantum Shrine Codes");
+            doorIR.ChangePrompt("Requires Shrine Door Codes");
             doorIR.SetKeyCommandVisible(false);
         }
     }
