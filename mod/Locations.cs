@@ -15,9 +15,9 @@ internal class Locations
         { "CT_QUANTUM_MOON_LOCATOR_X2", "ET: Quantum Moon Locator (Text Scroll)" },
         { "CT_ANGLERFISH_FOSSIL_X2", "ET: Anglerfish Fossil (Children's Text)" },
         { "CT_LAKEBED_CAVERN_X1", "ET: Lakebed Cave (Floor Text)" },
-        { "CT_LAKEBED_CAVERN_X3", "ET: Quantum Caves (Trapped Coleus' Wall Text)" },
+        { "CT_LAKEBED_CAVERN_X3", "ET: Coleus' Cave Wall Text" },
 
-        { "TT_TIME_LOOP_DEVICE_X1", "Ash Twin: Enter the Ash Twin Project" },
+        { "TT_TIME_LOOP_DEVICE_X1", "Enter the Ash Twin Project" },
 
         // when we add flavor text, probably change this location to trigger on talking to Gossan after the repairs
         { "TH_ZERO_G_CAVE_X2", "TH: Do the Zero-G Cave Repairs" },
