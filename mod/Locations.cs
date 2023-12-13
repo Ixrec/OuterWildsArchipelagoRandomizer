@@ -33,11 +33,11 @@ internal class Locations
 
         { "VM_VOLCANO_X3", "Volcanic Testing Site (Text Wall)" },
 
-        { "WHS_X4", "White Hole Station (Text Wall)" },
+        { "WHS_X4", "WHS (Text Wall)" },
 
         { "ORBITAL_PROBE_CANNON_X1", "GD: Enter the Orbital Probe Cannon" },
         { "OPC_INTACT_MODULE_X2", "GD: Control Module Logs (Text Wheels)" },
-        { "GD_OCEAN_R3", "GD: Bramble Island Log" },
+        { "GD_OCEAN_R3", "GD: Bramble Island (Tape Recorder)" },
         { "GD_CONSTRUCTION_YARD_X1", "GD: Construction Yard (Text Wall)" },
         { "GD_STATUE_WORKSHOP_X1", "GD: Statue Island Workshop (Text Wheel)" },
         { "GD_OCEAN_X1", "GD: Enter the Ocean Depths" },
