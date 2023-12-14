@@ -6,5 +6,6 @@
   "uniqueName": "Ixrec.ArchipelagoRandomizer",
   "version": "0.1.0",
   "owmlVersion": "2.9.8",
-  "dependencies": []
+  "dependencies": [],
+  "pathsToPreserve": [ "SaveData" ]
 }

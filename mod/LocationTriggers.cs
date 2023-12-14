@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -93,11 +91,6 @@ internal class LocationTriggers
         // leaving out Nomai and Prisoner because I believe those are only available during the finale
     };
 
-    // TODO: save state management
-    static Dictionary<Location, bool> locationChecked =
-        Enum.GetValues(typeof(Location)).Cast<Location>()
-        .ToDictionary(ln => ln, _ => false);
-
     // TODO: actual randomization
     // for now, anything not in this map awards 'Nothing'
     static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
@@ -141,6 +134,7 @@ internal class LocationTriggers
 
     public static void CheckLocation(Location location)
     {
+        var locationChecked = Randomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
             Randomizer.Instance.ModHelper.Console.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
@@ -204,6 +198,9 @@ internal class LocationTriggers
                 case Item.SignalTephra: Signalscope.LearnSignal(SignalName.HideAndSeek_Tephra); break;
                 default: break;
             }
+
+            Randomizer.SaveData.itemsAcquired[item] = true;
+            Randomizer.Instance.WriteToSaveFile();
         }
     }
 
