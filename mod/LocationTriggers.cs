@@ -96,6 +96,7 @@ internal class LocationTriggers
     static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
         { Location.ET_FOSSIL, Item.SilentRunning },
         { Location.ET_LAKEBED_CAVE, Item.EntanglementRule },
+        { Location.TH_GM, Item.CameraGM },
         { Location.TH_ZERO_G, Item.Signalscope },
         { Location.TH_HAL, Item.Translator },
         { Location.TH_SEED_CRATER, Item.Scout },
@@ -176,7 +177,7 @@ internal class LocationTriggers
             case Item.Translator: Translator.SetHasTranslator(count > 0); break;
             case Item.Signalscope: Signalscope.SetHasSignalscope(count > 0); break;
             case Item.Scout: break; // todos
-            case Item.CameraGM: break; // todo
+            case Item.CameraGM: GhostMatter.SetHasGhostMatterKnowledge(count > 0); break;
             case Item.CameraQuantum: QuantumImaging.SetHasImagingKnowledge(count > 0); break;
             case Item.WarpPlatformCodes: WarpPlatforms.SetHasNomaiWarpCodes(count > 0); break;
             case Item.WarpCoreManual: WarpCoreManual.SetHasWarpCoreManual(count > 0); break;
@@ -269,7 +270,11 @@ internal class LocationTriggers
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
         Randomizer.Instance.ModHelper.Console.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
+
         if (dialogueTreeName == "Hal_Museum" || dialogueTreeName == "Hal_Outside")
             CheckLocation(Location.TH_HAL);
+
+        if (dialogueTreeName == "GhostMatterPlaque")
+            CheckLocation(Location.TH_GM);
     }
 }

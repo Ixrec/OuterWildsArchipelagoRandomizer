@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -39,9 +37,9 @@ internal class QuantumImaging
         {
             QuantumImaging.hasImagingKnowledge = hasImagingKnowledge;
 
-            if (hasImagingKnowledge) // TODO: && has camera
+            if (hasImagingKnowledge)
             {
-                var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE QUANTUM EM FREQUENCY", 10);
+                var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE QUANTUM WAVELENGTH", 10);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
             }
         }
@@ -75,24 +73,5 @@ internal class QuantumImaging
         }
 
         return true;
-    }
-
-    static ScreenPrompt cameraEMRangePrompt = new("Camera EM Range: Visible & Quantum", 0);
-
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
-    public static void ToolModeUI_LateInitialize_Postfix()
-    {
-        Locator.GetPromptManager().AddScreenPrompt(cameraEMRangePrompt, PromptPosition.UpperRight, false);
-    }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
-    public static void ToolModeUI_Update_Postfix()
-    {
-        cameraEMRangePrompt.SetVisibility(
-            hasImagingKnowledge && // TODO: && has camera
-            (OWInput.IsInputMode(InputMode.Character) || OWInput.IsInputMode(InputMode.ShipCockpit)) &&
-            Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Probe)
-        );
     }
 }

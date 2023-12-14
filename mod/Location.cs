@@ -17,6 +17,7 @@ public enum Location
     ET_SHARD_SIGNAL,
     ET_EP2_SIGNAL,
     AT_ATP,
+    TH_GM,
     TH_ZERO_G,
     TH_HAL,
     TH_HORNFELS,
@@ -81,6 +82,7 @@ public static class LocationNames
 
         { Location.AT_ATP, "Enter the Ash Twin Project" },
 
+        { Location.TH_GM, "TH: Ghost Matter Plaque" },
         { Location.TH_ZERO_G, "TH: Zero-G Repairs" },
         { Location.TH_HAL, "TH: Get the Translator from Hal" },
         { Location.TH_HORNFELS, "TH: Talk to Hornfels" },

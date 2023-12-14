@@ -88,6 +88,7 @@ namespace ArchipelagoRandomizer
             Tornadoes.Setup();
             QuantumImaging.Setup();
             Jellyfish.Setup();
+            GhostMatter.Setup();
 
             SetupSaveData();
 
