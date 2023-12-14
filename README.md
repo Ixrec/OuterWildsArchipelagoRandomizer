@@ -26,32 +26,32 @@ Most of this code is about item-ifying parts of the vanilla game.
 
 ### Planned MVP "Items"
 
-- the Nomai Translator
-- the Signalscope
-	- and its frequencies and signals
+- ~~the Nomai Translator~~
+- ~~the Signalscope~~
+	- ~~and its frequencies and signals~~
 - the Scout Launcher
-- the Camera (separate from the Scout Launcher; you might get either one first)
-- Nomai Warp Codes (a.k.a. "Teleporter Knowledge", except you won't need to wait for planets to align)
-- Warp Core Installation Codes
-- Rule of Quantum Imaging
-- Rule of Quantum Entanglement
-- Quantum Shrine Door Codes (a.k.a "Rule of the Sixth Location")
-- Tornado Aerodynamic Adjustments (a.k.a. "Tornado Knowledge")
-- Silent Running Mode (a.k.a. "Anglerfish Knowledge")
-- Jellyfish Insulation (a.k.a. "Jellyfish Knowledge")
+- Ghost Matter Wavelength (to make the camera start showing ghost matter again)
+- ~~Nomai Warp Codes (a.k.a. "Teleporter Knowledge", except you won't need to wait for planets to align)~~
+- ~~Warp Core Installation Codes~~
+- ~~Rule of Quantum Imaging~~
+- ~~Rule of Quantum Entanglement~~
+- ~~Quantum Shrine Door Codes (a.k.a "Rule of the Sixth Location")~~
+- ~~Tornado Aerodynamic Adjustments (a.k.a. "Tornado Knowledge")~~
+- ~~Silent Running Mode (a.k.a. "Anglerfish Knowledge")~~
+- ~~Electrical Insulation (a.k.a. "Jellyfish Knowledge")~~
 - Coordinates
 
 ### Planned MVP Locations
 
-- dozens of ship log facts, variously triggered by
-	- translating Nomai text walls
-	- reaching a place like the Ash Twin Project or Giant's Deep's core
-- scanning the sources of each Signalscope frequency and signal
+- ~~dozens of ship log facts, variously triggered by~~
+	- ~~translating Nomai text walls~~
+	- ~~reaching a place like the Ash Twin Project or Giant's Deep's core~~
+- ~~scanning the sources of each Signalscope frequency and signal~~
 
 ### MVP Blockers
 
 - item-ify a few more starting tools and knowledge
-- read and write save data, including checking for discrepancies
+- ~~read and write save data~~, including checking for discrepancies
 - ~~create an in-game console for displaying Archipelago messages~~
 - teach this mod the Archipelago client protocol, probably using an existing AP client library for .NET
 - write an apworld with items, locations and all the "logic" rules for which items are needed to reach which locations
