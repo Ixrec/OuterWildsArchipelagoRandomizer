@@ -1,9 +1,6 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
-using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer;
 
@@ -86,6 +83,8 @@ internal class Signalscope
 
     public static void ApplyHasSignalscopeFlag(bool hasSignalscope)
     {
+        if (equipSignalscopePrompt is null || centerEquipSignalScopePrompt is null) return;
+
         if (hasSignalscope)
         {
             equipSignalscopePrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.signalscope.CommandType };
@@ -107,8 +106,14 @@ internal class Signalscope
 
     public static HashSet<SignalFrequency> usableFrequencies = new HashSet<SignalFrequency> { SignalFrequency.Traveler };
     public static HashSet<SignalName> usableSignals = new();
-    public static void LearnFrequency(SignalFrequency frequency) => usableFrequencies.Add(frequency);
-    public static void LearnSignal(SignalName signal) => usableSignals.Add(signal);
+    public static void SetFrequencyUsable(SignalFrequency frequency, bool usable)
+    {
+        if (usable) usableFrequencies.Add(frequency); else usableFrequencies.Remove(frequency);
+    }
+    public static void SetSignalUsable(SignalName signal, bool usable)
+    {
+        if (usable) usableSignals.Add(signal); else usableSignals.Remove(signal);
+    }
 
     // PlayerData._currentGameSave.knownFrequencies and .knownSignals are where the scanned items are stored.
     // We want to keep allowing the game to write to those parts of the save file when the player scans

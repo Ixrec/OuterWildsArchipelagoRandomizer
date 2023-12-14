@@ -1,9 +1,5 @@
 ﻿using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
-using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer;
 
@@ -61,6 +57,8 @@ internal class Translator
 
     public static void ApplyHasTranslatorFlag(bool hasTranslator)
     {
+        if (translatePrompt is null) return;
+
         if (hasTranslator)
         {
             translatePrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.interact.CommandType };

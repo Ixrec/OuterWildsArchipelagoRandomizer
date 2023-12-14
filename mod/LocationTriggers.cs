@@ -158,49 +158,57 @@ internal class LocationTriggers
             var itemName = ItemNames.ItemToName(item);
             InGameConsole.Instance.AddNotification($"You found your <color=\"orange\">{itemName}</color>");
 
-            switch (item)
-            {
-                case Item.Translator: Translator.SetHasTranslator(true); break;
-                case Item.Signalscope: Signalscope.SetHasSignalscope(true); break;
-                case Item.Spaceship: break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
-                case Item.Scout: break; // todos
-                case Item.CameraGM: break; // todo
-                case Item.CameraQuantum: QuantumImaging.SetHasImagingKnowledge(true); break;
-                case Item.WarpPlatformCodes: WarpPlatforms.SetHasNomaiWarpCodes(true); break;
-                case Item.WarpCoreManual: WarpCoreManual.SetHasWarpCoreManual(true); break;
-                case Item.EntanglementRule: QuantumEntanglement.SetHasEntanglementKnowledge(true); break;
-                case Item.ShrineDoorCodes: QuantumShrineDoor.SetHasQuantumShrineCodes(true); break;
-                case Item.TornadoAdjustment: Tornadoes.SetHasTornadoKnowledge(true); break;
-                case Item.SilentRunning: Anglerfish.SetHasAnglerfishKnowledge(true); break;
-                case Item.ElectricalInsulation: Jellyfish.SetHasJellyfishKnowledge(true); break;
-                case Item.Coordinates: break; // todo
+            Randomizer.SaveData.itemsAcquired[item] += 1;
 
-                // todo: can we disable the OW Ventures frequency?
-                case Item.FrequencyDB: Signalscope.LearnFrequency(SignalFrequency.EscapePod); break;
-                case Item.FrequencyQF: Signalscope.LearnFrequency(SignalFrequency.Quantum); break;
-                case Item.FrequencyHS: Signalscope.LearnFrequency(SignalFrequency.HideAndSeek); break;
+            ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
 
-                case Item.SignalChert: Signalscope.LearnSignal(SignalName.Traveler_Chert); break;
-                case Item.SignalEsker: Signalscope.LearnSignal(SignalName.Traveler_Esker); break;
-                case Item.SignalRiebeck: Signalscope.LearnSignal(SignalName.Traveler_Riebeck); break;
-                case Item.SignalGabbro: Signalscope.LearnSignal(SignalName.Traveler_Gabbro); break;
-                case Item.SignalFeldspar: Signalscope.LearnSignal(SignalName.Traveler_Feldspar); break;
-                case Item.SignalMuseumShard: Signalscope.LearnSignal(SignalName.Quantum_TH_MuseumShard); break;
-                case Item.SignalGroveShard: Signalscope.LearnSignal(SignalName.Quantum_TH_GroveShard); break;
-                case Item.SignalCaveShard: Signalscope.LearnSignal(SignalName.Quantum_CT_Shard); break;
-                case Item.SignalTowerShard: Signalscope.LearnSignal(SignalName.Quantum_BH_Shard); break;
-                case Item.SignalIslandShard: Signalscope.LearnSignal(SignalName.Quantum_GD_Shard); break;
-                case Item.SignalQM: Signalscope.LearnSignal(SignalName.Quantum_QM); break;
-                case Item.SignalEP1: Signalscope.LearnSignal(SignalName.EscapePod_BH); break;
-                case Item.SignalEP2: Signalscope.LearnSignal(SignalName.EscapePod_CT); break;
-                case Item.SignalEP3: Signalscope.LearnSignal(SignalName.EscapePod_DB); break;
-                case Item.SignalGalena: Signalscope.LearnSignal(SignalName.HideAndSeek_Galena); break;
-                case Item.SignalTephra: Signalscope.LearnSignal(SignalName.HideAndSeek_Tephra); break;
-                default: break;
-            }
-
-            Randomizer.SaveData.itemsAcquired[item] = true;
             Randomizer.Instance.WriteToSaveFile();
+        }
+    }
+
+    public static void ApplyItemToPlayer(Item item, uint count)
+    {
+        switch (item)
+        {
+            case Item.LaunchCodes: break; // Not necessary until launch codes can be shuffled, and it's surprisingly subtle to set them without crashing.
+            case Item.Spaceship: break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
+
+            case Item.Translator: Translator.SetHasTranslator(count > 0); break;
+            case Item.Signalscope: Signalscope.SetHasSignalscope(count > 0); break;
+            case Item.Scout: break; // todos
+            case Item.CameraGM: break; // todo
+            case Item.CameraQuantum: QuantumImaging.SetHasImagingKnowledge(count > 0); break;
+            case Item.WarpPlatformCodes: WarpPlatforms.SetHasNomaiWarpCodes(count > 0); break;
+            case Item.WarpCoreManual: WarpCoreManual.SetHasWarpCoreManual(count > 0); break;
+            case Item.EntanglementRule: QuantumEntanglement.SetHasEntanglementKnowledge(count > 0); break;
+            case Item.ShrineDoorCodes: QuantumShrineDoor.SetHasQuantumShrineCodes(count > 0); break;
+            case Item.TornadoAdjustment: Tornadoes.SetHasTornadoKnowledge(count > 0); break;
+            case Item.SilentRunning: Anglerfish.SetHasAnglerfishKnowledge(count > 0); break;
+            case Item.ElectricalInsulation: Jellyfish.SetHasJellyfishKnowledge(count > 0); break;
+            case Item.Coordinates: break; // todo
+
+            // todo: can we disable the OW Ventures frequency?
+            case Item.FrequencyDB: Signalscope.SetFrequencyUsable(SignalFrequency.EscapePod, count > 0); break;
+            case Item.FrequencyQF: Signalscope.SetFrequencyUsable(SignalFrequency.Quantum, count > 0); break;
+            case Item.FrequencyHS: Signalscope.SetFrequencyUsable(SignalFrequency.HideAndSeek, count > 0); break;
+
+            case Item.SignalChert: Signalscope.SetSignalUsable(SignalName.Traveler_Chert, count > 0); break;
+            case Item.SignalEsker: Signalscope.SetSignalUsable(SignalName.Traveler_Esker, count > 0); break;
+            case Item.SignalRiebeck: Signalscope.SetSignalUsable(SignalName.Traveler_Riebeck, count > 0); break;
+            case Item.SignalGabbro: Signalscope.SetSignalUsable(SignalName.Traveler_Gabbro, count > 0); break;
+            case Item.SignalFeldspar: Signalscope.SetSignalUsable(SignalName.Traveler_Feldspar, count > 0); break;
+            case Item.SignalMuseumShard: Signalscope.SetSignalUsable(SignalName.Quantum_TH_MuseumShard, count > 0); break;
+            case Item.SignalGroveShard: Signalscope.SetSignalUsable(SignalName.Quantum_TH_GroveShard, count > 0); break;
+            case Item.SignalCaveShard: Signalscope.SetSignalUsable(SignalName.Quantum_CT_Shard, count > 0); break;
+            case Item.SignalTowerShard: Signalscope.SetSignalUsable(SignalName.Quantum_BH_Shard, count > 0); break;
+            case Item.SignalIslandShard: Signalscope.SetSignalUsable(SignalName.Quantum_GD_Shard, count > 0); break;
+            case Item.SignalQM: Signalscope.SetSignalUsable(SignalName.Quantum_QM, count > 0); break;
+            case Item.SignalEP1: Signalscope.SetSignalUsable(SignalName.EscapePod_BH, count > 0); break;
+            case Item.SignalEP2: Signalscope.SetSignalUsable(SignalName.EscapePod_CT, count > 0); break;
+            case Item.SignalEP3: Signalscope.SetSignalUsable(SignalName.EscapePod_DB, count > 0); break;
+            case Item.SignalGalena: Signalscope.SetSignalUsable(SignalName.HideAndSeek_Galena, count > 0); break;
+            case Item.SignalTephra: Signalscope.SetSignalUsable(SignalName.HideAndSeek_Tephra, count > 0); break;
+            default: break;
         }
     }
 

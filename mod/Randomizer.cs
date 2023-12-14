@@ -16,7 +16,7 @@ namespace ArchipelagoRandomizer
         public class APRandomizerSaveData
         {
             public Dictionary<Location, bool> locationsChecked;
-            public Dictionary<Item, bool> itemsAcquired;
+            public Dictionary<Item, uint> itemsAcquired;
         }
         public static APRandomizerSaveData SaveData;
         private static string SaveFileName;
@@ -53,14 +53,17 @@ namespace ArchipelagoRandomizer
                     saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
                         .ToDictionary(ln => ln, _ => false);
                     saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
-                        .ToDictionary(ln => ln, _ => false);
+                        .ToDictionary(ln => ln, _ => 0u);
 
                     ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
                 }
                 else
                 {
                     ModHelper.Console.WriteLine($"Existing save file loaded. You've checked {saveData.locationsChecked.Where(kv => kv.Value).Count()} out of {saveData.locationsChecked.Count} locations " +
-                        $"and acquired {saveData.itemsAcquired.Where(kv => kv.Value).Count()} out of {saveData.itemsAcquired.Count} items.");
+                        $"and acquired one or more of {saveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {saveData.itemsAcquired.Count} total types.");
+
+                    foreach (var kv in saveData.itemsAcquired)
+                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
                 }
 
                 SaveData = saveData;
