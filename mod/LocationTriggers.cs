@@ -13,7 +13,7 @@ internal class LocationTriggers
 
         { "CT_HIGH_ENERGY_LAB_X3", Location.ET_HEL },
         { "CT_SUNLESS_CITY_X3", Location.ET_SC_SHRINE },
-        { "CT_QUANTUM_MOON_LOCATOR_X2", Location.ET_QML },
+        { "QM_SIXTH_LOCATION_R1", Location.ET_QML },
         { "CT_ANGLERFISH_FOSSIL_X2", Location.ET_FOSSIL },
         { "CT_LAKEBED_CAVERN_X1", Location.ET_LAKEBED_CAVE },
         { "CT_LAKEBED_CAVERN_X3", Location.ET_COLEUS_CAVE },
