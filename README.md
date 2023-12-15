@@ -77,10 +77,14 @@ After that settles, I will most likely work on one or more of the following sub-
 	- random planet orbits
 	- random Eye coordinates
 	- random Dark Bramble layout
+	- random ghost matter patches
 
-- Investigate other ideas for base game progression items
-	- The flashlight? The ability to move Nomai orbs? Gravity crystals?
-	- Reducing or removing your starting oxygen, fuel, boost, etc so these upgrades become progression
+- Consider various other suggestions (much of this we might decide against, or move to "long-term goals")
+	- More base game progression items: the flashlight? The ability to move Nomai orbs? Gravity crystals?
+	- Reducing or removing your starting oxygen, fuel, boost, etc? (would make some of these upgrades progression)
+	- "logsanity" (all ship log entries), "rumorsanity" (all the ship log rumors too), "textsanity" (every note, casette tape, Nomai text line, dialogue line, etc) settings?
+	- "Log Hunt", where the goal is getting N ship logs? Similarly: a Relic Hunt like Outer Relics, or literally by interfacing with Outer Relics?
+	- A generic API for other OW mods to declare their randomizable stuff???
 
 ### Long-Term Goals
 
