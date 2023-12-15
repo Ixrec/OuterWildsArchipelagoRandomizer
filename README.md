@@ -29,7 +29,7 @@ Most of this code is about item-ifying parts of the vanilla game.
 - ~~the Nomai Translator~~
 - ~~the Signalscope~~
 	- ~~and its frequencies and signals~~
-- the Scout Launcher
+- ~~the Scout~~
 - ~~Ghost Matter Wavelength (to make the camera start showing ghost matter again)~~
 - ~~Nomai Warp Codes (a.k.a. "Teleporter Knowledge", except you won't need to wait for planets to align)~~
 - ~~Warp Core Installation Codes~~

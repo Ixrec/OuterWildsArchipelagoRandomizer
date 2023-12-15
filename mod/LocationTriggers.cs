@@ -176,7 +176,7 @@ internal class LocationTriggers
 
             case Item.Translator: Translator.SetHasTranslator(count > 0); break;
             case Item.Signalscope: Signalscope.SetHasSignalscope(count > 0); break;
-            case Item.Scout: break; // todos
+            case Item.Scout: Scout.SetHasScout(count > 0); break;
             case Item.CameraGM: GhostMatter.SetHasGhostMatterKnowledge(count > 0); break;
             case Item.CameraQuantum: QuantumImaging.SetHasImagingKnowledge(count > 0); break;
             case Item.WarpPlatformCodes: WarpPlatforms.SetHasNomaiWarpCodes(count > 0); break;
