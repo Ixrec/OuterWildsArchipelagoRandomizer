@@ -276,14 +276,12 @@ internal class LocationTriggers
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
         Randomizer.Instance.ModHelper.Console.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
 
-        if (dialogueTreeName == "Hal_Museum" || dialogueTreeName == "Hal_Outside")
-            CheckLocation(Location.TH_HAL);
-
-        if (dialogueTreeName == "GhostMatterPlaque")
-            CheckLocation(Location.TH_GM);
-
-        if (dialogueTreeName == "Hornfels")
-            CheckLocation(Location.TH_HORNFELS);
+        switch (dialogueTreeName)
+        {
+            case "Hal_Museum": case "Hal_Outside": CheckLocation(Location.TH_HAL); break;
+            case "GhostMatterPlaque": CheckLocation(Location.TH_GM); break;
+            case "Hornfels": CheckLocation(Location.TH_HORNFELS); break;
+        }
     }
 
     // Currently, translation a Nomai text line is never (directly) a trigger for a location.
