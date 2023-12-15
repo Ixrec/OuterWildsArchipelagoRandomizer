@@ -219,7 +219,12 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-        Randomizer.Instance.ModHelper.Console.WriteLine($"ShipLogManager.RevealFact {factId} {saveGame} {showNotification}");
+
+        // Currently, only a subset of ship log facts are location triggers.
+        // But I want the released mod to be logging these ids so that players who want a "logsanity"
+        // and/or "rumorsanity" option can help assemble the list of locations and rules for it.
+        Randomizer.Instance.ModHelper.Console.WriteLine($"ShipLogManager.RevealFact {factId}");
+
         if (logFactToLocation.ContainsKey(factId))
         {
             var locationName = logFactToLocation[factId];
@@ -279,5 +284,18 @@ internal class LocationTriggers
 
         if (dialogueTreeName == "Hornfels")
             CheckLocation(Location.TH_HORNFELS);
+    }
+
+    // Currently, translation a Nomai text line is never (directly) a trigger for a location.
+    // But I want the released mod to be logging these ids so that players who want a "textsanity"
+    // option can help assemble the list of locations and rules for it.
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
+    public static void NomaiText_SetAsTranslated_Prefix(NomaiText __instance, int id)
+    {
+        // This gets called every frame when looking at translated text, so avoid logging if it's already been translated (this loop)
+        if (__instance._dictNomaiTextData[id].IsTranslated) return;
+
+        Randomizer.Instance.ModHelper.Console.WriteLine($"NomaiText.SetAsTranslated: {__instance._nomaiTextAsset.name} line {id}");
     }
 }
