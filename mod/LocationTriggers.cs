@@ -276,5 +276,8 @@ internal class LocationTriggers
 
         if (dialogueTreeName == "GhostMatterPlaque")
             CheckLocation(Location.TH_GM);
+
+        if (dialogueTreeName == "Hornfels")
+            CheckLocation(Location.TH_HORNFELS);
     }
 }
