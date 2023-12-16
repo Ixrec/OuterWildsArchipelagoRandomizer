@@ -91,9 +91,8 @@ internal class LocationTriggers
         // leaving out Nomai and Prisoner because I believe those are only available during the finale
     };
 
-    // TODO: actual randomization
-    // for now, anything not in this map awards 'Nothing'
-    static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
+    // no longer in use, keeping as notes for when we edit flavor text to justify some items' existence
+    /*static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
         { Location.ET_FOSSIL, Item.SilentRunning },
         { Location.ET_LAKEBED_CAVE, Item.EntanglementRule },
         { Location.TH_GM, Item.CameraGM },
@@ -131,6 +130,70 @@ internal class LocationTriggers
 
         { Location.TH_HORNFELS, Item.LaunchCodes },
         { Location.SPACESHIP, Item.Spaceship }
+    };*/
+
+    // TODO: actual randomization / AP integration; this is a one-off shuffle for test playthroughs
+    static Dictionary<Location, Item> locationToRandomItem = new Dictionary<Location, Item>
+    {
+        { Location.ET_QML, Item.SilentRunning },
+        { Location.TH_GALENA_SIGNAL, Item.EntanglementRule },
+        { Location.SPACESHIP, Item.Spaceship }, // always fixed, more like an event than an item
+        { Location.ET_EP2_SIGNAL, Item.Scout },
+        { Location.BH_SHARD_SIGNAL, Item.Nothing },
+        { Location.GD_SIW, Item.Signalscope },
+        { Location.FROZEN_SHUTTLE, Item.TornadoAdjustment },
+        { Location.BH_EP1_SIGNAL, Item.WarpCoreManual },
+        { Location.DB_VESSEL, Item.WarpPlatformCodes },
+        { Location.IL_CORE, Item.ShrineDoorCodes },
+        { Location.GD_BI, Item.Translator },
+        { Location.TH_MS_SIGNAL, Item.CameraQuantum },
+        { Location.WHS, Item.Nothing },
+        { Location.GD_COORDINATES, Item.FrequencyDB },
+        { Location.ET_SHARD_SIGNAL, Item.ElectricalInsulation },
+        { Location.OPC_CM, Item.FrequencyQF },
+        { Location.AR_WHISTLE, Item.FrequencyHS },
+        { Location.DB_GRAVE, Item.SignalChert },
+        { Location.BH_OBSERVATORY, Item.SignalEsker },
+        { Location.ET_COLEUS_CAVE, Item.SignalRiebeck },
+        { Location.SS, Item.SignalGabbro },
+        { Location.OPC_ENTER, Item.SignalFeldspar },
+        { Location.TH_TEPHRA_SIGNAL, Item.SignalMuseumShard },
+        { Location.TH_MINES, Item.SignalGroveShard },
+        { Location.GD_DEPTHS, Item.SignalCaveShard },
+        { Location.DB_EP3_SIGNAL, Item.SignalTowerShard },
+        { Location.TH_SEED_CRATER, Item.SignalIslandShard },
+        { Location.ET_HEL, Item.SignalQM },
+        { Location.TH_ZERO_G, Item.SignalEP1 },
+        { Location.QM_SIGNAL, Item.SignalEP2 },
+        { Location.DB_HARMONICA, Item.SignalEP3 },
+        { Location.FREQ_HIDE_SEEK, Item.SignalGalena },
+        { Location.FREQ_QUANTUM, Item.SignalTephra },
+        { Location.SOLANUM_SHUTTLE, Item.CameraGM },
+        { Location.AR_ESL, Item.Nothing },
+        { Location.BH_OS_MURAL, Item.Nothing },
+        { Location.ET_LAKEBED_CAVE, Item.Nothing },
+        { Location.BH_TOWER, Item.Nothing },
+        { Location.BH_BANJO, Item.Nothing },
+        { Location.QM_LAND, Item.Nothing },
+        { Location.TH_GS_SIGNAL, Item.Nothing },
+        { Location.GD_FLUTE, Item.Nothing },
+        { Location.ET_DRUM, Item.Nothing },
+        { Location.FREQ_DISTRESS, Item.Nothing },
+        { Location.GD_CY, Item.Nothing },
+        { Location.ET_SC_SHRINE, Item.Coordinates },
+        { Location.HL_VTS, Item.Nothing },
+        { Location.GD_CORE, Item.Nothing },
+        { Location.TH_HAL, Item.Nothing },
+        { Location.BH_FORGE, Item.Nothing },
+        { Location.AT_ATP, Item.Nothing },
+        { Location.GD_TOWER_COMPLETE, Item.Nothing },
+        { Location.TH_GM, Item.Nothing },
+        { Location.TH_HORNFELS, Item.LaunchCodes }, // fixed for now
+        { Location.GD_TOWER_RULE, Item.Nothing },
+        { Location.QM_6L, Item.Nothing },
+        { Location.DB_JELLY, Item.Nothing },
+        { Location.ET_FOSSIL, Item.Nothing },
+        { Location.GD_SHARD_SIGNAL, Item.Nothing },
     };
 
     public static void CheckLocation(Location location)
@@ -152,7 +215,8 @@ internal class LocationTriggers
             Randomizer.Instance.ModHelper.Console.WriteLine($"Marking '{location}' as checked");
             locationChecked[location] = true;
 
-            var item = locationToVanillaItem.ContainsKey(location) ? locationToVanillaItem[location] : Item.Nothing;
+            var item = locationToRandomItem.ContainsKey(location) ? locationToRandomItem[location] : Item.Nothing;
+
             // todo: replace this with Archipelago integration
             Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item {item}");
 
