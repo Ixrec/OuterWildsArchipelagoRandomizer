@@ -95,6 +95,10 @@ namespace ArchipelagoRandomizer
                 .ToDictionary(ln => ln, _ => 0u);
 
             Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
+
+            SaveData = saveData;
+            foreach (var kv in SaveData.itemsAcquired)
+                LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
         }
 
         private void Awake()
