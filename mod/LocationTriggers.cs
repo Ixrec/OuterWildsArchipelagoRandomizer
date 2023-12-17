@@ -186,7 +186,7 @@ internal class LocationTriggers
             case Item.TornadoAdjustment: Tornadoes.SetHasTornadoKnowledge(count > 0); break;
             case Item.SilentRunning: Anglerfish.SetHasAnglerfishKnowledge(count > 0); break;
             case Item.ElectricalInsulation: Jellyfish.SetHasJellyfishKnowledge(count > 0); break;
-            case Item.Coordinates: break; // todo
+            case Item.Coordinates: Coordinates.SetHasCoordinates(count > 0); break;
 
             // todo: can we disable the OW Ventures frequency?
             case Item.FrequencyDB: Signalscope.SetFrequencyUsable(SignalFrequency.EscapePod, count > 0); break;

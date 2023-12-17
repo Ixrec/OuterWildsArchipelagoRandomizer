@@ -39,7 +39,7 @@ Most of this code is about item-ifying parts of the vanilla game.
 - ~~Tornado Aerodynamic Adjustments (a.k.a. "Tornado Knowledge")~~
 - ~~Silent Running Mode (a.k.a. "Anglerfish Knowledge")~~
 - ~~Electrical Insulation (a.k.a. "Jellyfish Knowledge")~~
-- Coordinates
+- ~~Coordinates~~
 
 ### Planned MVP Locations
 
@@ -50,7 +50,7 @@ Most of this code is about item-ifying parts of the vanilla game.
 
 ### MVP Blockers
 
-- item-ify a few more starting tools and knowledge
+- ~~item-ify a few more starting tools and knowledge~~
 - ~~read and write save data~~, including checking for discrepancies
 - ~~create an in-game console for displaying Archipelago messages~~
 - teach this mod the Archipelago client protocol, probably using an existing AP client library for .NET
