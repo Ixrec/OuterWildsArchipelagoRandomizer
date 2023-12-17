@@ -6,9 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer
 {
+    [HarmonyPatch]
     public class Randomizer : ModBehaviour
     {
         public static Randomizer Instance;
@@ -44,30 +47,54 @@ namespace ArchipelagoRandomizer
                 ModHelper.Console.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP Randomizer save file.");
 
                 SaveFileName = $"SaveData/{profileName}.json";
-                APRandomizerSaveData saveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
-                if (saveData is null)
+                SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
+                if (SaveData is null)
                 {
-                    ModHelper.Console.WriteLine($"No save file found for this profile. Creating a new one.");
-
-                    saveData = new();
-                    saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
-                        .ToDictionary(ln => ln, _ => false);
-                    saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
-                        .ToDictionary(ln => ln, _ => 0u);
-
-                    ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
+                    ModHelper.Console.WriteLine($"No save file found for this profile. Will hide Resume button.");
+                    var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
+                    ModHelper.Console.WriteLine($"resumeButton {resumeButton} {resumeButton.name}");
+                    resumeButton.SetActive(false);
                 }
                 else
                 {
-                    ModHelper.Console.WriteLine($"Existing save file loaded. You've checked {saveData.locationsChecked.Where(kv => kv.Value).Count()} out of {saveData.locationsChecked.Count} locations " +
-                        $"and acquired one or more of {saveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {saveData.itemsAcquired.Count} total types.");
+                    ModHelper.Console.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
+                        $"and acquired one or more of {SaveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {SaveData.itemsAcquired.Count} total types.");
 
-                    foreach (var kv in saveData.itemsAcquired)
+                    foreach (var kv in SaveData.itemsAcquired)
                         LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
                 }
-
-                SaveData = saveData;
             };
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
+        public static void TitleScreenManager_SetUpMainMenu_Postfix()
+        {
+            if (SaveData is null)
+            {
+                Randomizer.Instance.ModHelper.Console.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
+
+                var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
+                resumeButton.SetActive(false);
+            }
+
+            // I attempted to edit the New Expedition button, but for some reason anything I do to that button gets undone before the menu is shown.
+            // var newGameObject = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-NewGame");
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ResetGame))]
+        public static void PlayerData_ResetGame_Prefix()
+        {
+            Randomizer.Instance.ModHelper.Console.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh save file for this profile.");
+
+            APRandomizerSaveData saveData = new();
+            saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
+                .ToDictionary(ln => ln, _ => false);
+            saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
+                .ToDictionary(ln => ln, _ => 0u);
+
+            Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
         }
 
         private void Awake()
