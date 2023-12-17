@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
+using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer;
 
@@ -168,9 +169,9 @@ internal class LocationTriggers
         { Location.DB_HARMONICA, Item.SignalEP3 },
         { Location.FREQ_HIDE_SEEK, Item.SignalGalena },
         { Location.FREQ_QUANTUM, Item.SignalTephra },
-        { Location.SOLANUM_SHUTTLE, Item.CameraGM },
+        { Location.SOLANUM_SHUTTLE, Item.Nothing },
         { Location.AR_ESL, Item.Nothing },
-        { Location.BH_OS_MURAL, Item.Nothing },
+        { Location.BH_OS_MURAL, Item.CameraGM },
         { Location.ET_LAKEBED_CAVE, Item.Nothing },
         { Location.BH_TOWER, Item.Nothing },
         { Location.BH_BANJO, Item.Nothing },
@@ -300,6 +301,7 @@ internal class LocationTriggers
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
     public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
     {
+        Randomizer.Instance.ModHelper.Console.WriteLine($"PlayerData.LearnFrequency {frequency}");
         if (frequencyToLocation.ContainsKey(frequency))
         {
             var locationName = frequencyToLocation[frequency];
@@ -308,9 +310,18 @@ internal class LocationTriggers
     }
 
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(SignalscopePromptTrigger), nameof(SignalscopePromptTrigger.Awake))]
+    public static void SignalscopePromptTrigger_Awake_Prefix(SignalscopePromptTrigger __instance)
+    {
+        Randomizer.Instance.ModHelper.Console.WriteLine($"SignalscopePromptTrigger.Awake");
+        __instance._frequency = SignalFrequency.Default;
+    }
+
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
     public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
     {
+        Randomizer.Instance.ModHelper.Console.WriteLine($"PlayerData.LearnSignal {signalName}");
         if (signalToLocation.ContainsKey(signalName))
         {
             var locationName = signalToLocation[signalName];

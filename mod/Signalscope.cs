@@ -104,7 +104,7 @@ internal class Signalscope
 
     // The rest of this code deals with the Frequency and Signal items
 
-    public static HashSet<SignalFrequency> usableFrequencies = new HashSet<SignalFrequency> { SignalFrequency.Traveler };
+    public static HashSet<SignalFrequency> usableFrequencies = new();
     public static HashSet<SignalName> usableSignals = new();
     public static void SetFrequencyUsable(SignalFrequency frequency, bool usable)
     {
