@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer
 {
@@ -82,11 +83,14 @@ namespace ArchipelagoRandomizer
             // var newGameObject = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-NewGame");
         }
 
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ResetGame))]
-        public static void PlayerData_ResetGame_Prefix()
+        public static void PlayerData_ResetGame_Postfix()
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh save file for this profile.");
+            Randomizer.Instance.ModHelper.Console.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh randomizer save file for this profile.");
+
+            PlayerData._currentGameSave.knownFrequencies[AudioSignal.FrequencyToIndex(SignalFrequency.Traveler)] = false;
+            PlayerData.SaveCurrentGame();
 
             APRandomizerSaveData saveData = new();
             saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()

@@ -154,6 +154,14 @@ internal class Signalscope
         return false; // skip vanilla implementation, never forget a frequency
     }
 
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Locator), nameof(Locator.RegisterAudioSignal))]
+    public static bool Locator_RegisterAudioSignal_Prefix(AudioSignal signal)
+    {
+        Randomizer.Instance.ModHelper.Console.WriteLine($"Locator.RegisterAudioSignal {signal.GetName()} {signal.GetFrequency()} {AudioSignal.FrequencyToIndex(signal.GetFrequency())}");
+        return true;
+    }
+
     // The above patches are enough to separate signalscope scans from signalscope knowledge,
     // but we can do better.
 
