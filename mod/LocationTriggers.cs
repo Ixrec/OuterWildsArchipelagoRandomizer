@@ -358,6 +358,7 @@ internal class LocationTriggers
         // This gets called every frame when looking at translated text, so avoid logging if it's already been translated (this loop)
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
-        Randomizer.Instance.ModHelper.Console.WriteLine($"NomaiText.SetAsTranslated: {__instance._nomaiTextAsset.name} line {id}");
+        var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
+        Randomizer.Instance.ModHelper.Console.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
     }
 }
