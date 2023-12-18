@@ -11,7 +11,7 @@ internal class WarpPlatforms
     public static bool hasNomaiWarpCodes = false;
 
     // we don't care about the Vessel frequency used at the end of the game
-    readonly static NomaiWarpPlatform.Frequency[] frequenciesOfInterest = [
+    readonly static NomaiWarpPlatform.Frequency[] frequenciesOfInterest = {
         NomaiWarpPlatform.Frequency.SunStation,
         NomaiWarpPlatform.Frequency.TimeLoop, // Ash Twin to inside Ash Twin Project
         NomaiWarpPlatform.Frequency.HourglassTwin, // Ash Twin to Ember Twin
@@ -19,7 +19,7 @@ internal class WarpPlatforms
         NomaiWarpPlatform.Frequency.BrittleHollowPolar, // Ash Twin to Brittle Hollow surface near north pole
         NomaiWarpPlatform.Frequency.BrittleHollowForge, // White Hole Station to Brittle Hollow underside of crust, just outside Black Hole Forge
         NomaiWarpPlatform.Frequency.GiantsDeep,
-    ];
+    };
 
     static Dictionary<NomaiWarpPlatform.Frequency, NomaiWarpPlatform> warpTransmitters = new();
 
