@@ -69,7 +69,7 @@ After that settles, I will most likely work on one or more of the following sub-
 - More `useful`, `filler` and `trap` items. Ideas include:
 	- Oxygen, jetpack fuel, jetpack boost, health, ship durability, etc refills (`filler`) and max upgrades (`useful`)
 	- Ship features like autopilot and the landing camera
-	- `trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, anglerfish spawns, playing End Times
+	- `trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, anglerfish spawns, playing End Times, increased scout launcher recoil
 
 - A dedicated tracker. Not yet decided whether this will be an in-game ship log modification, or an external [poptracker](https://github.com/black-sliver/PopTracker) pack, or both.
 
