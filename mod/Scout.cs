@@ -38,11 +38,20 @@ internal class Scout
     [HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
     public static void ProbePromptController_LateInitialize_Postfix(ProbePromptController __instance)
     {
+        Randomizer.Instance.ModHelper.Console.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
         launchScoutPrompt = __instance._launchPrompt;
 
-        var ship = Locator.GetShipBody().gameObject.transform;
-        scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC").gameObject;
-        scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch").gameObject;
+        var ship = Locator.GetShipBody()?.gameObject?.transform;
+        if (ship is null)
+        {
+            scoutInsideShip = null;
+            scoutInShipLauncher = null;
+        }
+        else
+        {
+            scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC").gameObject;
+            scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch").gameObject;
+        }
 
         ApplyHasScoutFlag(hasScout);
     }
@@ -56,15 +65,15 @@ internal class Scout
             launchScoutPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.toolActionPrimary.CommandType };
             // copy-pasted from the body of ProbePromptController.Awake()
             launchScoutPrompt.SetText(UITextLibrary.GetString(UITextType.ProbeLaunchPrompt) + "   <CMD>");
-            scoutInsideShip.SetActive(!Locator.GetPlayerSuit().IsWearingSuit());
-            scoutInShipLauncher.SetActive(true);
+            scoutInsideShip?.SetActive(!Locator.GetPlayerSuit()?.IsWearingSuit() ?? false);
+            scoutInShipLauncher?.SetActive(true);
         }
         else
         {
             launchScoutPrompt._commandIdList = new();
             launchScoutPrompt.SetText("Scout Not Available");
-            scoutInsideShip.SetActive(false);
-            scoutInShipLauncher.SetActive(false);
+            scoutInsideShip?.SetActive(false);
+            scoutInShipLauncher?.SetActive(false);
         }
     }
 
