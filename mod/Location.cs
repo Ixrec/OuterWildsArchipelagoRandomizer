@@ -73,7 +73,7 @@ public static class LocationNames
 
         { Location.SS, "Sun Station (Projection Stone Text)" },
 
-        { Location.ET_HEL, "ET: High Energy Lab (Lower Text Wall)" },
+        { Location.ET_HEL, "ET: High Energy Lab (Upper Text Wall)" },
         { Location.ET_SC_SHRINE, "ET: Sunless City Shrine (Entrance Text Wall)" },
         { Location.ET_QML, "ET: Quantum Moon Locator (Text Scroll)" },
         { Location.ET_FOSSIL, "ET: Fossil (Children's Text)" },
@@ -91,7 +91,7 @@ public static class LocationNames
 
         { Location.AR_ESL, "AR: Signal Locator (Text Wall)" },
 
-        { Location.BH_OBSERVATORY, "BH: Southern Observatory (Text Wall)" },
+        { Location.BH_OBSERVATORY, "BH: Southern Observatory (Tornado Text Wall)" },
         { Location.BH_OS_MURAL, "BH: Old Settlement Murals" },
         { Location.BH_FORGE, "BH: Forge (2nd Scroll)" },
         { Location.BH_TOWER, "BH: Tower (Top Floor Text Wall)" },
