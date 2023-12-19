@@ -61,7 +61,7 @@ internal class LocationTriggers
         { "DB_VESSEL_X1", Location.DB_VESSEL },
     };
 
-    static Dictionary<SignalFrequency, Location> frequencyToLocation = new Dictionary<SignalFrequency, Location>{
+    public static Dictionary<SignalFrequency, Location> frequencyToLocation = new Dictionary<SignalFrequency, Location>{
         { SignalFrequency.EscapePod, Location.FREQ_DISTRESS },
         { SignalFrequency.Quantum, Location.FREQ_QUANTUM },
         { SignalFrequency.HideAndSeek, Location.FREQ_HIDE_SEEK },
@@ -69,7 +69,7 @@ internal class LocationTriggers
         // leaving out Default, WarpCore and Statue because I don't believe they get used
     };
 
-    static Dictionary<SignalName, Location> signalToLocation = new Dictionary<SignalName, Location>{
+    public static Dictionary<SignalName, Location> signalToLocation = new Dictionary<SignalName, Location>{
         { SignalName.Traveler_Chert, Location.ET_DRUM },
         { SignalName.Traveler_Esker, Location.AR_WHISTLE },
         { SignalName.Traveler_Riebeck, Location.BH_BANJO },
@@ -292,28 +292,6 @@ internal class LocationTriggers
         if (logFactToLocation.ContainsKey(factId))
         {
             var locationName = logFactToLocation[factId];
-            CheckLocation(locationName);
-        }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
-    public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
-    {
-        if (frequencyToLocation.ContainsKey(frequency))
-        {
-            var locationName = frequencyToLocation[frequency];
-            CheckLocation(locationName);
-        }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
-    public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
-    {
-        if (signalToLocation.ContainsKey(signalName))
-        {
-            var locationName = signalToLocation[signalName];
             CheckLocation(locationName);
         }
     }

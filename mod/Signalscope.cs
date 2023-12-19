@@ -141,7 +141,13 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
-        __result = usableSignals.Contains(signalName); // override return value
+        // if we let the game think the signal's known, then you won't be able to scan it,
+        // so we have to wait for *both* the item to be acquired and the location checked
+        // before we can let the in-game signalscope fully recognize this signal
+        var location = LocationTriggers.signalToLocation[signalName];
+        var isKnown = Randomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
+
+        __result = isKnown; // override return value
         return false; // skip vanilla implementation
     }
     // In vanilla, this is used to forget the Hide & Seek frequency
@@ -152,6 +158,29 @@ internal class Signalscope
     {
         Randomizer.Instance.ModHelper.Console.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
         return false; // skip vanilla implementation, never forget a frequency
+    }
+
+    // Next, these are the patches to actually check locations when the player scans a frequency and/or signal.
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
+    public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
+    {
+        if (LocationTriggers.frequencyToLocation.ContainsKey(frequency))
+        {
+            var locationName = LocationTriggers.frequencyToLocation[frequency];
+            LocationTriggers.CheckLocation(locationName);
+        }
+    }
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
+    public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
+    {
+        if (LocationTriggers.signalToLocation.ContainsKey(signalName))
+        {
+            var locationName = LocationTriggers.signalToLocation[signalName];
+            LocationTriggers.CheckLocation(locationName);
+        }
     }
 
     // The above patches are enough to separate signalscope scans from signalscope knowledge,
@@ -168,21 +197,42 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
     public static bool AudioSignal_IdentifyFrequency_Prefix(AudioSignal __instance)
     {
-        if (PlayerData._currentGameSave.knownFrequencies[AudioSignal.FrequencyToIndex(__instance.GetFrequency())])
+        var location = LocationTriggers.frequencyToLocation[__instance.GetFrequency()];
+        if (Randomizer.SaveData.locationsChecked[location])
+        {
             return false; // skip vanilla implementation
+        }
         return true;
     }
     [HarmonyPrefix]
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
-        var signalName = __instance.GetName();
-        var wasScanned = PlayerData._currentGameSave.knownSignals.ContainsKey((int)signalName) &&
-            PlayerData._currentGameSave.knownSignals[(int)signalName];
-        var isUsable = usableSignals.Contains(signalName);
-
-        if (wasScanned && !isUsable)
+        var location = LocationTriggers.signalToLocation[__instance.GetName()];
+        if (Randomizer.SaveData.locationsChecked[location])
+        {
             return false; // skip vanilla implementation
+        }
+
+        // If you have the frequency *item* already, the game won't Identify/LearnFrequency(),
+        // because we do want a frequency to be "usable" with the item and not the location,
+        // so in this specific case we need to check the frequency *location* manually.
+        Item? item = null;
+        switch (__instance.GetFrequency())
+        {
+            case SignalFrequency.EscapePod: item = Item.FrequencyDB; break;
+            case SignalFrequency.Quantum: item = Item.FrequencyQF; break;
+            case SignalFrequency.HideAndSeek: item = Item.FrequencyHS; break;
+        }
+        if (item is not null && Randomizer.SaveData.itemsAcquired[(Item)item] > 0)
+        {
+            var frequencyLocation = LocationTriggers.frequencyToLocation[__instance.GetFrequency()];
+            if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
+            {
+                LocationTriggers.CheckLocation(frequencyLocation);
+            }
+        }
+
         return true;
     }
 
@@ -193,15 +243,14 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
     public static bool AudioSignalDetectionTrigger_Update_Prefix(AudioSignalDetectionTrigger __instance)
     {
-        var signalName = __instance._signal.GetName();
-        var wasScanned = PlayerData._currentGameSave.knownSignals.ContainsKey((int)signalName) &&
-            PlayerData._currentGameSave.knownSignals[(int)signalName];
-        var isUsable = usableSignals.Contains(signalName);
-        var notAlreadyShowingNotification = !__instance._isDetecting;
+        // isDetecting=false means this Update() is deciding whether to show Unidentified Signal Nearby,
+        // which we don't want to show on a scanned signal (even if it's not usable yet).
+        // but isDetecting=true means this Update() is deciding whether to *hide* that message,
+        // which we do want hidden in all the vanilla cases.
+        var mightDisplayUnidentifiedSignalMessage = !__instance._isDetecting;
 
-        if (wasScanned && !isUsable && notAlreadyShowingNotification)
-        {
-            // Randomizer.Instance.ModHelper.Console.WriteLine($"preventing AudioSignalDetectionTrigger.Update {__instance._signal.GetName()}");
+        var location = LocationTriggers.signalToLocation[__instance._signal.GetName()];
+        if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
             return false; // skip vanilla implementation
         }
         return true;
