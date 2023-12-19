@@ -144,7 +144,7 @@ internal class Signalscope
         // if we let the game think the signal's known, then you won't be able to scan it,
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
-        var location = LocationTriggers.signalToLocation[signalName];
+        var location = LocationNames.signalToLocation[signalName];
         var isKnown = Randomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
 
         __result = isKnown; // override return value
@@ -166,9 +166,9 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
     public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
     {
-        if (LocationTriggers.frequencyToLocation.ContainsKey(frequency))
+        if (LocationNames.frequencyToLocation.ContainsKey(frequency))
         {
-            var locationName = LocationTriggers.frequencyToLocation[frequency];
+            var locationName = LocationNames.frequencyToLocation[frequency];
             LocationTriggers.CheckLocation(locationName);
         }
     }
@@ -176,9 +176,9 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
     public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
     {
-        if (LocationTriggers.signalToLocation.ContainsKey(signalName))
+        if (LocationNames.signalToLocation.ContainsKey(signalName))
         {
-            var locationName = LocationTriggers.signalToLocation[signalName];
+            var locationName = LocationNames.signalToLocation[signalName];
             LocationTriggers.CheckLocation(locationName);
         }
     }
@@ -197,7 +197,7 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
     public static bool AudioSignal_IdentifyFrequency_Prefix(AudioSignal __instance)
     {
-        var location = LocationTriggers.frequencyToLocation[__instance.GetFrequency()];
+        var location = LocationNames.frequencyToLocation[__instance.GetFrequency()];
         if (Randomizer.SaveData.locationsChecked[location])
         {
             return false; // skip vanilla implementation
@@ -208,7 +208,7 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
-        var location = LocationTriggers.signalToLocation[__instance.GetName()];
+        var location = LocationNames.signalToLocation[__instance.GetName()];
         if (Randomizer.SaveData.locationsChecked[location])
         {
             return false; // skip vanilla implementation
@@ -217,16 +217,10 @@ internal class Signalscope
         // If you have the frequency *item* already, the game won't Identify/LearnFrequency(),
         // because we do want a frequency to be "usable" with the item and not the location,
         // so in this specific case we need to check the frequency *location* manually.
-        Item? item = null;
-        switch (__instance.GetFrequency())
-        {
-            case SignalFrequency.EscapePod: item = Item.FrequencyDB; break;
-            case SignalFrequency.Quantum: item = Item.FrequencyQF; break;
-            case SignalFrequency.HideAndSeek: item = Item.FrequencyHS; break;
-        }
+        Item? item = ItemNames.frequencyToItem[__instance.GetFrequency()];
         if (item is not null && Randomizer.SaveData.itemsAcquired[(Item)item] > 0)
         {
-            var frequencyLocation = LocationTriggers.frequencyToLocation[__instance.GetFrequency()];
+            var frequencyLocation = LocationNames.frequencyToLocation[__instance.GetFrequency()];
             if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
             {
                 LocationTriggers.CheckLocation(frequencyLocation);
@@ -249,7 +243,7 @@ internal class Signalscope
         // which we do want hidden in all the vanilla cases.
         var mightDisplayUnidentifiedSignalMessage = !__instance._isDetecting;
 
-        var location = LocationTriggers.signalToLocation[__instance._signal.GetName()];
+        var location = LocationNames.signalToLocation[__instance._signal.GetName()];
         if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
             return false; // skip vanilla implementation
         }

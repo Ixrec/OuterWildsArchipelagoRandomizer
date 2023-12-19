@@ -90,8 +90,37 @@ public static class ItemNames
         { Item.Nothing, "Nothing" },
     };
 
-    public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(ln => ln.Value, ln => ln.Key);
+    public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
 
     public static string ItemToName(Item item) => itemNames[item];
     public static Item NameToItem(string itemName) => itemNamesReversed[itemName];
+
+    public static Dictionary<SignalFrequency, Item> frequencyToItem = new Dictionary<SignalFrequency, Item>
+    {
+        { SignalFrequency.EscapePod, Item.FrequencyDB },
+        { SignalFrequency.Quantum, Item.FrequencyQF },
+        { SignalFrequency.HideAndSeek, Item.FrequencyHS },
+    };
+    public static Dictionary<Item, SignalFrequency> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
+
+    public static Dictionary<SignalName, Item> signalToItem = new Dictionary<SignalName, Item>
+    {
+        { SignalName.Traveler_Chert, Item.SignalChert },
+        { SignalName.Traveler_Esker, Item.SignalEsker },
+        { SignalName.Traveler_Riebeck, Item.SignalRiebeck },
+        { SignalName.Traveler_Gabbro, Item.SignalGabbro },
+        { SignalName.Traveler_Feldspar, Item.SignalFeldspar },
+        { SignalName.Quantum_TH_MuseumShard, Item.SignalMuseumShard },
+        { SignalName.Quantum_TH_GroveShard, Item.SignalGroveShard },
+        { SignalName.Quantum_CT_Shard, Item.SignalCaveShard },
+        { SignalName.Quantum_BH_Shard, Item.SignalTowerShard },
+        { SignalName.Quantum_GD_Shard, Item.SignalIslandShard },
+        { SignalName.Quantum_QM, Item.SignalQM },
+        { SignalName.EscapePod_BH, Item.SignalEP1 },
+        { SignalName.EscapePod_CT, Item.SignalEP2 },
+        { SignalName.EscapePod_DB, Item.SignalEP3 },
+        { SignalName.HideAndSeek_Galena, Item.SignalGalena },
+        { SignalName.HideAndSeek_Tephra, Item.SignalTephra },
+    };
+    public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 }
