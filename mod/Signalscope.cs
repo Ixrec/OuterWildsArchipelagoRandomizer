@@ -197,35 +197,32 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
     public static bool AudioSignal_IdentifyFrequency_Prefix(AudioSignal __instance)
     {
-        var location = LocationNames.frequencyToLocation[__instance.GetFrequency()];
+        if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location location))
+            return true;
+
         if (Randomizer.SaveData.locationsChecked[location])
-        {
             return false; // skip vanilla implementation
-        }
+
         return true;
     }
     [HarmonyPrefix]
     [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
-        var location = LocationNames.signalToLocation[__instance.GetName()];
+        if (!LocationNames.signalToLocation.TryGetValue(__instance.GetName(), out Location location))
+            return true;
+
         if (Randomizer.SaveData.locationsChecked[location])
-        {
             return false; // skip vanilla implementation
-        }
 
         // If you have the frequency *item* already, the game won't Identify/LearnFrequency(),
         // because we do want a frequency to be "usable" with the item and not the location,
         // so in this specific case we need to check the frequency *location* manually.
-        Item? item = ItemNames.frequencyToItem[__instance.GetFrequency()];
-        if (item is not null && Randomizer.SaveData.itemsAcquired[(Item)item] > 0)
-        {
-            var frequencyLocation = LocationNames.frequencyToLocation[__instance.GetFrequency()];
-            if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
-            {
-                LocationTriggers.CheckLocation(frequencyLocation);
-            }
-        }
+        if (ItemNames.frequencyToItem.TryGetValue(__instance.GetFrequency(), out Item item))
+            if (Randomizer.SaveData.itemsAcquired[item] > 0)
+                if (LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location frequencyLocation))
+                    if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
+                        LocationTriggers.CheckLocation(frequencyLocation);
 
         return true;
     }
