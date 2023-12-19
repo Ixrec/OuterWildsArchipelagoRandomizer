@@ -41,6 +41,13 @@ internal class Scout
         Randomizer.Instance.ModHelper.Console.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
         launchScoutPrompt = __instance._launchPrompt;
 
+        ApplyHasScoutFlag(hasScout);
+    }
+
+    public static void ApplyHasScoutFlag(bool hasScout)
+    {
+        if (launchScoutPrompt is null) return;
+
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship is null)
         {
@@ -52,13 +59,6 @@ internal class Scout
             scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC").gameObject;
             scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch").gameObject;
         }
-
-        ApplyHasScoutFlag(hasScout);
-    }
-
-    public static void ApplyHasScoutFlag(bool hasScout)
-    {
-        if (launchScoutPrompt is null) return;
 
         if (hasScout)
         {
