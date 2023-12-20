@@ -72,7 +72,7 @@ namespace ArchipelagoRandomizer
             consoleText = pauseConsole.GetComponentInChildren<InputField>();
             pauseConsoleViewer.SetActive(false);
 
-            AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
+            StartCoroutine(LoopGreeting());
         }
 
         // Shows the appropriate consoles when the game is paused or not
@@ -87,6 +87,7 @@ namespace ArchipelagoRandomizer
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
+        /// <param name="skipMasterList">Whether to not save this text between loops</param>
         public void AddText(string text, bool skipGameplayConsole = false, bool skipMasterList = false)
         {
             if (!skipMasterList) consoleMasterList.Add(text);
@@ -124,9 +125,10 @@ namespace ArchipelagoRandomizer
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
-        public static void AddConsoleText(string text, bool skipGameplayConsole = false)
+        /// <param name="skipMasterList">Whether to not save this text between loops</param>
+        public static void AddConsoleText(string text, bool skipGameplayConsole = false, bool skipMasterList = false)
         {
-            Randomizer.Instance.ArchConsoleManager.AddText(text);
+            Randomizer.Instance.ArchConsoleManager.AddText(text, skipGameplayConsole, skipMasterList);
         }
 
         /// <summary>
@@ -140,6 +142,10 @@ namespace ArchipelagoRandomizer
             if (text.StartsWith("!echo "))
             {
                 AddText(text.Replace("!echo ", ""));
+            }
+            else if (text == "!loops")
+            {
+                AddText($"<color=#6BFF6B>Loops: {TimeLoop.GetLoopCount()}</color>");
             }
             else
             {
@@ -172,6 +178,12 @@ namespace ArchipelagoRandomizer
                 }
             }
             return loopCount.ToString() + loopSuffix;
+        }
+
+        IEnumerator LoopGreeting()
+        {
+            yield return new WaitForEndOfFrame();
+            AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
         }
     }
 }

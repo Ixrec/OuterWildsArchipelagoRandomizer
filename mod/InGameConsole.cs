@@ -5,9 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer;
-
+/// <summary>
+/// Depracated. Use ArchConsoleManager instead.
+/// </summary>
 internal class InGameConsole : MonoBehaviour
 {
+    // Deprecated, use ArchConsoleManager instead.
     // This asset was provided by GameWyrm based on what they use for Outer Relics' suitless fallback notifications.
     // I currently don't know how to edit asset bundles (despite attempting to look up how) so
     // significant portions of this file, like Awake(), are probably very redundant.

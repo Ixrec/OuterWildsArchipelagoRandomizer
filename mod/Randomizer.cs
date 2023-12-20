@@ -116,7 +116,9 @@ namespace ArchipelagoRandomizer
         private void Start()
         {
             // Starting here, you'll have access to OWML's mod helper.
-            InGameConsole.Setup();
+            // InGameconsole is now deprecated in favor of ArchConsoleManger,
+            // This should be deleted eventually
+            // InGameConsole.Setup();
 
             WarpPlatforms.Setup();
             Tornadoes.Setup();
