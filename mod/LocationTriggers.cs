@@ -221,7 +221,8 @@ internal class LocationTriggers
             Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item {item}");
 
             var itemName = ItemNames.ItemToName(item);
-            InGameConsole.Instance.AddNotification($"You found your <color=\"orange\">{itemName}</color>");
+            ArchConsoleManager.AddConsoleText($"You found your <color=orange>{itemName}</color>");
+            Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(AudioType.ShipLogMarkLocation);
 
             Randomizer.SaveData.itemsAcquired[item] += 1;
 
