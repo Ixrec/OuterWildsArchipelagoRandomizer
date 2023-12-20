@@ -61,36 +61,6 @@ internal class LocationTriggers
         { "DB_VESSEL_X1", Location.DB_VESSEL },
     };
 
-    static Dictionary<SignalFrequency, Location> frequencyToLocation = new Dictionary<SignalFrequency, Location>{
-        { SignalFrequency.EscapePod, Location.FREQ_DISTRESS },
-        { SignalFrequency.Quantum, Location.FREQ_QUANTUM },
-        { SignalFrequency.HideAndSeek, Location.FREQ_HIDE_SEEK },
-        // DLC will add: SignalFrequency.Radio
-        // leaving out Default, WarpCore and Statue because I don't believe they get used
-    };
-
-    static Dictionary<SignalName, Location> signalToLocation = new Dictionary<SignalName, Location>{
-        { SignalName.Traveler_Chert, Location.ET_DRUM },
-        { SignalName.Traveler_Esker, Location.AR_WHISTLE },
-        { SignalName.Traveler_Riebeck, Location.BH_BANJO },
-        { SignalName.Traveler_Gabbro, Location.GD_FLUTE },
-        { SignalName.Traveler_Feldspar, Location.DB_HARMONICA },
-        { SignalName.Quantum_TH_MuseumShard, Location.TH_MS_SIGNAL },
-        { SignalName.Quantum_TH_GroveShard, Location.TH_GS_SIGNAL },
-        { SignalName.Quantum_CT_Shard, Location.ET_SHARD_SIGNAL },
-        { SignalName.Quantum_BH_Shard, Location.BH_SHARD_SIGNAL },
-        { SignalName.Quantum_GD_Shard, Location.GD_SHARD_SIGNAL },
-        { SignalName.Quantum_QM, Location.QM_SIGNAL },
-        { SignalName.EscapePod_BH, Location.BH_EP1_SIGNAL },
-        { SignalName.EscapePod_CT, Location.ET_EP2_SIGNAL },
-        { SignalName.EscapePod_DB, Location.DB_EP3_SIGNAL },
-        { SignalName.HideAndSeek_Galena, Location.TH_GALENA_SIGNAL },
-        { SignalName.HideAndSeek_Tephra, Location.TH_TEPHRA_SIGNAL },
-        // DLC will add: SignalName.RadioTower, SignalName.MapSatellite
-        // leaving out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
-        // leaving out Nomai and Prisoner because I believe those are only available during the finale
-    };
-
     // no longer in use, keeping as notes for when we edit flavor text to justify some items' existence
     /*static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
         { Location.ET_FOSSIL, Item.SilentRunning },
@@ -252,30 +222,12 @@ internal class LocationTriggers
             case Item.SilentRunning: Anglerfish.SetHasAnglerfishKnowledge(count > 0); break;
             case Item.ElectricalInsulation: Jellyfish.SetHasJellyfishKnowledge(count > 0); break;
             case Item.Coordinates: Coordinates.SetHasCoordinates(count > 0); break;
-
-            // todo: can we disable the OW Ventures frequency?
-            case Item.FrequencyDB: Signalscope.SetFrequencyUsable(SignalFrequency.EscapePod, count > 0); break;
-            case Item.FrequencyQF: Signalscope.SetFrequencyUsable(SignalFrequency.Quantum, count > 0); break;
-            case Item.FrequencyHS: Signalscope.SetFrequencyUsable(SignalFrequency.HideAndSeek, count > 0); break;
-
-            case Item.SignalChert: Signalscope.SetSignalUsable(SignalName.Traveler_Chert, count > 0); break;
-            case Item.SignalEsker: Signalscope.SetSignalUsable(SignalName.Traveler_Esker, count > 0); break;
-            case Item.SignalRiebeck: Signalscope.SetSignalUsable(SignalName.Traveler_Riebeck, count > 0); break;
-            case Item.SignalGabbro: Signalscope.SetSignalUsable(SignalName.Traveler_Gabbro, count > 0); break;
-            case Item.SignalFeldspar: Signalscope.SetSignalUsable(SignalName.Traveler_Feldspar, count > 0); break;
-            case Item.SignalMuseumShard: Signalscope.SetSignalUsable(SignalName.Quantum_TH_MuseumShard, count > 0); break;
-            case Item.SignalGroveShard: Signalscope.SetSignalUsable(SignalName.Quantum_TH_GroveShard, count > 0); break;
-            case Item.SignalCaveShard: Signalscope.SetSignalUsable(SignalName.Quantum_CT_Shard, count > 0); break;
-            case Item.SignalTowerShard: Signalscope.SetSignalUsable(SignalName.Quantum_BH_Shard, count > 0); break;
-            case Item.SignalIslandShard: Signalscope.SetSignalUsable(SignalName.Quantum_GD_Shard, count > 0); break;
-            case Item.SignalQM: Signalscope.SetSignalUsable(SignalName.Quantum_QM, count > 0); break;
-            case Item.SignalEP1: Signalscope.SetSignalUsable(SignalName.EscapePod_BH, count > 0); break;
-            case Item.SignalEP2: Signalscope.SetSignalUsable(SignalName.EscapePod_CT, count > 0); break;
-            case Item.SignalEP3: Signalscope.SetSignalUsable(SignalName.EscapePod_DB, count > 0); break;
-            case Item.SignalGalena: Signalscope.SetSignalUsable(SignalName.HideAndSeek_Galena, count > 0); break;
-            case Item.SignalTephra: Signalscope.SetSignalUsable(SignalName.HideAndSeek_Tephra, count > 0); break;
             default: break;
         }
+        if (ItemNames.itemToFrequency.ContainsKey(item))
+            Signalscope.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
+        else if (ItemNames.itemToSignal.ContainsKey(item))
+            Signalscope.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
     }
 
 
@@ -293,28 +245,6 @@ internal class LocationTriggers
         if (logFactToLocation.ContainsKey(factId))
         {
             var locationName = logFactToLocation[factId];
-            CheckLocation(locationName);
-        }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
-    public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
-    {
-        if (frequencyToLocation.ContainsKey(frequency))
-        {
-            var locationName = frequencyToLocation[frequency];
-            CheckLocation(locationName);
-        }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
-    public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
-    {
-        if (signalToLocation.ContainsKey(signalName))
-        {
-            var locationName = signalToLocation[signalName];
             CheckLocation(locationName);
         }
     }
