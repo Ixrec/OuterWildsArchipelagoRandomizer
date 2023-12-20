@@ -151,7 +151,7 @@ namespace ArchipelagoRandomizer
         private string LoopNumber()
         {
             string loopSuffix = "th";
-            int loopCount = TimeLoop.GetLoopCount() + 1;
+            int loopCount = TimeLoop.GetLoopCount();
             int shortCount = loopCount % 10;
             if (loopCount < 11 || loopCount > 13)
             {
