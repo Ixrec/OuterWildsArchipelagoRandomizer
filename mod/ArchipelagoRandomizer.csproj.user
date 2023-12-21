@@ -6,8 +6,5 @@
     <Compile Update="ArchConsoleManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="FixConsoleLayout.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 </Project>
