@@ -150,7 +150,7 @@ namespace ArchipelagoRandomizer
             }
             else
             {
-                AddText($"<color=#FF6868>Command {text.Split(' ')[0]} not recognized.</color>");
+                AddText($"<color=#FF6868>Command {text.Split(' ')[0]} not recognized.</color>", true);
             }
             consoleText.text = "";
         }
