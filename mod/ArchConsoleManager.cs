@@ -17,12 +17,14 @@ namespace ArchipelagoRandomizer
         private GameObject gameplayConsole;
         private Text pauseConsoleText;
         private Text gameplayConsoleText;
-        //private GameObject consoleEntry => Randomizer.Assets.LoadAsset<GameObject>("ConsoleText");
         private List<string> consoleHistory;
-        //private List<string> pauseConsoleEntries;
-        private List<string> gameplayConsoleEntries;
+        private Queue<string> gameplayConsoleEntries;
         private InputField consoleText;
         private bool isPaused;
+        private List<float> gameplayConsoleTimers;
+        //private float clearTimer = 0;
+
+        private const float clearTimerMax = 20;
 
         private void Awake()
         {
@@ -44,6 +46,23 @@ namespace ArchipelagoRandomizer
                 isPaused = !isPaused;
                 ShowConsoles(isPaused);
             }
+
+            if (gameplayConsoleTimers != null && gameplayConsoleTimers.Count > 0)
+            {
+                for (int i = 0; i < gameplayConsoleTimers.Count; i++)
+                {
+                    gameplayConsoleTimers[i] -= Time.deltaTime;
+                    if (gameplayConsoleTimers[i] <= 0)
+                    {
+                        gameplayConsoleEntries.Dequeue();
+                        UpdateText();
+                    }
+                }
+                if (gameplayConsoleTimers[0] <= 0)
+                {
+                    gameplayConsoleTimers.RemoveAt(0);
+                }
+            }
         }
 
         // Creates the two console displays
@@ -51,7 +70,8 @@ namespace ArchipelagoRandomizer
         {
             if (loadScene != OWScene.SolarSystem && loadScene != OWScene.EyeOfTheUniverse) return;
             // Create objects and establish references
-            gameplayConsoleEntries = new List<string>();
+            gameplayConsoleEntries = new Queue<string>();
+            gameplayConsoleTimers = new List<float>();
             console = GameObject.Instantiate(Randomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
@@ -95,28 +115,30 @@ namespace ArchipelagoRandomizer
             // We don't need to bother editing the Gameplay Console if this is on
             if (!skipGameplayConsole)
             {
-                if (gameplayConsoleEntries.Count < 6)
+                if (gameplayConsoleEntries.Count >= 6)
                 {
-                    gameplayConsoleEntries.Add("\n" + text);
+                    gameplayConsoleEntries.Dequeue();
                 }
-                else
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        gameplayConsoleEntries[i] = gameplayConsoleEntries[i + 1];
-                    }
-                    gameplayConsoleEntries[5]= "\n" + text;
-                }
-                gameplayConsoleText.text = string.Empty;
-                foreach (string entry in gameplayConsoleEntries)
-                {
-                    gameplayConsoleText.text += entry;
-                }
+                gameplayConsoleEntries.Enqueue("\n" + text);
+                UpdateText();
+                gameplayConsoleTimers.Add(clearTimerMax);
             }
 
             if (!isPaused)
             {
                 gameplayConsole.SetActive(true);
+            }
+        }
+
+        /// <summary>
+        /// Updates the gameplay console
+        /// </summary>
+        public void UpdateText()
+        {
+            gameplayConsoleText.text = string.Empty;
+            foreach ( string entry in gameplayConsoleEntries)
+            {
+                gameplayConsoleText.text += entry;
             }
         }
 
@@ -130,6 +152,15 @@ namespace ArchipelagoRandomizer
         public static void AddConsoleText(string text, bool skipGameplayConsole = false, bool skipHistory = false)
         {
             Randomizer.Instance.ArchConsoleManager.AddText(text, skipGameplayConsole, skipHistory);
+        }
+
+        /// <summary>
+        /// Updates the gameplay console.
+        /// Identical to Randomizer.Instance.ArchConsoleManager.UpdateText(), but implemented for convenience.
+        /// </summary>
+        public static void UpdateConsoleText()
+        {
+            Randomizer.Instance.ArchConsoleManager.UpdateText();
         }
 
         /// <summary>
@@ -187,5 +218,6 @@ namespace ArchipelagoRandomizer
             yield return new WaitForEndOfFrame();
             AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
         }
+
     }
 }
