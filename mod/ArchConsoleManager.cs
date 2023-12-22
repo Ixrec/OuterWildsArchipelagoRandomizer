@@ -127,7 +127,10 @@ namespace ArchipelagoRandomizer
             if (!isPaused)
             {
                 gameplayConsole.SetActive(true);
-                Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(soundToPlay);
+                if (soundToPlay != AudioType.None)
+                {
+                    Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(soundToPlay);
+                }
             }
         }
 
