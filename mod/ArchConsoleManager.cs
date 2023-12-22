@@ -51,7 +51,7 @@ namespace ArchipelagoRandomizer
                 for (int i = 0; i < gameplayConsoleTimers.Count; i++)
                 {
                     gameplayConsoleTimers[i] -= Time.deltaTime;
-                    if (gameplayConsoleTimers[i] <= 0)
+                    if (gameplayConsoleTimers[i] <= 0 && gameplayConsoleEntries.Count > 0)
                     {
                         gameplayConsoleEntries.Dequeue();
                         UpdateText();
