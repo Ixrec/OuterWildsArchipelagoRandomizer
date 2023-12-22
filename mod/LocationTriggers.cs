@@ -171,24 +171,24 @@ internal class LocationTriggers
         var locationChecked = Randomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+            Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
         if (locationChecked[location])
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"'{location}' has already been checked. Doing nothing.");
+            Randomizer.OWMLModConsole.WriteLine($"'{location}' has already been checked. Doing nothing.");
             return;
         }
         else
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Marking '{location}' as checked");
+            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked");
             locationChecked[location] = true;
 
             var item = locationToRandomItem.ContainsKey(location) ? locationToRandomItem[location] : Item.Nothing;
 
             // todo: replace this with Archipelago integration
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Awarding item {item}");
+            Randomizer.OWMLModConsole.WriteLine($"Awarding item {item}");
 
             var itemName = ItemNames.ItemToName(item);
             ArchConsoleManager.AddConsoleText($"You found your <color=orange>{itemName}</color>", false, AudioType.ShipLogMarkLocation);
@@ -239,7 +239,7 @@ internal class LocationTriggers
         // Currently, only a subset of ship log facts are location triggers.
         // But I want the released mod to be logging these ids so that players who want a "logsanity"
         // and/or "rumorsanity" option can help assemble the list of locations and rules for it.
-        Randomizer.Instance.ModHelper.Console.WriteLine($"ShipLogManager.RevealFact {factId}");
+        Randomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
 
         if (logFactToLocation.ContainsKey(factId))
         {
@@ -268,7 +268,7 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
-        Randomizer.Instance.ModHelper.Console.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
+        Randomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
 
         switch (dialogueTreeName)
         {
@@ -289,6 +289,6 @@ internal class LocationTriggers
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-        Randomizer.Instance.ModHelper.Console.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
+        Randomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
     }
 }

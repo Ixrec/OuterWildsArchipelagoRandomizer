@@ -16,7 +16,7 @@ internal class GhostMatter
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            Randomizer.Instance.ModHelper.Console.WriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers");
+            Randomizer.OWMLModConsole.WriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers");
 
             var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
             var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
@@ -93,10 +93,10 @@ internal class GhostMatter
     {
         HazardVolume hazardVolume = eVolume as HazardVolume;
         HazardVolume.HazardType hazardType = hazardVolume.GetHazardType();
-        Randomizer.Instance.ModHelper.Console.WriteLine($"HazardDetector.OnVolumeAdded {__instance.GetName()} {__instance.name} {eVolume.name} {hazardType} {__instance._darkMatterEntryEffect}");
+        Randomizer.OWMLModConsole.WriteLine($"HazardDetector.OnVolumeAdded {__instance.GetName()} {__instance.name} {eVolume.name} {hazardType} {__instance._darkMatterEntryEffect}");
         if (__instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"HazardDetector_OnVolumeAdded_Prefix blocking the scout's darkMatterEntryEffect");
+            Randomizer.OWMLModConsole.WriteLine($"HazardDetector_OnVolumeAdded_Prefix blocking the scout's darkMatterEntryEffect");
             __instance._darkMatterEntryEffect = null;
         }
     }
@@ -114,7 +114,7 @@ internal class GhostMatter
         // moves through ghost matter.
         if (detector.GetName() == Detector.Name.Probe)
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"DarkMatterVolume_OnEffectVolumeEnter_Prefix blocking the scout's ghost matter particleTrail");
+            Randomizer.OWMLModConsole.WriteLine($"DarkMatterVolume_OnEffectVolumeEnter_Prefix blocking the scout's ghost matter particleTrail");
             return false;
         }
         return true;

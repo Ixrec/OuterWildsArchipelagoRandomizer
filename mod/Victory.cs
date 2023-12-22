@@ -20,7 +20,7 @@ internal class Victory
     [HarmonyPatch(typeof(QuantumCampsiteController), nameof(QuantumCampsiteController.CheckTravelersGathered))]
     public static void QuantumCampsiteController_CheckTravelersGathered_Prefix(QuantumCampsiteController __instance)
     {
-        Randomizer.Instance.ModHelper.Console.WriteLine($"QuantumCampsiteController.CheckTravelersGathered\n" +
+        Randomizer.OWMLModConsole.WriteLine($"QuantumCampsiteController.CheckTravelersGathered\n" +
             $"AreAllTravelersGathered(): {__instance.AreAllTravelersGathered()}\n" +
             $"MET_SOLANUM: {PlayerData.GetPersistentCondition("MET_SOLANUM")}\n" +
             $"MET_PRISONER: {PlayerData.GetPersistentCondition("MET_PRISONER")}\n" +
@@ -29,7 +29,7 @@ internal class Victory
         if (__instance.AreAllTravelersGathered())
         {
             // todo: send AP victory message
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Goal completed!", OWML.Common.MessageType.Success);
+            Randomizer.OWMLModConsole.WriteLine($"Goal completed!", OWML.Common.MessageType.Success);
         }
     }
 }

@@ -15,7 +15,7 @@ internal class Tornadoes
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Tornadoes.Setup fetching reference to counterclockwise GD tornado");
+            Randomizer.OWMLModConsole.WriteLine($"Tornadoes.Setup fetching reference to counterclockwise GD tornado");
 
             var gd = Locator.GetAstroObject(AstroObject.Name.GiantsDeep);
             var st = gd.transform.Find("Sector_GD/Sector_GDInterior/Tornadoes_GDInterior/SouthernTornadoes");

@@ -148,7 +148,7 @@ namespace ArchipelagoRandomizer
 
         /// <summary>
         /// Adds a new text entry to the in-game consoles.
-        /// Identical to Randomizer.Instance.ArchConsoleManager.AddText(text), but implemented for convenience.
+        /// Identical to Randomizer.InGameAPConsole.AddText(text), but implemented for convenience.
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
@@ -156,16 +156,16 @@ namespace ArchipelagoRandomizer
         /// <param name="skipHistory">Whether to not save this text between loops</param>
         public static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
-            Randomizer.Instance.ArchConsoleManager.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
+            Randomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
         }
 
         /// <summary>
         /// Updates the gameplay console.
-        /// Identical to Randomizer.Instance.ArchConsoleManager.UpdateText(), but implemented for convenience.
+        /// Identical to Randomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
         /// </summary>
         public static void UpdateConsoleText()
         {
-            Randomizer.Instance.ArchConsoleManager.UpdateText();
+            Randomizer.InGameAPConsole.UpdateText();
         }
 
         /// <summary>

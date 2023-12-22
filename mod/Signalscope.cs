@@ -46,7 +46,7 @@ internal class Signalscope
     {
         if (mode == ToolMode.SignalScope && !hasSignalscope)
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"blocked attempt to equip Signalscope");
+            Randomizer.OWMLModConsole.WriteLine($"blocked attempt to equip Signalscope");
 
             if (!Locator.GetPlayerSuit().IsWearingSuit() && !OWInput.IsInputMode(InputMode.ShipCockpit))
             {
@@ -156,7 +156,7 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ForgetFrequency))]
     public static bool PlayerData_ForgetFrequency_Prefix(SignalFrequency frequency)
     {
-        Randomizer.Instance.ModHelper.Console.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
+        Randomizer.OWMLModConsole.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
         return false; // skip vanilla implementation, never forget a frequency
     }
 

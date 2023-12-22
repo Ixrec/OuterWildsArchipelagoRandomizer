@@ -15,7 +15,7 @@ internal class QuantumImaging
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            Randomizer.Instance.ModHelper.Console.WriteLine($"QuantumImaging.Setup fetching references to relevant quantum objects");
+            Randomizer.OWMLModConsole.WriteLine($"QuantumImaging.Setup fetching references to relevant quantum objects");
 
             // we don't want to retain these references beyond a scene transition / loop reset, or else
             // they become invalid and lead to NullReferenceExceptions when we try using them later
@@ -66,7 +66,7 @@ internal class QuantumImaging
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
                 (distance < qo._maxSnapshotLockRange)
             ) {
-                Randomizer.Instance.ModHelper.Console.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible " +
+                Randomizer.OWMLModConsole.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible " +
                     $"and is {distance} distance units away (within the object's 'max snapshot lock range' of {qo._maxSnapshotLockRange})");
                 NotificationManager.SharedInstance.PostNotification(new NotificationData(
                     OWInput.IsInputMode(InputMode.ShipCockpit) ? NotificationTarget.Ship : NotificationTarget.Player,

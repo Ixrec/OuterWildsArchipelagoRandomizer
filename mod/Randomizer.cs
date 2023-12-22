@@ -25,7 +25,8 @@ namespace ArchipelagoRandomizer
         public static AssetBundle Assets;
         private static string SaveFileName;
 
-        public ArchConsoleManager ArchConsoleManager;
+        public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
+        public static ArchConsoleManager InGameAPConsole;
 
         public void WriteToSaveFile() =>
             ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
@@ -35,32 +36,32 @@ namespace ArchipelagoRandomizer
             var saveDataFolder = ModHelper.Manifest.ModFolderPath + "SaveData";
             if (!Directory.Exists(saveDataFolder))
             {
-                ModHelper.Console.WriteLine($"Creating SaveData folder: {saveDataFolder}");
+                OWMLModConsole.WriteLine($"Creating SaveData folder: {saveDataFolder}");
                 Directory.CreateDirectory(saveDataFolder);
             }
 
             StandaloneProfileManager.SharedInstance.OnProfileReadDone += () => {
                 if (StandaloneProfileManager.SharedInstance._currentProfile is null)
                 {
-                    ModHelper.Console.WriteLine($"No profile loaded", MessageType.Error);
+                    OWMLModConsole.WriteLine($"No profile loaded", MessageType.Error);
                     return;
                 }
                 var profileName = StandaloneProfileManager.SharedInstance._currentProfile.profileName;
 
-                ModHelper.Console.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP Randomizer save file.");
+                OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP Randomizer save file.");
 
                 SaveFileName = $"SaveData/{profileName}.json";
                 SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
                 if (SaveData is null)
                 {
-                    ModHelper.Console.WriteLine($"No save file found for this profile. Will hide Resume button.");
+                    OWMLModConsole.WriteLine($"No save file found for this profile. Will hide Resume button.");
                     var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
-                    ModHelper.Console.WriteLine($"resumeButton {resumeButton} {resumeButton.name}");
+                    OWMLModConsole.WriteLine($"resumeButton {resumeButton} {resumeButton.name}");
                     resumeButton.SetActive(false);
                 }
                 else
                 {
-                    ModHelper.Console.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
+                    OWMLModConsole.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
                         $"and acquired one or more of {SaveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {SaveData.itemsAcquired.Count} total types.");
 
                     foreach (var kv in SaveData.itemsAcquired)
@@ -75,7 +76,7 @@ namespace ArchipelagoRandomizer
         {
             if (SaveData is null)
             {
-                Randomizer.Instance.ModHelper.Console.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
+                Randomizer.OWMLModConsole.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
 
                 var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
                 resumeButton.SetActive(false);
@@ -89,7 +90,7 @@ namespace ArchipelagoRandomizer
         [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ResetGame))]
         public static void PlayerData_ResetGame_Prefix()
         {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh save file for this profile.");
+            Randomizer.OWMLModConsole.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh save file for this profile.");
 
             APRandomizerSaveData saveData = new();
             saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
@@ -116,7 +117,6 @@ namespace ArchipelagoRandomizer
         private void Start()
         {
             // Starting here, you'll have access to OWML's mod helper.
-
             WarpPlatforms.Setup();
             Tornadoes.Setup();
             QuantumImaging.Setup();
@@ -126,9 +126,9 @@ namespace ArchipelagoRandomizer
             SetupSaveData();
 
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
-            ArchConsoleManager = gameObject.AddComponent<ArchConsoleManager>();
+            InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
-            ModHelper.Console.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
+            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
         }
     }
 }

@@ -23,7 +23,7 @@ internal class Scout
     public static bool ProbeLauncher_LaunchProbe_Prefix()
     {
         if (!hasScout) {
-            Randomizer.Instance.ModHelper.Console.WriteLine($"blocked attempt to launch the scout");
+            Randomizer.OWMLModConsole.WriteLine($"blocked attempt to launch the scout");
             return false;
         }
         return true;
@@ -38,7 +38,7 @@ internal class Scout
     [HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
     public static void ProbePromptController_LateInitialize_Postfix(ProbePromptController __instance)
     {
-        Randomizer.Instance.ModHelper.Console.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
+        Randomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
         launchScoutPrompt = __instance._launchPrompt;
 
         ApplyHasScoutFlag(hasScout);
