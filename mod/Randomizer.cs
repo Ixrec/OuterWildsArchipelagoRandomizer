@@ -22,7 +22,10 @@ namespace ArchipelagoRandomizer
             public Dictionary<Item, uint> itemsAcquired;
         }
         public static APRandomizerSaveData SaveData;
+        public static AssetBundle Assets;
         private static string SaveFileName;
+
+        public ArchConsoleManager ArchConsoleManager;
 
         public void WriteToSaveFile() =>
             ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
@@ -113,7 +116,6 @@ namespace ArchipelagoRandomizer
         private void Start()
         {
             // Starting here, you'll have access to OWML's mod helper.
-            InGameConsole.Setup();
 
             WarpPlatforms.Setup();
             Tornadoes.Setup();
@@ -122,6 +124,9 @@ namespace ArchipelagoRandomizer
             GhostMatter.Setup();
 
             SetupSaveData();
+
+            Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
+            ArchConsoleManager = gameObject.AddComponent<ArchConsoleManager>();
 
             ModHelper.Console.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
         }

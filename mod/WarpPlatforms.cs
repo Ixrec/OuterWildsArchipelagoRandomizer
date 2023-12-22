@@ -104,8 +104,8 @@ internal class WarpPlatforms
         var box = warpPlatformInteract.AddComponent<BoxCollider>();
         // We just want to detect the player, not make an invisible wall
         box.isTrigger = true;
-        // Make it the same size as the warp platform's vanilla trigger volume
-        box.size = (__instance.transform.GetComponent<OWTriggerVolume>().GetShape() as BoxShape).size;
+        // Change the size to something easy to interact with
+        box.size = new Vector3(3, 1.5f, 3);
 
         var ir = warpPlatformInteract.AddComponent<InteractReceiver>();
         ApplyHasCodesFlagToIR(hasNomaiWarpCodes, ir);
