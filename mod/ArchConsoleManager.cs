@@ -22,7 +22,6 @@ namespace ArchipelagoRandomizer
         private InputField consoleText;
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
-        //private float clearTimer = 0;
 
         private const float clearTimerMax = 20;
 
@@ -46,7 +45,7 @@ namespace ArchipelagoRandomizer
                 isPaused = !isPaused;
                 ShowConsoles(isPaused);
             }
-
+            // Clear console entries after enough time has passed
             if (gameplayConsoleTimers != null && gameplayConsoleTimers.Count > 0)
             {
                 for (int i = 0; i < gameplayConsoleTimers.Count; i++)
@@ -85,7 +84,7 @@ namespace ArchipelagoRandomizer
             // Copy text over from previous loops
             foreach (string entry in consoleHistory)
             {
-                AddText(entry, true, true);
+                AddText(entry, true, AudioType.None, true);
             }
             console.GetComponentInChildren<InputField>().onEndEdit.AddListener(OnConsoleEntry);
             consoleText = console.GetComponentInChildren<InputField>();
@@ -106,8 +105,9 @@ namespace ArchipelagoRandomizer
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
+        /// <param name="soundToPlay">If specified, plays the associated sound. See https://nh.outerwildsmods.com/reference/audio-enum/ for a list of sounds. Sounds do not play while paused.</param>
         /// <param name="skipHistory">Whether to not save this text between loops</param>
-        public void AddText(string text, bool skipGameplayConsole = false, bool skipHistory = false)
+        public void AddText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
             if (!skipHistory) consoleHistory.Add(text);
             pauseConsoleText.text += "\n" + text;
@@ -127,6 +127,7 @@ namespace ArchipelagoRandomizer
             if (!isPaused)
             {
                 gameplayConsole.SetActive(true);
+                Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(soundToPlay);
             }
         }
 
@@ -148,10 +149,11 @@ namespace ArchipelagoRandomizer
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
+        /// <param name="soundToPlay">If specified, plays the associated sound. See https://nh.outerwildsmods.com/reference/audio-enum/ for a list of sounds. Sounds do not play while paused.</param>
         /// <param name="skipHistory">Whether to not save this text between loops</param>
-        public static void AddConsoleText(string text, bool skipGameplayConsole = false, bool skipHistory = false)
+        public static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
-            Randomizer.Instance.ArchConsoleManager.AddText(text, skipGameplayConsole, skipHistory);
+            Randomizer.Instance.ArchConsoleManager.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
         }
 
         /// <summary>
