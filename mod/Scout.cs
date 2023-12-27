@@ -19,6 +19,17 @@ internal class Scout
     }
 
     [HarmonyPrefix]
+    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+    public static void ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
+    {
+        if (mode == ToolMode.Probe && !hasScout)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"deactivating Scout model in player launcher since they don't have the Scout item yet");
+            getScoutInPlayerLauncher()?.SetActive(false);
+        }
+    }
+
+    [HarmonyPrefix]
     [HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.LaunchProbe))]
     public static bool ProbeLauncher_LaunchProbe_Prefix()
     {
@@ -30,8 +41,6 @@ internal class Scout
     }
 
     static ScreenPrompt launchScoutPrompt = null;
-    static GameObject scoutInsideShip = null;
-    static GameObject scoutInShipLauncher = null;
 
     // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
     [HarmonyPostfix]
@@ -48,17 +57,17 @@ internal class Scout
     {
         if (launchScoutPrompt is null) return;
 
+        // I usually try to fetch references like this only once during startup, but there are so many ways the
+        // Scout models can get invalidated or revalidated later on that we have to fetch them here on the fly.
+        GameObject scoutInsideShip = null;
+        GameObject scoutInShipLauncher = null;
         var ship = Locator.GetShipBody()?.gameObject?.transform;
-        if (ship is null)
+        if (ship is not null)
         {
-            scoutInsideShip = null;
-            scoutInShipLauncher = null;
+            scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC")?.gameObject;
+            scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch")?.gameObject;
         }
-        else
-        {
-            scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC").gameObject;
-            scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch").gameObject;
-        }
+        GameObject scoutInPlayerLauncher = getScoutInPlayerLauncher();
 
         if (hasScout)
         {
@@ -67,6 +76,7 @@ internal class Scout
             launchScoutPrompt.SetText(UITextLibrary.GetString(UITextType.ProbeLaunchPrompt) + "   <CMD>");
             scoutInsideShip?.SetActive(!Locator.GetPlayerSuit()?.IsWearingSuit() ?? false);
             scoutInShipLauncher?.SetActive(true);
+            scoutInPlayerLauncher?.SetActive(true);
         }
         else
         {
@@ -74,7 +84,16 @@ internal class Scout
             launchScoutPrompt.SetText("Scout Not Available");
             scoutInsideShip?.SetActive(false);
             scoutInShipLauncher?.SetActive(false);
+            scoutInPlayerLauncher?.SetActive(false);
         }
+    }
+
+    private static GameObject getScoutInPlayerLauncher()
+    {
+        var player = Locator.GetPlayerBody()?.gameObject?.transform;
+        if (player is not null)
+            return player.Find("PlayerCamera/ProbeLauncher/Props_HEA_ProbeLauncher/Props_HEA_Probe_Prelaunch")?.gameObject;
+        return null;
     }
 
     // todo:
