@@ -25,19 +25,23 @@ internal class GhostMatter
         };
     }
 
-    public static bool hasGhostMatterKnowledge = false;
+    private static bool _hasGhostMatterKnowledge = false;
 
-    public static void SetHasGhostMatterKnowledge(bool hasGhostMatterKnowledge)
+    public static bool hasGhostMatterKnowledge
     {
-        if (GhostMatter.hasGhostMatterKnowledge != hasGhostMatterKnowledge)
+        get => _hasGhostMatterKnowledge;
+        set
         {
-            GhostMatter.hasGhostMatterKnowledge = hasGhostMatterKnowledge;
-
-            if (hasGhostMatterKnowledge)
+            if (_hasGhostMatterKnowledge != value)
             {
-                // todo: tweak notification if we also have scout already
-                var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE GHOST MATTER WAVELENGTH", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
+                _hasGhostMatterKnowledge = value;
+
+                if (_hasGhostMatterKnowledge)
+                {
+                    // todo: tweak notification if we also have scout already
+                    var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE GHOST MATTER WAVELENGTH", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
             }
         }
     }

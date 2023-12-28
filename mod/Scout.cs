@@ -7,14 +7,18 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Scout
 {
-    public static bool hasScout = false;
+    private static bool _hasScout = false;
 
-    public static void SetHasScout(bool hasScout)
+    public static bool hasScout
     {
-        if (Scout.hasScout != hasScout)
+        get => _hasScout;
+        set
         {
-            Scout.hasScout = hasScout;
-            ApplyHasScoutFlag(hasScout);
+            if (_hasScout != value)
+            {
+                _hasScout = value;
+                ApplyHasScoutFlag(_hasScout);
+            }
         }
     }
 

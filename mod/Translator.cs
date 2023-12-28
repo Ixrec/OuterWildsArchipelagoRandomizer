@@ -6,14 +6,18 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Translator
 {
-    public static bool hasTranslator = false;
+    private static bool _hasTranslator = false;
 
-    public static void SetHasTranslator(bool hasTranslator)
+    public static bool hasTranslator
     {
-        if (Translator.hasTranslator != hasTranslator)
+        get => _hasTranslator;
+        set
         {
-            Translator.hasTranslator = hasTranslator;
-            ApplyHasTranslatorFlag(hasTranslator);
+            if (_hasTranslator != value)
+            {
+                _hasTranslator = value;
+                ApplyHasTranslatorFlag(_hasTranslator);
+            }
         }
     }
 

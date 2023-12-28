@@ -7,19 +7,23 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class QuantumShrineDoor
 {
-    public static bool hasQuantumShrineCodes = false;
+    private static bool _hasQuantumShrineCodes = false;
+
+    public static bool hasQuantumShrineCodes
+    {
+        get => _hasQuantumShrineCodes;
+        set
+        {
+            if (_hasQuantumShrineCodes != value)
+            {
+                _hasQuantumShrineCodes = value;
+                UpdateIRState();
+            }
+        }
+    }
 
     private static InteractReceiver doorIR = null;
     private static NomaiGateway gatewayComponent = null;
-
-    public static void SetHasQuantumShrineCodes(bool hasQuantumShrineCodes)
-    {
-        if (QuantumShrineDoor.hasQuantumShrineCodes != hasQuantumShrineCodes)
-        {
-            QuantumShrineDoor.hasQuantumShrineCodes = hasQuantumShrineCodes;            
-            UpdateIRState();
-        }
-    }
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]

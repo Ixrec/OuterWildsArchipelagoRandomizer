@@ -5,7 +5,25 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Tornadoes
 {
-    public static bool hasTornadoKnowledge = false;
+    private static bool _hasTornadoKnowledge = false;
+
+    public static bool hasTornadoKnowledge
+    {
+        get => _hasTornadoKnowledge;
+        set
+        {
+            if (_hasTornadoKnowledge != value)
+            {
+                _hasTornadoKnowledge = value;
+                ApplyHasKnowledgeFlag();
+                if (value)
+                {
+                    var nd = new NotificationData(NotificationTarget.All, "ADJUSTING SPACESHIP AERODYNAMICS FOR COUNTERCLOCKWISE TORNADOES", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
+            }
+        }
+    }
 
     static TornadoFluidVolume counterClockwiseGiantsDeepTornadoFluidVolume = null;
 
@@ -30,25 +48,11 @@ internal class Tornadoes
         };
     }
 
-    public static void SetHasTornadoKnowledge(bool hasTornadoKnowledge)
-    {
-        if (Tornadoes.hasTornadoKnowledge != hasTornadoKnowledge)
-        {
-            Tornadoes.hasTornadoKnowledge = hasTornadoKnowledge;
-            ApplyHasKnowledgeFlag();
-            if (hasTornadoKnowledge)
-            {
-                var nd = new NotificationData(NotificationTarget.All, "ADJUSTING SPACESHIP AERODYNAMICS FOR COUNTERCLOCKWISE TORNADOES", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
-            }
-        }
-    }
-
     private static void ApplyHasKnowledgeFlag()
     {
         if (counterClockwiseGiantsDeepTornadoFluidVolume)
         {
-            if (hasTornadoKnowledge)
+            if (_hasTornadoKnowledge)
                 counterClockwiseGiantsDeepTornadoFluidVolume._inwardSpeed = 100; // the vanilla value
             else
                 counterClockwiseGiantsDeepTornadoFluidVolume._inwardSpeed = -300;
@@ -68,7 +72,7 @@ internal class Tornadoes
     public static void ToolModeUI_Update_Postfix()
     {
         tornadoAdjustmentsActivePrompt.SetVisibility(
-            hasTornadoKnowledge &&
+            _hasTornadoKnowledge &&
             OWInput.IsInputMode(InputMode.ShipCockpit) &&
             Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.GiantsDeep)
         );

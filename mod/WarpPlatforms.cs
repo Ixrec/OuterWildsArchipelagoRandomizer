@@ -8,7 +8,21 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class WarpPlatforms
 {
-    public static bool hasNomaiWarpCodes = false;
+    private static bool _hasNomaiWarpCodes = false;
+
+    public static bool hasNomaiWarpCodes
+    {
+        get => _hasNomaiWarpCodes;
+        set
+        {
+            if (_hasNomaiWarpCodes != value)
+            {
+                _hasNomaiWarpCodes = value;
+                foreach (var ir in interactReceivers)
+                    ApplyHasCodesFlagToIR(_hasNomaiWarpCodes, ir);
+            }
+        }
+    }
 
     // we don't care about the Vessel frequency used at the end of the game
     readonly static NomaiWarpPlatform.Frequency[] frequenciesOfInterest = {
@@ -67,16 +81,6 @@ internal class WarpPlatforms
     }
 
     static List<InteractReceiver> interactReceivers = new();
-
-    public static void SetHasNomaiWarpCodes(bool hasNomaiWarpCodes)
-    {
-        if (WarpPlatforms.hasNomaiWarpCodes != hasNomaiWarpCodes)
-        {
-            WarpPlatforms.hasNomaiWarpCodes = hasNomaiWarpCodes;
-            foreach (var ir in interactReceivers)
-                ApplyHasCodesFlagToIR(hasNomaiWarpCodes, ir);
-        }
-    }
 
     private static void ApplyHasCodesFlagToIR(bool hasNomaiWarpCodes, InteractReceiver ir)
     {

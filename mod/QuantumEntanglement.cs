@@ -5,18 +5,22 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class QuantumEntanglement
 {
-    public static bool hasEntanglementKnowledge = false;
+    private static bool _hasEntanglementKnowledge = false;
 
-    public static void SetHasEntanglementKnowledge(bool hasEntanglementKnowledge)
+    public static bool hasEntanglementKnowledge
     {
-        if (QuantumEntanglement.hasEntanglementKnowledge != hasEntanglementKnowledge)
+        get => _hasEntanglementKnowledge;
+        set
         {
-            QuantumEntanglement.hasEntanglementKnowledge = hasEntanglementKnowledge;
-
-            if (hasEntanglementKnowledge)
+            if (_hasEntanglementKnowledge != value)
             {
-                var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING SPACESUIT TO DISABLE ALL LIGHTS ON QUANTUM OBJECTS", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
+                _hasEntanglementKnowledge = value;
+
+                if (_hasEntanglementKnowledge)
+                {
+                    var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING SPACESUIT TO DISABLE ALL LIGHTS ON QUANTUM OBJECTS", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
             }
         }
     }

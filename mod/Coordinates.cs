@@ -22,13 +22,17 @@ enum CoordinatePoint
 [HarmonyPatch]
 public static class Coordinates
 {
-    public static bool hasCoordinates = false;
+    private static bool _hasCoordinates = false;
 
-    public static void SetHasCoordinates(bool hasCoordinates)
+    public static bool hasCoordinates
     {
-        if (Coordinates.hasCoordinates != hasCoordinates)
+        get => _hasCoordinates;
+        set
         {
-            Coordinates.hasCoordinates = hasCoordinates;
+            if (_hasCoordinates != value)
+            {
+                _hasCoordinates = value;
+            }
         }
     }
 
@@ -223,7 +227,7 @@ public static class Coordinates
             case CoordinatePoint.UpperLeft:  angle = 120; break;
             case CoordinatePoint.Left:       angle = 180; break;
             case CoordinatePoint.LowerLeft:  angle = 240; break;
-            default:                        /*LowerRight*/ angle = 300; break;
+            default:          /*LowerRight*/ angle = 300; break;
         }
 
         return new Vector2Int(

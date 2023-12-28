@@ -6,18 +6,22 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Anglerfish
 {
-    public static bool hasAnglerfishKnowledge = false;
+    private static bool _hasAnglerfishKnowledge = false;
 
-    public static void SetHasAnglerfishKnowledge(bool hasAnglerfishKnowledge)
+    public static bool hasAnglerfishKnowledge
     {
-        if (Anglerfish.hasAnglerfishKnowledge != hasAnglerfishKnowledge)
+        get => _hasAnglerfishKnowledge;
+        set
         {
-            Anglerfish.hasAnglerfishKnowledge = hasAnglerfishKnowledge;
-
-            if (hasAnglerfishKnowledge)
+            if (_hasAnglerfishKnowledge != value)
             {
-                var nd = new NotificationData(NotificationTarget.All, "RECONFIGURING SPACESHIP FOR SILENT RUNNING MODE", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
+                _hasAnglerfishKnowledge = value;
+
+                if (_hasAnglerfishKnowledge)
+                {
+                    var nd = new NotificationData(NotificationTarget.All, "RECONFIGURING SPACESHIP FOR SILENT RUNNING MODE", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
             }
         }
     }

@@ -16,14 +16,18 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Signalscope
 {
-    public static bool hasSignalscope = false;
+    private static bool _hasSignalscope = false;
 
-    public static void SetHasSignalscope(bool hasSignalscope)
+    public static bool hasSignalscope
     {
-        if (Signalscope.hasSignalscope != hasSignalscope)
+        get => _hasSignalscope;
+        set
         {
-            Signalscope.hasSignalscope = hasSignalscope;
-            ApplyHasSignalscopeFlag(hasSignalscope);
+            if (_hasSignalscope != value)
+            {
+                _hasSignalscope = value;
+                ApplyHasSignalscopeFlag(_hasSignalscope);
+            }
         }
     }
 

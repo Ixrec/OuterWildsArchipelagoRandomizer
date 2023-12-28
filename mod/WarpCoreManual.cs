@@ -5,12 +5,16 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class WarpCoreManual
 {
-    public static bool hasWarpCoreManual = false;
+    private static bool _hasWarpCoreManual = false;
 
-    public static void SetHasWarpCoreManual(bool hasWarpCoreInstallationCodes)
+    public static bool hasWarpCoreManual
     {
-        if (WarpCoreManual.hasWarpCoreManual != hasWarpCoreInstallationCodes)
-            WarpCoreManual.hasWarpCoreManual = hasWarpCoreInstallationCodes;
+        get => _hasWarpCoreManual;
+        set
+        {
+            if (_hasWarpCoreManual != value)
+                _hasWarpCoreManual = value;
+        }
     }
 
     [HarmonyPrefix]

@@ -6,8 +6,6 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Jellyfish
 {
-    public static bool hasJellyfishKnowledge = false;
-
     static HashSet<InsulatingVolume> jellyfishInsulatingVolumes = new();
 
     public static void Setup()
@@ -30,16 +28,22 @@ internal class Jellyfish
         ApplyHasKnowledgeFlag();
     }
 
-    public static void SetHasJellyfishKnowledge(bool hasJellyfishKnowledge)
+    private static bool _hasJellyfishKnowledge = false;
+
+    public static bool hasJellyfishKnowledge
     {
-        if (Jellyfish.hasJellyfishKnowledge != hasJellyfishKnowledge)
+        get => _hasJellyfishKnowledge;
+        set
         {
-            Jellyfish.hasJellyfishKnowledge = hasJellyfishKnowledge;
-            ApplyHasKnowledgeFlag();
-            if (hasJellyfishKnowledge)
+            if (_hasJellyfishKnowledge != value)
             {
-                var nd = new NotificationData(NotificationTarget.All, "SPACESUIT ELECTRICAL INSULATION AUGMENTED WITH JELLYFISH MEMBRANES", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
+                _hasJellyfishKnowledge = value;
+                ApplyHasKnowledgeFlag();
+                if (_hasJellyfishKnowledge)
+                {
+                    var nd = new NotificationData(NotificationTarget.All, "SPACESUIT ELECTRICAL INSULATION AUGMENTED WITH JELLYFISH MEMBRANES", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
             }
         }
     }

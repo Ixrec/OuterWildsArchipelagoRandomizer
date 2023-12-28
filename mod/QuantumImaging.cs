@@ -33,18 +33,22 @@ internal class QuantumImaging
         };
     }
 
-    public static bool hasImagingKnowledge = false;
+    private static bool _hasImagingKnowledge = false;
 
-    public static void SetHasImagingKnowledge(bool hasImagingKnowledge)
+    public static bool hasImagingKnowledge
     {
-        if (QuantumImaging.hasImagingKnowledge != hasImagingKnowledge)
+        get => _hasImagingKnowledge;
+        set
         {
-            QuantumImaging.hasImagingKnowledge = hasImagingKnowledge;
-
-            if (hasImagingKnowledge)
+            if (_hasImagingKnowledge != value)
             {
-                var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE QUANTUM WAVELENGTH", 10);
-                NotificationManager.SharedInstance.PostNotification(nd, false);
+                _hasImagingKnowledge = value;
+
+                if (_hasImagingKnowledge)
+                {
+                    var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE QUANTUM WAVELENGTH", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
             }
         }
     }
