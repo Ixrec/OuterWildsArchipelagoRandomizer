@@ -54,7 +54,7 @@ Most of this code is about item-ifying parts of the vanilla game.
 - ~~read and write save data~~, including checking for discrepancies
 - ~~create an in-game console for displaying Archipelago messages~~
 - teach this mod the Archipelago client protocol, probably using an existing AP client library for .NET
-- write an apworld with items, locations and all the "logic" rules for which items are needed to reach which locations
+- ~~write an apworld with items, locations and all the "logic" rules for which items are needed to reach which locations~~
 
 ### Post-MVP Roadmap
 
@@ -104,8 +104,9 @@ After that settles, I will most likely work on one or more of the following sub-
 - Make sure you have the Steam version of Outer Wilds installed
 - Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
 - Install [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/community/)
+- Install [the core Archipelago tools](https://github.com/ArchipelagoMW/Archipelago/releases)
 
-### Building and Running
+### Building and Running the OW Mod
 
 - In the Mod Manager, click the 3 dots icon, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
 - Open the `Mods/` subfolder.
@@ -116,6 +117,15 @@ After that settles, I will most likely work on one or more of the following sub-
 - Tell Visual Studio to build the solution. Click "Build" then "Build Solution", or press Ctrl+Shift+B.
 - A file called `ArchipelagoRandomizer.dll` should have appeared in the OWML folder
 - In the Outer Wilds Mod Manager, make sure your locally built mod shows up, and is checked. Then simply click the big green "Run Game" button.
+
+### The .apworld and .yaml files
+
+- `git clone` my Archipelago fork at https://github.com/Ixrec/Archipelago
+- Copy the `worlds/outer_wilds` folder from your local clone over to the `lib/worlds/` folder inside your Archipelago installation folder
+  - Optionally: If you need to send this to someone else, such as the host of your player group, you may zip the folder and rename the extension from `.zip` to `.apworld`. That's all an "apworld file" is, after all.
+- Run ArchipelagoLauncher.exe in your Archipelago installation folder and select "Generate Template Settings" to create a sample Outer Wilds.yaml file
+
+At this point, I assume you've run unsupported Archipelago games before, and know what to do with an apworld and a yaml.
 
 ## Credits
 
