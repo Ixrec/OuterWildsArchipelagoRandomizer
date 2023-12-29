@@ -141,10 +141,12 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
     public static bool PlayerData_KnowsMultipleFrequencies_Prefix(ref bool __result)
     {
-        // The player always knows the Outer Wilds Ventures frequency, which is not an AP item and thus not in usableFrequencies,
-        // so if usableFrequencies has at least 1 frequency in it that means the player "knows" at least 2.
+        // The SignalFrequency enum has 8 values. 3 of them are AP items/locations, 1 (Radio / Deep Space Radio) is not yet but will be
+        // when we support the EotE DLC, 1 (Traveler / Outer Wilds Ventures) the player always has, and the last 3 are never used.
+        // Therefore, the player "knows" at least two frequencies if they have either acquired one of the AP frequency items, making it "usable",
+        // or if they've scanned the Deep Space radio frequency.
 
-        __result = usableFrequencies.Count > 0; // override return value
+        __result = usableFrequencies.Count > 0 || PlayerData.KnowsFrequency(SignalFrequency.Radio); // override return value
         return false; // skip vanilla implementation
     }
     [HarmonyPrefix]
@@ -247,13 +249,17 @@ internal class Signalscope
     [HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
     public static bool AudioSignalDetectionTrigger_Update_Prefix(AudioSignalDetectionTrigger __instance)
     {
+        var signalName = __instance._signal.GetName();
+        if (!LocationNames.signalToLocation.ContainsKey(signalName))
+            return true; // not a signal we've turned into an AP item & location, let the vanilla implementation handle it
+
         // isDetecting=false means this Update() is deciding whether to show Unidentified Signal Nearby,
         // which we don't want to show on a scanned signal (even if it's not usable yet).
         // but isDetecting=true means this Update() is deciding whether to *hide* that message,
         // which we do want hidden in all the vanilla cases.
         var mightDisplayUnidentifiedSignalMessage = !__instance._isDetecting;
 
-        var location = LocationNames.signalToLocation[__instance._signal.GetName()];
+        var location = LocationNames.signalToLocation[signalName];
         if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
             return false; // skip vanilla implementation
         }
