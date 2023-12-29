@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ArchipelagoRandomizer;
@@ -123,4 +125,27 @@ public static class ItemNames
         { SignalName.HideAndSeek_Tephra, Item.SignalTephra },
     };
     public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
+
+    // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
+    public static Dictionary<int, Item> archipelagoIdToItem = null;
+    public static Dictionary<Item, int> itemToArchipelagoId = null;
+
+    public static void LoadArchipelagoIds(string itemsFilepath)
+    {
+        var itemsData = JArray.Parse(File.ReadAllText(itemsFilepath));
+        archipelagoIdToItem = new();
+        itemToArchipelagoId = new();
+        foreach (var itemData in itemsData)
+        {
+            // Skip event items, since they intentionally don't have ids
+            if (itemData["code"].Type == JTokenType.Null) continue;
+
+            var archipelagoId = (int)itemData["code"];
+            var item = NameToItem((string)itemData["name"]);
+            archipelagoIdToItem.Add(archipelagoId, item);
+            itemToArchipelagoId.Add(item, archipelagoId);
+        }
+
+        Randomizer.OWMLModConsole.WriteLine($"Successfully loaded Archipelago item IDs from shared .jsonc files", OWML.Common.MessageType.Success);
+    }
 }

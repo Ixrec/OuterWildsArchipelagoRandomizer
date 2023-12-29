@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer
 {
@@ -117,6 +116,14 @@ namespace ArchipelagoRandomizer
         private void Start()
         {
             // Starting here, you'll have access to OWML's mod helper.
+
+            // These .jsonc files are what we share directly with the .apworld to ensure
+            // item ids/names, location ids/names and logic rules are kept in sync.
+            // That's why this repo has a submodule for my Archipelago fork with the .apworld,
+            // and why this project's .csproj has a rule to copy these files out of the submodule.
+            ItemNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "items.jsonc");
+            LocationNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "locations.jsonc");
+
             WarpPlatforms.Setup();
             Tornadoes.Setup();
             QuantumImaging.Setup();

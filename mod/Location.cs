@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ArchipelagoRandomizer;
@@ -180,4 +182,27 @@ public static class LocationNames
         // left out Nomai and Prisoner because I believe those are only available during the finale
     };
     public static Dictionary<Location, SignalName> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
+
+    // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
+    public static Dictionary<int, Location> archipelagoIdToLocation = null;
+    public static Dictionary<Location, int> locationToArchipelagoId = null;
+
+    public static void LoadArchipelagoIds(string locationsFilepath)
+    {
+        var locationsData = JArray.Parse(File.ReadAllText(locationsFilepath));
+        archipelagoIdToLocation = new();
+        locationToArchipelagoId = new();
+        foreach (var locationData in locationsData)
+        {
+            // Skip event locations, since they intentionally don't have ids
+            if (locationData["address"].Type == JTokenType.Null) continue;
+
+            var archipelagoId = (int)locationData["address"];
+            var location = NameToLocation((string)locationData["name"]);
+            archipelagoIdToLocation.Add(archipelagoId, location);
+            locationToArchipelagoId.Add(location, archipelagoId);
+        }
+
+        Randomizer.OWMLModConsole.WriteLine($"Successfully loaded Archipelago location IDs from shared .jsonc files", OWML.Common.MessageType.Success);
+    }
 };
