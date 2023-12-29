@@ -108,7 +108,7 @@ internal class Signalscope
 
     // The rest of this code deals with the Frequency and Signal items
 
-    public static HashSet<SignalFrequency> usableFrequencies = new HashSet<SignalFrequency> { SignalFrequency.Traveler };
+    public static HashSet<SignalFrequency> usableFrequencies = new();
     public static HashSet<SignalName> usableSignals = new();
     public static void SetFrequencyUsable(SignalFrequency frequency, bool usable)
     {
@@ -131,6 +131,9 @@ internal class Signalscope
 
     public static bool PlayerData_KnowsFrequency_Prefix(SignalFrequency frequency, ref bool __result)
     {
+        if (!ItemNames.frequencyToItem.ContainsKey(frequency))
+            return true; // not a frequency we've turned into an AP item & location, let the vanilla implementation handle it
+
         __result = usableFrequencies.Contains(frequency); // override return value
         return false; // skip vanilla implementation
     }
@@ -138,13 +141,19 @@ internal class Signalscope
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
     public static bool PlayerData_KnowsMultipleFrequencies_Prefix(ref bool __result)
     {
-        __result = usableFrequencies.Count > 1; // override return value
+        // The player always knows the Outer Wilds Ventures frequency, which is not an AP item and thus not in usableFrequencies,
+        // so if usableFrequencies has at least 1 frequency in it that means the player "knows" at least 2.
+
+        __result = usableFrequencies.Count > 0; // override return value
         return false; // skip vanilla implementation
     }
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
+        if (!ItemNames.signalToItem.ContainsKey(signalName))
+            return true; // not a signal we've turned into an AP item & location, let the vanilla implementation handle it
+
         // if we let the game think the signal's known, then you won't be able to scan it,
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
