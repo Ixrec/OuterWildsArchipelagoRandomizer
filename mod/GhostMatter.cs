@@ -97,7 +97,6 @@ internal class GhostMatter
     {
         HazardVolume hazardVolume = eVolume as HazardVolume;
         HazardVolume.HazardType hazardType = hazardVolume.GetHazardType();
-        Randomizer.OWMLModConsole.WriteLine($"HazardDetector.OnVolumeAdded {__instance.GetName()} {__instance.name} {eVolume.name} {hazardType} {__instance._darkMatterEntryEffect}");
         if (__instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
         {
             Randomizer.OWMLModConsole.WriteLine($"HazardDetector_OnVolumeAdded_Prefix blocking the scout's darkMatterEntryEffect");

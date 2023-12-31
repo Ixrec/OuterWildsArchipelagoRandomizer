@@ -23,7 +23,6 @@ internal class Jellyfish
     public static void JellyfishController_OnSectorOccupantsUpdated_Prefix(ref JellyfishController __instance)
     {
         var insulators = __instance.gameObject.transform.GetComponentsInChildren<InsulatingVolume>();
-        Randomizer.OWMLModConsole.WriteLine($"JellyfishController.OnSectorOccupantsUpdated found {insulators.Length} insulators");
         jellyfishInsulatingVolumes.UnionWith(insulators);
         ApplyHasKnowledgeFlag();
     }

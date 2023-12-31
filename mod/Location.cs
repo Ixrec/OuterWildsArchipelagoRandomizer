@@ -202,7 +202,5 @@ public static class LocationNames
             archipelagoIdToLocation.Add(archipelagoId, location);
             locationToArchipelagoId.Add(location, archipelagoId);
         }
-
-        Randomizer.OWMLModConsole.WriteLine($"Successfully loaded Archipelago location IDs from shared .jsonc files", OWML.Common.MessageType.Success);
     }
 };

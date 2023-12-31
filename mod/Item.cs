@@ -145,7 +145,5 @@ public static class ItemNames
             archipelagoIdToItem.Add(archipelagoId, item);
             itemToArchipelagoId.Add(item, archipelagoId);
         }
-
-        Randomizer.OWMLModConsole.WriteLine($"Successfully loaded Archipelago item IDs from shared .jsonc files", OWML.Common.MessageType.Success);
     }
 }

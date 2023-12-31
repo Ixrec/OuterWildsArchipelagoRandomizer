@@ -123,6 +123,7 @@ namespace ArchipelagoRandomizer
             // and why this project's .csproj has a rule to copy these files out of the submodule.
             ItemNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "items.jsonc");
             LocationNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "locations.jsonc");
+            Randomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs");
 
             WarpPlatforms.Setup();
             Tornadoes.Setup();
