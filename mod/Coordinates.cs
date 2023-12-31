@@ -85,91 +85,33 @@ public static class Coordinates
         },
     };*/
 
-    private static ScreenPrompt showCoordinatesPrompt = new(InputLibrary.lockOn, "", 0);
-    private static ScreenPrompt requiresCoordinatesPrompt = new("Requires Coordinates", 0);
-    private static NomaiCoordinateInterface nomaiInterfaceReference = null;
-    private static Image coordinatesImage = null;
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
+    public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
+    {
+        __instance._promptController.SetEyeCoordinatesVisibility(
+            _hasCoordinates &&
+            OWInput.IsInputMode(InputMode.Character) // the vanilla implementation doesn't have this check, but I think it should,
+                                                     // and it's more annoying for this mod because of the in-game pause console
+        );
+        return false; // skip vanilla implementation
+    }
 
     [HarmonyPrefix]
-    [HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.Awake))]
-    public static void NomaiCoordinateInterface_Awake(NomaiCoordinateInterface __instance)
+    [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
+    public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
-        nomaiInterfaceReference = __instance;
+        __instance._eyeCoordinatesSprite = CreateCoordinatesSprite();
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
-    public static void ToolModeUI_Start_Postfix(ToolModeUI __instance)
+    public static Sprite CreateCoordinatesSprite()
     {
-        Locator.GetPromptManager().AddScreenPrompt(showCoordinatesPrompt, PromptPosition.LowerLeft, false);
-        Locator.GetPromptManager().AddScreenPrompt(requiresCoordinatesPrompt, PromptPosition.LowerLeft, false);
-    }
+        var width = 600;
+        var height = 200;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
-    public static void ToolModeUI_Update_Postfix(ToolModeUI __instance)
-    {
-        if (
-            Locator.GetPlayerSectorDetector().InVesselDimension() &&
-            OWInput.IsInputMode(InputMode.Character) &&
-            Locator.GetPlayerSuit().IsWearingHelmet() // since we display the coordinates on the helmet HUD
-        ) {
-            if (hasCoordinates)
-            {
-                requiresCoordinatesPrompt.SetVisibility(false);
+        var texture = drawCoordinates(width, height, Color.white, Color.clear, vanillaEOTUCoordinates);
 
-                showCoordinatesPrompt.SetText((coordinatesImage?.enabled ?? false) ? "Hide Eye Coordinates" : "Show Eye Coordinates");
-                showCoordinatesPrompt.SetVisibility(true);
-
-                if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.lockOn))
-                {
-                    if (coordinatesImage is null)
-                        CreateCoordinatesImage();
-                    else
-                        coordinatesImage.enabled = !coordinatesImage.enabled;
-                }
-            }
-            else
-            {
-                showCoordinatesPrompt.SetVisibility(false);
-
-                // Don't annoy the player with 'Requires Coordinates' unless for some reason
-                // they raise the coordinate input pillar before they get the coordinates.
-                requiresCoordinatesPrompt.SetVisibility(nomaiInterfaceReference._pillarRaised);
-            }
-        }
-        else
-        {
-            showCoordinatesPrompt.SetVisibility(false);
-            requiresCoordinatesPrompt.SetVisibility(false);
-            if (coordinatesImage is not null && !Locator.GetPlayerSectorDetector().InVesselDimension())
-                coordinatesImage.enabled = false;
-        }
-    }
-
-    public static void CreateCoordinatesImage()
-    {
-        // When your helmet's off there is no single canvas, but a small collection of canvases
-        // for the various reasons you might have helmet-less HUD elements. One example is:
-        //var drawBase = hud.transform.Find("HelmetOffUI/SignalscopeCanvas");
-        // This is for future reference if/when we finally need to draw the Prisoner vault's
-        // datamined codes on screen in the DLC, since you have no suit there.
-
-        var drawBase = GameObject.Find("PlayerHUD").transform.Find("HelmetOnUI/UICanvas");
-        GameObject go = new GameObject("APRandomizer_CoordinatesDisplay");
-        go.transform.SetParent(drawBase.transform, false);
-
-        var width = 1200;
-        var height = 400;
-        var texture = drawCoordinates(width, height, Color.white, Color.black, vanillaEOTUCoordinates);
-
-        coordinatesImage = go.AddComponent<Image>();
-        coordinatesImage.sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
-
-        var rt = go.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(0, -400);
-        // must have same *aspect ratio* as the texture to prevent stretching/squishing, but the "magnitude" is independent
-        rt.sizeDelta = new Vector2(400, 133);
+        return Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
     }
 
     // This coordinate drawing code is similar to and often borrows directly from:
@@ -185,26 +127,41 @@ public static class Coordinates
 
         // We always draw the coordinates horizontally, so an X by Y texture of N coords
         // will be split into chunks of width X/N and height Y.
-        var widthPerHexagon = width / coordinates.Count;
+        var maxWidthPerHexagon = width / coordinates.Count;
 
-        int hexagonRadius = (int)Math.Round(widthPerHexagon * 0.375); // = 3/8ths, to leave 1/8th on each side as spacing
+        int hexagonRadius = (int)Math.Round(maxWidthPerHexagon * 0.4);
 
+        // how much we reduce the visual width of a coordinate if it doesn't use its
+        // leftmost or rightmost point, as a fraction of the full hexagon width
+        var kerningOffset = 0.20;
+
+        int totalXOffset = 0;
         for (var i = 0; i < coordinates.Count; i++)
         {
-            var center = new Vector2Int((widthPerHexagon * i) + (widthPerHexagon / 2), height / 2);
-            drawCoordinate(tex, center, hexagonRadius, foreground, coordinates[i]);
+            var coordinate = coordinates[i];
+
+            var hexagonOffset = (maxWidthPerHexagon / 2);
+            if (!coordinate.Contains(CoordinatePoint.Left)) hexagonOffset -= (int)(maxWidthPerHexagon * kerningOffset);
+
+            var center = new Vector2Int(totalXOffset + hexagonOffset, height / 2);
+            drawCoordinate(tex, center, hexagonRadius, foreground, background, coordinate);
+
+            var hexagonWidth = maxWidthPerHexagon;
+            if (!coordinate.Contains(CoordinatePoint.Left)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
+            if (!coordinate.Contains(CoordinatePoint.Right)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
+            totalXOffset += hexagonWidth;
         }
 
         tex.Apply();
         return tex;
     }
 
-    private static void drawCoordinate(Texture2D tex, Vector2Int center, int hexagonRadius, Color color, HexagonalCoordinate coordinate)
+    private static void drawCoordinate(Texture2D tex, Vector2Int center, int hexagonRadius, Color color, Color backgroundColor, HexagonalCoordinate coordinate)
     {
         var pointOffsets = coordinate.Select(coordinatePoint => coordinatePointToIntOffsets(hexagonRadius, coordinatePoint));
         Vector2Int[] points = pointOffsets.Select(offset => center + offset).ToArray();
 
-        var thickness = hexagonRadius / 10;
+        var thickness = hexagonRadius / 15;
 
         points.Do(point => drawCircle(tex, point, thickness, color));
 
@@ -213,7 +170,7 @@ public static class Coordinates
             var startPoint = points[startIndex];
             var endPoint = points[startIndex + 1];
 
-            drawLine(tex, startPoint, endPoint, thickness, color);
+            drawLine(tex, startPoint, endPoint, thickness, color, backgroundColor);
         }
     }
 
@@ -251,7 +208,7 @@ public static class Coordinates
         }
     }
 
-    private static void drawLine(Texture2D texture, Vector2Int startPoint, Vector2Int endPoint, int thickness, Color color)
+    private static void drawLine(Texture2D texture, Vector2Int startPoint, Vector2Int endPoint, int thickness, Color color, Color backgroundColor)
     {
         int x0 = Mathf.FloorToInt(Mathf.Min(startPoint.x, endPoint.x) - thickness * 2f);
         int y0 = Mathf.FloorToInt(Mathf.Min(startPoint.y, endPoint.y) - thickness * 2f);
@@ -272,31 +229,9 @@ public static class Coordinates
                 Vector2 pointOnLine = startPoint + dir * dot;
                 float distToLine = Mathf.Max(0f, Vector2.Distance(p, pointOnLine) - thickness);
                 if (distToLine <= 1f)
-                {
-                    // Line is within 1 pixel, fill with color (with anti-aliased blending)
-                    float blend = 1f - Mathf.Clamp01(distToLine);
-
-                    if (color.a * blend < 1f)
-                    {
-                        Color existing = texture.GetPixel(x, y);
-                        if (existing.a > 0f)
-                        {
-                            float colorA = color.a;
-                            color.a = 1f;
-                            texture.SetPixel(x, y, Color.Lerp(existing, color, Mathf.Clamp01(colorA * blend)));
-                        }
-                        else
-                        {
-                            color.a *= blend;
-                            texture.SetPixel(x, y, color);
-                        }
-                    }
-                    else
-                    {
-                        color.a *= blend;
-                        texture.SetPixel(x, y, color);
-                    }
-                }
+                    texture.SetPixel(x, y, color);
+                else if (distToLine <= 5 && texture.GetPixel(x, y) == backgroundColor)
+                    texture.SetPixel(x, y, Color.Lerp(color, backgroundColor, distToLine / 5));
             }
         }
     }
