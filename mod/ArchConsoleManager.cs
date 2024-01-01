@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Archipelago.MultiClient.Net.MessageLog.Messages;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -173,6 +175,23 @@ namespace ArchipelagoRandomizer
         public static void UpdateConsoleText()
         {
             Randomizer.InGameAPConsole.UpdateText();
+        }
+
+        public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
+        {
+            var colorizedParts = message.Parts.Select(messagePart =>
+            {
+                if (messagePart.IsBackgroundColor) return messagePart.Text;
+
+                var c = messagePart.Color;
+                var hexColor = $"{c.R:X2}{c.G:X2}{c.B:X2}";
+                return $"<color=#{hexColor}>{messagePart.Text}</color>";
+            });
+            var inGameConsoleMessage = string.Join("", colorizedParts);
+
+            Randomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
+
+            AddConsoleText(inGameConsoleMessage, false, soundToPlay, false);
         }
 
         /// <summary>

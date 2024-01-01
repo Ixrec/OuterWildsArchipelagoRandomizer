@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer;
 
@@ -102,69 +104,6 @@ internal class LocationTriggers
         { Location.SPACESHIP, Item.Spaceship }
     };*/
 
-    // TODO: actual randomization / AP integration; this is a one-off shuffle for test playthroughs
-    static Dictionary<Location, Item> locationToRandomItem = new Dictionary<Location, Item>
-    {
-        { Location.ET_QML, Item.SilentRunning },
-        { Location.TH_GALENA_SIGNAL, Item.EntanglementRule },
-        { Location.SPACESHIP, Item.Spaceship }, // always fixed, more like an event than an item
-        { Location.ET_EP2_SIGNAL, Item.Scout },
-        { Location.BH_SHARD_SIGNAL, Item.Nothing },
-        { Location.GD_SIW, Item.Signalscope },
-        { Location.FROZEN_SHUTTLE, Item.TornadoAdjustment },
-        { Location.BH_EP1_SIGNAL, Item.WarpCoreManual },
-        { Location.DB_VESSEL, Item.WarpPlatformCodes },
-        { Location.IL_CORE, Item.ShrineDoorCodes },
-        { Location.GD_BI, Item.Translator },
-        { Location.TH_MS_SIGNAL, Item.CameraQuantum },
-        { Location.WHS, Item.Nothing },
-        { Location.GD_COORDINATES, Item.FrequencyDB },
-        { Location.ET_SHARD_SIGNAL, Item.ElectricalInsulation },
-        { Location.OPC_CM, Item.FrequencyQF },
-        { Location.AR_WHISTLE, Item.FrequencyHS },
-        { Location.DB_GRAVE, Item.SignalChert },
-        { Location.BH_OBSERVATORY, Item.SignalEsker },
-        { Location.ET_COLEUS_CAVE, Item.SignalRiebeck },
-        { Location.SS, Item.SignalGabbro },
-        { Location.OPC_ENTER, Item.SignalFeldspar },
-        { Location.TH_TEPHRA_SIGNAL, Item.SignalMuseumShard },
-        { Location.TH_MINES, Item.SignalGroveShard },
-        { Location.GD_DEPTHS, Item.SignalCaveShard },
-        { Location.DB_EP3_SIGNAL, Item.SignalTowerShard },
-        { Location.TH_SEED_CRATER, Item.SignalIslandShard },
-        { Location.ET_HEL, Item.SignalQM },
-        { Location.TH_ZERO_G, Item.SignalEP1 },
-        { Location.QM_SIGNAL, Item.SignalEP2 },
-        { Location.DB_HARMONICA, Item.SignalEP3 },
-        { Location.FREQ_HIDE_SEEK, Item.SignalGalena },
-        { Location.FREQ_QUANTUM, Item.SignalTephra },
-        { Location.SOLANUM_SHUTTLE, Item.Nothing },
-        { Location.AR_ESL, Item.Nothing },
-        { Location.BH_OS_MURAL, Item.CameraGM },
-        { Location.ET_LAKEBED_CAVE, Item.Nothing },
-        { Location.BH_TOWER, Item.Nothing },
-        { Location.BH_BANJO, Item.Nothing },
-        { Location.QM_LAND, Item.Nothing },
-        { Location.TH_GS_SIGNAL, Item.Nothing },
-        { Location.GD_FLUTE, Item.Nothing },
-        { Location.ET_DRUM, Item.Nothing },
-        { Location.FREQ_DISTRESS, Item.Nothing },
-        { Location.GD_CY, Item.Nothing },
-        { Location.ET_SC_SHRINE, Item.Coordinates },
-        { Location.HL_VTS, Item.Nothing },
-        { Location.GD_CORE, Item.Nothing },
-        { Location.TH_HAL, Item.Nothing },
-        { Location.BH_FORGE, Item.Nothing },
-        { Location.AT_ATP, Item.Nothing },
-        { Location.GD_TOWER_COMPLETE, Item.Nothing },
-        { Location.TH_GM, Item.Nothing },
-        { Location.TH_HORNFELS, Item.LaunchCodes }, // fixed for now
-        { Location.GD_TOWER_RULE, Item.Nothing },
-        { Location.QM_6L, Item.Nothing },
-        { Location.DB_JELLY, Item.Nothing },
-        { Location.ET_FOSSIL, Item.Nothing },
-        { Location.GD_SHARD_SIGNAL, Item.Nothing },
-    };
 
     public static void CheckLocation(Location location)
     {
@@ -182,22 +121,24 @@ internal class LocationTriggers
         }
         else
         {
-            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked");
+            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file");
             locationChecked[location] = true;
-
-            var item = locationToRandomItem.ContainsKey(location) ? locationToRandomItem[location] : Item.Nothing;
-
-            // todo: replace this with Archipelago integration
-            Randomizer.OWMLModConsole.WriteLine($"Awarding item {item}");
-
-            var itemName = ItemNames.ItemToName(item);
-            ArchConsoleManager.AddConsoleText($"You found your <color=orange>{itemName}</color>", false, AudioType.ShipLogMarkLocation);
-
-            Randomizer.SaveData.itemsAcquired[item] += 1;
-
-            ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
-
             Randomizer.Instance.WriteToSaveFile();
+
+            if (LocationNames.locationToArchipelagoId.ContainsKey(location))
+            {
+                var locationId = LocationNames.locationToArchipelagoId[location];
+                Randomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked");
+
+                // we want to time out relatively quickly if the server happens to be down
+                var checkLocationTask = Task.Run(() => Randomizer.APSession.Locations.CompleteLocationChecks(locationId));
+                if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
+                    throw new Exception("CompleteLocationChecks() task timed out");
+            }
+            else
+            {
+                Randomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
+            }
         }
     }
 

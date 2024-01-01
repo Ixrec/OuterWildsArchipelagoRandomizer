@@ -1,4 +1,10 @@
-﻿using HarmonyLib;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Helpers;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Models;
+using HarmonyLib;
+using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
@@ -23,6 +29,7 @@ namespace ArchipelagoRandomizer
         public static APRandomizerSaveData SaveData;
         public static AssetBundle Assets;
         private static string SaveFileName;
+        public static ArchipelagoSession APSession;
 
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
@@ -42,7 +49,7 @@ namespace ArchipelagoRandomizer
             StandaloneProfileManager.SharedInstance.OnProfileReadDone += () => {
                 if (StandaloneProfileManager.SharedInstance._currentProfile is null)
                 {
-                    OWMLModConsole.WriteLine($"No profile loaded", MessageType.Error);
+                    OWMLModConsole.WriteLine($"No profile loaded", OWML.Common.MessageType.Error);
                     return;
                 }
                 var profileName = StandaloneProfileManager.SharedInstance._currentProfile.profileName;
@@ -65,8 +72,87 @@ namespace ArchipelagoRandomizer
 
                     foreach (var kv in SaveData.itemsAcquired)
                         LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+
+                    ConnectToAPServer();
                 }
             };
+        }
+
+        private static void ConnectToAPServer()
+        {
+            OWMLModConsole.WriteLine($"ConnectToAPServer() called");
+            APSession = ArchipelagoSessionFactory.CreateSession("localhost", 38281);
+            LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", "Hearthian1", ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), requestSlotData: true);
+            if (!result.Successful)
+                throw new Exception($"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)result).Errors)}");
+
+            var loginSuccess = (LoginSuccessful)result;
+            OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
+            // todo: init a death link class
+            // todo: tell the Victory class what the goal is
+
+            // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
+            // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
+            var totalItemsAcquired = SaveData.itemsAcquired.Sum(kv => kv.Value);
+            var totalItemsReceived = APSession.Items.AllItemsReceived.Count;
+            if (totalItemsReceived > totalItemsAcquired)
+            {
+                OWMLModConsole.WriteLine($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
+                bool saveDataChanged = false;
+                foreach (var networkItem in APSession.Items.AllItemsReceived)
+                    saveDataChanged = SyncItemCountWithAPServer(networkItem.Item);
+
+                if (saveDataChanged)
+                    Randomizer.Instance.WriteToSaveFile();
+            }
+
+            APSession.Items.ItemReceived += (receivedItemsHelper) => {
+                OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called");
+
+                bool saveDataChanged = false;
+                while (receivedItemsHelper.PeekItem().Item != 0)
+                {
+                    var itemId = receivedItemsHelper.PeekItem().Item;
+                    OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}");
+                    saveDataChanged = SyncItemCountWithAPServer(itemId);
+                    receivedItemsHelper.DequeueItem();
+                }
+
+                if (saveDataChanged)
+                    Randomizer.Instance.WriteToSaveFile();
+            };
+
+            APSession.MessageLog.OnMessageReceived += (LogMessage message) => ArchConsoleManager.AddAPMessage(message);
+
+            // ensure that our local locations state matches the AP server by simply re-reporting all checked locations
+            // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
+            var allCheckedLocationIds = SaveData.locationsChecked
+                .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
+                .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
+            APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+        }
+
+        private static bool SyncItemCountWithAPServer(long itemId)
+        {
+            var item = ItemNames.archipelagoIdToItem[(int)itemId];
+            var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
+
+            var savedCount = Randomizer.SaveData.itemsAcquired[item];
+            if (savedCount >= itemCountSoFar)
+            {
+                // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
+                // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
+                Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Ignoring since SaveData already has {savedCount} of it.");
+                return false;
+            }
+            else
+            {
+                Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.");
+
+                Randomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
+                LocationTriggers.ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
+                return true;
+            }
         }
 
         [HarmonyPostfix]
@@ -136,7 +222,7 @@ namespace ArchipelagoRandomizer
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
             InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
-            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", MessageType.Success);
+            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
         }
     }
 }
