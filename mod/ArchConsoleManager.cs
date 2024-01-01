@@ -1,7 +1,10 @@
 ﻿using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.Packets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -201,19 +204,12 @@ namespace ArchipelagoRandomizer
         public void OnConsoleEntry(string text)
         {
             if (text == "") return;
-            // This is not how actual commands should be handled, but this exists for testing
-            if (text.StartsWith("!echo "))
-            {
-                AddText(text.Replace("!echo ", ""));
-            }
-            else if (text == "!loops")
-            {
-                AddText($"<color=#6BFF6B>Loops: {TimeLoop.GetLoopCount()}</color>");
-            }
-            else
-            {
-                AddText($"<color=#FF6868>Command {text.Split(' ')[0]} not recognized.</color>", true);
-            }
+
+            // we want to time out relatively quickly if the server happens to be down
+            var sayPacketTask = Task.Run(() => Randomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+            if (!sayPacketTask.Wait(TimeSpan.FromSeconds(1)))
+                throw new Exception("OnConsoleEntry() task timed out");
+
             consoleText.text = "";
         }
 
