@@ -127,8 +127,8 @@ public static class ItemNames
     public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
-    public static Dictionary<int, Item> archipelagoIdToItem = null;
-    public static Dictionary<Item, int> itemToArchipelagoId = null;
+    public static Dictionary<long, Item> archipelagoIdToItem = null;
+    public static Dictionary<Item, long> itemToArchipelagoId = null;
 
     public static void LoadArchipelagoIds(string itemsFilepath)
     {
@@ -140,7 +140,7 @@ public static class ItemNames
             // Skip event items, since they intentionally don't have ids
             if (itemData["code"].Type == JTokenType.Null) continue;
 
-            var archipelagoId = (int)itemData["code"];
+            var archipelagoId = (long)itemData["code"];
             var item = NameToItem((string)itemData["name"]);
             archipelagoIdToItem.Add(archipelagoId, item);
             itemToArchipelagoId.Add(item, archipelagoId);

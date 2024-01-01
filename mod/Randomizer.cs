@@ -134,7 +134,7 @@ namespace ArchipelagoRandomizer
 
         private static bool SyncItemCountWithAPServer(long itemId)
         {
-            var item = ItemNames.archipelagoIdToItem[(int)itemId];
+            var item = ItemNames.archipelagoIdToItem[itemId];
             var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
 
             var savedCount = Randomizer.SaveData.itemsAcquired[item];
