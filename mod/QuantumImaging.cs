@@ -13,13 +13,13 @@ internal class QuantumImaging
     {
         LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {
-            if (loadScene != OWScene.SolarSystem) return;
-
-            Randomizer.OWMLModConsole.WriteLine($"QuantumImaging.Setup fetching references to relevant quantum objects");
-
             // we don't want to retain these references beyond a scene transition / loop reset, or else
             // they become invalid and lead to NullReferenceExceptions when we try using them later
             relevantQuantumObjects.Clear();
+
+            if (loadScene != OWScene.SolarSystem) return;
+
+            Randomizer.OWMLModConsole.WriteLine($"QuantumImaging.Setup fetching references to relevant quantum objects");
 
             // For this class, we care about any quantum object that can move around,
             // and that the player can "lock" in place by taking a photo of it.
