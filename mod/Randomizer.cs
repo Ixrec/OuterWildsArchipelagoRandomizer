@@ -111,7 +111,9 @@ namespace ArchipelagoRandomizer
             var loginSuccess = (LoginSuccessful)result;
             OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
             // todo: init a death link class
-            // todo: tell the Victory class what the goal is
+
+            if (loginSuccess.SlotData.ContainsKey("goal"))
+                Victory.SetGoal((long)loginSuccess.SlotData["goal"]);
 
             // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
             // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
