@@ -1,6 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
-using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -104,6 +104,11 @@ namespace ArchipelagoRandomizer
         private static void ConnectToAPServer(APConnectionData cdata)
         {
             OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}");
+            if (APSession is not null)
+            {
+                APSession.Items.ItemReceived -= APSession_ItemReceived;
+                APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
+            }
             APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
             LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: cdata.password, requestSlotData: true);
             if (!result.Successful)
@@ -133,23 +138,8 @@ namespace ArchipelagoRandomizer
                     Randomizer.Instance.WriteToSaveFile();
             }
 
-            APSession.Items.ItemReceived += (receivedItemsHelper) => {
-                OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called");
-
-                bool saveDataChanged = false;
-                while (receivedItemsHelper.PeekItem().Item != 0)
-                {
-                    var itemId = receivedItemsHelper.PeekItem().Item;
-                    OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}");
-                    saveDataChanged = SyncItemCountWithAPServer(itemId);
-                    receivedItemsHelper.DequeueItem();
-                }
-
-                if (saveDataChanged)
-                    Randomizer.Instance.WriteToSaveFile();
-            };
-
-            APSession.MessageLog.OnMessageReceived += (LogMessage message) => ArchConsoleManager.AddAPMessage(message);
+            APSession.Items.ItemReceived += APSession_ItemReceived;
+            APSession.MessageLog.OnMessageReceived += APSession_OnMessageReceived;
 
             // ensure that our local locations state matches the AP server by simply re-reporting all checked locations
             // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
@@ -157,6 +147,27 @@ namespace ArchipelagoRandomizer
                 .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
                 .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
             APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+        }
+
+        private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
+        {
+            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called");
+
+            bool saveDataChanged = false;
+            while (receivedItemsHelper.PeekItem().Item != 0)
+            {
+                var itemId = receivedItemsHelper.PeekItem().Item;
+                OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}");
+                saveDataChanged = SyncItemCountWithAPServer(itemId);
+                receivedItemsHelper.DequeueItem();
+            }
+
+            if (saveDataChanged)
+                Randomizer.Instance.WriteToSaveFile();
+        }
+        private static void APSession_OnMessageReceived(LogMessage message)
+        {
+            ArchConsoleManager.AddAPMessage(message);
         }
 
         private static bool SyncItemCountWithAPServer(long itemId)
