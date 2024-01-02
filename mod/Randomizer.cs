@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using HarmonyLib;
@@ -110,7 +111,9 @@ namespace ArchipelagoRandomizer
 
             var loginSuccess = (LoginSuccessful)result;
             OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
-            // todo: init a death link class
+
+            if (loginSuccess.SlotData.ContainsKey("death_link"))
+                DeathLinkManager.Enable((long)loginSuccess.SlotData["death_link"]);
 
             if (loginSuccess.SlotData.ContainsKey("goal"))
                 Victory.SetGoal((long)loginSuccess.SlotData["goal"]);
