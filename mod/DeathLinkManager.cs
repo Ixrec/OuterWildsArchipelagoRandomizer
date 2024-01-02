@@ -2,14 +2,10 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer;
 
+[HarmonyPatch]
 internal class DeathLinkManager
 {
     enum DeathLinkSetting: long
