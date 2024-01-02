@@ -1,31 +1,40 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
-using Archipelago.MultiClient.Net.Models;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer
 {
+    public class APConnectionData
+    {
+        public string hostname;
+        public uint port;
+        public string slotName;
+        public string password;
+    }
+    public class APRandomizerSaveData
+    {
+        public APConnectionData apConnectionData;
+        public Dictionary<Location, bool> locationsChecked;
+        public Dictionary<Item, uint> itemsAcquired;
+    }
+
     [HarmonyPatch]
     public class Randomizer : ModBehaviour
     {
         public static Randomizer Instance;
 
-        public class APRandomizerSaveData
-        {
-            public Dictionary<Location, bool> locationsChecked;
-            public Dictionary<Item, uint> itemsAcquired;
-        }
         public static APRandomizerSaveData SaveData;
         public static AssetBundle Assets;
         private static string SaveFileName;
@@ -60,10 +69,8 @@ namespace ArchipelagoRandomizer
                 SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
                 if (SaveData is null)
                 {
-                    OWMLModConsole.WriteLine($"No save file found for this profile. Will hide Resume button.");
-                    var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
-                    OWMLModConsole.WriteLine($"resumeButton {resumeButton} {resumeButton.name}");
-                    resumeButton.SetActive(false);
+                    OWMLModConsole.WriteLine($"No save file found for this profile.");
+                    // Hiding the resume button here doesn't stick. We have to wait for TitleScreenManager_SetUpMainMenu_Postfix to do it.
                 }
                 else
                 {
@@ -73,16 +80,31 @@ namespace ArchipelagoRandomizer
                     foreach (var kv in SaveData.itemsAcquired)
                         LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
 
-                    ConnectToAPServer();
+                    ConnectToAPServer(SaveData.apConnectionData);
                 }
             };
         }
 
-        private static void ConnectToAPServer()
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
+        public static void TitleScreenManager_SetUpMainMenu_Postfix()
         {
-            OWMLModConsole.WriteLine($"ConnectToAPServer() called");
-            APSession = ArchipelagoSessionFactory.CreateSession("localhost", 38281);
-            LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", "Hearthian1", ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), requestSlotData: true);
+            if (SaveData is null)
+            {
+                Randomizer.OWMLModConsole.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
+                var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
+                resumeButton.SetActive(false);
+            }
+        }
+
+        // Ideally errors here would put the user in a popup to decide whether to retry with the same connection info or enter different info,
+        // but working with Outer Wilds menu buttons and popups from mod code is just too brittle and painful for that to be practical.
+        // So if there are any errors during connection, we just explode ASAP.
+        private static void ConnectToAPServer(APConnectionData cdata)
+        {
+            OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}");
+            APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
+            LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: cdata.password, requestSlotData: true);
             if (!result.Successful)
                 throw new Exception($"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)result).Errors)}");
 
@@ -155,41 +177,6 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
-        public static void TitleScreenManager_SetUpMainMenu_Postfix()
-        {
-            if (SaveData is null)
-            {
-                Randomizer.OWMLModConsole.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
-
-                var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
-                resumeButton.SetActive(false);
-            }
-
-            // I attempted to edit the New Expedition button, but for some reason anything I do to that button gets undone before the menu is shown.
-            // var newGameObject = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-NewGame");
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ResetGame))]
-        public static void PlayerData_ResetGame_Prefix()
-        {
-            Randomizer.OWMLModConsole.WriteLine($"Detected PlayerData.ResetGame() call. Creating fresh save file for this profile.");
-
-            APRandomizerSaveData saveData = new();
-            saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
-                .ToDictionary(ln => ln, _ => false);
-            saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
-                .ToDictionary(ln => ln, _ => 0u);
-
-            Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
-
-            SaveData = saveData;
-            foreach (var kv in SaveData.itemsAcquired)
-                LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
-        }
-
         private void Awake()
         {
             // You won't be able to access OWML's mod helper in Awake.
@@ -217,12 +204,102 @@ namespace ArchipelagoRandomizer
             Jellyfish.Setup();
             GhostMatter.Setup();
 
+            var menuFramework = ModHelper.Interaction.TryGetModApi<IMenuAPI>("_nebula.MenuFramework");
+            ModHelper.Menus.MainMenu.OnInit += () => StartCoroutine(SetupMainMenu(menuFramework));
+
             SetupSaveData();
 
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
             InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
+        }
+
+        private IEnumerator SetupMainMenu(IMenuAPI menuFramework)
+        {
+            yield return new WaitForEndOfFrame();
+
+            float popupOpenTime = 0;
+            List<string> connectionInfoUserInput = new();
+
+            var initialHeaderText = "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"";
+            var initialPlaceholderText = "Enter hostname:port...";
+            var connectionInfoPopup = menuFramework.MakeInputFieldPopup(initialHeaderText, initialPlaceholderText, "Confirm", "Cancel");
+
+            var newRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("NEW RANDOMIZED EXPEDITION", 2, connectionInfoPopup);
+            ModHelper.Menus.MainMenu.NewExpeditionButton.Hide();
+
+            var headerText = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Text").GetComponent<Text>();
+            var inputField = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/InputField").GetComponent<InputField>();
+
+            // Without these hacks, clicking the button to open this popup would also close this popup before the user could interact with it.
+            connectionInfoPopup.CloseMenuOnOk(false);
+            connectionInfoPopup.OnActivateMenu += () => popupOpenTime = Time.time;
+            connectionInfoPopup.OnPopupConfirm += () =>
+            {
+                if (OWMath.ApproxEquals(Time.time, popupOpenTime)) return;
+
+                connectionInfoUserInput.Add(connectionInfoPopup.GetInputText());
+                OWMLModConsole.WriteLine($"connectionInfoUserInput: {string.Join(", ", connectionInfoUserInput)}");
+
+                if (connectionInfoUserInput.Count == 1)
+                {
+                    headerText.text = "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"";
+                    inputField.text = "";
+                    ((Text)inputField.placeholder).text = "Enter slot/player name...";
+                }
+                else if (connectionInfoUserInput.Count == 2)
+                {
+                    headerText.text = "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password";
+                    inputField.text = "";
+                    ((Text)inputField.placeholder).text = "Enter password...";
+                }
+                else if (connectionInfoUserInput.Count == 3)
+                {
+                    connectionInfoPopup.EnableMenu(false);
+
+                    OWMLModConsole.WriteLine($"Creating fresh save file for this profile with connectionInfo: {string.Join(", ", connectionInfoUserInput)}");
+
+                    APConnectionData cdata = new();
+
+                    var split = connectionInfoUserInput[0].Split(':');
+                    cdata.hostname = split[0];
+                    // if the player left out a port number, use the default localhost port of 38281
+                    cdata.port = (split.Length > 1) ? uint.Parse(split[1]) : 38281;
+
+                    cdata.slotName = connectionInfoUserInput[1];
+                    cdata.password = connectionInfoUserInput[2];
+
+                    APRandomizerSaveData saveData = new();
+                    saveData.apConnectionData = cdata;
+                    saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
+                        .ToDictionary(ln => ln, _ => false);
+                    saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
+                        .ToDictionary(ln => ln, _ => 0u);
+
+                    SaveData = saveData;
+
+                    // reset popup state in case connection fails
+                    connectionInfoUserInput.Clear();
+                    headerText.text = initialHeaderText;
+                    inputField.text = "";
+                    ((Text)inputField.placeholder).text = initialPlaceholderText;
+
+                    ConnectToAPServer(cdata);
+
+                    Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
+
+                    foreach (var kv in SaveData.itemsAcquired)
+                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+
+                    // quick and dirty attempt to reproduce what the vanilla New Expedition button does
+                    PlayerData.ResetGame();
+                    LoadManager.LoadSceneAsync(OWScene.SolarSystem, true, LoadManager.FadeType.ToBlack, 1f, false);
+                    newRandomExpeditionButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "Loading..."; // not trying to reproduce the % for now
+                }
+                else
+                    throw new Exception($"somehow connectionInfoUserInput has size {connectionInfoUserInput.Count}: {string.Join(", ", connectionInfoUserInput)}");
+            };
         }
     }
 }
