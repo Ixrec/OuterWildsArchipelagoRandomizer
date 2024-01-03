@@ -18,7 +18,7 @@ or message me (`ixrec`) directly on Discord.
 
 - Make sure you have the Steam version of Outer Wilds installed
 - Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
-- Install the 0.4.4 Release Candidate 4 version of the core Archipelago tools from this Discord message: https://discord.com/channels/731205301247803413/731214280439103580/1190013939711488050 (hopefully it'll be fully released soon so this step can become less awkward)
+- Install the [core Archipelago tools](https://github.com/ArchipelagoMW/Archipelago/releases) (at least version 0.4.4)
 
 ### Setting Up and Running the Randomizer
 
