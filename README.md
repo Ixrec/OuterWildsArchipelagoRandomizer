@@ -4,7 +4,7 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-In active development (as of December 2023). Nothing playable yet.
+Alpha (as of January 2024). Recently became playable, though there is no tracker, no DLC integration, and many other desirable features have yet to be started. See [Roadmap](#roadmap).
 
 ## Contact
 
@@ -14,7 +14,44 @@ or message me (`ixrec`) directly on Discord.
 
 ## Installation
 
-Not a thing yet. See [Running From Source](#running-from-source) if you're brave or technical.
+### Prerequisites
+
+- Make sure you have the Steam version of Outer Wilds installed
+- Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
+- Install the 0.4.4 Release Candidate 4 version of the core Archipelago tools from this Discord message: https://discord.com/channels/731205301247803413/731214280439103580/1190013939711488050 (hopefully it'll be fully released soon so this step can become less awkward)
+
+### Setting Up and Running the Randomizer
+
+- Go to [the Releases page](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases) of this repository and look at the latest release. There should be three files to download: A .zip, an .apworld and a .yaml.
+
+- In the Mod Manager, click the 3 dots icon, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
+- Open the `Mods/` subfolder.
+- In here, unzip the `Ixrec.ArchipelagoRandomizer.zip` file from the Releases page, and overwrite any previous version you might have. The Mod Manager should immediately detect and display it.
+- If this is your first time installing this mod, the Mod Manager will probably complain about missing dependencies. To install them, click on the "fix issues" button (the hammer and wrench icon) in the Mod Manager's "Actions" column.
+
+- (**Optional: Other Mods**) Some other mods that I personally like to play with, and that this randomizer is compatible with, include: "Clock" (exactly what it sounds like), "Cheat and Debug Menu" (for its fast-forward button), and "Suit Log" (access the ship log from your suit).
+
+- Go to your Archipelago installation folder. Typically that will be `C:\ProgramData\Archipelago`.
+- Put the `outer_wilds.apworld` file in `Archipelago\lib\worlds\`.
+- Put the `Outer.Wilds.yaml` file in `Archipelago\Players`.
+
+- (**Recommended: Universal Tracker**) Since there's no dedicated tracker yet, I highly recommend setting up Faris' Universal Tracker. See the pinned messages in its Discord thread for details: https://discord.com/channels/731205301247803413/1170094879142051912
+
+<details>
+<summary>I've never used Archipelago before. How do I generate a multiworld?</summary>
+
+Let's create a randomized "multiworld" with only a single Outer Wilds world in it.
+
+- Once again, go to your Archipelago installation folder. Typically that will be `C:\ProgramData\Archipelago`.
+- Make sure `Outer.Wilds.yaml` is the only file in `Archipelago\Players` (subfolders here are fine).
+- Double-click on `ArchipelagoGenerate.exe`. You should see a console window appear and then disappear after a few seconds.
+- In `Archipelago\output\` there should now be a file with a name like `AP_95887452552422108902.zip`.
+- Double-click on `ArchipelagoServer.exe`. You should see a file open dialog showing the `Archipelago\output` folder. Select the output .zip you just generated.
+- The server console should give you a hostname and port number to connect to, typically "localhost:38281".
+</details>
+
+- In the Outer Wilds Mod Manager, click the big green Run Game button.
+- In Outer Wilds itself, click "New Randomized Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml`, your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
 
 ## What This Mod Changes
 
@@ -32,19 +69,9 @@ In randomizer terms: "items" are placed at randomly selected "locations" (while 
 	- translating important Nomai text
 	- reaching an important place such as the Ash Twin Project
 
-## Detailed Status and Roadmap
+## Roadmap
 
-### First Playable Release Blockers
-
-- ~~item-ify a few more starting tools and knowledge~~
-- ~~read and write save data~~, including checking for discrepancies
-- ~~create an in-game console for displaying Archipelago messages~~
-- teach this mod the Archipelago client protocol, probably using an existing AP client library for .NET
-- ~~write an apworld with items, locations and all the "logic" rules for which items are needed to reach which locations~~
-
-### Roadmap
-
-Immediately after a first playable release, I expect to be busy with playtesting and gathering feedback.
+This mod has only just released, so I expect to be busy with playtesting and gathering feedback for a while.
 After that settles, I will most likely work on one or more of the following sub-projects, depending on what players consider most lacking:
 
 - Flavor Text and Hints:
@@ -86,11 +113,10 @@ After that settles, I will most likely work on one or more of the following sub-
 
 ### Prerequisites
 
+In addition to the prerequisites from [Installation](#installation):
+
 - Make sure you have a `git` or Github client
-- Make sure you have the Steam version of Outer Wilds installed
-- Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
 - Install [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/community/)
-- Install the 0.4.4 Release Candidate 4 version of the core Archipelago tools from this Discord message: https://discord.com/channels/731205301247803413/731214280439103580/1190013939711488050 (hopefully it'll be fully released soon so this step can become less awkward)
 
 ### Building and Running the OW Mod
 
@@ -110,8 +136,6 @@ After that settles, I will most likely work on one or more of the following sub-
 - Copy the `worlds/outer_wilds` folder from your local clone over to the `lib/worlds/` folder inside your Archipelago installation folder
   - Optionally: If you need to send this to someone else, such as the host of your player group, you may zip the folder and rename the extension from `.zip` to `.apworld`. That's all an "apworld file" is, after all.
 - Run ArchipelagoLauncher.exe in your Archipelago installation folder and select "Generate Template Settings" to create a sample Outer Wilds.yaml file
-
-At this point, I assume you've run unsupported Archipelago games before, and know what to do with an apworld and a yaml.
 
 ## Credits
 
