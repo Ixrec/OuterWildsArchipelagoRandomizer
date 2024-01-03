@@ -50,7 +50,7 @@ Let's create a randomized "multiworld" with only a single Outer Wilds world in i
 - The room page should give you a hostname and port number to connect to, e.g. "archipelago.gg:12345".
 </details>
 
-- In the Outer Wilds Mod Manager, click the big green Run Game button.
+- In the Outer Wilds Mod Manager, click the big green Run Game button. You must launch Outer Wilds through the Mod Manager in order for the mods to be applied.
 - In Outer Wilds itself, click "New Randomized Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml`, your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
 
 ## What This Mod Changes
