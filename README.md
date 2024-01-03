@@ -46,8 +46,8 @@ Let's create a randomized "multiworld" with only a single Outer Wilds world in i
 - Make sure `Outer.Wilds.yaml` is the only file in `Archipelago\Players` (subfolders here are fine).
 - Double-click on `ArchipelagoGenerate.exe`. You should see a console window appear and then disappear after a few seconds.
 - In `Archipelago\output\` there should now be a file with a name like `AP_95887452552422108902.zip`.
-- Double-click on `ArchipelagoServer.exe`. You should see a file open dialog showing the `Archipelago\output` folder. Select the output .zip you just generated.
-- The server console should give you a hostname and port number to connect to, typically "localhost:38281".
+- Open https://archipelago.gg/uploads in your favorite web browser, and upload the output .zip you just generated. Click "Create New Room".
+- The room page should give you a hostname and port number to connect to, e.g. "archipelago.gg:12345".
 </details>
 
 - In the Outer Wilds Mod Manager, click the big green Run Game button.
