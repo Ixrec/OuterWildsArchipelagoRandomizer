@@ -88,7 +88,7 @@ public static class LocationNames
         { Location.TH_ZERO_G, "TH: Zero-G Repairs" },
         { Location.TH_HAL, "TH: Get the Translator from Hal" },
         { Location.TH_HORNFELS, "TH: Talk to Hornfels" },
-        { Location.TH_SEED_CRATER, "TH: Bramble Seed Crater" },
+        { Location.TH_SEED_CRATER, "TH: Talk to Tektite about Bramble Seed" },
         { Location.TH_MINES, "TH: Mines (Text Wall)" },
 
         { Location.AR_ESL, "AR: Signal Locator (Text Wall)" },
