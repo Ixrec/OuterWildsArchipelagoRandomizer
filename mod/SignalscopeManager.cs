@@ -244,6 +244,8 @@ internal class SignalscopeManager
 
     // The second UX problem I want to solve is the "Unidentified Signal Nearby" notifications for
     // signal sources the player has already scanned.
+    // And the third is that in vanilla, you cannot scan signals of unknown frequency without wearing
+    // the suit, which in rando feels like a bug if you happen to get Signalscope early on TH.
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
@@ -263,6 +265,32 @@ internal class SignalscopeManager
         if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
             return false; // skip vanilla implementation
         }
+
+        // copy-pasted and tweaked from vanilla implementation
+        bool flag = PlayerData.KnowsSignal(__instance._signal.GetName());
+        bool flag2 = __instance._signal.IsActive() && !flag && __instance._isPlayerInside && !PlayerState.IsInsideShip() &&
+            // remove only the Locator.GetPlayerSuit().IsWearingHelmet() && part
+            (__instance._allowUnderwater || !PlayerState.IsCameraUnderwater()) && __instance._inDarkZone == PlayerState.InDarkZone();
+
+        // if the only reason we "don't detect" an unidentified signal nearby is that the player is not wearing the helmet,
+        // then skip vanilla implementation and force it to be detected anyway so the player can scan it
+        bool wouldBeDetecting = flag2;
+        if (wouldBeDetecting && !Locator.GetPlayerSuit().IsWearingHelmet())
+        {
+            if (mightDisplayUnidentifiedSignalMessage)
+            {
+                Randomizer.OWMLModConsole.WriteLine($"AudioSignalDetectionTrigger_Update_Prefix forcing detection of {__instance._signal.GetName()} despite player not wearing the helmet");
+
+                // copy-pasted and tweaked from vanilla implementation
+                __instance._isDetecting = true;
+                Locator.GetToolModeSwapper().GetSignalScope().OnEnterSignalDetectionTrigger(__instance._signal);
+                Locator.GetToolModeSwapper().GetSignalScope().SelectFrequency(__instance._signal.GetFrequency());
+                NotificationManager.SharedInstance.PostNotification(__instance._nearbySignalMessage, true);
+            }
+
+            return false; // skip vanilla implementation
+        }
+
         return true;
     }
 }
