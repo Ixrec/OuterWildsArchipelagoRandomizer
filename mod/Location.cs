@@ -198,7 +198,12 @@ public static class LocationNames
             if (locationData["address"].Type == JTokenType.Null) continue;
 
             var archipelagoId = (long)locationData["address"];
-            var location = NameToLocation((string)locationData["name"]);
+            var name = (string)locationData["name"];
+
+            if (!locationNamesReversed.ContainsKey(name))
+                throw new System.Exception($"LoadArchipelagoIds failed: unknown location name {name}");
+
+            var location = locationNamesReversed[name];
             archipelagoIdToLocation.Add(archipelagoId, location);
             locationToArchipelagoId.Add(location, archipelagoId);
         }

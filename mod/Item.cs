@@ -141,7 +141,12 @@ public static class ItemNames
             if (itemData["code"].Type == JTokenType.Null) continue;
 
             var archipelagoId = (long)itemData["code"];
-            var item = NameToItem((string)itemData["name"]);
+            var name = (string)itemData["name"];
+
+            if (!itemNamesReversed.ContainsKey(name))
+                throw new System.Exception($"LoadArchipelagoIds failed: unknown item name {name}");
+
+            var item = itemNamesReversed[name];
             archipelagoIdToItem.Add(archipelagoId, item);
             itemToArchipelagoId.Add(item, archipelagoId);
         }
