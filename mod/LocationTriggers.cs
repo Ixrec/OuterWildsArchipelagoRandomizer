@@ -45,7 +45,6 @@ internal class LocationTriggers
         { "GD_OCEAN_X2", Location.GD_CORE },
         { "GD_QUANTUM_TOWER_X2", Location.GD_TOWER_RULE },
         { "GD_QUANTUM_TOWER_X4", Location.GD_TOWER_COMPLETE },
-        { "OPC_EYE_COORDINATES_X1", Location.GD_COORDINATES },
 
         // Both text wheels provide similar information about the shuttle's mission, but
         // depending on whether you find it at Interloper or Ember Twin you can only

@@ -85,6 +85,27 @@ public static class Coordinates
         },
     };*/
 
+    /* The hologram names in the Control Module and Probe Tracking Module are:
+     * Hologram_HourglassOrders
+     * Hologram_CannonDestruction
+     * Hologram_DamageReport
+     * Hologram_LatestProbeTrajectory
+     * Hologram_AllProbeTrajectories
+     * Hologram_EyeCoordinates
+     */
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
+    public static void OrbitalCannonHologramProjector_OnSlotActivated_Prefix(OrbitalCannonHologramProjector __instance, NomaiInterfaceSlot slot)
+    {
+        var activeIndex = __instance.GetSlotIndex(slot);
+        var hologram = __instance._holograms[activeIndex];
+        Randomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix {__instance.name} {activeIndex} {hologram.name}");
+        if (hologram.name == "Hologram_EyeCoordinates")
+        {
+            LocationTriggers.CheckLocation(Location.GD_COORDINATES);
+        }
+    }
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
     public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
