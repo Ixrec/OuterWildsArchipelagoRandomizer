@@ -149,7 +149,7 @@ internal class LocationTriggers
             case Item.Spaceship: break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
 
             case Item.Translator: Translator.hasTranslator = (count > 0); break;
-            case Item.Signalscope: Signalscope.hasSignalscope = (count > 0); break;
+            case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
             case Item.Scout: Scout.hasScout = (count > 0); break;
             case Item.CameraGM: GhostMatter.hasGhostMatterKnowledge = (count > 0); break;
             case Item.CameraQuantum: QuantumImaging.hasImagingKnowledge = (count > 0); break;
@@ -164,9 +164,9 @@ internal class LocationTriggers
             default: break;
         }
         if (ItemNames.itemToFrequency.ContainsKey(item))
-            Signalscope.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
+            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
         else if (ItemNames.itemToSignal.ContainsKey(item))
-            Signalscope.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
+            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
     }
 
 

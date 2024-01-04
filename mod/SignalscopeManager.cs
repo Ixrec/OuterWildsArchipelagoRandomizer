@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer;
 // Archipelago items for, and thus our mod wants to allow the use of.
 
 [HarmonyPatch]
-internal class Signalscope
+internal class SignalscopeManager
 {
     private static bool _hasSignalscope = false;
 
