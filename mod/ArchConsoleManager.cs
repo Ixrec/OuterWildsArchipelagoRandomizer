@@ -31,11 +31,11 @@ namespace ArchipelagoRandomizer
         private Button muteButton;
         private Button filterButton;
         private bool isPaused;
-        // Console can only handle ~65000 vertices
-        // As there's 4 vertices per character, we can only support a quarter of this
-        private int maxCharacters = 16000;
         private List<float> gameplayConsoleTimers;
 
+        // Console can only handle ~65000 vertices
+        // As there's 4 vertices per character, we can only support a quarter of this
+        private const int maxCharacters = 16000;
         private const float clearTimerMax = 20;
 
         private void Awake()
@@ -294,21 +294,13 @@ namespace ArchipelagoRandomizer
             int shortCount = loopCount % 10;
             if (loopCount < 11 || loopCount > 13)
             {
-                switch (shortCount)
+                loopSuffix = shortCount switch
                 {
-                    case 1:
-                        loopSuffix = "st";
-                        break;
-                    case 2:
-                        loopSuffix = "nd";
-                        break;
-                    case 3:
-                        loopSuffix = "rd";
-                        break;
-                    default:
-                        loopSuffix = "th";
-                        break;
-                }
+                    1 => "st",
+                    2 => "nd",
+                    3 => "rd",
+                    _ => "th",
+                };
             }
             return loopCount.ToString() + loopSuffix;
         }
