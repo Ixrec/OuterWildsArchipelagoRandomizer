@@ -77,7 +77,7 @@ public static class LocationNames
 
         { Location.ET_HEL, "ET: High Energy Lab (Upper Text Wall)" },
         { Location.ET_SC_SHRINE, "ET: Sunless City Shrine (Entrance Text Wall)" },
-        { Location.ET_QML, "ET: Quantum Moon Locator (Text Scroll)" },
+        { Location.ET_QML, "ET: Quantum Moon Locator (2nd Scroll)" },
         { Location.ET_FOSSIL, "ET: Fossil (Children's Text)" },
         { Location.ET_LAKEBED_CAVE, "ET: Lakebed Cave (Floor Text)" },
         { Location.ET_COLEUS_CAVE, "ET: Coleus' Cave (Text Wall)" },
