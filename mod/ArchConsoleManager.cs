@@ -15,18 +15,27 @@ namespace ArchipelagoRandomizer
     /// </summary>
     public class ArchConsoleManager : MonoBehaviour
     {
+        public static bool ConsoleMuted = false;
+        public static bool FilterPlayer = false;
+
         private GameObject console;
         private GameObject pauseConsole;
         private GameObject pauseConsoleVisuals;
         private GameObject gameplayConsole;
+        private GameObject overflowWarning;
         private Text pauseConsoleText;
         private Text gameplayConsoleText;
         private List<string> consoleHistory;
         private Queue<string> gameplayConsoleEntries;
         private InputField consoleText;
+        private Button muteButton;
+        private Button filterButton;
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
 
+        // Console can only handle ~65000 vertices
+        // As there's 4 vertices per character, we can only support a quarter of this
+        private const int maxCharacters = 16000;
         private const float clearTimerMax = 20;
 
         private void Awake()
@@ -87,6 +96,10 @@ namespace ArchipelagoRandomizer
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
             gameplayConsole = console.transform.Find("GameplayConsole/GameplayConsoleText").gameObject;
+            overflowWarning = pauseConsoleVisuals.transform.Find("Warning Message").gameObject;
+            muteButton = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/MuteButton").GetComponent<Button>();
+            filterButton = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/FilterButton").GetComponent<Button>();
+            overflowWarning.SetActive(false);
             pauseConsoleText = pauseConsole.GetComponent<Text>();
             gameplayConsoleText = gameplayConsole.GetComponent<Text>();
 
@@ -99,6 +112,8 @@ namespace ArchipelagoRandomizer
                 AddText(entry, true, AudioType.None, true);
             }
             console.GetComponentInChildren<InputField>().onEndEdit.AddListener(OnConsoleEntry);
+            muteButton.onClick.AddListener(OnClickMuteButton);
+            filterButton.onClick.AddListener(OnClickFilterButton);
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
 
@@ -122,7 +137,23 @@ namespace ArchipelagoRandomizer
         public void AddText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
             if (!skipHistory) consoleHistory.Add(text);
-            pauseConsoleText.text += "\n" + text;
+            string consoleText = pauseConsoleText.text;
+            if (consoleText == "")
+            {
+                consoleText = text;
+            }
+            else
+            {                
+                consoleText += "\n" + text;
+            }
+            // Overflow fix
+            while (consoleText.Length > maxCharacters)
+            {
+                string str = consoleText.Split('\n')[0] + "\n";
+                consoleText = consoleText.Replace(str, "");
+                overflowWarning.SetActive(true);
+            }
+            pauseConsoleText.text = consoleText;
 
             // We don't need to bother editing the Gameplay Console if this is on
             if (!skipGameplayConsole)
@@ -139,7 +170,7 @@ namespace ArchipelagoRandomizer
             if (!isPaused)
             {
                 gameplayConsole.SetActive(true);
-                if (soundToPlay != AudioType.None)
+                if (soundToPlay != AudioType.None && !ConsoleMuted && !skipGameplayConsole)
                 {
                     Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(soundToPlay);
                 }
@@ -194,7 +225,24 @@ namespace ArchipelagoRandomizer
 
             Randomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
 
-            AddConsoleText(inGameConsoleMessage, false, soundToPlay, false);
+            // Determine if we should filter out the message
+            bool irrelevantToPlayer = true;
+            var slot = Randomizer.APSession.ConnectionInfo.Slot;
+            if (FilterPlayer)
+            {
+                switch (message)
+                {
+                    case ItemSendLogMessage itemSendLogMessage:
+                        var receiver = itemSendLogMessage.Receiver;
+                        var sender = itemSendLogMessage.Sender;
+                        var networkItem = itemSendLogMessage.Item;
+                        if (slot == receiver.Slot || slot == sender.Slot) irrelevantToPlayer = false;
+                        break;
+                }
+            }
+            else irrelevantToPlayer = false;
+
+            AddConsoleText(inGameConsoleMessage, irrelevantToPlayer, soundToPlay, false);
         }
 
         /// <summary>
@@ -213,6 +261,32 @@ namespace ArchipelagoRandomizer
             consoleText.text = "";
         }
 
+        #region ConsoleSettingButtons
+
+        private void OnClickMuteButton()
+        {
+            ConsoleMuted = !ConsoleMuted;
+            muteButton.transform.Find("MuteImageOff").gameObject.SetActive(!ConsoleMuted);
+            muteButton.transform.Find("MuteImageOn").gameObject.SetActive(ConsoleMuted);
+            AddText((
+                ConsoleMuted ?
+                "<color=#6E6E6E>Notification sounds muted.</color>" :
+                "<color=#6E6E6E>Notification sounds will now play.</color>"), true, AudioType.None, true);
+        }
+
+        private void OnClickFilterButton()
+        {
+            FilterPlayer = !FilterPlayer;
+            filterButton.transform.Find("FilterAll").gameObject.SetActive(!FilterPlayer);
+            filterButton.transform.Find("FilterPlayer").gameObject.SetActive(FilterPlayer);
+            AddText((
+                FilterPlayer ?
+                "<color=#6E6E6E>You will now only receive notifications for items you receive or send during gameplay. However, all messages will still be logged to the pause console</color>" :
+                "<color=#6E6E6E>You will now receive all notifications during gameplay</color>"), true, AudioType.None, true);
+        }
+
+        #endregion
+
         private string LoopNumber()
         {
             string loopSuffix = "th";
@@ -220,21 +294,13 @@ namespace ArchipelagoRandomizer
             int shortCount = loopCount % 10;
             if (loopCount < 11 || loopCount > 13)
             {
-                switch (shortCount)
+                loopSuffix = shortCount switch
                 {
-                    case 1:
-                        loopSuffix = "st";
-                        break;
-                    case 2:
-                        loopSuffix = "nd";
-                        break;
-                    case 3:
-                        loopSuffix = "rd";
-                        break;
-                    default:
-                        loopSuffix = "th";
-                        break;
-                }
+                    1 => "st",
+                    2 => "nd",
+                    3 => "rd",
+                    _ => "th",
+                };
             }
             return loopCount.ToString() + loopSuffix;
         }
