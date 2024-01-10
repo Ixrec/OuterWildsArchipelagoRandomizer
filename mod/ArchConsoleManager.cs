@@ -37,6 +37,7 @@ namespace ArchipelagoRandomizer
         // As there's 4 vertices per character, we can only support a quarter of this
         private const int maxCharacters = 16000;
         private const float clearTimerMax = 20;
+        private const string consoleInfoColor = "#6E6E6E";
 
         private void Awake()
         {
@@ -98,7 +99,11 @@ namespace ArchipelagoRandomizer
             gameplayConsole = console.transform.Find("GameplayConsole/GameplayConsoleText").gameObject;
             overflowWarning = pauseConsoleVisuals.transform.Find("Warning Message").gameObject;
             muteButton = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/MuteButton").GetComponent<Button>();
+            muteButton.transform.Find("MuteImageOff").gameObject.SetActive(!ConsoleMuted);
+            muteButton.transform.Find("MuteImageOn").gameObject.SetActive(ConsoleMuted);
             filterButton = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/FilterButton").GetComponent<Button>();
+            filterButton.transform.Find("FilterAll").gameObject.SetActive(!FilterPlayer);
+            filterButton.transform.Find("FilterPlayer").gameObject.SetActive(FilterPlayer);
             overflowWarning.SetActive(false);
             pauseConsoleText = pauseConsole.GetComponent<Text>();
             gameplayConsoleText = gameplayConsole.GetComponent<Text>();
@@ -270,8 +275,8 @@ namespace ArchipelagoRandomizer
             muteButton.transform.Find("MuteImageOn").gameObject.SetActive(ConsoleMuted);
             AddText((
                 ConsoleMuted ?
-                "<color=#6E6E6E>Notification sounds muted.</color>" :
-                "<color=#6E6E6E>Notification sounds will now play.</color>"), true, AudioType.None, true);
+                $"<color={consoleInfoColor}>Notification sounds muted.</color>" :
+                $"<color={consoleInfoColor}>Notification sounds will now play.</color>"), true, AudioType.None, true);
         }
 
         private void OnClickFilterButton()
@@ -281,8 +286,8 @@ namespace ArchipelagoRandomizer
             filterButton.transform.Find("FilterPlayer").gameObject.SetActive(FilterPlayer);
             AddText((
                 FilterPlayer ?
-                "<color=#6E6E6E>You will now only receive notifications for items you receive or send during gameplay. However, all messages will still be logged to the pause console</color>" :
-                "<color=#6E6E6E>You will now receive all notifications during gameplay</color>"), true, AudioType.None, true);
+                $"<color={consoleInfoColor}>You will now only receive notifications for items you receive or send during gameplay. However, all messages will still be logged to the pause console.</color>" :
+                $"<color={consoleInfoColor}>You will now receive all notifications during gameplay.</color>"), true, AudioType.None, true);
         }
 
         #endregion
