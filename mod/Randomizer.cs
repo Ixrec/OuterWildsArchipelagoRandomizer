@@ -80,28 +80,20 @@ namespace ArchipelagoRandomizer
 
                     foreach (var kv in SaveData.itemsAcquired)
                         LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
-
-                    ConnectToAPServer(SaveData.apConnectionData);
                 }
             };
         }
 
+        // unfortunately hiding the vanilla Resume button with OWML ModHelper doesn't work, so we do that here instead
         [HarmonyPostfix]
         [HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
         public static void TitleScreenManager_SetUpMainMenu_Postfix()
         {
-            if (SaveData is null)
-            {
-                Randomizer.OWMLModConsole.WriteLine($"TitleScreenManager_SetUpMainMenu_Postfix hiding Resume button since there's no randomizer save file.");
-                var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
-                resumeButton.SetActive(false);
-            }
+            var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
+            resumeButton.SetActive(false);
         }
 
-        // Ideally errors here would put the user in a popup to decide whether to retry with the same connection info or enter different info,
-        // but working with Outer Wilds menu buttons and popups from mod code is just too brittle and painful for that to be practical.
-        // So if there are any errors during connection, we just explode ASAP.
-        private static void ConnectToAPServer(APConnectionData cdata)
+        private static LoginResult ConnectToAPServer(APConnectionData cdata)
         {
             OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}");
             if (APSession is not null)
@@ -112,7 +104,7 @@ namespace ArchipelagoRandomizer
             APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
             LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: cdata.password, requestSlotData: true);
             if (!result.Successful)
-                throw new Exception($"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)result).Errors)}");
+                return result;
 
             var loginSuccess = (LoginSuccessful)result;
             OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
@@ -147,6 +139,8 @@ namespace ArchipelagoRandomizer
                 .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
                 .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
             APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+
+            return result;
         }
 
         private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
@@ -231,50 +225,188 @@ namespace ArchipelagoRandomizer
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
         }
 
+        // The code below is pretty awful because of how limited and broken the UI APIs available to us are.
+        // For example, I'd like to use a single popup for entering connection info, but there's no way to make a main menu
+        // button launch a popup *and* know which button was clicked later on unless each button has a unique popup.
+        // I'd also like to use a separate popup for connection errors, but there's no way to close a popup and then
+        // launch a second popup without breaking everything, so we have to iteratively edit elements of a single popup.
+        // I also couldn't put a 2nd entry or a 3rd button on a popup in a way that actually works. I won't list everything.
+
+        private static string cinfoHeader1 = "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"";
+        private static string cinfoPlaceholder1 = "Enter hostname:port...";
+        private static string cinfoHeader2 = "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"";
+        private static string cinfoPlaceholder2 = "Enter slot/player name...";
+        private static string cinfoHeader3 = "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password";
+        private static string cinfoPlaceholder3 = "Enter password...";
+
+        private static string cinfoLeftButton = "Confirm";
+        private static string cinfoRightButton = "Cancel";
+
         private IEnumerator SetupMainMenu(IMenuAPI menuFramework)
         {
             yield return new WaitForEndOfFrame();
 
-            float popupOpenTime = 0;
-            List<string> connectionInfoUserInput = new();
+            var newConnInfoPopup = menuFramework.MakeInputFieldPopup(cinfoHeader1, cinfoPlaceholder1, cinfoLeftButton, cinfoRightButton);
+            var changeConnInfoPopup = menuFramework.MakeInputFieldPopup(cinfoHeader1, cinfoPlaceholder1, cinfoLeftButton, cinfoRightButton);
+            var resumeFailedPopup = menuFramework.MakeTwoChoicePopup("", "Retry", "Cancel");
 
-            var initialHeaderText = "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"";
-            var initialPlaceholderText = "Enter hostname:port...";
-            var connectionInfoPopup = menuFramework.MakeInputFieldPopup(initialHeaderText, initialPlaceholderText, "Confirm", "Cancel");
-
-            var newRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("NEW RANDOMIZED EXPEDITION", 2, connectionInfoPopup);
             ModHelper.Menus.MainMenu.NewExpeditionButton.Hide();
+            var newRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("NEW RANDOM EXPEDITION", 0, newConnInfoPopup);
+            // This is a new randomizer-only button, so there's no vanilla button to hide.
+            var changeConnInfoButton = menuFramework.TitleScreen_MakeMenuOpenButton("CHANGE CONNECTION INFO", 0, changeConnInfoPopup);
+            // unfortunately hiding the vanilla Resume button with OWML ModHelper doesn't work, so we do that in TitleScreenManager_SetUpMainMenu_Postfix instead
+            var resumeRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("RESUME RANDOM EXPEDITION", 0, resumeFailedPopup);
+            //var resumeRandomExpeditionButton = menuFramework.TitleScreen_MakeSimpleButton("RESUME RANDOM EXPEDITION", 0);
+
+            SetupConnInfoButton(changeConnInfoPopup, cdata =>
+            {
+                OWMLModConsole.WriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\". Writing to mod save file.");
+                changeConnInfoPopup.EnableMenu(false);
+                SaveData.apConnectionData = cdata;
+                WriteToSaveFile();
+            });
+
+            SetupConnInfoButton(newConnInfoPopup, cdata =>
+            {
+                OWMLModConsole.WriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\".");
+
+                // we set SaveData before the connection attempt so that even if it fails, the previous
+                // connection info can be used on a second attempt to pre-populate the input fields
+                APRandomizerSaveData saveData = new();
+                saveData.apConnectionData = cdata;
+                saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>().ToDictionary(ln => ln, _ => false);
+                saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>().ToDictionary(ln => ln, _ => 0u);
+                SaveData = saveData;
+
+                var loginResult = ConnectToAPServer(cdata);
+                if (!loginResult.Successful)
+                {
+                    OWMLModConsole.WriteLine($"ConnectToAPServer failed");
+
+                    var headerText = newConnInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Text").GetComponent<Text>();
+                    var inputField = newConnInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/InputField").GetComponent<InputField>();
+                    var confirmButton = newConnInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Buttons/UIElement-ButtonConfirm");
+                    headerText.text = $"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)loginResult).Errors)}";
+                    inputField.gameObject.SetActive(false);
+                    confirmButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    // now that we know we don't need to display an error message, we can finally hide the popup
+                    newConnInfoPopup.EnableMenu(false);
+
+                    // we don't overwrite the mod save file and the player's inventory until we're sure we can really start playing this new game
+                    Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
+                    foreach (var kv in SaveData.itemsAcquired)
+                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+
+                    // also wipe the vanilla save file, since we've bypassed the base game code that would normally do this
+                    PlayerData.ResetGame();
+
+                    LoadTheGame(newRandomExpeditionButton);
+                }
+            });
+
+            resumeFailedPopup.CloseMenuOnOk(false);
+            var headerText = resumeFailedPopup.gameObject.transform.Find("PopupBlock/PopupElements/Text").GetComponent<Text>();
+            float popupOpenTime = 0;
+
+            resumeFailedPopup.OnActivateMenu += () => StartCoroutine(ResumePopupActivate());
+            IEnumerator ResumePopupActivate()
+            {
+                popupOpenTime = Time.time;
+
+                yield return new WaitForEndOfFrame();
+
+                AttemptToConnect();
+            }
+
+            resumeFailedPopup.OnPopupConfirm += () => StartCoroutine(ResumePopupConfirm());
+            IEnumerator ResumePopupConfirm()
+            {
+                OWMLModConsole.WriteLine($"resume error retry");
+                headerText.text = "Connecting...";
+                // 1 frame is not enough for the text change to become visible, for me 2 frames works
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                AttemptToConnect();
+            };
+            resumeFailedPopup.OnPopupCancel += () =>
+            {
+                OWMLModConsole.WriteLine($"resume error cancel");
+            };
+
+            void AttemptToConnect()
+            {
+                var loginResult = ConnectToAPServer(SaveData.apConnectionData);
+                if (!loginResult.Successful)
+                {
+                    var err = $"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)loginResult).Errors)}";
+                    OWMLModConsole.WriteLine(err);
+                    headerText.text = err;
+                }
+                else
+                {
+                    OWMLModConsole.WriteLine($"Connection succeeded, hiding error popup and loading game.");
+                    resumeFailedPopup.EnableMenu(false);
+
+                    LoadTheGame(resumeRandomExpeditionButton);
+                }
+            }
+        }
+
+        private void SetupConnInfoButton(PopupInputMenu connectionInfoPopup, Action<APConnectionData> callback)
+        {
+            // Without these hacks (CloseMenuOnOk and the uses of popupOpenTime), clicking the button to open this popup
+            // would also immediately close this popup before the user could interact with it.
+            connectionInfoPopup.CloseMenuOnOk(false);
+            float popupOpenTime = 0;
 
             var headerText = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Text").GetComponent<Text>();
             var inputField = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/InputField").GetComponent<InputField>();
 
-            // Without these hacks, clicking the button to open this popup would also close this popup before the user could interact with it.
-            connectionInfoPopup.CloseMenuOnOk(false);
-            connectionInfoPopup.OnActivateMenu += () => popupOpenTime = Time.time;
+            List<string> connectionInfoUserInput = new();
+
+            connectionInfoPopup.OnActivateMenu += () => StartCoroutine(Test());
+            IEnumerator Test()
+            {
+                popupOpenTime = Time.time;
+
+                yield return new WaitForEndOfFrame();
+
+                // reset popup state in case we're being reused
+                headerText.text = cinfoHeader1;
+                inputField.text = "";
+                ((Text)inputField.placeholder).text = cinfoPlaceholder1;
+                inputField.gameObject.SetActive(true);
+                connectionInfoUserInput.Clear();
+
+                var cinfo = SaveData?.apConnectionData;
+                if (cinfo != null)
+                    inputField.text = cinfo.hostname + ':' + cinfo.port;
+            }
+
             connectionInfoPopup.OnPopupConfirm += () =>
             {
                 if (OWMath.ApproxEquals(Time.time, popupOpenTime)) return;
 
                 connectionInfoUserInput.Add(connectionInfoPopup.GetInputText());
-                OWMLModConsole.WriteLine($"connectionInfoUserInput: {string.Join(", ", connectionInfoUserInput)}");
 
                 if (connectionInfoUserInput.Count == 1)
                 {
-                    headerText.text = "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"";
-                    inputField.text = "";
-                    ((Text)inputField.placeholder).text = "Enter slot/player name...";
+                    headerText.text = cinfoHeader2;
+                    inputField.text = (SaveData?.apConnectionData is null) ? "" : SaveData.apConnectionData.slotName;
+                    ((Text)inputField.placeholder).text = cinfoPlaceholder2;
                 }
                 else if (connectionInfoUserInput.Count == 2)
                 {
-                    headerText.text = "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password";
-                    inputField.text = "";
-                    ((Text)inputField.placeholder).text = "Enter password...";
+                    headerText.text = cinfoHeader3;
+                    inputField.text = (SaveData?.apConnectionData is null) ? "" : SaveData.apConnectionData.password;
+                    ((Text)inputField.placeholder).text = cinfoPlaceholder3;
                 }
                 else if (connectionInfoUserInput.Count == 3)
                 {
-                    connectionInfoPopup.EnableMenu(false);
-
-                    OWMLModConsole.WriteLine($"Creating fresh save file for this profile with connectionInfo: {string.Join(", ", connectionInfoUserInput)}");
+                    OWMLModConsole.WriteLine($"user entered connection info: {string.Join(", ", connectionInfoUserInput)}");
 
                     APConnectionData cdata = new();
 
@@ -286,36 +418,20 @@ namespace ArchipelagoRandomizer
                     cdata.slotName = connectionInfoUserInput[1];
                     cdata.password = connectionInfoUserInput[2];
 
-                    APRandomizerSaveData saveData = new();
-                    saveData.apConnectionData = cdata;
-                    saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>()
-                        .ToDictionary(ln => ln, _ => false);
-                    saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>()
-                        .ToDictionary(ln => ln, _ => 0u);
-
-                    SaveData = saveData;
-
-                    // reset popup state in case connection fails
-                    connectionInfoUserInput.Clear();
-                    headerText.text = initialHeaderText;
-                    inputField.text = "";
-                    ((Text)inputField.placeholder).text = initialPlaceholderText;
-
-                    ConnectToAPServer(cdata);
-
-                    Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
-
-                    foreach (var kv in SaveData.itemsAcquired)
-                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
-
-                    // quick and dirty attempt to reproduce what the vanilla New Expedition button does
-                    PlayerData.ResetGame();
-                    LoadManager.LoadSceneAsync(OWScene.SolarSystem, true, LoadManager.FadeType.ToBlack, 1f, false);
-                    newRandomExpeditionButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "Loading..."; // not trying to reproduce the % for now
+                    callback(cdata);
                 }
                 else
+                {
                     throw new Exception($"somehow connectionInfoUserInput has size {connectionInfoUserInput.Count}: {string.Join(", ", connectionInfoUserInput)}");
+                }
             };
+        }
+
+        // quick and dirty attempt to reproduce what the vanilla New/Resume Expedition buttons do
+        private void LoadTheGame(GameObject mainMenuButton)
+        {
+            LoadManager.LoadSceneAsync(OWScene.SolarSystem, true, LoadManager.FadeType.ToBlack, 1f, false);
+            mainMenuButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "Loading..."; // not trying to reproduce the % for now
         }
     }
 }
