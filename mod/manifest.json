@@ -4,7 +4,7 @@
   "author": "Ixrec",
   "name": "ArchipelagoRandomizer",
   "uniqueName": "Ixrec.ArchipelagoRandomizer",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "owmlVersion": "2.9.8",
   "dependencies": [
     "_nebula.MenuFramework",
