@@ -431,7 +431,37 @@ namespace ArchipelagoRandomizer
         private void LoadTheGame(GameObject mainMenuButton)
         {
             LoadManager.LoadSceneAsync(OWScene.SolarSystem, true, LoadManager.FadeType.ToBlack, 1f, false);
-            mainMenuButton.transform.GetChild(0).GetChild(1).GetComponent<Text>().text = "Loading..."; // not trying to reproduce the % for now
+            var text = mainMenuButton.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+            text.text = "Loading..."; // not trying to reproduce the % for now
+
+            var lpu = GameObject.Find("TitleMenu").AddComponent<LoadProgressUpdater>();
+            lpu.progressText = text;
+        }
+
+        class LoadProgressUpdater : MonoBehaviour
+        {
+            public Text progressText;
+
+            private void Update()
+            {
+                if (
+                    progressText != null &&
+                    (LoadManager.GetLoadingScene() == OWScene.SolarSystem || LoadManager.GetLoadingScene() == OWScene.EyeOfTheUniverse)
+                )
+                {
+                    // I dunno what's going on with the GetAsyncLoadProgress() return value, but it's not a normal 0-1 or 0-100 number like you'd expect.
+                    // This translation into a human-readable progress percentage is copy-pasted from:
+                    // https://github.com/misternebula/MenuFramework/blob/3215c0d66782908e4de557bf71ee36adf693c640/MenuFramework/CustomSubmitActionLoadScene.cs#L16-L19
+                    var loadProgress = LoadManager.GetAsyncLoadProgress();
+                    loadProgress = loadProgress < 0.1f
+                        ? Mathf.InverseLerp(0f, 0.1f, loadProgress) * 0.9f
+                        : 0.9f + (Mathf.InverseLerp(0.1f, 1f, loadProgress) * 0.1f);
+
+                    var loadProgressString = loadProgress.ToString("P0"); // P = percentage format, 0 = no decimal digits
+
+                    progressText.text = $"Loading... {loadProgressString}";
+                }
+            }
         }
     }
 }
