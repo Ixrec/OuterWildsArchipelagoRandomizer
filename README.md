@@ -8,7 +8,7 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 Public Alpha (as of January 2024).
 
-Recently became playable, though there is no tracker, no DLC integration, and many other desirable features have yet to be started. See [Roadmap](#roadmap).
+Several people have played this with no issues or minor issues. However, there is no tracker, no DLC integration, and many other desirable features have yet to be started. See [Roadmap](#roadmap).
 
 ## Contact
 
