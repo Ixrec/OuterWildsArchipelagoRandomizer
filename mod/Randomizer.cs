@@ -374,6 +374,7 @@ namespace ArchipelagoRandomizer
 
             var headerText = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Text").GetComponent<Text>();
             var inputField = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/InputField").GetComponent<InputField>();
+            var confirmButton = connectionInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Buttons/UIElement-ButtonConfirm");
 
             List<string> connectionInfoUserInput = new();
 
@@ -389,6 +390,7 @@ namespace ArchipelagoRandomizer
                 inputField.text = "";
                 ((Text)inputField.placeholder).text = cinfoPlaceholder1;
                 inputField.gameObject.SetActive(true);
+                confirmButton.gameObject.SetActive(true);
                 connectionInfoUserInput.Clear();
 
                 var cinfo = SaveData?.apConnectionData;
