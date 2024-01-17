@@ -1,5 +1,7 @@
 # Outer Wilds Archipelago Randomizer
 
+![Logo](ModLogo.png)
+
 An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
 ## Status
