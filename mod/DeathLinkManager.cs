@@ -142,8 +142,9 @@ internal class DeathLinkManager
         }
 
         Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
-        var messages = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
-        var message = messages[prng.Next(0, messages.Count)];
-        service.SendDeathLink(new DeathLink(Randomizer.SaveData.apConnectionData.slotName, Randomizer.SaveData.apConnectionData.slotName + message));
+        var messagesForDeathType = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
+        var deathLinkMessage = Randomizer.SaveData.apConnectionData.slotName + messagesForDeathType[prng.Next(0, messagesForDeathType.Count)];
+        Randomizer.InGameAPConsole.AddText($"Because death link is set to {setting}, sending this {deathType} death to other players with the message: \"{deathLinkMessage}\"");
+        service.SendDeathLink(new DeathLink(Randomizer.SaveData.apConnectionData.slotName, deathLinkMessage));
     }
 }
