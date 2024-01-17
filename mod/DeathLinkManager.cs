@@ -24,12 +24,16 @@ internal class DeathLinkManager
     public static void Enable(long value)
     {
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
+        {
             setting = (DeathLinkSetting)value;
+            Randomizer.OWMLModConsole.WriteLine($"DeathLinkManager set to death link mode: {value}");
+        }
         else
             Randomizer.OWMLModConsole.WriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
 
         if (setting != DeathLinkSetting.Off && service is null)
         {
+            Randomizer.OWMLModConsole.WriteLine($"creating and enabling DeathLinkService, and attaching OnDeathLinkReceived handler");
             service = Randomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
 
@@ -111,9 +115,23 @@ internal class DeathLinkManager
     public static void DeathManager_KillPlayer_Prefix(DeathType deathType)
     {
         // if this death was sent to us by another player's death link, do nothing, since that would start an infinite death loop
-        if (manualDeathInProgress) return;
+        if (manualDeathInProgress)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because this is a death we received from another player");
+            return;
+        }
 
-        if (setting == DeathLinkSetting.Off || service is null) return;
+        if (setting == DeathLinkSetting.Off)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is off");
+            return;
+        }
+
+        if (service is null)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"Unable to send {deathType} death to AP server because death link service is null", OWML.Common.MessageType.Error);
+            return;
+        }
 
         if (setting == DeathLinkSetting.Default) {
             if (deathType == DeathType.Meditation || deathType == DeathType.Supernova || deathType == DeathType.TimeLoop || deathType == DeathType.BigBang)
