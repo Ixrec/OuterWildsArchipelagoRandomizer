@@ -37,7 +37,12 @@ internal class LocationTriggers
         { "WHS_X4", Location.WHS },
 
         { "ORBITAL_PROBE_CANNON_X1", Location.OPC_ENTER },
+
+        // Consider "control module logs" checked if *any* of the three sets of text wheels get translated
+        { "OPC_INTACT_MODULE_X1", Location.OPC_CM },
         { "OPC_INTACT_MODULE_X2", Location.OPC_CM },
+        { "OPC_SUNKEN_MODULE_R2", Location.OPC_CM }, // the 3rd set only gives rumors
+
         { "GD_OCEAN_R3", Location.GD_BI },
         { "GD_CONSTRUCTION_YARD_X1", Location.GD_CY },
         { "GD_STATUE_WORKSHOP_X1", Location.GD_SIW },
