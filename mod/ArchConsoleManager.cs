@@ -122,7 +122,8 @@ namespace ArchipelagoRandomizer
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
 
-            StartCoroutine(LoopGreeting());
+            if (loadScene == OWScene.SolarSystem)
+                StartCoroutine(LoopGreeting());
         }
 
         // Shows the appropriate consoles when the game is paused or not
