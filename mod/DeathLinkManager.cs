@@ -54,59 +54,83 @@ internal class DeathLinkManager
     private static Dictionary<DeathType, List<string>> deathMessages = new Dictionary<DeathType, List<string>> {
         { DeathType.Default, new List<string>
         {
-            " became one with the universe",
-            " stubbed their toe on a fascinating rock"
+            " became one with the universe.",
+            " stubbed their toe on a fascinating rock.",
+            " made an oopsie."
         } },
         { DeathType.Impact, new List<string>
         {
-            " should've slowed down"
+            " should've slowed down.",
+            " checked for fall damage.",
+            " didn’t bounce."
         } },
         { DeathType.Asphyxiation, new List<string>
         {
-            " forgot to hug a tree"
+            " forgot to hug a tree.",
+            " forgot their spacesuit."
         } },
         { DeathType.Energy, new List<string>
         {
-            " experienced nuclear fusion firsthand"
+            " experienced nuclear fusion firsthand.",
+            " forgot to turn off auto pilot.",
+            " became the marshmallow.",
+            " isn't a hotshot."
         } },
         { DeathType.Supernova, new List<string>
         {
-            " roasted all the marshmallows"
+            " roasted all the marshmallows.",
+            " experienced astrophysics firsthand."
         } },
         { DeathType.Digestion, new List<string>
         {
-            " met the fish"
+            " met the fish.",
+            " did some hands on biology.",
+            " touched da fishy."
         } },
         { DeathType.BigBang, new List<string>
         {
-            "'s garage band got out of control"
+            "'s garage band got out of control.",
+            " started a sitcom."
         } },
-        /*{ DeathType.Crushed, new List<string>
+        { DeathType.Crushed, new List<string>
         {
+            " became a pancake."
         } },
         { DeathType.Meditation, new List<string>
         {
+            " took a long nap.",
+            " didn’t set an alarm."
         } },
         { DeathType.TimeLoop, new List<string>
         {
+            " wasn’t watching the clock.",
+            " couldn’t escape."
         } },
         { DeathType.Lava, new List<string>
         {
+            " will be back.",
+            " caught the ring.",
+            " went for a swim."
         } },
         { DeathType.BlackHole, new List<string>
         {
-        } },*/
+            " was spaghettified.",
+            " didn’t come out the other side."
+        } },
         { DeathType.Dream, new List<string>
         {
-            " underestimated the astral plane"
+            " underestimated the astral plane.",
+            " made a new friend."
         } },
         { DeathType.DreamExplosion, new List<string>
         {
-            " learned why product recalls are important"
+            " learned why product recalls are important.",
+            " did some QA testing."
         } },
         { DeathType.CrushedByElevator, new List<string>
         {
-            " became a Flat Hearther"
+            " became a Flat Hearther.",
+            " didn’t look up."
         } },
     };
 
