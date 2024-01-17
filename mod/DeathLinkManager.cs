@@ -50,28 +50,28 @@ internal class DeathLinkManager
     private static Dictionary<DeathType, List<string>> deathMessages = new Dictionary<DeathType, List<string>> {
         { DeathType.Default, new List<string>
         {
-            "became one with the universe",
-            "stubbed their toe on a fascinating rock"
+            " became one with the universe",
+            " stubbed their toe on a fascinating rock"
         } },
         { DeathType.Impact, new List<string>
         {
-            "should've slowed down"
+            " should've slowed down"
         } },
         { DeathType.Asphyxiation, new List<string>
         {
-            "forgot to hug a tree"
+            " forgot to hug a tree"
         } },
         { DeathType.Energy, new List<string>
         {
-            "experienced nuclear fusion firsthand"
+            " experienced nuclear fusion firsthand"
         } },
         { DeathType.Supernova, new List<string>
         {
-            "roasted all the marshmallows"
+            " roasted all the marshmallows"
         } },
         { DeathType.Digestion, new List<string>
         {
-            "met the fish"
+            " met the fish"
         } },
         { DeathType.BigBang, new List<string>
         {
@@ -94,15 +94,15 @@ internal class DeathLinkManager
         } },*/
         { DeathType.Dream, new List<string>
         {
-            "underestimated the astral plane"
+            " underestimated the astral plane"
         } },
         { DeathType.DreamExplosion, new List<string>
         {
-            "learned why product recalls are important"
+            " learned why product recalls are important"
         } },
         { DeathType.CrushedByElevator, new List<string>
         {
-            "became a Flat Hearther"
+            " became a Flat Hearther"
         } },
     };
 
@@ -126,6 +126,6 @@ internal class DeathLinkManager
         Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
         var messages = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
         var message = messages[prng.Next(0, messages.Count)];
-        service.SendDeathLink(new DeathLink(Randomizer.SaveData.apConnectionData.slotName, message));
+        service.SendDeathLink(new DeathLink(Randomizer.SaveData.apConnectionData.slotName, Randomizer.SaveData.apConnectionData.slotName + message));
     }
 }
