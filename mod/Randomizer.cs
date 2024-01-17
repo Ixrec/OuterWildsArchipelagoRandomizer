@@ -71,7 +71,9 @@ namespace ArchipelagoRandomizer
                 if (SaveData is null)
                 {
                     OWMLModConsole.WriteLine($"No save file found for this profile.");
-                    // Hiding the resume button here doesn't stick. We have to wait for TitleScreenManager_SetUpMainMenu_Postfix to do it.
+                    // Hiding the vanilla resume button here doesn't stick. We have to wait for TitleScreenManager_SetUpMainMenu_Postfix to do it.
+                    ChangeConnInfoButton?.SetActive(false);
+                    ResumeRandomExpeditionButton?.SetActive(false);
                 }
                 else
                 {
@@ -80,6 +82,9 @@ namespace ArchipelagoRandomizer
 
                     foreach (var kv in SaveData.itemsAcquired)
                         LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+
+                    ChangeConnInfoButton?.SetActive(true);
+                    ResumeRandomExpeditionButton?.SetActive(true);
                 }
             };
         }
@@ -242,6 +247,9 @@ namespace ArchipelagoRandomizer
         private static string cinfoLeftButton = "Confirm";
         private static string cinfoRightButton = "Cancel";
 
+        private static GameObject ChangeConnInfoButton = null;
+        private static GameObject ResumeRandomExpeditionButton = null;
+
         private IEnumerator SetupMainMenu(IMenuAPI menuFramework)
         {
             yield return new WaitForEndOfFrame();
@@ -253,10 +261,12 @@ namespace ArchipelagoRandomizer
             ModHelper.Menus.MainMenu.NewExpeditionButton.Hide();
             var newRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("NEW RANDOM EXPEDITION", 0, newConnInfoPopup);
             // This is a new randomizer-only button, so there's no vanilla button to hide.
-            var changeConnInfoButton = menuFramework.TitleScreen_MakeMenuOpenButton("CHANGE CONNECTION INFO", 0, changeConnInfoPopup);
+            ChangeConnInfoButton = menuFramework.TitleScreen_MakeMenuOpenButton("CHANGE CONNECTION INFO", 0, changeConnInfoPopup);
             // unfortunately hiding the vanilla Resume button with OWML ModHelper doesn't work, so we do that in TitleScreenManager_SetUpMainMenu_Postfix instead
-            var resumeRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("RESUME RANDOM EXPEDITION", 0, resumeFailedPopup);
-            //var resumeRandomExpeditionButton = menuFramework.TitleScreen_MakeSimpleButton("RESUME RANDOM EXPEDITION", 0);
+            ResumeRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("RESUME RANDOM EXPEDITION", 0, resumeFailedPopup);
+
+            ChangeConnInfoButton?.SetActive(SaveData is not null);
+            ResumeRandomExpeditionButton?.SetActive(SaveData is not null);
 
             SetupConnInfoButton(changeConnInfoPopup, cdata =>
             {
@@ -350,7 +360,7 @@ namespace ArchipelagoRandomizer
                     OWMLModConsole.WriteLine($"Connection succeeded, hiding error popup and loading game.");
                     resumeFailedPopup.EnableMenu(false);
 
-                    LoadTheGame(resumeRandomExpeditionButton);
+                    LoadTheGame(ResumeRandomExpeditionButton);
                 }
             }
         }
