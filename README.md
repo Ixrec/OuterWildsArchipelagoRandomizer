@@ -117,12 +117,14 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 
 - A dedicated tracker. Will probably be added to the in-game ship log, and contributed by GameWyrm, hence this does not have a target release yet.
 
+- Reducing or removing your starting oxygen, fuel, boost, etc? (would make some of these upgrades progression)
+
+- Support `goal: random` by putting the goal somewhere in game, and having clearer feedback at the end if you haven't met the goal yet
+
 - Flavor Text and Hints:
 	- Edit various NPC conversations to account for you not starting off with many of your vanilla starting tools
 	- Edit various Nomai text to account for the Nomai codes progression items
 	- Edit the other astronauts' dialogue to offer hints about valuable item locations on their respective planets
-
-- Reducing or removing your starting oxygen, fuel, boost, etc? (would make some of these upgrades progression)
 
 - "rumorsanity" (all the ship log rumors too), "textsanity" (every note, casette tape, Nomai text line, dialogue line, etc) settings?
 
@@ -131,6 +133,8 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 - "Log Hunt", where the goal is getting N ship logs? Similarly: a Relic Hunt like Outer Relics, or literally by interfacing with Outer Relics?
 
 - A generic API for other OW mods to declare their randomizable stuff???
+
+- Figure out if Quantum Space Buddies (the co-op mod) just works, or can be made to work with code changes
 
 ## Running From Source
 
