@@ -40,7 +40,7 @@ In randomizer terms: "items" are placed at randomly selected "locations" (while 
 
 ### Prerequisites
 
-- Make sure you have the Steam version of Outer Wilds installed
+- Make sure you have Outer Wilds installed
 - Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
 - Install the [core Archipelago tools](https://github.com/ArchipelagoMW/Archipelago/releases) (at least version 0.4.4)
 - Go to [the Releases page](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases) of this repository and look at the latest release. There should be three files to download: A .zip, an .apworld and a .yaml.
@@ -65,20 +65,26 @@ Let's create a randomized "multiworld" with only a single Outer Wilds world in i
 
 For a more complex multiworld, you'd put one `.yaml` file in the `\Players` folder for each world you want to generate. You can have multiple worlds of the same game (each with different settings), as well as several different games, as long as each `.yaml` file has a unique player/slot name. It also doesn't matter who plays which game; it's common for one human player to play more than one game in a multiworld.
 
-### Outer Wilds game mod setup
+### Modding and Running Outer Wilds
+
+- In the Outer Wilds Mod Manager, click on "Get Mods", search for "Archipelago Randomizer", and once you see this mod listed, click the install button to the right of it.
+- (**Optional: Other Mods**) Some other mods that I personally like to play with, and that this randomizer is compatible with, include: "Clock" (exactly what it sounds like), "Cheat and Debug Menu" (for its fast-forward button), and "Suit Log" (access the ship log from your suit).
+- Now click the big green Run Game button. Note that you must launch Outer Wilds through the Mod Manager in order for the mods to be applied; launching from Steam won't work.
+- Once you're at the main menu of Outer Wilds itself, click "New Random Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml` (or used multiple `.yaml`s), your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
+
+#### What if I want to run an older version of this mod (so I can finish a longer async), or run a prerelease version for testing?
+
+<details>
+<summary>Click here to show instructions</summary>
+
+To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Releases page has all the mod `.zip`s for past releases (and the current `.zip`, which is what the Mod Manager normally downloads for you). If I've put a "prerelease" version somewhere, it's probably just a `.zip` uploaded to Discord.
 
 - In the Mod Manager, click the 3 dots icon, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
 - Open the `Mods/` subfolder.
-- In here, unzip the `Ixrec.ArchipelagoRandomizer.zip` file from the Releases page, and overwrite any previous version you might have.
+- In here, unzip the `Ixrec.ArchipelagoRandomizer.zip` file, and overwrite any previous version you might have.
 - The Mod Manager should immediately detect and display it this mod. If it doesn't, click the Refresh button in the top left.
-- If this is your first time installing this mod, the Mod Manager will probably complain about missing dependencies. To install them, click on the "fix issues" button (the hammer and wrench icon) in the Mod Manager's "Actions" column.
-
-- (**Optional: Other Mods**) Some other mods that I personally like to play with, and that this randomizer is compatible with, include: "Clock" (exactly what it sounds like), "Cheat and Debug Menu" (for its fast-forward button), and "Suit Log" (access the ship log from your suit).
-
-### Running your modded Outer Wilds
-
-- In the Outer Wilds Mod Manager, click the big green Run Game button. You must launch Outer Wilds through the Mod Manager in order for the mods to be applied.
-- In Outer Wilds itself, click "New Random Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml`, your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
+- If the Mod Manager complains about missing dependencies, install them by clicking on the "fix issues" button (the hammer and wrench icon) in the Mod Manager's "Actions" column.
+</details>
 
 ## Roadmap
 
@@ -134,9 +140,26 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 
 - A generic API for other OW mods to declare their randomizable stuff???
 
-- Figure out if Quantum Space Buddies (the co-op mod) just works, or can be made to work with code changes
+- Test compatibility with more OW mods
+
+## Mod Compatibility
+
+Outer Wilds mods that have been tested with this Archipelago Randomizer mod include:
+
+- Clock: Just works
+- Cheat and Debug Menu: Just works
+- Suit Log: Just works
+- Unity Explorer: Just works
+- Light Bramble (thanks Rever for testing this): Just works, although it makes the "Silent Running Mode" item pointless.
+- NomaiVR (thanks Snout for testing this): Awkward but can be made to work. You have to play a little bit with just the AP mod until you get the "Resume Random Expedition" option, then restart with the VR mod, and also turn off gesture tutorials, but then it works.
+- Quantum Space Buddies: Awkward but can *probably* be made to work. I believe you would have to use one of the "... Random Expedition" main menu buttons to connect to your AP server, immediately quit back to the main menu, then use either of QSB's main menu buttons to load the game with multiplayer. Please tell us if you can test this properly.
+
+Story/content mods will (at best) work in a technical sense, but it wouldn't make sense to enable one of those alongside this randomizer, because this randomizer only knows how to randomize the vanilla game's content.
 
 ## Running From Source
+
+<details>
+<summary>Click here to show instructions</summary>
 
 ### Prerequisites
 
@@ -163,6 +186,7 @@ In addition to the prerequisites from [Installation](#installation):
 - Copy the `worlds/outer_wilds` folder from your local clone over to the `lib/worlds/` folder inside your Archipelago installation folder
   - Optionally: If you need to send this to someone else, such as the host of your player group, you may zip the folder and rename the extension from `.zip` to `.apworld`. That's all an "apworld file" is, after all.
 - Run ArchipelagoLauncher.exe in your Archipelago installation folder and select "Generate Template Settings" to create a sample Outer Wilds.yaml file
+</details>
 
 ## Credits
 
