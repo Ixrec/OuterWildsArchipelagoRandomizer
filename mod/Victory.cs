@@ -43,7 +43,15 @@ internal class Victory
             if (goalSetting == GoalSetting.SongOfFive)
                 isVictory = true;
             else // currently SongOfSix is the only other goal
-                isVictory = metSolanum;
+            {
+                if (metSolanum)
+                    isVictory = true;
+                else
+                {
+                    Randomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} is NOT completed. Notifying the player.", OWML.Common.MessageType.Info);
+                    Randomizer.InGameAPConsole.AddText("<color=red>Goal NOT completed.</color> Your goal is Song of Six, but you haven't met Solanum yet.");
+                }
+            }
 
             if (isVictory)
             {

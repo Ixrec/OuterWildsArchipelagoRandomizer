@@ -245,6 +245,10 @@ namespace ArchipelagoRandomizer
             LocationNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "locations.jsonc");
             Randomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs");
 
+            // Set up the console first so it can be safely used even in the various Setup() methods
+            Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
+            InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
+
             WarpPlatforms.Setup();
             Tornadoes.Setup();
             QuantumImaging.Setup();
@@ -256,9 +260,6 @@ namespace ArchipelagoRandomizer
             ModHelper.Menus.MainMenu.OnInit += () => StartCoroutine(SetupMainMenu(menuFramework));
 
             SetupSaveData();
-
-            Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
-            InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
         }
