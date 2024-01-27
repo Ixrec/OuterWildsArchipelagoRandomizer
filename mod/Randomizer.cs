@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,8 +45,31 @@ namespace ArchipelagoRandomizer
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
 
-        public void WriteToSaveFile() =>
-            ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+        // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
+        private static Task pendingSaveFileWrite = null;
+        private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
+        public void WriteToSaveFile()
+        {
+            if (pendingSaveFileWrite is not null) return;
+
+            if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
+            {
+                OWMLModConsole.WriteLine("WriteToSaveFile() actually writing immediately, and scheduling a pending write in 1 second");
+                ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+                lastWriteTime = DateTimeOffset.UtcNow;
+            }
+            else
+                OWMLModConsole.WriteLine("WriteToSaveFile() scheduling a pending write in 1 second");
+
+            pendingSaveFileWrite = Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+
+                OWMLModConsole.WriteLine("WriteToSaveFile() executing a pending write after 1 second");
+                ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+                lastWriteTime = DateTimeOffset.UtcNow;
+            });
+        }
 
         private void SetupSaveData()
         {
