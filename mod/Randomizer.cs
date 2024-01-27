@@ -56,7 +56,8 @@ namespace ArchipelagoRandomizer
                 Directory.CreateDirectory(saveDataFolder);
             }
 
-            StandaloneProfileManager.SharedInstance.OnProfileReadDone += () => {
+            StandaloneProfileManager.SharedInstance.OnProfileReadDone += () =>
+            {
                 if (StandaloneProfileManager.SharedInstance._currentProfile is null)
                 {
                     OWMLModConsole.WriteLine($"No profile loaded", OWML.Common.MessageType.Error);
@@ -260,6 +261,8 @@ namespace ArchipelagoRandomizer
             ModHelper.Menus.MainMenu.OnInit += () => StartCoroutine(SetupMainMenu(menuFramework));
 
             SetupSaveData();
+
+            ModHelper.Menus.PauseMenu.OnInit += () => StartCoroutine(SetupPauseMenu(menuFramework));
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
         }
@@ -511,6 +514,22 @@ namespace ArchipelagoRandomizer
 
                     progressText.text = $"Loading... {loadProgressString}";
                 }
+            }
+        }
+
+        private IEnumerator SetupPauseMenu(IMenuAPI menuFramework)
+        {
+            yield return new WaitForEndOfFrame();
+
+            if (LoadManager.GetCurrentScene() == OWScene.EyeOfTheUniverse)
+            {
+                var button = menuFramework.PauseMenu_MakeSimpleButton("QUIT AND RESET\nTO SOLAR SYSTEM");
+                button.onClick.AddListener(() =>
+                {
+                    OWMLModConsole.WriteLine($"reset clicked");
+                    PlayerData.SaveEyeCompletion();
+                    LoadManager.LoadScene(OWScene.TitleScreen, LoadManager.FadeType.None, 1f, true);
+                });
             }
         }
     }
