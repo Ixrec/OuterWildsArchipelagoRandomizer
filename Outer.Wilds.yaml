@@ -20,8 +20,8 @@ Outer Wilds:
 
   goal:
     # The victory condition for your Archipelago run.
-    # Song of Five: Reach the Eye and gather the 5 Hearthian travelers
-    # Song of Six: Reach the Eye and gather 6 travelers (5 Hearthians and Solanum).
+    # Song of Five: Reach the Eye
+    # Song of Six: Reach the Eye after meeting Solanum
     song_of_five: 50
     song_of_six: 0
 
