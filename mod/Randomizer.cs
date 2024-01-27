@@ -477,7 +477,8 @@ namespace ArchipelagoRandomizer
         // quick and dirty attempt to reproduce what the vanilla New/Resume Expedition buttons do
         private void LoadTheGame(GameObject mainMenuButton)
         {
-            LoadManager.LoadSceneAsync(OWScene.SolarSystem, true, LoadManager.FadeType.ToBlack, 1f, false);
+            var scene = PlayerData.GetWarpedToTheEye() ? OWScene.EyeOfTheUniverse : OWScene.SolarSystem;
+            LoadManager.LoadSceneAsync(scene, true, LoadManager.FadeType.ToBlack, 1f, false);
             var text = mainMenuButton.transform.GetChild(0).GetChild(1).GetComponent<Text>();
             text.text = "Loading..."; // not trying to reproduce the % for now
 
