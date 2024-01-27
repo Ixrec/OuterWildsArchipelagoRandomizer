@@ -1,7 +1,6 @@
 ﻿using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
-using Newtonsoft.Json;
 using System;
 
 namespace ArchipelagoRandomizer;
@@ -26,31 +25,20 @@ internal class Victory
         else
             Randomizer.OWMLModConsole.WriteLine($"{goal} is not a valid goal setting", OWML.Common.MessageType.Error);
     }
-
-    static bool prisonerJoined = false;
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(QuantumCampsiteController), nameof(QuantumCampsiteController.OnPrisonerErased))]
-    public static void QuantumCampsiteController_OnPrisonerErased_Prefix() => prisonerJoined = false;
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(QuantumCampsiteController), nameof(QuantumCampsiteController.OnPrisonerJoined))]
-    public static void QuantumCampsiteController_OnPrisonerJoined_Prefix() => prisonerJoined = true;
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(QuantumCampsiteController), nameof(QuantumCampsiteController.CheckTravelersGathered))]
-    public static void QuantumCampsiteController_CheckTravelersGathered_Prefix(QuantumCampsiteController __instance)
+    public static void Setup()
     {
-        var metSolanum = PlayerData.GetPersistentCondition("MET_SOLANUM");
-
-        Randomizer.OWMLModConsole.WriteLine($"QuantumCampsiteController.CheckTravelersGathered\n" +
-            $"AreAllTravelersGathered(): {__instance.AreAllTravelersGathered()}\n" +
-            $"MET_SOLANUM: {metSolanum}\n" +
-            $"MET_PRISONER: {PlayerData.GetPersistentCondition("MET_PRISONER")}\n" +
-            $"Prisoner joined: {prisonerJoined}\n" +
-            $"Goal setting is: {goalSetting}");
-
-        if (__instance.AreAllTravelersGathered())
+        LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {
+            if (loadScene != OWScene.EyeOfTheUniverse) return;
+
+            var metSolanum = PlayerData.GetPersistentCondition("MET_SOLANUM");
+            var metPrisoner = PlayerData.GetPersistentCondition("MET_PRISONER");
+
+            Randomizer.OWMLModConsole.WriteLine($"EyeOfTheUniverse scene loaded.\n" +
+                $"MET_SOLANUM: {metSolanum}\n" +
+                $"MET_PRISONER: {metPrisoner}\n" +
+                $"Goal setting is: {goalSetting}");
+
             bool isVictory = false;
             if (goalSetting == GoalSetting.SongOfFive)
                 isVictory = true;
@@ -65,6 +53,6 @@ internal class Victory
                 statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
                 Randomizer.APSession.Socket.SendPacket(statusUpdatePacket);
             }
-        }
+        };
     }
 }

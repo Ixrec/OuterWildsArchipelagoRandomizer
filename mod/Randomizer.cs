@@ -250,6 +250,7 @@ namespace ArchipelagoRandomizer
             QuantumImaging.Setup();
             Jellyfish.Setup();
             GhostMatter.Setup();
+            Victory.Setup();
 
             var menuFramework = ModHelper.Interaction.TryGetModApi<IMenuAPI>("_nebula.MenuFramework");
             ModHelper.Menus.MainMenu.OnInit += () => StartCoroutine(SetupMainMenu(menuFramework));
