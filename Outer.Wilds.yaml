@@ -1,0 +1,33 @@
+﻿name: Hearthian{number}
+description: Outer Wilds Example
+game: Outer Wilds
+requires:
+  version: 0.4.4
+Outer Wilds:
+  # generic Archipelago settings
+  progression_balancing: normal
+  accessibility: items
+  local_items: []
+  non_local_items: []
+  start_inventory: {}
+  start_hints: []
+  start_location_hints: []
+  exclude_locations: []
+  priority_locations: []
+  item_links: []
+
+  # settings specific to Outer Wilds
+
+  goal:
+    # The victory condition for your Archipelago run.
+    # Song of Five: Reach the Eye and gather the 5 Hearthian travelers
+    # Song of Six: Reach the Eye and gather 6 travelers (5 Hearthians and Solanum).
+    song_of_five: 50
+    song_of_six: 0
+
+  death_link:
+    # When you die, everyone dies. Of course the reverse is true too.
+    # The "default" option will not include deaths to meditation, the supernova or the time loop ending.
+    off: 50
+    default: 0
+    all_deaths: 0
