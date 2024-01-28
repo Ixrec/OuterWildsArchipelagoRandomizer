@@ -8,7 +8,8 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class LocationTriggers
 {
-    static Dictionary<string, Location> logFactToLocation = new Dictionary<string, Location>{
+    // Only for default locations. Logsanity locations have the log fact in their id so they don't need an additional hardcoded map.
+    static Dictionary<string, Location> logFactToDefaultLocation = new Dictionary<string, Location>{
         { "S_SUNSTATION_X2", Location.SS },
 
         { "CT_HIGH_ENERGY_LAB_X3", Location.ET_HEL },
@@ -114,7 +115,10 @@ internal class LocationTriggers
         var locationChecked = Randomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+            if (LocationNames.IsLogsanityLocation(location) && !(Randomizer.SlotData is not null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1))
+                Randomizer.OWMLModConsole.WriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
+            else
+                Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
@@ -125,14 +129,14 @@ internal class LocationTriggers
         }
         else
         {
-            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file");
+            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
             locationChecked[location] = true;
             Randomizer.Instance.WriteToSaveFile();
 
             if (LocationNames.locationToArchipelagoId.ContainsKey(location))
             {
                 var locationId = LocationNames.locationToArchipelagoId[location];
-                Randomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked");
+                Randomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
 
                 // we want to time out relatively quickly if the server happens to be down
                 var checkLocationTask = Task.Run(() => Randomizer.APSession.Locations.CompleteLocationChecks(locationId));
@@ -180,16 +184,16 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-
-        // Currently, only a subset of ship log facts are location triggers.
-        // But I want the released mod to be logging these ids so that players who want a "logsanity"
-        // and/or "rumorsanity" option can help assemble the list of locations and rules for it.
         Randomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
 
-        if (logFactToLocation.ContainsKey(factId))
-        {
-            var locationName = logFactToLocation[factId];
-            CheckLocation(locationName);
+        if (logFactToDefaultLocation.ContainsKey(factId))
+            CheckLocation(logFactToDefaultLocation[factId]);
+
+        if (Randomizer.SlotData is not null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1) {
+            // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
+            // we can simply parse the fact id instead of writing another hardcoded map.
+            if (Enum.TryParse<Location>($"SLF__{factId}", out var location))
+                CheckLocation(location);
         }
     }
 
