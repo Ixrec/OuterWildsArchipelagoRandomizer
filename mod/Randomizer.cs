@@ -37,10 +37,13 @@ namespace ArchipelagoRandomizer
     {
         public static Randomizer Instance;
 
-        public static APRandomizerSaveData SaveData;
         public static AssetBundle Assets;
+
         private static string SaveFileName;
+        public static APRandomizerSaveData SaveData;
+
         public static ArchipelagoSession APSession;
+        public static Dictionary<string, object> SlotData;
 
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
@@ -171,14 +174,14 @@ namespace ArchipelagoRandomizer
             if (!result.Successful)
                 return result;
 
-            var loginSuccess = (LoginSuccessful)result;
-            OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
+            SlotData = ((LoginSuccessful)result).SlotData;
+            OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(SlotData)}");
 
-            if (loginSuccess.SlotData.ContainsKey("death_link"))
-                DeathLinkManager.Enable((long)loginSuccess.SlotData["death_link"]);
+            if (SlotData.ContainsKey("death_link"))
+                DeathLinkManager.Enable((long)SlotData["death_link"]);
 
-            if (loginSuccess.SlotData.ContainsKey("goal"))
-                Victory.SetGoal((long)loginSuccess.SlotData["goal"]);
+            if (SlotData.ContainsKey("goal"))
+                Victory.SetGoal((long)SlotData["goal"]);
 
             // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
             // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
