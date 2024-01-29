@@ -8,7 +8,7 @@ namespace ArchipelagoRandomizer;
 public enum Location
 {
     // Default Locations
-    SPACESHIP,
+    SPACESHIP, // no longer in use; keeping for backwards compatibility with existing mod save files
     SS,
     ET_DRUM,
     ET_HEL,
@@ -461,7 +461,7 @@ public enum Location
 public static class LocationNames
 {
     public static bool IsDefaultLocation(Location location) =>
-        location >= Location.SPACESHIP && location <= Location.FREQ_HIDE_SEEK;
+        location >= Location.SS && location <= Location.FREQ_HIDE_SEEK;
     public static bool IsDLCLocation(Location location) =>
         false;
     public static bool IsLogsanityLocation(Location location) =>
@@ -470,8 +470,6 @@ public static class LocationNames
         false;
 
     public static Dictionary<Location, string> locationNames = new Dictionary<Location, string> {
-        { Location.SPACESHIP, "Enter Your Spaceship" },
-
         { Location.SS, "Sun Station (Projection Stone Text)" },
 
         { Location.ET_HEL, "ET: High Energy Lab (Upper Text Wall)" },

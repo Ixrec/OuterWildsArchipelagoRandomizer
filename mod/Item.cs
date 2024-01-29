@@ -8,7 +8,7 @@ namespace ArchipelagoRandomizer;
 public enum Item
 {
     LaunchCodes,
-    Spaceship,
+    Spaceship, // no longer in use; keeping for backwards compatibility with existing mod save files
 
     Translator,
     Signalscope,
@@ -52,7 +52,6 @@ public static class ItemNames
 {
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
-        { Item.Spaceship, "Spaceship" },
 
         { Item.Translator, "Translator" },
         { Item.Signalscope, "Signalscope" },

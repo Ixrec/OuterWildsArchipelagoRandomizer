@@ -105,8 +105,7 @@ internal class LocationTriggers
         { Location.TH_GALENA_SIGNAL, Item.SignalGalena },
         { Location.TH_TEPHRA_SIGNAL, Item.SignalTephra },
 
-        { Location.TH_HORNFELS, Item.LaunchCodes },
-        { Location.SPACESHIP, Item.Spaceship }
+        { Location.TH_HORNFELS, Item.LaunchCodes }
     };*/
 
 
@@ -155,7 +154,6 @@ internal class LocationTriggers
         switch (item)
         {
             case Item.LaunchCodes: break; // Not necessary until launch codes can be shuffled, and it's surprisingly subtle to set them without crashing.
-            case Item.Spaceship: break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
 
             case Item.Translator: Translator.hasTranslator = (count > 0); break;
             case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
@@ -202,15 +200,6 @@ internal class LocationTriggers
     public static void PlayerData_LearnLaunchCodes_Prefix()
     {
         CheckLocation(Location.TH_HORNFELS);
-    }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerState), nameof(PlayerState.OnEnterShip))]
-    public static void PlayerState_OnEnterShip_Prefix()
-    {
-        // not an important optimization, but a very easy one
-        var firstTimeThisLoop = !PlayerState.HasPlayerEnteredShip();
-        if (firstTimeThisLoop)
-            CheckLocation(Location.SPACESHIP);
     }
     [HarmonyPrefix]
     [HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.EndConversation))]
