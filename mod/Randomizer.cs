@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using ArchipelagoRandomizer.InGameTracker;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -44,6 +45,7 @@ namespace ArchipelagoRandomizer
 
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
+        public static TrackerManager Tracker;
 
         // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
         private static Task pendingSaveFileWrite = null;
@@ -276,6 +278,8 @@ namespace ArchipelagoRandomizer
             // Set up the console first so it can be safely used even in the various Setup() methods
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
             InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
+
+            Tracker = gameObject.AddComponent<TrackerManager>();
 
             WarpPlatforms.Setup();
             Tornadoes.Setup();
@@ -559,5 +563,35 @@ namespace ArchipelagoRandomizer
                 });
             }
         }
+
+        #region EasierLogging
+        // I'm tired of doing Randomizer.Instance.Modhelper.Console.WriteLine every time I want to log something,
+        // so here's some convenient shorthand I do in my other mods
+        // Existing logs should be pivoted to use these functions for consistency
+        public static void Log(string message)
+        {
+            Instance.ModHelper.Console.WriteLine(message, MessageType.Message);
+        }
+
+        public static void LogInfo(string message)
+        {
+            Instance.ModHelper.Console.WriteLine(message, MessageType.Info);
+        }
+
+        public static void LogWarning(string message)
+        {
+            Instance.ModHelper.Console.WriteLine(message, MessageType.Warning);
+        }
+
+        public static void LogError(string message)
+        {
+            Instance.ModHelper.Console.WriteLine(message, MessageType.Error);
+        }
+
+        public static void LogSuccess(string message)
+        {
+            Instance.ModHelper.Console.WriteLine(message, MessageType.Success);
+        }
+        #endregion
     }
 }

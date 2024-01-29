@@ -38,6 +38,9 @@
     <None Include="Archipelago.MultiClient.Net.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="InGameTracker/Icons/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ArchipelagoRandomizer.csproj.user" />
