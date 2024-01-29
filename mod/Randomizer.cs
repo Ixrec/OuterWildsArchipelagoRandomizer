@@ -76,7 +76,7 @@ namespace ArchipelagoRandomizer
 
         private void SetupSaveData()
         {
-            var saveDataFolder = ModHelper.Manifest.ModFolderPath + "SaveData";
+            var saveDataFolder = Path.Combine(ModHelper.Manifest.ModFolderPath, "SaveData");
             if (!Directory.Exists(saveDataFolder))
             {
                 OWMLModConsole.WriteLine($"Creating SaveData folder: {saveDataFolder}");
@@ -272,8 +272,8 @@ namespace ArchipelagoRandomizer
             // item ids/names, location ids/names and logic rules are kept in sync.
             // That's why this repo has a submodule for my Archipelago fork with the .apworld,
             // and why this project's .csproj has a rule to copy these files out of the submodule.
-            ItemNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "items.jsonc");
-            LocationNames.LoadArchipelagoIds(ModHelper.Manifest.ModFolderPath + "locations.jsonc");
+            ItemNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "items.jsonc"));
+            LocationNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "locations.jsonc"));
             Randomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs");
 
             // Set up the console first so it can be safely used even in the various Setup() methods
