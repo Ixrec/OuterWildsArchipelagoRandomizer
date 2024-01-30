@@ -104,31 +104,31 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 case "FrequencyOWV":
                     infos.Add("Signals found: ");
-                    if (inventory[Item.SignalEsker] > 0) infos.Add("Esker's Whistling");
-                    if (inventory[Item.SignalChert] > 0) infos.Add("Chert's Drums");
-                    if (inventory[Item.SignalRiebeck] > 0) infos.Add("Riebeck's Banjo");
-                    if (inventory[Item.SignalGabbro] > 0) infos.Add("Gabbro's Flute");
-                    if (inventory[Item.SignalFeldspar] > 0) infos.Add("Feldspar's Harmonica");
+                    if (inventory[Item.SignalEsker] > 0) infos.Add("  Esker's Whistling");
+                    if (inventory[Item.SignalChert] > 0) infos.Add("  Chert's Drums");
+                    if (inventory[Item.SignalRiebeck] > 0) infos.Add("  Riebeck's Banjo");
+                    if (inventory[Item.SignalGabbro] > 0) infos.Add("  Gabbro's Flute");
+                    if (inventory[Item.SignalFeldspar] > 0) infos.Add("  Feldspar's Harmonica");
                     break;
                 case "FrequencyQF":
                     infos.Add("Signals found: ");
-                    if (inventory[Item.SignalMuseumShard] > 0) infos.Add("Museum Shard");
-                    if (inventory[Item.SignalGroveShard] > 0) infos.Add("Grove Shard");
-                    if (inventory[Item.SignalCaveShard] > 0) infos.Add("Cave Shard");
-                    if (inventory[Item.SignalTowerShard] > 0) infos.Add("Tower Shard");
-                    if (inventory[Item.SignalIslandShard] > 0) infos.Add("Island Shard");
-                    if (inventory[Item.SignalQM] > 0) infos.Add("Quantum Moon");
+                    if (inventory[Item.SignalMuseumShard] > 0) infos.Add("  Museum Shard");
+                    if (inventory[Item.SignalGroveShard] > 0) infos.Add("  Grove Shard");
+                    if (inventory[Item.SignalCaveShard] > 0) infos.Add("  Cave Shard");
+                    if (inventory[Item.SignalTowerShard] > 0) infos.Add("  Tower Shard");
+                    if (inventory[Item.SignalIslandShard] > 0) infos.Add("  Island Shard");
+                    if (inventory[Item.SignalQM] > 0) infos.Add("  Quantum Moon");
                     break;
                 case "FrequencyDB":
                     infos.Add("Signals found: ");
-                    if (inventory[Item.SignalEP1] > 0) infos.Add("Escape Pod 1");
-                    if (inventory[Item.SignalEP2] > 0) infos.Add("Escape Pod 2");
-                    if (inventory[Item.SignalEP3] > 0) infos.Add("Escape Pod 3");
+                    if (inventory[Item.SignalEP1] > 0) infos.Add("  Escape Pod 1");
+                    if (inventory[Item.SignalEP2] > 0) infos.Add("  Escape Pod 2");
+                    if (inventory[Item.SignalEP3] > 0) infos.Add("  Escape Pod 3");
                     break;
                 case "FrequencyHS":
                     infos.Add("Signals found: ");
-                    if (inventory[Item.SignalTephra] > 0) infos.Add("Tephra");
-                    if (inventory[Item.SignalGalena] > 0) infos.Add("Galena");
+                    if (inventory[Item.SignalTephra] > 0) infos.Add("  Tephra");
+                    if (inventory[Item.SignalGalena] > 0) infos.Add("  Galena");
                     break;
             }
             foreach (string info in infos)
