@@ -1,9 +1,6 @@
-﻿using Archipelago.MultiClient.Net.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +16,9 @@ namespace ArchipelagoRandomizer.InGameTracker
         public TrackerManager Tracker;
 
         private int selectedIndex;
-        private Image icon => Wrapper.GetPhoto();
-        private Text questionMark => Wrapper.GetQuestionMark();
-        private Dictionary<Item, uint> inventory => Randomizer.SaveData.itemsAcquired;
+        private Image Icon => Wrapper.GetPhoto();
+        private Text QuestionMark => Wrapper.GetQuestionMark();
+        private Dictionary<Item, uint> Inventory => Randomizer.SaveData.itemsAcquired;
 
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
@@ -107,25 +104,26 @@ namespace ArchipelagoRandomizer.InGameTracker
             return "";
         }
 
+        // Shows the item selected and the associated info
         private void SelectItem(int index)
         {
             string itemID = Tracker.ItemEntries.ElementAt(index).Key;
             Sprite tex = TrackerManager.GetSprite(itemID);
             bool itemExists = Enum.TryParse(itemID, out Item result);
             // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
-            if (!itemExists || inventory[result] > 0)
+            if (!itemExists || Inventory[result] > 0)
             {
                 if (tex != null)
                 {
-                    icon.sprite = tex;
-                    icon.gameObject.SetActive(true);
-                    questionMark.gameObject.SetActive(false);
+                    Icon.sprite = tex;
+                    Icon.gameObject.SetActive(true);
+                    QuestionMark.gameObject.SetActive(false);
                 }
             }
             else
             {
-                icon.gameObject.SetActive(false);
-                questionMark.gameObject.SetActive(true);
+                Icon.gameObject.SetActive(false);
+                QuestionMark.gameObject.SetActive(true);
             }
 
             TrackerDescriptions.DisplayItemText(itemID, Wrapper);

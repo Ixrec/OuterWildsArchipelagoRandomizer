@@ -14,11 +14,12 @@ namespace ArchipelagoRandomizer.InGameTracker
             var inventory = Randomizer.SaveData.itemsAcquired;
             Dictionary<string, Tuple<string, string>> hints = Randomizer.Tracker.Hints;
             Wrapper.DescriptionFieldClear();
-            List<string> infos = new List<string>();
+            List<string> infos = new();
             bool discoveredItem = Enum.TryParse(itemID, out Item result);
             // There may be a few dummy items that aren't actually tracked by the randomizer, like FrequencyOWV
             // In the event of a dummy item being submitted, we want to assume it does exist
             // If it doesn't it'll run into the default condition
+            // Can't use the enums here for some reason, so use strings as the names
             if (!discoveredItem || inventory[result] > 0)
             {
                 switch (itemID)

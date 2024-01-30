@@ -1,9 +1,7 @@
 ﻿using Archipelago.MultiClient.Net.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.InGameTracker
@@ -20,32 +18,30 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
-        public readonly Dictionary<string, string> ItemEntries = new Dictionary<string, string>
+        public readonly Dictionary<string, string> ItemEntries = new()
         {
-            {"Coordinates", "Eye of the Universe Coordinates" },
-            {"LaunchCodes", "Launch Codes"},
-            {"Translator", "Translator" },
-            {"Signalscope", "Signalscope" },
-            {"EntanglementRule", "Suit Lights Controls" },
-            {"ElectricalInsulation", "Electrical Insulation" },
-            {"SilentRunning", "Silent Running Mode" },
-            {"TornadoAdjustment", "Tornado Aerodynamic Adjustments" },
-            {"Scout", "Camera: Scout Launcher" },
-            {"CameraGM", "Camera: Ghost Matter Frequency" },
-            {"CameraQuantum", "Camera: Quantum Objects" },
-            {"WarpPlatformCodes", "Nomai: Warp Platform Codes" },
-            {"WarpCoreManual", "Nomai: Warp Core Installation Manual" },
-            {"ShrineDoorCodes", "Nomai: Shrine Door Codes" },
+            {Item.Coordinates.ToString(), "Eye of the Universe Coordinates" },
+            {Item.LaunchCodes.ToString(), "Launch Codes"},
+            {Item.Translator.ToString(), "Translator" },
+            {Item.Signalscope.ToString(), "Signalscope" },
+            {Item.EntanglementRule.ToString(), "Suit Lights Controls" },
+            {Item.ElectricalInsulation.ToString(), "Electrical Insulation" },
+            {Item.SilentRunning.ToString(), "Silent Running Mode" },
+            {Item.TornadoAdjustment.ToString(), "Tornado Aerodynamic Adjustments" },
+            {Item.Scout.ToString(), "Camera: Scout Launcher" },
+            {Item.CameraGM.ToString(), "Camera: Ghost Matter Frequency" },
+            {Item.CameraQuantum.ToString(), "Camera: Quantum Objects" },
+            {Item.WarpPlatformCodes.ToString(), "Nomai: Warp Platform Codes" },
+            {Item.WarpCoreManual.ToString(), "Nomai: Warp Core Installation Manual" },
+            {Item.ShrineDoorCodes.ToString(), "Nomai: Shrine Door Codes" },
             {"FrequencyOWV", "Frequency: Outer Wilds Ventures" },
-            {"FrequencyDB", "Frequency: Distress Beacons" },
-            {"FrequencyQF", "Frequency: Quantum Fluctuations" },
-            {"FrequencyHS", "Frequency: Hide and Seek" }
+            {Item.FrequencyDB.ToString(), "Frequency: Distress Beacons" },
+            {Item.FrequencyQF.ToString(), "Frequency: Quantum Fluctuations" },
+            {Item.FrequencyHS.ToString(), "Frequency: Hide and Seek" }
         };
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
-
-        private const string lightGreen = "#9DFCA9";
 
         private void Awake()
         {
@@ -73,6 +69,9 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
         }
         
+        /// <summary>
+        /// Adds the custom modes for the Ship Log
+        /// </summary>
         public void AddModes()
         {
             Randomizer.OWMLModConsole.WriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
@@ -87,6 +86,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             inventoryMode.Tracker = this;
         }
 
+        // Reads hints from the AP server
         private void ReadHints()
         {
             Hint[] hintList = Randomizer.APSession.DataStorage.GetHints();
@@ -101,6 +101,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
         }
 
+        // Determines what items the player has and shows them in the inventory mode
         public void CheckInventory()
         {
             ReadHints();
@@ -109,8 +110,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             InventoryItems = new();
             foreach (string key in ItemEntries.Keys)
             {
-                Item subject;
-                if (Enum.TryParse(key, out subject))
+                if (Enum.TryParse(key, out Item subject))
                 {
                     uint quantity = items[subject];
                     string itemName = $"[{(quantity != 0 ? "X" : " ")}] {ItemEntries[key]}"; // Would produce a string like "[X] Launch Codes"
@@ -120,7 +120,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else if (key == "FrequencyOWV")
                 {
-                    string itemName = "[X] Outer Wilds Ventures";
+                    string itemName = "[X] Frequency: Outer Wilds Ventures";
                     InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems["FrequencyOWV"], false));
                 }
                 else
@@ -152,7 +152,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     Randomizer.OWMLModConsole.WriteLine($"Unable to find the texture requested at {path}.", OWML.Common.MessageType.Error);
                     return null;
                 }
-                Texture2D tex = new Texture2D(512, 512, TextureFormat.RGBA32, false);
+                Texture2D tex = new(512, 512, TextureFormat.RGBA32, false);
                 tex.LoadImage(data);
 
                 var rect = new Rect(0, 0, tex.width, tex.height);
@@ -187,15 +187,15 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else if (item == Item.SignalCaveShard || item == Item.SignalGroveShard || item == Item.SignalIslandShard || item == Item.SignalMuseumShard || item == Item.SignalTowerShard || item == Item.SignalQM)
                 {
-                    tracker.NewItems["FrequencyQF"] = true;
+                    tracker.NewItems[Item.FrequencyQF.ToString()] = true;
                 }
                 else if (item == Item.SignalEP1 || item == Item.SignalEP2 || item == Item.SignalEP3)
                 {
-                    tracker.NewItems["FrequencyDB"] = true;
+                    tracker.NewItems[Item.FrequencyDB.ToString()] = true;
                 }
                 else if (item == Item.SignalGalena || item == Item.SignalTephra)
                 {
-                    tracker.NewItems["FrequencyHS"] = true;
+                    tracker.NewItems[Item.FrequencyHS.ToString()] = true;
                 }
             }
         }
