@@ -91,7 +91,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     default:
                         infos.Add($"Hmm, looks like an incorrect item ID was requested: {itemID}");
                         infos.Add("Please let Ixrec or Gamewyrm on the Archipelago or Outer Wilds Modding Discord know if you see this.");
-                        Randomizer.LogWarning($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.");
+                        Randomizer.OWMLModConsole.WriteLine($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.", OWML.Common.MessageType.Error);
                         break;
                 }
             }

@@ -248,6 +248,9 @@ namespace ArchipelagoRandomizer
             {
                 Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.");
 
+                // We apply the item as a new item in the tracker
+                TrackerManager.MarkItemAsNew(item);
+
                 Randomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
                 LocationTriggers.ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
                 return true;
@@ -564,34 +567,5 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        #region EasierLogging
-        // I'm tired of doing Randomizer.Instance.Modhelper.Console.WriteLine every time I want to log something,
-        // so here's some convenient shorthand I do in my other mods
-        // Existing logs should be pivoted to use these functions for consistency
-        public static void Log(string message)
-        {
-            Instance.ModHelper.Console.WriteLine(message, MessageType.Message);
-        }
-
-        public static void LogInfo(string message)
-        {
-            Instance.ModHelper.Console.WriteLine(message, MessageType.Info);
-        }
-
-        public static void LogWarning(string message)
-        {
-            Instance.ModHelper.Console.WriteLine(message, MessageType.Warning);
-        }
-
-        public static void LogError(string message)
-        {
-            Instance.ModHelper.Console.WriteLine(message, MessageType.Error);
-        }
-
-        public static void LogSuccess(string message)
-        {
-            Instance.ModHelper.Console.WriteLine(message, MessageType.Success);
-        }
-        #endregion
     }
 }

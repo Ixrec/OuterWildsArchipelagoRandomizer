@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.ContentSizeFitter;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
@@ -12,7 +11,9 @@ namespace ArchipelagoRandomizer.InGameTracker
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
         public Dictionary<string, bool> NewItems;
 
-        public Dictionary<string, string> ItemEntries = new Dictionary<string, string>
+        // This dictionary is the list of items in the Inventory Mode
+        // They'll also display in this order, with the second string as the visible name
+        public readonly Dictionary<string, string> ItemEntries = new Dictionary<string, string>
         {
             {"Coordinates", "Eye of the Universe Coordinates" },
             {"LaunchCodes", "Launch Codes"},
@@ -44,11 +45,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             api = Randomizer.Instance.ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
             if (api != null )
             {
-                Randomizer.LogSuccess("Custom Ship Log Modes API found!");
+                Randomizer.OWMLModConsole.WriteLine("Custom Ship Log Modes API found!", OWML.Common.MessageType.Success);
             }
             else
             {
-                Randomizer.LogWarning("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.");
+                Randomizer.OWMLModConsole.WriteLine("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.", OWML.Common.MessageType.Error);
                 return;
             }
 
@@ -67,7 +68,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         
         public void AddModes()
         {
-            Randomizer.LogInfo("Creating Tracker Mode...");
+            Randomizer.OWMLModConsole.WriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>
@@ -89,27 +90,20 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (Enum.TryParse(key, out subject))
                 {
                     uint quantity = items[subject];
-                    string itemName = ItemEntries[key];
+                    string itemName = $"[{(quantity != 0 ? "X" : " ")}] {ItemEntries[key]}"; // Would produce a string like "[X] Launch Codes"
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
-                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems[key], quantity == 0));
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems[key], false));
+                }
+                else if (key == "FrequencyOWV")
+                {
+                    string itemName = "[X] Outer Wilds Ventures";
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems["FrequencyOWV"], false));
                 }
                 else
                 {
-                    Randomizer.LogError($"Tried to parse {key} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.");
+                    Randomizer.OWMLModConsole.WriteLine($"Tried to parse {key} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
                 }
 
-            }
-
-            foreach (Item item in items.Keys) 
-            {
-                if (ItemEntries.ContainsKey(item.ToString()))
-                {
-                    InventoryItems = new();
-                    foreach (string itemEntry in ItemEntries.Values)
-                    {
-                        InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemEntry, false, false, false));
-                    }
-                }
             }
         }
 
@@ -131,7 +125,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    Randomizer.LogError($"Unable to find the texture requested at {path}.");
+                    Randomizer.OWMLModConsole.WriteLine($"Unable to find the texture requested at {path}.", OWML.Common.MessageType.Error);
                     return null;
                 }
                 Texture2D tex = new Texture2D(512, 512, TextureFormat.RGBA32, false);
@@ -144,8 +138,41 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             catch(Exception e)
             {
-                Randomizer.LogError("Unable to load provided texture: " + e.Message);
+                Randomizer.OWMLModConsole.WriteLine("Unable to load provided texture: " + e.Message, OWML.Common.MessageType.Error);
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Sets an item as new, so it'll have a green exclamation point in the inventory
+        /// </summary>
+        /// <param name="item"></param>
+        public static void MarkItemAsNew(Item item)
+        {
+            string itemID = item.ToString();
+            TrackerManager tracker = Randomizer.Tracker;
+            if (!itemID.Contains("Signal"))
+            {
+                tracker.NewItems[itemID] = true;
+            }
+            else
+            {
+                if (item == Item.SignalEsker || item == Item.SignalChert || item == Item.SignalRiebeck || item == Item.SignalGabbro || item == Item.SignalFeldspar)
+                {
+                    tracker.NewItems["FrequencyOWV"] = true;
+                }
+                else if (item == Item.SignalCaveShard || item == Item.SignalGroveShard || item == Item.SignalIslandShard || item == Item.SignalMuseumShard || item == Item.SignalTowerShard || item == Item.SignalQM)
+                {
+                    tracker.NewItems["FrequencyQF"] = true;
+                }
+                else if (item == Item.SignalEP1 || item == Item.SignalEP2 || item == Item.SignalEP3)
+                {
+                    tracker.NewItems["FrequencyDB"] = true;
+                }
+                else if (item == Item.SignalGalena || item == Item.SignalTephra)
+                {
+                    tracker.NewItems["FrequencyHS"] = true;
+                }
             }
         }
     }
