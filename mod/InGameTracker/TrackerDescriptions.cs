@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Archipelago.MultiClient.Net.Models;
+using System;
 using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer.InGameTracker
@@ -11,6 +12,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void DisplayItemText(string itemID, ItemListWrapper Wrapper)
         {
             var inventory = Randomizer.SaveData.itemsAcquired;
+            Dictionary<string, Tuple<string, string>> hints = Randomizer.Tracker.Hints;
             Wrapper.DescriptionFieldClear();
             List<string> infos = new List<string>();
             bool discoveredItem = Enum.TryParse(itemID, out Item result);
@@ -98,7 +100,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             else
             {
                 infos.Add("You have not obtained this yet.");
-                // TODO: Add hint functionality?
+
+                if (hints.ContainsKey(itemID))
+                {
+                    infos.Add($"It looks like this item can be found at <color=#00FF7F>{hints[itemID].Item1}</color> in <color=#FAFAD2>{hints[itemID].Item2}</color>'s world.");
+                }
             }
             switch (itemID)
             {

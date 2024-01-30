@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Archipelago.MultiClient.Net.Models;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +12,11 @@ namespace ArchipelagoRandomizer.InGameTracker
     {
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
         public Dictionary<string, bool> NewItems;
+
+        /// <summary>
+        /// A list of hints received from the AP server. In order, the strings are the item name, the location, and the world.
+        /// </summary>
+        public Dictionary<string, Tuple<string, string>> Hints;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
@@ -69,6 +76,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         public void AddModes()
         {
             Randomizer.OWMLModConsole.WriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
+
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>
@@ -79,8 +87,23 @@ namespace ArchipelagoRandomizer.InGameTracker
             inventoryMode.Tracker = this;
         }
 
+        private void ReadHints()
+        {
+            Hint[] hintList = Randomizer.APSession.DataStorage.GetHints();
+            Hints = new();
+            var session = Randomizer.APSession;
+            foreach (Hint hint in hintList)
+            {
+                string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
+                string location = session.Locations.GetLocationNameFromId(hint.LocationId);
+                string player = session.Players.GetPlayerName(hint.FindingPlayer);
+                Hints.Add(itemName, new Tuple<string, string>(location, player));
+            }
+        }
+
         public void CheckInventory()
         {
+            ReadHints();
             Dictionary<Item, uint> items = Randomizer.SaveData.itemsAcquired;
 
             InventoryItems = new();
@@ -91,8 +114,9 @@ namespace ArchipelagoRandomizer.InGameTracker
                 {
                     uint quantity = items[subject];
                     string itemName = $"[{(quantity != 0 ? "X" : " ")}] {ItemEntries[key]}"; // Would produce a string like "[X] Launch Codes"
+                    bool hasHint = quantity == 0 && Hints.ContainsKey(key);
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
-                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems[key], false));
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems[key], hasHint));
                 }
                 else if (key == "FrequencyOWV")
                 {

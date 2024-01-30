@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Archipelago.MultiClient.Net.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -129,5 +130,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             TrackerDescriptions.DisplayItemText(itemID, Wrapper);
         }
+
+        
     }
 }
