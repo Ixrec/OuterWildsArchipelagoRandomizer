@@ -32,6 +32,8 @@ namespace ArchipelagoRandomizer
         private Button filterButton;
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
+        private Material progressMat;
+        private Text progressText;
 
         // Console can only handle ~65000 vertices
         // As there's 4 vertices per character, we can only support a quarter of this
@@ -107,6 +109,8 @@ namespace ArchipelagoRandomizer
             overflowWarning.SetActive(false);
             pauseConsoleText = pauseConsole.GetComponent<Text>();
             gameplayConsoleText = gameplayConsole.GetComponent<Text>();
+            progressText = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/Progress").GetComponent<Text>();
+            progressMat = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/WheelBG/WheelProgress").GetComponent<Image>().material;
 
             pauseConsoleText.text = string.Empty;
             gameplayConsoleText.text = string.Empty;
@@ -131,6 +135,16 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
+
+            if (showPauseConsole)
+            {
+                float progress = Randomizer.SaveData.locationsChecked.Where(kv => kv.Value).Count();
+                float maxItems = Randomizer.SaveData.locationsChecked.Count;
+                float progressPercent = progress / maxItems;
+                Randomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
+                progressText.text = $"{progress}/{maxItems}";
+                progressMat.SetFloat("_PercentAccessible", progressPercent);
+            }
         }
 
         /// <summary>
