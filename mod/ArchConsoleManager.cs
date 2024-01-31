@@ -257,6 +257,17 @@ namespace ArchipelagoRandomizer
         /// <param name="text"></param>
         public void OnConsoleEntry(string text)
         {
+            if (text.StartsWith("!debug "))
+            {
+                var tokens = text.Substring("!debug ".Length).Split(',');
+                Item item = ItemNames.itemNamesReversed[tokens[0]];
+                uint count = uint.Parse(tokens[1]);
+                Randomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
+                LocationTriggers.ApplyItemToPlayer(item, count);
+                consoleText.text = "";
+                return;
+            }
+
             if (text == "") return;
 
             // we want to time out relatively quickly if the server happens to be down
