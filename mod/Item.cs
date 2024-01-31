@@ -46,6 +46,8 @@ public enum Item
     SignalTephra,
 
     Nothing,
+
+    Autopilot,
 };
 
 public static class ItemNames
@@ -89,6 +91,8 @@ public static class ItemNames
         { Item.SignalTephra, "Tephra's Radio Signal" },
 
         { Item.Nothing, "Nothing" },
+
+        { Item.Autopilot, "Autopilot" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
