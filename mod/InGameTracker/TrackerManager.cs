@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net.Models;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,6 +43,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
+        private ArchipelagoSession session;
 
         private void Awake()
         {
@@ -76,6 +78,14 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             Randomizer.OWMLModConsole.WriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
 
+            // Retrive hints from server and set up subscription to hint events in the future
+            session = Randomizer.APSession;
+            if (Hints == null)
+            {
+                ReadHints(session.DataStorage.GetHints());
+                session.DataStorage.TrackHints(ReadHints);
+            }
+
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>
@@ -87,11 +97,9 @@ namespace ArchipelagoRandomizer.InGameTracker
         }
 
         // Reads hints from the AP server
-        private void ReadHints()
+        private void ReadHints(Hint[] hintList)
         {
-            Hint[] hintList = Randomizer.APSession.DataStorage.GetHints();
             Hints = new();
-            var session = Randomizer.APSession;
             foreach (Hint hint in hintList)
             {
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
@@ -104,7 +112,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Determines what items the player has and shows them in the inventory mode
         public void CheckInventory()
         {
-            ReadHints();
             Dictionary<Item, uint> items = Randomizer.SaveData.itemsAcquired;
 
             InventoryItems = new();
@@ -181,23 +188,25 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             else
             {
-                if (item == Item.SignalEsker || item == Item.SignalChert || item == Item.SignalRiebeck || item == Item.SignalGabbro || item == Item.SignalFeldspar)
-                {
-                    tracker.NewItems["FrequencyOWV"] = true;
-                }
-                else if (item == Item.SignalCaveShard || item == Item.SignalGroveShard || item == Item.SignalIslandShard || item == Item.SignalMuseumShard || item == Item.SignalTowerShard || item == Item.SignalQM)
-                {
-                    tracker.NewItems[Item.FrequencyQF.ToString()] = true;
-                }
-                else if (item == Item.SignalEP1 || item == Item.SignalEP2 || item == Item.SignalEP3)
-                {
-                    tracker.NewItems[Item.FrequencyDB.ToString()] = true;
-                }
-                else if (item == Item.SignalGalena || item == Item.SignalTephra)
-                {
-                    tracker.NewItems[Item.FrequencyHS.ToString()] = true;
-                }
+                tracker.NewItems[GetFrequency(item)] = true;
             }
+        }
+
+        /// <summary>
+        /// Returns the frequency that the signal belongs to.
+        /// If you need to get the enum entry, you can just Enum.TryParse(GetFrequency(signal), out Item signalItem).
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <returns></returns>
+        public static string GetFrequency(Item signal)
+        {
+            if (signal == Item.SignalCaveShard || signal == Item.SignalGroveShard || signal == Item.SignalIslandShard || signal == Item.SignalMuseumShard || signal == Item.SignalTowerShard || signal == Item.SignalQM)
+                return Item.FrequencyQF.ToString();
+            else if (signal == Item.SignalEP1 || signal == Item.SignalEP2 || signal == Item.SignalEP3)
+                return Item.FrequencyDB.ToString();
+            else if (signal == Item.SignalGalena || signal == Item.SignalTephra)
+                return Item.FrequencyHS.ToString();
+            else return "FrequencyOWV";
         }
     }
 }
