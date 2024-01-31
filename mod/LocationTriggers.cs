@@ -169,6 +169,7 @@ internal class LocationTriggers
             case Item.ElectricalInsulation: Jellyfish.hasJellyfishKnowledge = (count > 0); break;
             case Item.Coordinates: Coordinates.hasCoordinates = (count > 0); break;
             case Item.Autopilot: AutopilotManager.hasAutopilot = (count > 0); break;
+            case Item.LandingCamera: LandingCamera.hasLandingCamera = (count > 0); break;
             default: break;
         }
         if (ItemNames.itemToFrequency.ContainsKey(item))
