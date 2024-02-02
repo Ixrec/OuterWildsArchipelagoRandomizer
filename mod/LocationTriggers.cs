@@ -172,6 +172,7 @@ internal class LocationTriggers
             case Item.LandingCamera: LandingCamera.hasLandingCamera = (count > 0); break;
             case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;
             case Item.VelocityMatcher: VelocityMatcher.hasVelocityMatcher = (count > 0); break;
+            case Item.SurfaceIntegrityScanner: SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
             default: break;
         }
         if (ItemNames.itemToFrequency.ContainsKey(item))

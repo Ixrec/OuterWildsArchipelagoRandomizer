@@ -51,6 +51,7 @@ public enum Item
     LandingCamera,
     EjectButton,
     VelocityMatcher,
+    SurfaceIntegrityScanner,
 };
 
 public static class ItemNames
@@ -99,6 +100,7 @@ public static class ItemNames
         { Item.LandingCamera, "Landing Camera" },
         { Item.EjectButton, "Eject Button" },
         { Item.VelocityMatcher, "Velocity Matcher" },
+        { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
