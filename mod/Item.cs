@@ -49,6 +49,7 @@ public enum Item
 
     Autopilot,
     LandingCamera,
+    EjectButton,
 };
 
 public static class ItemNames
@@ -95,6 +96,7 @@ public static class ItemNames
 
         { Item.Autopilot, "Autopilot" },
         { Item.LandingCamera, "Landing Camera" },
+        { Item.EjectButton, "Eject Button" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
