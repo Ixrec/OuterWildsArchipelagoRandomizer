@@ -115,6 +115,8 @@ public enum Location
     SLF__TT_TIME_LOOP_DEVICE_X5,
     SLF__TH_VILLAGE_X1,
     SLF__TH_VILLAGE_X2,
+    // Logsanity no longer generates the Village 3 location because it turns out this fact is perma-missable.
+    // Keeping it here for backwards compatibility and to document that this is intentional.
     SLF__TH_VILLAGE_X3,
     SLF__TH_ZERO_G_CAVE_X1,
     SLF__TH_ZERO_G_CAVE_X2,
