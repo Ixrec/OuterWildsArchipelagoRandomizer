@@ -9,14 +9,21 @@ namespace ArchipelagoRandomizer;
 
 using HexagonalCoordinate = List<CoordinatePoint>;
 
+// We commit to these specific numbers for the six possible coordinate points for a few reasons:
+// - randomly choosing coordinates naturally involves manipulating numbers
+// - the specific way I want to choose the coordinates does a lot of integer divisions and modulo operations,
+// so 0-indexing (or tedious conversions) is required anyway
+// - (de)serializing coordinates to/from slot_data is way more compact as [0,1,2] than as ["Right","UpperRight","UpperLeft"]
+// - drawing these points involves computing its angle from the hexagon's center, and the way the trigonometry works out,
+// choosing 0 for Right, 1 for UpperRight, etc allows us to simplify that to angle = 60 * (int)point
 enum CoordinatePoint
 {
-    UpperLeft,
-    UpperRight,
-    Left,
-    Right,
-    LowerLeft,
-    LowerRight,
+    Right = 0,
+    UpperRight = 1,
+    UpperLeft = 2,
+    Left = 3,
+    LowerLeft = 4,
+    LowerRight = 5,
 };
 
 [HarmonyPatch]
@@ -197,16 +204,7 @@ public static class Coordinates
 
     private static Vector2Int coordinatePointToIntOffsets(int hexagonRadius, CoordinatePoint coordinatePoint)
     {
-        int angle;
-        switch (coordinatePoint)
-        {
-            case CoordinatePoint.Right:      angle = 0;   break;
-            case CoordinatePoint.UpperRight: angle = 60;  break;
-            case CoordinatePoint.UpperLeft:  angle = 120; break;
-            case CoordinatePoint.Left:       angle = 180; break;
-            case CoordinatePoint.LowerLeft:  angle = 240; break;
-            default:          /*LowerRight*/ angle = 300; break;
-        }
+        int angle = (int)coordinatePoint * 60; // the integer values of CoordinatePoint were chosen to make this work
 
         return new Vector2Int(
             (int)Math.Round(hexagonRadius * Math.Cos(Mathf.Deg2Rad * angle)),
