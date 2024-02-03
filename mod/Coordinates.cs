@@ -61,7 +61,23 @@ public static class Coordinates
     [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
-        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(CoordinateDrawing.vanillaEOTUCoordinates, Color.clear);
+        // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
+        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, CoordinateDrawing.vanillaEOTUCoordinates, Color.clear);
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Awake))]
+    public static void ShipLogManager_Awake_Prefix(ShipLogManager __instance)
+    {
+        Randomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix ediing OPC_SUNKEN_MODULE entry sprite to show this multiworld's EotU coordinates");
+
+        var entryData = __instance._shipLogLibrary.entryData;
+        var i = entryData.IndexOf(entry => entry.id == "OPC_SUNKEN_MODULE");
+
+        var ptmEntry = entryData[i];
+        // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
+        ptmEntry.altSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 600, CoordinateDrawing.vanillaEOTUCoordinates, Color.black);
+        entryData[i] = ptmEntry;
     }
 
 }

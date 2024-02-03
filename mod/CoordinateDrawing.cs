@@ -76,11 +76,8 @@ public static class CoordinateDrawing
             CoordinatePoint.Right
         },
     };
-    public static Sprite CreateCoordinatesSprite(List<HexagonalCoordinate> coordinates, Color bgColor)
+    public static Sprite CreateCoordinatesSprite(int width, int height, List<HexagonalCoordinate> coordinates, Color bgColor)
     {
-        var width = 600;
-        var height = 200;
-
         var texture = drawCoordinates(width, height, Color.white, bgColor, coordinates);
 
         return Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
@@ -90,11 +87,11 @@ public static class CoordinateDrawing
     // https://github.com/PacificEngine/OW_CommonResources 's EyeCoordinates.cs and Shapes2D.cs
     // https://github.com/Outer-Wilds-New-Horizons/new-horizons/ 's VesselCoordinatePromptHandler.cs
 
-    private static Texture2D drawCoordinates(int width, int height, Color foreground, Color background, List<HexagonalCoordinate> coordinates)
+    private static Texture2D drawCoordinates(int width, int textureHeight, Color foreground, Color background, List<HexagonalCoordinate> coordinates)
     {
-        var tex = new Texture2D(width, height, TextureFormat.ARGB32, false);
+        var tex = new Texture2D(width, textureHeight, TextureFormat.ARGB32, false);
         foreach (var x in Enumerable.Range(0, width))
-            foreach (var y in Enumerable.Range(0, height))
+            foreach (var y in Enumerable.Range(0, textureHeight))
                 tex.SetPixel(x, y, background);
 
         // We always draw the coordinates horizontally, so an X by Y texture of N coords
@@ -115,7 +112,7 @@ public static class CoordinateDrawing
             var hexagonOffset = (maxWidthPerHexagon / 2);
             if (!coordinate.Contains(CoordinatePoint.Left)) hexagonOffset -= (int)(maxWidthPerHexagon * kerningOffset);
 
-            var center = new Vector2Int(totalXOffset + hexagonOffset, height / 2);
+            var center = new Vector2Int(totalXOffset + hexagonOffset, textureHeight / 2);
             drawCoordinate(tex, center, hexagonRadius, foreground, background, coordinate);
 
             var hexagonWidth = maxWidthPerHexagon;
