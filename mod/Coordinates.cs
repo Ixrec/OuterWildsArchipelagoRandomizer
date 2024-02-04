@@ -1,7 +1,8 @@
 ﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace ArchipelagoRandomizer;
 
@@ -22,6 +23,8 @@ public static class Coordinates
             }
         }
     }
+
+    private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = CoordinateDrawing.vanillaEOTUCoordinates;
 
     private static GameObject hologramMeshGO = null;
 
@@ -65,26 +68,6 @@ public static class Coordinates
         ApplyHasCoordinatesFlag(_hasCoordinates);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
-    public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
-    {
-        __instance._promptController.SetEyeCoordinatesVisibility(
-            _hasCoordinates &&
-            OWInput.IsInputMode(InputMode.Character) // the vanilla implementation doesn't have this check, but I think it should,
-                                                     // and it's more annoying for this mod because of the in-game pause console
-        );
-        return false; // skip vanilla implementation
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
-    public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
-    {
-        // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
-        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, CoordinateDrawing.vanillaEOTUCoordinates, Color.clear);
-    }
-
     public static void ApplyHasCoordinatesFlag(bool hasCoordinates)
     {
         Randomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
@@ -96,7 +79,7 @@ public static class Coordinates
 
             CoordinateDrawing.Shapes3D model;
             if (hasCoordinates)
-                model = CoordinateDrawing.getCoordinatesModel(CoordinateDrawing.vanillaEOTUCoordinates);
+                model = CoordinateDrawing.getCoordinatesModel(correctCoordinates);
             else
                 model = CoordinateDrawing.getQuestionMarksModel();
 
@@ -127,7 +110,7 @@ public static class Coordinates
             if (hasCoordinates)
             {
                 // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-                var s = CoordinateDrawing.CreateCoordinatesSprite(600, 600, CoordinateDrawing.vanillaEOTUCoordinates, Color.black);
+                var s = CoordinateDrawing.CreateCoordinatesSprite(600, 600, correctCoordinates, Color.black);
                 ptmLibraryEntry.altSprite = s;
                 ptmGeneratedEntry?.SetAltSprite(s);
             }
@@ -149,5 +132,83 @@ public static class Coordinates
             // Because libraryEntryData is an array, not a list, we have to assign our edited object into the array afterward
             libraryEntryData[ptmLibraryIndex] = ptmLibraryEntry;
         }
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
+    public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
+    {
+        __instance._promptController.SetEyeCoordinatesVisibility(
+            _hasCoordinates &&
+            OWInput.IsInputMode(InputMode.Character) // the vanilla implementation doesn't have this check, but I think it should,
+                                                     // and it's more annoying for this mod because of the in-game pause console
+        );
+        return false; // skip vanilla implementation
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
+    public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
+    {
+        // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
+        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, correctCoordinates, Color.clear);
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
+    public static bool NomaiCoordinateInterface_CheckEyeCoordinates_Prefix(NomaiCoordinateInterface __instance, ref bool __result)
+    {
+        CoordinateDrawing.CoordinatePoint NodeToCoordPoint(int node)
+        {
+            switch (node)
+            {
+                case 0: return CoordinateDrawing.CoordinatePoint.UpperLeft;
+                case 1: return CoordinateDrawing.CoordinatePoint.UpperRight;
+                case 2: return CoordinateDrawing.CoordinatePoint.Right;
+                case 3: return CoordinateDrawing.CoordinatePoint.LowerRight;
+                case 4: return CoordinateDrawing.CoordinatePoint.LowerLeft;
+                case 5: return CoordinateDrawing.CoordinatePoint.Left;
+                default: throw new InvalidCastException($"{node} is not a possible value for a Nomai Coordinate Interface node and/or hexagonal CoordinatePoint");
+            };
+        }
+
+        var ncs = __instance._nodeControllers;
+
+        var inputMatchesVanillaCoords = true;
+        __result = true;
+
+        foreach (var i in Enumerable.Range(0, 3))
+        {
+            var nodes = ncs[i]._activeNodes;
+            var inputCoordinate = nodes.Select(NodeToCoordPoint);
+            var correctCoordinate = correctCoordinates[i];
+
+            // allow "backwards" inputs, since they're the same shape
+            var inputIsCorrect = inputCoordinate.SequenceEqual(correctCoordinate) || inputCoordinate.Reverse().SequenceEqual(correctCoordinate);
+
+            Randomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
+                $" [{nodes.Count}]{string.Join("|", nodes)} vs [{correctCoordinate.Count}]{string.Join("|", correctCoordinate)}, " +
+                $"inputIsCorrect={inputIsCorrect}");
+
+            if (!inputIsCorrect)
+                __result = false;
+
+            var vanillaCoordinate = CoordinateDrawing.vanillaEOTUCoordinates[i];
+            var inputMatchesVanilla = inputCoordinate.SequenceEqual(vanillaCoordinate) || inputCoordinate.Reverse().SequenceEqual(vanillaCoordinate);
+            if (!inputMatchesVanilla)
+                inputMatchesVanillaCoords = false;
+        }
+
+        if (__result == false && inputMatchesVanillaCoords == true)
+        {
+            if (_hasCoordinates)
+                Randomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
+                    $"Please check the prompt in the lower left corner of the screen.");
+            else
+                Randomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
+                    $"Please come back after the 'Coordinates' item for this world has been found.");
+        }
+
+        return false; // skip vanilla implementation
     }
 }

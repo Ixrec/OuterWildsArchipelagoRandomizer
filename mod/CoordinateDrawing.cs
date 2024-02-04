@@ -204,7 +204,7 @@ public static class CoordinateDrawing
     public static Shapes3D getCoordinatesModel(List<HexagonalCoordinate> coordinates)
     {
         // Most of my code counts the hexagon points from 0 = Right counterclockwise.
-        // This 3D drawing code counts them from 0 = UpperLeft clockwise.
+        // This 3D drawing code counts them from 0 = UpperLeft clockwise (to match the base game's code?).
         // Ideally I'd rewrite the code to use the same numbers, but for now it's not worth the time/effort/risk, so instead we convert.
         List<int[]> adjustedCoordinates = coordinates.Select(hexCoord =>
         {
