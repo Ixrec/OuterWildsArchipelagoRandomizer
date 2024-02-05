@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,24 @@ public static class Coordinates
     }
 
     private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = CoordinateDrawing.vanillaEOTUCoordinates;
+
+    public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
+    {
+        if (coordsSlotData is string coordsString && coordsString == "vanilla")
+        {
+            Randomizer.OWMLModConsole.WriteLine($"slot_data['eotu_coordinates'] was 'vanilla'. Leaving vanilla coordinates unchanged");
+        }
+        else if (coordsSlotData is JArray coords)
+        {
+            correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
+            Randomizer.OWMLModConsole.WriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
+                $"{string.Join(", ", correctCoordinates.Select(coord => string.Join("|", coord)))}");
+        }
+        else
+        {
+            Randomizer.OWMLModConsole.WriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
+        }
+    }
 
     private static GameObject hologramMeshGO = null;
 
