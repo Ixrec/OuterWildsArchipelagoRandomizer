@@ -129,7 +129,7 @@ public static class Coordinates
             if (hasCoordinates)
             {
                 // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-                var s = CoordinateDrawing.CreateCoordinatesSprite(600, 600, correctCoordinates, Color.black);
+                var s = CoordinateDrawing.CreateCoordinatesSprite(600, 600, correctCoordinates, Color.black, doKerning: false);
                 ptmLibraryEntry.altSprite = s;
                 ptmGeneratedEntry?.SetAltSprite(s);
             }
@@ -170,7 +170,7 @@ public static class Coordinates
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
         // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
-        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, correctCoordinates, Color.clear);
+        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, correctCoordinates, Color.clear, doKerning: true);
     }
 
     [HarmonyPrefix]

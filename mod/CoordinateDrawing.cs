@@ -76,9 +76,9 @@ public static class CoordinateDrawing
             CoordinatePoint.Right
         },
     };
-    public static Sprite CreateCoordinatesSprite(int width, int height, List<HexagonalCoordinate> coordinates, Color bgColor)
+    public static Sprite CreateCoordinatesSprite(int width, int height, List<HexagonalCoordinate> coordinates, Color bgColor, bool doKerning)
     {
-        var texture = drawCoordinates(width, height, Color.white, bgColor, coordinates);
+        var texture = drawCoordinates(width, height, Color.white, bgColor, coordinates, doKerning);
 
         return Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
     }
@@ -87,7 +87,7 @@ public static class CoordinateDrawing
     // https://github.com/PacificEngine/OW_CommonResources 's EyeCoordinates.cs and Shapes2D.cs
     // https://github.com/Outer-Wilds-New-Horizons/new-horizons/ 's VesselCoordinatePromptHandler.cs
 
-    private static Texture2D drawCoordinates(int width, int textureHeight, Color foreground, Color background, List<HexagonalCoordinate> coordinates)
+    private static Texture2D drawCoordinates(int width, int textureHeight, Color foreground, Color background, List<HexagonalCoordinate> coordinates, bool doKerning)
     {
         var tex = new Texture2D(width, textureHeight, TextureFormat.ARGB32, false);
         foreach (var x in Enumerable.Range(0, width))
@@ -102,7 +102,7 @@ public static class CoordinateDrawing
 
         // how much we reduce the visual width of a coordinate if it doesn't use its
         // leftmost or rightmost point, as a fraction of the full hexagon width
-        var kerningOffset = 0.20;
+        var kerningOffset = doKerning ? 0.20 : 0;
 
         int totalXOffset = 0;
         for (var i = 0; i < coordinates.Count; i++)
