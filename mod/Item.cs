@@ -52,6 +52,12 @@ public enum Item
     EjectButton,
     VelocityMatcher,
     SurfaceIntegrityScanner,
+
+    OxygenRefill,
+    FuelRefill,
+    Marshmallow,
+    PerfectMarshmallow,
+    BurntMarshmallow,
 };
 
 public static class ItemNames
@@ -101,6 +107,12 @@ public static class ItemNames
         { Item.EjectButton, "Eject Button" },
         { Item.VelocityMatcher, "Velocity Matcher" },
         { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+
+        { Item.OxygenRefill, "Oxygen Refill" },
+        { Item.FuelRefill, "Jetpack Fuel Refill" },
+        { Item.Marshmallow, "Marshmallow" },
+        { Item.PerfectMarshmallow, "Perfect Marshmallow" },
+        { Item.BurntMarshmallow, "Burnt Marshmallow" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

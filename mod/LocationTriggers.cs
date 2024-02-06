@@ -151,6 +151,17 @@ internal class LocationTriggers
 
     public static void ApplyItemToPlayer(Item item, uint count)
     {
+        if (ItemNames.itemToFrequency.ContainsKey(item))
+        {
+            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
+            return;
+        }
+        else if (ItemNames.itemToSignal.ContainsKey(item))
+        {
+            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
+            return;
+        }
+
         switch (item)
         {
             case Item.LaunchCodes: break; // Not necessary until launch codes can be shuffled, and it's surprisingly subtle to set them without crashing.
@@ -173,12 +184,18 @@ internal class LocationTriggers
             case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;
             case Item.VelocityMatcher: VelocityMatcher.hasVelocityMatcher = (count > 0); break;
             case Item.SurfaceIntegrityScanner: SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
-            default: break;
+            case Item.OxygenRefill: Oxygen.oxygenRefills = count; break;
+            case Item.FuelRefill: Jetpack.fuelRefills = count; break;
+            case Item.Marshmallow: Marshmallows.normalMarshmallows = count; break;
+            case Item.PerfectMarshmallow: Marshmallows.perfectMarshmallows = count; break;
+            case Item.BurntMarshmallow: Marshmallows.burntMarshmallows = count; break;
+
+            // for backwards-compatibility
+            case Item.Spaceship: break; case Item.Nothing: break;
+            default:
+                Randomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
+                break;
         }
-        if (ItemNames.itemToFrequency.ContainsKey(item))
-            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
-        else if (ItemNames.itemToSignal.ContainsKey(item))
-            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
     }
 
 
