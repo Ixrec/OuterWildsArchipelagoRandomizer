@@ -93,7 +93,7 @@ To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Relea
 - Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.
 
 - Create some `useful`, `filler` and `trap` items, instead of just "Nothing"s. Ideas include:
-	- Oxygen, jetpack fuel, jetpack boost, health, ship durability, etc refills (`filler`) and max upgrades (`useful`)
+	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`)~~ and max upgrades (`useful`)
 	- ~~Ship features like autopilot and the landing camera~~
 	- `trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, anglerfish spawns, playing End Times, increased scout launcher recoil
 
