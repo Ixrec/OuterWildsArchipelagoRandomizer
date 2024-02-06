@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -135,6 +137,25 @@ internal class VelocityMatcher
         }
 
         return _hasVelocityMatcher; // if we have the AP item, allow the base game code to run, otherwise skip it
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(ThrusterFlameColorSwapper), nameof(ThrusterFlameColorSwapper.Awake))]
+    public static void ThrusterFlameColorSwapper_Awake(ThrusterFlameColorSwapper __instance)
+    {
+        var c = new Color(0, 0, 1);
+        Randomizer.OWMLModConsole.WriteLine($"ThrusterFlameColorSwapper_Awake {__instance._baseLightColor} [{__instance._thrusterLights.Length}]{string.Join("|", __instance._thrusterLights.Select(l => l.color))}");
+        __instance._baseLightColor = c;
+        foreach (var item in __instance._thrusterLights)
+            item.color = c;
+        Randomizer.OWMLModConsole.WriteLine($"ThrusterFlameColorSwapper_Awake {__instance._baseLightColor} [{__instance._thrusterLights.Length}]{string.Join("|", __instance._thrusterLights.Select(l => l.color))}");
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(ThrusterFlameColorSwapper), nameof(ThrusterFlameColorSwapper.SetFlameColor))]
+    public static void ThrusterFlameColorSwapper_SetFlameColor(ThrusterFlameColorSwapper __instance)
+    {
+        Randomizer.OWMLModConsole.WriteLine($"ThrusterFlameColorSwapper_SetFlameColor {__instance._baseLightColor} [{__instance._thrusterLights.Length}]{string.Join("|", __instance._thrusterLights.Select(l => l.color))}");
     }
 
 }
