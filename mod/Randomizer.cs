@@ -238,6 +238,12 @@ namespace ArchipelagoRandomizer
 
         private static bool SyncItemCountWithAPServer(long itemId)
         {
+            if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId))
+            {
+                Randomizer.OWMLModConsole.WriteLine($"SyncItemCountWithAPServer received itemId {itemId} which is not in our archipelagoIdToItem map", MessageType.Error);
+                return false;
+            }
+
             var item = ItemNames.archipelagoIdToItem[itemId];
             var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
 
