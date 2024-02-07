@@ -38,6 +38,6 @@ Outer Wilds:
     all_deaths: 0
 
   logsanity:
-    # Adds a location for every (non-DLC, non-rumor) ship log fact in the game, which totals 178 new checks.
+    # Adds 176 locations for all the (non-DLC, non-rumor, non-missable) ship log facts in the game.
     false: 50
     true: 0
