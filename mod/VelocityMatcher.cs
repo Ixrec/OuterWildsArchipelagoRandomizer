@@ -112,15 +112,34 @@ internal class VelocityMatcher
         Locator.GetPromptManager().AddScreenPrompt(velocityMatcherNotAvailableCenterPrompt, PromptPosition.Center, false);
     }
 
-    // Confusingly, the game's "(A) (Hold) Match Velocity" feature is implemented by a class named Autopilot,
-    // which also implements the game's "Autopilot" feature.
-    // Additionally, the Autopilot feature's 1st phase is matching the target velocity, so
-    // "Match Velocity" in code often refers to Autopilot phase 1.
+    // In the base game code, "Autopilot" and "Match Velocity" are used very confusingly.
+    // First, the game's Autopilot class implements both the "(Up) Autopilot" feature and the
+    // "(A) (Hold) Match Velocity" feature. This file is only interested in the latter.
+
+    // The autopilot feature works in three stages. In-game, these are described by the ship console as:
+    // - Stage 1: Aligning Flight Trajectory
+    // - Stage 2: Accelerating Toward Destination
+    // - Stage 3: Firing Retro-Rockets
+
+    // In the Autopilot class' code, these three stages correspond to:
+    // - IsLiningUpDestination() being true
+    // - IsApproachingDestination() being true
+    // - IsMatchingVelocity() being true, and firing OnFireRetroRockets and OnInitMatchVelocity
+
+    // So while the term "match velocity" is conceptually the best fit for stage 1, in code only stage 3
+    // is described this way, and Autopilot stage 3 is what goes through the same StartMatchVelocity()
+    // method as the Match Velocity feature.
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Autopilot), nameof(Autopilot.StartMatchVelocity))]
     public static bool Autopilot_StartMatchVelocity_Prefix(Autopilot __instance)
     {
+        if (__instance._isShipAutopilot && __instance._isFlyingToDestination)
+            // This is the "(Up) Autopilot" feature entering its thir and final stage,
+            // not the "(A) (Hold) Match Velocity feature we want to block here.
+            // So we immediately return control to the base game code.
+            return true;
+
         if (!_hasVelocityMatcher)
         {
             Randomizer.OWMLModConsole.WriteLine($"Autopilot_StartMatchVelocity_Prefix blocking attempt to use the Match Velocity feature");
