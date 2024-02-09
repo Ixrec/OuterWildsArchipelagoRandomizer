@@ -1,5 +1,8 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -79,10 +82,111 @@ internal class Anglerfish
     {
         Locator.GetPromptManager().AddScreenPrompt(silentRunningPrompt, PromptPosition.UpperRight, false);
     }
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(AnglerfishController), nameof(AnglerfishController.ApplyDrag))]
+    public static bool AnglerfishController_ApplyDrag(AnglerfishController __instance)
+    {
+        return false; // no drag
+    }
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(AnglerfishController), nameof(AnglerfishController.UpdateMovement))]
+    public static void AnglerfishController_UpdateMovement(AnglerfishController __instance)
+    {
+        if (__instance._currentState != AnglerfishController.AnglerState.Lurking)
+            Randomizer.OWMLModConsole.WriteLine($"AnglerfishController_UpdateMovement {__instance.gameObject.name} {__instance._currentState} {__instance._localDisturbancePos}");
+    }
     [HarmonyPostfix]
     [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
+        if (OWInput.IsNewlyPressed(InputLibrary.down2))
+        {
+            Randomizer.OWMLModConsole.WriteLine($"down2");
+
+            var th = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject;
+            var thSector = SectorManager.s_sectors.Find(s => s._name == Sector.Name.TimberHearth);
+            var dbFish = GameObject.Find("DB_HubDimension_Body/Sector_HubDimension/Interactables_HubDimension/Anglerfish_Body");
+
+            List<string> assetBundlesList = new();
+            foreach (var streamingHandle in dbFish.GetComponentsInChildren<StreamingMeshHandle>())
+            {
+                var assetBundle = streamingHandle.assetBundle;
+                assetBundlesList.SafeAdd(assetBundle);
+                // the full NH code also checks for streaming *materials* here, but anglerfish have no materials I guess
+            }
+
+            Randomizer.OWMLModConsole.WriteLine($"calling LoadStreamingAssets() on {string.Join(", ", assetBundlesList)}");
+            foreach (var b in assetBundlesList)
+                StreamingManager.LoadStreamingAssets(b);
+
+            Randomizer.OWMLModConsole.WriteLine($"spawning fish {dbFish} under {th.name}");
+            var fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish1";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = th.transform.position + new Vector3(500, 0, 0);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.GetComponent<OWRigidbody>().enabled = true;
+            fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
+            fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+            var ac = fish.GetComponent<AnglerfishController>();
+            ac._sector = thSector;
+            ac.OnSectorOccupantsUpdated();
+
+            fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish2";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = th.transform.position + new Vector3(0, 500, 0);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.GetComponent<OWRigidbody>().enabled = true;
+            fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
+            fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+            ac = fish.GetComponent<AnglerfishController>();
+            ac._sector = thSector;
+            ac.OnSectorOccupantsUpdated();
+
+            fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish3";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = th.transform.position + new Vector3(0, 0, 500);
+            fish.transform.localScale = new Vector3(2, 2, 2);
+            fish.GetComponent<OWRigidbody>().enabled = true;
+            fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
+            fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+            ac = fish.GetComponent<AnglerfishController>();
+            ac._sector = thSector;
+            ac.OnSectorOccupantsUpdated();
+
+            /*fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = new Vector3(300, 300, 0);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.SetActive(true);
+
+            fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = new Vector3(0, 300, 300);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.SetActive(true);
+
+            fish = GameObject.Instantiate(dbFish);
+            fish.name = "TestFish";
+            fish.transform.SetParent(th.transform, false);
+            fish.transform.position = new Vector3(300, 0, 300);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.SetActive(true);*/
+
+            /*var ship = Locator.GetShipBody().gameObject;
+            Randomizer.OWMLModConsole.WriteLine($"spawning fish {dbFish} under {ship.name}");
+            var fish2 = GameObject.Instantiate(dbFish);
+            fish2.name = "TestFishShip";
+            fish2.transform.SetParent(ship.transform, false);
+            fish.transform.position = new Vector3(0, 0, 0);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            fish.SetActive(true);*/
+        }
+
         silentRunningPrompt.SetVisibility(
             hasAnglerfishKnowledge &&
             (OWInput.IsInputMode(InputMode.Character) || OWInput.IsInputMode(InputMode.ShipCockpit)) &&
