@@ -6,16 +6,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <NoWarn>MSB3270</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <!-- remember not to update this without also re-vendoring it -->
     <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
-
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OWML" Version="2.9.8" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.14.768" />
@@ -31,11 +29,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="../Archipelago/worlds/outer_wilds/shared_static_logic/**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-	<!-- apparently C#/VS doesn't understand that my project needs its dependencies at runtime, so any packages
-	not already shipped by Outer Wilds itself have to be vendored and manually copy-to-outputted here -->
-    <None Include="Archipelago.MultiClient.Net.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
