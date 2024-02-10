@@ -88,6 +88,12 @@ internal class Anglerfish
     {
         return false; // no drag
     }
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(AlignWithDirection), nameof(AlignWithDirection.InitAlignment))]
+    public static void AlignWithDirection_InitAlignment(AlignWithDirection __instance)
+    {
+        Randomizer.OWMLModConsole.WriteLine($"AlignWithDirection.InitAlignment {__instance.name}");
+    }
     [HarmonyPostfix]
     [HarmonyPatch(typeof(AnglerfishController), nameof(AnglerfishController.UpdateMovement))]
     public static void AnglerfishController_UpdateMovement(AnglerfishController __instance)
@@ -103,8 +109,13 @@ internal class Anglerfish
         {
             Randomizer.OWMLModConsole.WriteLine($"down2");
 
+            // The following borrows heavily from https://github.com/Outer-Wilds-New-Horizons/new-horizons/ 's DetailBuilder.cs
+
             var th = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject;
             var thSector = SectorManager.s_sectors.Find(s => s._name == Sector.Name.TimberHearth);
+            var thSpeed = OWPhysics.CalculateOrbitVelocity(th.GetAttachedOWRigidbody(), th.GetComponent<AstroObject>().GetPrimaryBody().GetAttachedOWRigidbody()).magnitude;
+            var thRigidbody = Locator.GetAstroObject(AstroObject.Name.TimberHearth).GetOWRigidbody();
+
             var dbFish = GameObject.Find("DB_HubDimension_Body/Sector_HubDimension/Interactables_HubDimension/Anglerfish_Body");
 
             List<string> assetBundlesList = new();
@@ -125,36 +136,54 @@ internal class Anglerfish
             fish.transform.SetParent(th.transform, false);
             fish.transform.position = th.transform.position + new Vector3(500, 0, 0);
             fish.transform.localScale = new Vector3(1, 1, 1);
-            fish.GetComponent<OWRigidbody>().enabled = true;
-            fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
-            fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
             var ac = fish.GetComponent<AnglerfishController>();
             ac._sector = thSector;
+            ac._chaseSpeed += thSpeed;
             ac.OnSectorOccupantsUpdated();
+            var rb = fish.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            var owrb = fish.GetComponent<OWRigidbody>();
+            owrb.enabled = true;
+            owrb.SetVelocity(thRigidbody.GetVelocity());
+            fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
+            fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+            // the "corrected" fish that's not glued to the player has:
+            // _restoreCachedVelocityOnUnsuspend = true
+            // OnSuspendOWRigidbody / OnUnsuspendOWRigidbody have handlers
+            // _cachedRelativeVelocity is nonzero
+            // _childColliders is nonempty
+            var awtb = fish.AddComponent<AlignWithTargetBody>();
+            awtb.SetTargetBody(thRigidbody);
 
             fish = GameObject.Instantiate(dbFish);
             fish.name = "TestFish2";
             fish.transform.SetParent(th.transform, false);
             fish.transform.position = th.transform.position + new Vector3(0, 500, 0);
             fish.transform.localScale = new Vector3(1, 1, 1);
+            ac = fish.GetComponent<AnglerfishController>();
+            ac._sector = thSector;
+            ac._chaseSpeed += thSpeed;
+            ac.OnSectorOccupantsUpdated();
+            rb = fish.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
             fish.GetComponent<OWRigidbody>().enabled = true;
             fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
             fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
-            ac = fish.GetComponent<AnglerfishController>();
-            ac._sector = thSector;
-            ac.OnSectorOccupantsUpdated();
 
             fish = GameObject.Instantiate(dbFish);
             fish.name = "TestFish3";
             fish.transform.SetParent(th.transform, false);
             fish.transform.position = th.transform.position + new Vector3(0, 0, 500);
-            fish.transform.localScale = new Vector3(2, 2, 2);
+            fish.transform.localScale = new Vector3(1, 1, 1);
+            ac = fish.GetComponent<AnglerfishController>();
+            ac._sector = thSector;
+            ac._chaseSpeed += thSpeed;
+            ac.OnSectorOccupantsUpdated();
+            rb = fish.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
             fish.GetComponent<OWRigidbody>().enabled = true;
             fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
             fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
-            ac = fish.GetComponent<AnglerfishController>();
-            ac._sector = thSector;
-            ac.OnSectorOccupantsUpdated();
 
             /*fish = GameObject.Instantiate(dbFish);
             fish.name = "TestFish";
