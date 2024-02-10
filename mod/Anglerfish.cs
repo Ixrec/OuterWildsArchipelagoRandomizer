@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ArchipelagoRandomizer;
 
@@ -137,23 +139,37 @@ internal class Anglerfish
             fish.transform.position = th.transform.position + new Vector3(500, 0, 0);
             fish.transform.localScale = new Vector3(1, 1, 1);
             var ac = fish.GetComponent<AnglerfishController>();
-            ac._sector = thSector;
+            ac.SetSector(null);
             ac._chaseSpeed += thSpeed;
-            ac.OnSectorOccupantsUpdated();
             var rb = fish.GetComponent<Rigidbody>();
             rb.isKinematic = false;
             var owrb = fish.GetComponent<OWRigidbody>();
             owrb.enabled = true;
-            owrb.SetVelocity(thRigidbody.GetVelocity());
+            //owrb.SetVelocity(thRigidbody.GetVelocity());
             fish.GetComponent<CenterOfTheUniverseOffsetApplier>().enabled = true;
             fish.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+
+            fish.SetActive(true);
+            owrb.Unsuspend();
+            //this.OnAnglerUnsuspended(this._currentState)
+            const BindingFlags flags = BindingFlags.Instance
+                | BindingFlags.Static
+                | BindingFlags.Public
+                | BindingFlags.NonPublic
+                | BindingFlags.DeclaredOnly;
+            if (typeof(AnglerfishController)
+                    .GetField("OnAnglerUnsuspended", flags)?
+                    .GetValue(ac) is not MulticastDelegate multiDelegate)
+                return;
+            multiDelegate.DynamicInvoke([ac._currentState]);
+
             // the "corrected" fish that's not glued to the player has:
             // _restoreCachedVelocityOnUnsuspend = true
             // OnSuspendOWRigidbody / OnUnsuspendOWRigidbody have handlers
             // _cachedRelativeVelocity is nonzero
             // _childColliders is nonempty
-            var awtb = fish.AddComponent<AlignWithTargetBody>();
-            awtb.SetTargetBody(thRigidbody);
+            //var awtb = fish.AddComponent<AlignWithTargetBody>();
+            //awtb.SetTargetBody(thRigidbody);
 
             fish = GameObject.Instantiate(dbFish);
             fish.name = "TestFish2";
