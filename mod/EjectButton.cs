@@ -32,7 +32,7 @@ internal class EjectButton
     [HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.Start))]
     public static void ShipEjectionSystem_Start_Postfix(ShipEjectionSystem __instance)
     {
-        Randomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem.Start fetching reference to eject button SIV");
+        APRandomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem.Start fetching reference to eject button SIV");
         ejectButtonSIV = __instance._interactVolume;
 
         ApplyHasEjectButtonFlag(_hasEjectButton);
@@ -43,7 +43,7 @@ internal class EjectButton
     public static bool ShipEjectionSystem_OnPressInteract_Prefix(ShipEjectionSystem __instance)
     {
         if (!_hasEjectButton)
-            Randomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem_OnPressInteract_Prefix blocking attempt to interact with the eject button");
+            APRandomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem_OnPressInteract_Prefix blocking attempt to interact with the eject button");
 
         return _hasEjectButton; // if we have the AP item, allow the base game code to run, otherwise skip it
     }
@@ -54,7 +54,7 @@ internal class EjectButton
     {
         if (!_hasEjectButton)
         {
-            Randomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem_OnLoseFocus_Postfix resetting custom prompt");
+            APRandomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem_OnLoseFocus_Postfix resetting custom prompt");
             ejectButtonSIV?.ChangePrompt("Eject Button Cover is Stuck");
         }
     }

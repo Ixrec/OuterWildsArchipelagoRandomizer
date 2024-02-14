@@ -55,7 +55,7 @@ namespace ArchipelagoRandomizer
             GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
             GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
 
-            Randomizer.OnSessionOpened += (s) =>
+            APRandomizer.OnSessionOpened += (s) =>
             {
                 s.Locations.CheckedLocationsUpdated += UpdateProgress;
                 session = s;
@@ -65,7 +65,7 @@ namespace ArchipelagoRandomizer
         private void Update()
         {
             // Show the correct version of the console depending on if the game is paused or not
-            if (isPaused != Randomizer.Instance.ModHelper.Menus.PauseMenu.IsOpen)
+            if (isPaused != APRandomizer.Instance.ModHelper.Menus.PauseMenu.IsOpen)
             {
                 isPaused = !isPaused;
                 if (isPaused)
@@ -104,7 +104,7 @@ namespace ArchipelagoRandomizer
             // Create objects and establish references
             gameplayConsoleEntries = new Queue<string>();
             gameplayConsoleTimers = [];
-            console = GameObject.Instantiate(Randomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
+            console = GameObject.Instantiate(APRandomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
             gameplayConsole = console.transform.Find("GameplayConsole/GameplayConsoleText").gameObject;
@@ -153,7 +153,7 @@ namespace ArchipelagoRandomizer
             float progress = session.Locations.AllLocationsChecked.Count;
             float maxLocations = session.Locations.AllLocations.Count;
             float progressPercent = progress / maxLocations;
-            Randomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
+            APRandomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
             progressText.text = $"{progress}/{maxLocations}";
             progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
@@ -215,7 +215,7 @@ namespace ArchipelagoRandomizer
         {
             if (gameplayConsoleText == null)
             {
-                Randomizer.OWMLModConsole.WriteLine($"UpdateText() returning early because somehow gameplayConsoleText is null");
+                APRandomizer.OWMLModConsole.WriteLine($"UpdateText() returning early because somehow gameplayConsoleText is null");
                 return;
             }
 
@@ -228,7 +228,7 @@ namespace ArchipelagoRandomizer
 
         /// <summary>
         /// Adds a new text entry to the in-game consoles.
-        /// Identical to Randomizer.InGameAPConsole.AddText(text), but implemented for convenience.
+        /// Identical to APRandomizer.InGameAPConsole.AddText(text), but implemented for convenience.
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
@@ -236,16 +236,16 @@ namespace ArchipelagoRandomizer
         /// <param name="skipHistory">Whether to not save this text between loops</param>
         public static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
-            Randomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
+            APRandomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
         }
 
         /// <summary>
         /// Updates the gameplay console.
-        /// Identical to Randomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
+        /// Identical to APRandomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
         /// </summary>
         public static void UpdateConsoleText()
         {
-            Randomizer.InGameAPConsole.UpdateText();
+            APRandomizer.InGameAPConsole.UpdateText();
         }
 
         public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
@@ -260,11 +260,11 @@ namespace ArchipelagoRandomizer
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            Randomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
+            APRandomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
 
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;
-            var slot = Randomizer.APSession.ConnectionInfo.Slot;
+            var slot = APRandomizer.APSession.ConnectionInfo.Slot;
             if (FilterPlayer)
             {
                 switch (message)
@@ -293,7 +293,7 @@ namespace ArchipelagoRandomizer
                 var tokens = text.Substring("!debug ".Length).Split(',');
                 Item item = ItemNames.itemNamesReversed[tokens[0]];
                 uint count = uint.Parse(tokens[1]);
-                Randomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
+                APRandomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
                 LocationTriggers.ApplyItemToPlayer(item, count);
                 consoleText.text = "";
                 return;

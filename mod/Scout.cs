@@ -28,7 +28,7 @@ internal class Scout
     {
         if (mode == ToolMode.Probe && !hasScout)
         {
-            Randomizer.OWMLModConsole.WriteLine($"deactivating Scout model in player launcher since they don't have the Scout item yet");
+            APRandomizer.OWMLModConsole.WriteLine($"deactivating Scout model in player launcher since they don't have the Scout item yet");
             getScoutInPlayerLauncher()?.SetActive(false);
         }
     }
@@ -38,7 +38,7 @@ internal class Scout
     public static bool ProbeLauncher_LaunchProbe_Prefix()
     {
         if (!hasScout) {
-            Randomizer.OWMLModConsole.WriteLine($"blocked attempt to launch the scout");
+            APRandomizer.OWMLModConsole.WriteLine($"blocked attempt to launch the scout");
             return false;
         }
         return true;
@@ -51,7 +51,7 @@ internal class Scout
     [HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
     public static void ProbePromptController_LateInitialize_Postfix(ProbePromptController __instance)
     {
-        Randomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
+        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
         launchScoutPrompt = __instance._launchPrompt;
 
         ApplyHasScoutFlag(hasScout);

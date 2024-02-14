@@ -29,7 +29,7 @@ internal class QuantumShrineDoor
     [HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]
     public static void QuantumShrine_Start_Prefix(QuantumShrine __instance)
     {
-        Randomizer.OWMLModConsole.WriteLine($"QuantumShrine.Start deleting door orb and adding door prompt");
+        APRandomizer.OWMLModConsole.WriteLine($"QuantumShrine.Start deleting door orb and adding door prompt");
 
         var qs = Locator.GetQuantumMoon().transform.Find("Sector_QuantumMoon/QuantumShrine").GetComponent<QuantumShrine>();
 
@@ -62,11 +62,11 @@ internal class QuantumShrineDoor
             if (!hasQuantumShrineCodes) return;
             if (gatewayComponent == null)
             {
-                Randomizer.OWMLModConsole.WriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract failed to locate NomaiGateway component on shrineGatewayTransform", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract failed to locate NomaiGateway component on shrineGatewayTransform", OWML.Common.MessageType.Error);
                 return;
             }
 
-            Randomizer.OWMLModConsole.WriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract {(gatewayComponent._open ? "closing" : "opening")} gatewayComponent");
+            APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract {(gatewayComponent._open ? "closing" : "opening")} gatewayComponent");
             // Open/CloseGate()'s implementation never uses its slot argument,
             // but _openSlot/_closeSlot are what it would normally be set to.
             if (gatewayComponent._open)
@@ -99,19 +99,19 @@ internal class QuantumShrineDoor
     [HarmonyPatch(typeof(PlayerState), nameof(PlayerState.OnFlashlightOff))]
     public static void PlayerState_OnFlashlightOff_Prefix()
     {
-        Randomizer.OWMLModConsole.WriteLine($"PlayerState.OnFlashlightOff");
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerState.OnFlashlightOff");
 
         var qs = Locator.GetQuantumMoon().transform.Find("Sector_QuantumMoon/QuantumShrine").GetComponent<QuantumShrine>();
 
-        Randomizer.OWMLModConsole.WriteLine($"lamps {qs._lamps.Length}");
+        APRandomizer.OWMLModConsole.WriteLine($"lamps {qs._lamps.Length}");
         for (int i = 0; i < qs._lamps.Length; i++)
         {
-            Randomizer.OWMLModConsole.WriteLine($"lamp {i} / {qs._lamps[i].name} / {qs._lamps[i].intensity}");
+            APRandomizer.OWMLModConsole.WriteLine($"lamp {i} / {qs._lamps[i].name} / {qs._lamps[i].intensity}");
         }
-        Randomizer.OWMLModConsole.WriteLine($"_isPlayerInside {qs._isPlayerInside}");
-        Randomizer.OWMLModConsole.WriteLine($"_fadeFraction {qs._fadeFraction}");
-        Randomizer.OWMLModConsole.WriteLine($"_isProbeInside {qs._isProbeInside}");
-        Randomizer.OWMLModConsole.WriteLine($"PlayerState.IsFlashlightOn() {PlayerState.IsFlashlightOn()}");
-        Randomizer.OWMLModConsole.WriteLine($"thruster light {Locator.GetThrusterLightTracker().GetLightRange()}");
+        APRandomizer.OWMLModConsole.WriteLine($"_isPlayerInside {qs._isPlayerInside}");
+        APRandomizer.OWMLModConsole.WriteLine($"_fadeFraction {qs._fadeFraction}");
+        APRandomizer.OWMLModConsole.WriteLine($"_isProbeInside {qs._isProbeInside}");
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerState.IsFlashlightOn() {PlayerState.IsFlashlightOn()}");
+        APRandomizer.OWMLModConsole.WriteLine($"thruster light {Locator.GetThrusterLightTracker().GetLightRange()}");
     }*/
 }

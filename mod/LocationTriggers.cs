@@ -111,40 +111,40 @@ internal class LocationTriggers
 
     public static void CheckLocation(Location location)
     {
-        var locationChecked = Randomizer.SaveData.locationsChecked;
+        var locationChecked = APRandomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            if (LocationNames.IsLogsanityLocation(location) && !(Randomizer.SlotData != null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1))
-                Randomizer.OWMLModConsole.WriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
+            if (LocationNames.IsLogsanityLocation(location) && !(APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1))
+                APRandomizer.OWMLModConsole.WriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
             else
-                Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
         if (locationChecked[location])
         {
-            Randomizer.OWMLModConsole.WriteLine($"'{location}' has already been checked. Doing nothing.");
+            APRandomizer.OWMLModConsole.WriteLine($"'{location}' has already been checked. Doing nothing.");
             return;
         }
         else
         {
-            Randomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
+            APRandomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
             locationChecked[location] = true;
-            Randomizer.Instance.WriteToSaveFile();
+            APRandomizer.Instance.WriteToSaveFile();
 
             if (LocationNames.locationToArchipelagoId.ContainsKey(location))
             {
                 var locationId = LocationNames.locationToArchipelagoId[location];
-                Randomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
+                APRandomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
 
                 // we want to time out relatively quickly if the server happens to be down
-                var checkLocationTask = Task.Run(() => Randomizer.APSession.Locations.CompleteLocationChecks(locationId));
+                var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
                 if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
                     throw new Exception("CompleteLocationChecks() task timed out");
             }
             else
             {
-                Randomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
+                APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
             }
         }
     }
@@ -194,7 +194,7 @@ internal class LocationTriggers
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
             default:
-                Randomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
         }
     }
@@ -205,12 +205,12 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-        Randomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
+        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
 
-        if (Randomizer.SlotData != null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1) {
+        if (APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1) {
             // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
             // we can simply parse the fact id instead of writing another hardcoded map.
             if (Enum.TryParse<Location>($"SLF__{factId}", out var location))
@@ -229,7 +229,7 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
-        Randomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
+        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
 
         switch (dialogueTreeName)
         {
@@ -250,6 +250,6 @@ internal class LocationTriggers
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-        Randomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
+        APRandomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
     }
 }

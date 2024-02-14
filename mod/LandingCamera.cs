@@ -69,7 +69,7 @@ internal class LandingCamera
     public static bool ShipCockpitController_EnterLandingView_Prefix()
     {
         if (!_hasLandingCamera)
-            Randomizer.OWMLModConsole.WriteLine($"ShipCockpitController_EnterLandingView_Prefix blocking attempt to use the landing camera");
+            APRandomizer.OWMLModConsole.WriteLine($"ShipCockpitController_EnterLandingView_Prefix blocking attempt to use the landing camera");
 
         return _hasLandingCamera; // if we have the AP item, allow the base game code to run, otherwise skip it
     }

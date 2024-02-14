@@ -9,15 +9,15 @@ namespace ArchipelagoRandomizer.InGameTracker
     {
         public static void DisplayItemText(string itemID, ItemListWrapper Wrapper)
         {
-            var inventory = Randomizer.SaveData.itemsAcquired;
+            var inventory = APRandomizer.SaveData.itemsAcquired;
             Wrapper.DescriptionFieldClear();
             List<string> infos = [];
-            if (!Randomizer.Tracker.ItemEntries.ContainsKey(itemID))
+            if (!APRandomizer.Tracker.ItemEntries.ContainsKey(itemID))
             {
-                Randomizer.OWMLModConsole.WriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error); 
+                APRandomizer.OWMLModConsole.WriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error); 
                 return;
             }
-            InventoryItemEntry itemEntry = Randomizer.Tracker.ItemEntries[itemID];
+            InventoryItemEntry itemEntry = APRandomizer.Tracker.ItemEntries[itemID];
             // Can't use the enums here for some reason, so use strings as the names
             if (itemEntry.HasOneOrMore())
             {
@@ -93,7 +93,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     default:
                         infos.Add($"Hmm, looks like an incorrect item ID was requested: {itemID}");
                         infos.Add("Please let Ixrec or Gamewyrm on the Archipelago or Outer Wilds Modding Discord know if you see this.");
-                        Randomizer.OWMLModConsole.WriteLine($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.", OWML.Common.MessageType.Error);
+                        APRandomizer.OWMLModConsole.WriteLine($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.", OWML.Common.MessageType.Error);
                         break;
                 }
             }

@@ -63,7 +63,7 @@ internal class AutopilotManager
     public static bool Autopilot_FlyToDestination_Prefix()
     {
         if (!_hasAutopilot)
-            Randomizer.OWMLModConsole.WriteLine($"Autopilot_FlyToDestination_Prefix blocking attempt to use autopilot");
+            APRandomizer.OWMLModConsole.WriteLine($"Autopilot_FlyToDestination_Prefix blocking attempt to use autopilot");
 
         return _hasAutopilot; // if we have the AP item, allow the base game code to run, otherwise skip it
     }

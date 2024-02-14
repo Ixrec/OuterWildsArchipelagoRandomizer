@@ -34,9 +34,9 @@ namespace ArchipelagoRandomizer
     }
 
     [HarmonyPatch]
-    public class Randomizer : ModBehaviour
+    public class APRandomizer : ModBehaviour
     {
-        public static Randomizer Instance;
+        public static APRandomizer Instance;
 
         public static AssetBundle Assets;
 
@@ -105,7 +105,7 @@ namespace ArchipelagoRandomizer
                 }
                 var profileName = StandaloneProfileManager.SharedInstance._currentProfile.profileName;
 
-                OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP Randomizer save file.");
+                OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP APRandomizer save file.");
 
                 SaveFileName = $"SaveData/{profileName}.json";
                 SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
@@ -213,7 +213,7 @@ namespace ArchipelagoRandomizer
                     saveDataChanged = SyncItemCountWithAPServer(networkItem.Item);
 
                 if (saveDataChanged)
-                    Randomizer.Instance.WriteToSaveFile();
+                    APRandomizer.Instance.WriteToSaveFile();
             }
 
             APSession.Items.ItemReceived += APSession_ItemReceived;
@@ -245,7 +245,7 @@ namespace ArchipelagoRandomizer
             }
 
             if (saveDataChanged)
-                Randomizer.Instance.WriteToSaveFile();
+                APRandomizer.Instance.WriteToSaveFile();
         }
         private static void APSession_OnMessageReceived(LogMessage message)
         {
@@ -256,30 +256,30 @@ namespace ArchipelagoRandomizer
         {
             if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId))
             {
-                Randomizer.OWMLModConsole.WriteLine($"SyncItemCountWithAPServer received itemId {itemId} which is not in our archipelagoIdToItem map", MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"SyncItemCountWithAPServer received itemId {itemId} which is not in our archipelagoIdToItem map", MessageType.Error);
                 return false;
             }
 
             var item = ItemNames.archipelagoIdToItem[itemId];
             var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
 
-            var savedCount = Randomizer.SaveData.itemsAcquired[item];
+            var savedCount = APRandomizer.SaveData.itemsAcquired[item];
             if (savedCount >= itemCountSoFar)
             {
                 // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
                 // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
-                Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Ignoring since SaveData already has {savedCount} of it.");
+                APRandomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Ignoring since SaveData already has {savedCount} of it.");
                 return false;
             }
             else
             {
-                Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.");
+                APRandomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.");
 
                 // We apply the item as a new item in the tracker
                 TrackerManager.MarkItemAsNew(item);
 
-                Randomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
-                LocationTriggers.ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
+                APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
+                LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
                 return true;
             }
         }
@@ -303,7 +303,7 @@ namespace ArchipelagoRandomizer
             // and why this project's .csproj has a rule to copy these files out of the submodule.
             ItemNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "items.jsonc"));
             LocationNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "locations.jsonc"));
-            Randomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs");
+            APRandomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs");
 
             // Set up the console first so it can be safely used even in the various Setup() methods
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
@@ -325,7 +325,7 @@ namespace ArchipelagoRandomizer
 
             ModHelper.Menus.PauseMenu.OnInit += () => StartCoroutine(SetupPauseMenu(menuFramework));
 
-            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
+            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago APRandomizer", OWML.Common.MessageType.Success);
 
             Application.quitting += () => OnSessionClosed(APSession, false);
         }

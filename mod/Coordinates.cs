@@ -31,17 +31,17 @@ public static class Coordinates
     {
         if (coordsSlotData is string coordsString && coordsString == "vanilla")
         {
-            Randomizer.OWMLModConsole.WriteLine($"slot_data['eotu_coordinates'] was 'vanilla'. Leaving vanilla coordinates unchanged");
+            APRandomizer.OWMLModConsole.WriteLine($"slot_data['eotu_coordinates'] was 'vanilla'. Leaving vanilla coordinates unchanged");
         }
         else if (coordsSlotData is JArray coords)
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
-            Randomizer.OWMLModConsole.WriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
+            APRandomizer.OWMLModConsole.WriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
                 $"{string.Join(", ", correctCoordinates.Select(coord => string.Join("|", coord)))}");
         }
         else
         {
-            Randomizer.OWMLModConsole.WriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
         }
     }
 
@@ -63,7 +63,7 @@ public static class Coordinates
         var hologram = __instance._holograms[activeIndex];
         if (hologram.name == "Hologram_EyeCoordinates")
         {
-            Randomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix for {hologram.name} " +
+            APRandomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix for {hologram.name} " +
                 "marking GD_COORDINATES checked and editing hologram to show this multiworld's coordinates");
 
             LocationTriggers.CheckLocation(Location.GD_COORDINATES);
@@ -82,14 +82,14 @@ public static class Coordinates
     {
         logManager = __instance;
 
-        Randomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates");
+        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates");
 
         ApplyHasCoordinatesFlag(_hasCoordinates);
     }
 
     public static void ApplyHasCoordinatesFlag(bool hasCoordinates)
     {
-        Randomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
+        APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
 
         if (hologramMeshGO != null)
         {
@@ -205,7 +205,7 @@ public static class Coordinates
             // allow "backwards" inputs, since they're the same shape
             var inputIsCorrect = inputCoordinate.SequenceEqual(correctCoordinate) || inputCoordinate.Reverse().SequenceEqual(correctCoordinate);
 
-            Randomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
+            APRandomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
                 $" [{nodes.Count}]{string.Join("|", nodes)} vs [{correctCoordinate.Count}]{string.Join("|", correctCoordinate)}, " +
                 $"inputIsCorrect={inputIsCorrect}");
 
@@ -221,10 +221,10 @@ public static class Coordinates
         if (__result == false && inputMatchesVanillaCoords == true)
         {
             if (_hasCoordinates)
-                Randomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
+                APRandomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
                     $"Please check the prompt in the lower left corner of the screen.");
             else
-                Randomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
+                APRandomizer.InGameAPConsole.AddText($"The correct Eye coordinates for this Archipelago world are different from the vanilla game's coordinates. " +
                     $"Please come back after the 'Coordinates' item for this world has been found.");
         }
 

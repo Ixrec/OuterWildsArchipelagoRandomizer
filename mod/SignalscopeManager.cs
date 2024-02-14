@@ -50,7 +50,7 @@ internal class SignalscopeManager
     {
         if (mode == ToolMode.SignalScope && !hasSignalscope)
         {
-            Randomizer.OWMLModConsole.WriteLine($"blocked attempt to equip Signalscope");
+            APRandomizer.OWMLModConsole.WriteLine($"blocked attempt to equip Signalscope");
 
             if (!Locator.GetPlayerSuit().IsWearingSuit() && !OWInput.IsInputMode(InputMode.ShipCockpit))
             {
@@ -160,7 +160,7 @@ internal class SignalscopeManager
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
         var location = LocationNames.signalToLocation[signalName];
-        var isKnown = Randomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
+        var isKnown = APRandomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
 
         __result = isKnown; // override return value
         return false; // skip vanilla implementation
@@ -171,7 +171,7 @@ internal class SignalscopeManager
     [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ForgetFrequency))]
     public static bool PlayerData_ForgetFrequency_Prefix(SignalFrequency frequency)
     {
-        Randomizer.OWMLModConsole.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
+        APRandomizer.OWMLModConsole.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
         return false; // skip vanilla implementation, never forget a frequency
     }
 
@@ -215,7 +215,7 @@ internal class SignalscopeManager
         if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location location))
             return true;
 
-        if (Randomizer.SaveData.locationsChecked[location])
+        if (APRandomizer.SaveData.locationsChecked[location])
             return false; // skip vanilla implementation
 
         return true;
@@ -227,16 +227,16 @@ internal class SignalscopeManager
         if (!LocationNames.signalToLocation.TryGetValue(__instance.GetName(), out Location location))
             return true;
 
-        if (Randomizer.SaveData.locationsChecked[location])
+        if (APRandomizer.SaveData.locationsChecked[location])
             return false; // skip vanilla implementation
 
         // If you have the frequency *item* already, the game won't Identify/LearnFrequency(),
         // because we do want a frequency to be "usable" with the item and not the location,
         // so in this specific case we need to check the frequency *location* manually.
         if (ItemNames.frequencyToItem.TryGetValue(__instance.GetFrequency(), out Item item))
-            if (Randomizer.SaveData.itemsAcquired[item] > 0)
+            if (APRandomizer.SaveData.itemsAcquired[item] > 0)
                 if (LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location frequencyLocation))
-                    if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
+                    if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
                         LocationTriggers.CheckLocation(frequencyLocation);
 
         return true;
@@ -262,7 +262,7 @@ internal class SignalscopeManager
         var mightDisplayUnidentifiedSignalMessage = !__instance._isDetecting;
 
         var location = LocationNames.signalToLocation[signalName];
-        if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
+        if (APRandomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
             return false; // skip vanilla implementation
         }
 
@@ -279,7 +279,7 @@ internal class SignalscopeManager
         {
             if (mightDisplayUnidentifiedSignalMessage)
             {
-                Randomizer.OWMLModConsole.WriteLine($"AudioSignalDetectionTrigger_Update_Prefix forcing detection of {__instance._signal.GetName()} despite player not wearing the helmet");
+                APRandomizer.OWMLModConsole.WriteLine($"AudioSignalDetectionTrigger_Update_Prefix forcing detection of {__instance._signal.GetName()} despite player not wearing the helmet");
 
                 // copy-pasted and tweaked from vanilla implementation
                 __instance._isDetecting = true;
