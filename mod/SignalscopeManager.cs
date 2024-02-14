@@ -87,7 +87,7 @@ internal class SignalscopeManager
 
     public static void ApplyHasSignalscopeFlag(bool hasSignalscope)
     {
-        if (equipSignalscopePrompt is null || centerEquipSignalScopePrompt is null) return;
+        if (equipSignalscopePrompt == null || centerEquipSignalScopePrompt == null) return;
 
         if (hasSignalscope)
         {

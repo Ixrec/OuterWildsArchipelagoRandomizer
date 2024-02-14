@@ -110,7 +110,7 @@ internal class GhostMatter
     public static bool DarkMatterVolume_OnEffectVolumeEnter_Prefix(DarkMatterVolume __instance, GameObject hitObj)
     {
         HazardDetector detector = hitObj.GetComponent<HazardDetector>();
-        if (detector is null) return false; // no need to make the base game repeat this null check
+        if (detector == null) return false; // no need to make the base game repeat this null check
 
         // This prevents the scout from being added to the DMV's _trackedDetectors list,
         // which is what it uses to emit the trail of WillOWisp particles as an object

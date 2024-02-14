@@ -114,7 +114,7 @@ internal class LocationTriggers
         var locationChecked = Randomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            if (LocationNames.IsLogsanityLocation(location) && !(Randomizer.SlotData is not null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1))
+            if (LocationNames.IsLogsanityLocation(location) && !(Randomizer.SlotData != null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1))
                 Randomizer.OWMLModConsole.WriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
             else
                 Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
@@ -210,7 +210,7 @@ internal class LocationTriggers
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
 
-        if (Randomizer.SlotData is not null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1) {
+        if (Randomizer.SlotData != null && Randomizer.SlotData.ContainsKey("logsanity") && (long)Randomizer.SlotData["logsanity"] == 1) {
             // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
             // we can simply parse the fact id instead of writing another hardcoded map.
             if (Enum.TryParse<Location>($"SLF__{factId}", out var location))

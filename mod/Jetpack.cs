@@ -28,7 +28,7 @@ internal class Jetpack
 
     private static void RefillFuel()
     {
-        if (playerResources is not null)
+        if (playerResources != null)
         {
             playerResources._currentFuel = PlayerResources._maxFuel;
 

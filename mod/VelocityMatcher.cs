@@ -55,7 +55,7 @@ internal class VelocityMatcher
 
     public static void ApplyHasVelocityMatcherFlag(bool hasVelocityMatcher)
     {
-        if (ShipMVPrompt is not null)
+        if (ShipMVPrompt != null)
         {
             if (hasVelocityMatcher)
             {
@@ -70,7 +70,7 @@ internal class VelocityMatcher
             }
         }
 
-        if (JetpackMVPrompt is not null)
+        if (JetpackMVPrompt != null)
         {
             if (hasVelocityMatcher)
             {
@@ -85,7 +85,7 @@ internal class VelocityMatcher
             }
         }
 
-        if (LockOnMVPrompt is not null)
+        if (LockOnMVPrompt != null)
         {
             if (hasVelocityMatcher)
             {

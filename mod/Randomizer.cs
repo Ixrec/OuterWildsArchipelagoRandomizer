@@ -66,7 +66,7 @@ namespace ArchipelagoRandomizer
         private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
         public void WriteToSaveFile()
         {
-            if (pendingSaveFileWrite is not null) return;
+            if (pendingSaveFileWrite != null) return;
 
             if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
             {
@@ -98,7 +98,7 @@ namespace ArchipelagoRandomizer
 
             StandaloneProfileManager.SharedInstance.OnProfileReadDone += () =>
             {
-                if (StandaloneProfileManager.SharedInstance._currentProfile is null)
+                if (StandaloneProfileManager.SharedInstance._currentProfile == null)
                 {
                     OWMLModConsole.WriteLine($"No profile loaded", OWML.Common.MessageType.Error);
                     return;
@@ -109,7 +109,7 @@ namespace ArchipelagoRandomizer
 
                 SaveFileName = $"SaveData/{profileName}.json";
                 SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
-                if (SaveData is null)
+                if (SaveData == null)
                 {
                     OWMLModConsole.WriteLine($"No save file found for this profile.");
                     // Hiding the vanilla resume button here doesn't stick. We have to wait for TitleScreenManager_SetUpMainMenu_Postfix to do it.
@@ -156,7 +156,7 @@ namespace ArchipelagoRandomizer
             GameObject? gameObject = null;
             if (selectable?.name == "Button-NewGame")
             {
-                gameObject = (SaveData is null) ?
+                gameObject = (SaveData == null) ?
                     GameObject.Find($"{pathToMainMenuButtons}/Button-NEW RANDOM EXPEDITION") :
                     GameObject.Find($"{pathToMainMenuButtons}/Button-RESUME RANDOM EXPEDITION");
             }
@@ -168,7 +168,7 @@ namespace ArchipelagoRandomizer
             if (gameObject)
             {
                 var modButton = gameObject.GetComponent<Button>();
-                if (modButton is not null)
+                if (modButton != null)
                 {
                     OWMLModConsole.WriteLine($"OWMenuInputModule_SelectOnNextUpdate changing selectable from {selectable.name} to {gameObject.name}");
                     __instance._nextSelectableQueue.Remove(selectable);
@@ -180,7 +180,7 @@ namespace ArchipelagoRandomizer
         private static LoginResult ConnectToAPServer(APConnectionData cdata)
         {
             OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}");
-            if (APSession is not null)
+            if (APSession != null)
             {
                 APSession.Items.ItemReceived -= APSession_ItemReceived;
                 APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
@@ -368,8 +368,8 @@ namespace ArchipelagoRandomizer
             // unfortunately hiding the vanilla Resume button with OWML ModHelper doesn't work, so we do that in TitleScreenManager_SetUpMainMenu_Postfix instead
             ResumeRandomExpeditionButton = menuFramework.TitleScreen_MakeMenuOpenButton("RESUME RANDOM EXPEDITION", 0, resumeFailedPopup);
 
-            ChangeConnInfoButton?.SetActive(SaveData is not null);
-            ResumeRandomExpeditionButton?.SetActive(SaveData is not null);
+            ChangeConnInfoButton?.SetActive(SaveData != null);
+            ResumeRandomExpeditionButton?.SetActive(SaveData != null);
 
             SetupConnInfoButton(changeConnInfoPopup, cdata =>
             {
@@ -510,13 +510,13 @@ namespace ArchipelagoRandomizer
                 if (connectionInfoUserInput.Count == 1)
                 {
                     headerText.text = cinfoHeader2;
-                    inputField.text = (SaveData?.apConnectionData is null) ? "" : SaveData.apConnectionData.slotName;
+                    inputField.text = (SaveData?.apConnectionData == null) ? "" : SaveData.apConnectionData.slotName;
                     ((Text)inputField.placeholder).text = cinfoPlaceholder2;
                 }
                 else if (connectionInfoUserInput.Count == 2)
                 {
                     headerText.text = cinfoHeader3;
-                    inputField.text = (SaveData?.apConnectionData is null) ? "" : SaveData.apConnectionData.password;
+                    inputField.text = (SaveData?.apConnectionData == null) ? "" : SaveData.apConnectionData.password;
                     ((Text)inputField.placeholder).text = cinfoPlaceholder3;
                 }
                 else if (connectionInfoUserInput.Count == 3)

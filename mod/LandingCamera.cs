@@ -45,7 +45,7 @@ internal class LandingCamera
 
     public static void ApplyHasLandingCameraFlag(bool hasLandingCamera)
     {
-        if (landingCameraLandingPrompt is null) return;
+        if (landingCameraLandingPrompt == null) return;
 
         if (hasLandingCamera)
         {

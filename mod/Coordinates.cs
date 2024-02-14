@@ -91,7 +91,7 @@ public static class Coordinates
     {
         Randomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
 
-        if (hologramMeshGO is not null)
+        if (hologramMeshGO != null)
         {
             hologramMeshGO.DestroyAllComponentsImmediate<MeshFilter>();
             var filter = hologramMeshGO.AddComponent<MeshFilter>();
@@ -111,7 +111,7 @@ public static class Coordinates
             filter.mesh = mesh;
         }
 
-        if (logManager is not null)
+        if (logManager != null)
         {
             // Sadly to edit the ship log reliably we have to edit two different data structures,
             // one of which is generated from the other during wakeup. Otherwise we end up with

@@ -61,7 +61,7 @@ internal class EjectButton
 
     public static void ApplyHasEjectButtonFlag(bool hasEjectButton)
     {
-        if (ejectButtonSIV is null) return;
+        if (ejectButtonSIV == null) return;
 
         if (hasEjectButton)
         {

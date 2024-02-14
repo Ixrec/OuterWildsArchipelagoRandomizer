@@ -19,7 +19,7 @@ internal class Marshmallows
             {
                 _normalMarshmallows = value;
 
-                if (playerResources is not null)
+                if (playerResources != null)
                 {
                     playerResources._currentHealth = (float)Math.Min(playerResources._currentHealth + 50, PlayerResources._maxHealth);
 
@@ -39,7 +39,7 @@ internal class Marshmallows
             {
                 _perfectMarshmallows = value;
 
-                if (playerResources is not null)
+                if (playerResources != null)
                 {
                     playerResources._currentHealth = PlayerResources._maxHealth;
 
@@ -59,7 +59,7 @@ internal class Marshmallows
             {
                 _burntMarshmallows = value;
 
-                if (playerResources is not null)
+                if (playerResources != null)
                 {
                     Locator.GetPlayerAudioController().PlayMarshmallowEatBurnt();
                     var nd = new NotificationData(NotificationTarget.Player, "BURNT MARSHMALLOW CONSUMED. HEALTH UNCHANGED.", 3f, false);

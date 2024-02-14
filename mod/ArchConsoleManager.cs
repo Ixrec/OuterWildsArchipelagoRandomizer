@@ -213,7 +213,7 @@ namespace ArchipelagoRandomizer
         /// </summary>
         public void UpdateText()
         {
-            if (gameplayConsoleText is null)
+            if (gameplayConsoleText == null)
             {
                 Randomizer.OWMLModConsole.WriteLine($"UpdateText() returning early because somehow gameplayConsoleText is null");
                 return;

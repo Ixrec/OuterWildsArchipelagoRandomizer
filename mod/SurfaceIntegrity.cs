@@ -43,7 +43,7 @@ internal class SurfaceIntegrity
 
     public static void ApplyHasSurfaceIntegrityScannerFlag(bool hasSurfaceIntegrityScanner)
     {
-        if (hasSurfaceIntegrityScanner && probeAnchor is not null)
+        if (hasSurfaceIntegrityScanner && probeAnchor != null)
         {
             string text = probeAnchor.BuildIntegrityString();
             if (text != probeAnchor._probeNotification.displayMessage)

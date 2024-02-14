@@ -28,7 +28,7 @@ internal class Oxygen
 
     private static void RefillOxygen()
     {
-        if (playerResources is not null)
+        if (playerResources != null)
         {
             playerResources._currentOxygen = PlayerResources._maxOxygen;
 

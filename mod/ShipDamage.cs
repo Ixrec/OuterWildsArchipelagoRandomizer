@@ -35,7 +35,7 @@ internal class ShipDamage
     // The one special wrinkle is that we want to avoid damaging both thruster banks in a single trap if possible.
     private static void DamageShip()
     {
-        if (shipDamageController is not null)
+        if (shipDamageController != null)
         {
             // Ignore ship parts that are already damaged, so multiple traps back-to-back work correctly
             var hulls = new List<ShipHull>(shipDamageController._shipHulls.Where(h => !h.isDamaged));

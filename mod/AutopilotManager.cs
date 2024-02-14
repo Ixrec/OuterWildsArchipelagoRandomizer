@@ -43,7 +43,7 @@ internal class AutopilotManager
 
     public static void ApplyHasAutopilotFlag(bool hasAutopilot)
     {
-        if (autopilotPrompt is null) return;
+        if (autopilotPrompt == null) return;
 
         if (hasAutopilot)
         {
