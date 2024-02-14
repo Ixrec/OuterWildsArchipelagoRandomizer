@@ -17,7 +17,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             List<string> infos = [];
             InventoryItemEntry itemEntry = Randomizer.Tracker.ItemEntries[itemID];
             // Can't use the enums here for some reason, so use strings as the names
-            if (itemEntry.HasMoreThanOne())
+            if (itemEntry.HasOneOrMore())
             {
                 switch (itemID)
                 {

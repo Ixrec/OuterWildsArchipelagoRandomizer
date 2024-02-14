@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.InGameTracker
 {
     public class InventoryItemEntry(string ID, string Name, bool IsAPItem = true, bool ItemIsNew = false, string HintedLocation = "", string HintedEntrance = "", string HintedWorld = "")
     {
@@ -33,7 +33,7 @@ namespace ArchipelagoRandomizer
         /// </summary>
         public string HintedWorld = HintedWorld;
 
-        public bool HasMoreThanOne()
+        public bool HasOneOrMore()
         {
             // Fake items like the Outer Wilds Ventures frequency, which aren't randomized, should at the moment always return true here
             if (!IsAPItem) return true;

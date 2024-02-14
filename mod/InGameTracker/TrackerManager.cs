@@ -64,6 +64,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             Randomizer.OnSessionOpened += (s) =>
             {
+                session = s;
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
                 Randomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
@@ -90,13 +91,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             Randomizer.OWMLModConsole.WriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
 
             // Retrive hints from server and set up subscription to hint events in the future
-            session = Randomizer.APSession;
-            /*if (!hintsInitialized)
-            {
-                ReadHints(session.DataStorage.GetHints());
-                session.DataStorage.TrackHints(ReadHints);
-                hintsInitialized = true;
-            }*/
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>
@@ -193,15 +187,22 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void MarkItemAsNew(Item item)
         {
             string itemID = item.ToString();
-            if (!itemID.Contains("Signal"))
+            TrackerManager tracker = Randomizer.Tracker;
+            if (itemID.Contains("Signal"))
             {
-                Randomizer.Tracker.ItemEntries[itemID].SetNew(true);
+                if (TryGetFrequency(item, out string frequency))
+                {
+                    tracker.ItemEntries[frequency].SetNew(true);
+                    Randomizer.OWMLModConsole.WriteLine($"Marking frequency {frequency} for {itemID} as new", OWML.Common.MessageType.Success);
+                }
+                else Randomizer.OWMLModConsole.WriteLine($"Provided signal {itemID} does not belong to any mapped frequency, cannot mark as new", OWML.Common.MessageType.Warning);
             }
-            else
+            else if (tracker.ItemEntries.ContainsKey(itemID))
             {
-                Randomizer.Tracker.ItemEntries[GetFrequency(item)].SetNew(true);
+                tracker.ItemEntries[itemID].SetNew(true);
+                Randomizer.OWMLModConsole.WriteLine($"Marking item {itemID} as new", OWML.Common.MessageType.Success);
             }
-            Randomizer.OWMLModConsole.WriteLine($"Marking item {itemID} as new", OWML.Common.MessageType.Success);
+            else Randomizer.OWMLModConsole.WriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
         }
 
         /// <summary>
@@ -210,15 +211,30 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="signal"></param>
         /// <returns></returns>
-        public static string GetFrequency(Item signal)
+        public static bool TryGetFrequency(Item signal, out string frequency)
         {
-            if (signal == Item.SignalCaveShard || signal == Item.SignalGroveShard || signal == Item.SignalIslandShard || signal == Item.SignalMuseumShard || signal == Item.SignalTowerShard || signal == Item.SignalQM)
-                return Item.FrequencyQF.ToString();
+            if (signal == Item.SignalChert || signal == Item.SignalEsker || signal == Item.SignalRiebeck || signal == Item.SignalGabbro || signal == Item.SignalFeldspar)
+            {
+                frequency = "FrequencyOWV";
+                return true;
+            }
+            else if (signal == Item.SignalCaveShard || signal == Item.SignalGroveShard || signal == Item.SignalIslandShard || signal == Item.SignalMuseumShard || signal == Item.SignalTowerShard || signal == Item.SignalQM)
+            {
+                frequency = Item.FrequencyQF.ToString();
+                return true;
+            }
             else if (signal == Item.SignalEP1 || signal == Item.SignalEP2 || signal == Item.SignalEP3)
-                return Item.FrequencyDB.ToString();
+            {
+                frequency = Item.FrequencyDB.ToString();
+                return true;
+            }
             else if (signal == Item.SignalGalena || signal == Item.SignalTephra)
-                return Item.FrequencyHS.ToString();
-            else return "FrequencyOWV";
+            {
+                frequency = Item.FrequencyHS.ToString();
+                return true;
+            }
+            frequency = "";
+            return false;
         }
     }
 }

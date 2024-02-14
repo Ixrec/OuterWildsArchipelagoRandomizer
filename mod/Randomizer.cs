@@ -55,8 +55,9 @@ namespace ArchipelagoRandomizer
         /// </summary>
         public static event Action<ArchipelagoSession> OnSessionOpened;
         /// <summary>
-        /// Runs whenever a session is closed manually or the application is closed, returns a null session if none is open. 
-        /// The bool returns true if the session was manually closed, false, if the session was closed via the application closing.
+        /// Runs whenever a session is closed manually or the application is closed, returns a null session if none is open.
+        /// The bool returns true if the session was manually closed, false if the session was closed via the application closing.
+        /// Note that if the bool is false, the Mod Manager will have lost its connection to the game before this runs, so you'll need to check the log file manually for errors and other logs.
         /// </summary>
         public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 

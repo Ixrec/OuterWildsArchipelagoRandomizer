@@ -112,7 +112,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             string itemID = entry.ID;
             Sprite sprite = TrackerManager.GetSprite(itemID);
             // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
-            if (entry.HasMoreThanOne())
+            if (entry.HasOneOrMore())
             {
                 if (sprite != null)
                 {

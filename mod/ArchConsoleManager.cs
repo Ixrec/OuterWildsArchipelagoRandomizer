@@ -36,7 +36,7 @@ namespace ArchipelagoRandomizer
         private List<float> gameplayConsoleTimers;
         private Material progressMat;
         private Text progressText;
-        private ArchipelagoSession session => Randomizer.APSession;
+        private ArchipelagoSession session;
 
         // Console can only handle ~65000 vertices
         // As there's 4 vertices per character, we can only support a quarter of this
@@ -58,6 +58,7 @@ namespace ArchipelagoRandomizer
             Randomizer.OnSessionOpened += (s) =>
             {
                 s.Locations.CheckedLocationsUpdated += UpdateProgress;
+                session = s;
             };
         }
 
@@ -301,7 +302,7 @@ namespace ArchipelagoRandomizer
             if (text == "") return;
 
             // we want to time out relatively quickly if the server happens to be down
-            var sayPacketTask = Task.Run(() => Randomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+            var sayPacketTask = Task.Run(() => session.Socket.SendPacket(new SayPacket() { Text = text }));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(1)))
                 throw new Exception("OnConsoleEntry() task timed out");
 
