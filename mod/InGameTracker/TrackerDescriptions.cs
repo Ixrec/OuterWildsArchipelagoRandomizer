@@ -15,6 +15,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             var inventory = Randomizer.SaveData.itemsAcquired;
             Wrapper.DescriptionFieldClear();
             List<string> infos = [];
+            if (!Randomizer.Tracker.ItemEntries.ContainsKey(itemID))
+            {
+                Randomizer.OWMLModConsole.WriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error); 
+                return;
+            }
             InventoryItemEntry itemEntry = Randomizer.Tracker.ItemEntries[itemID];
             // Can't use the enums here for some reason, so use strings as the names
             if (itemEntry.HasOneOrMore())

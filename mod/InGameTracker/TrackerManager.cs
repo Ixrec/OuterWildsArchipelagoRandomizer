@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
@@ -108,6 +109,12 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
                 Randomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
+                // We don't need to track hints for items that aren't on the tracker
+                if (!ItemEntries.ContainsKey(itemName))
+                {
+                    Randomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                    return;
+                }
                 string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
                 string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
                 string hintedEntrance = hint.Entrance;
@@ -192,6 +199,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (TryGetFrequency(item, out string frequency))
                 {
+                    if (!tracker.ItemEntries.ContainsKey(frequency))
+                    {
+                        Randomizer.OWMLModConsole.WriteLine($"Invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
+                        return;
+                    }
                     tracker.ItemEntries[frequency].SetNew(true);
                     Randomizer.OWMLModConsole.WriteLine($"Marking frequency {frequency} for {itemID} as new", OWML.Common.MessageType.Success);
                 }
@@ -199,6 +211,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             else if (tracker.ItemEntries.ContainsKey(itemID))
             {
+                if (!tracker.ItemEntries.ContainsKey(itemID))
+                {
+                    Randomizer.OWMLModConsole.WriteLine($"Invalid item {itemID} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
+                    return;
+                }
                 tracker.ItemEntries[itemID].SetNew(true);
                 Randomizer.OWMLModConsole.WriteLine($"Marking item {itemID} as new", OWML.Common.MessageType.Success);
             }
