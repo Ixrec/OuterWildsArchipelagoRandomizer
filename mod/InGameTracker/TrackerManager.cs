@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static NomaiWarpPlatform;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
