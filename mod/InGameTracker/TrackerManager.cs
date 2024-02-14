@@ -39,8 +39,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
         private ArchipelagoSession session;
-        // We only want to populate the hint list and subscribe to future updates once
-        private bool hintsInitialized = false;
 
         private void Awake()
         {
@@ -61,6 +59,28 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (loadScene == OWScene.SolarSystem) AddModes();
             };
         }
+
+        private void Start()
+        {
+            Randomizer.OnSessionOpened += (s) =>
+            {
+                ReadHints(s.DataStorage.GetHints());
+                s.DataStorage.TrackHints(ReadHints);
+                Randomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
+            };
+            Randomizer.OnSessionClosed += (s, m) =>
+            {
+                if (s != null)
+                {
+                    Randomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Success);
+                    foreach (InventoryItemEntry entry in ItemEntries.Values)
+                    {
+                        entry.SetHints("", "");
+                    }
+                }
+                else Randomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
+            };
+        }
         
         /// <summary>
         /// Adds the custom modes for the Ship Log
@@ -71,12 +91,12 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             // Retrive hints from server and set up subscription to hint events in the future
             session = Randomizer.APSession;
-            if (!hintsInitialized)
+            /*if (!hintsInitialized)
             {
                 ReadHints(session.DataStorage.GetHints());
                 session.DataStorage.TrackHints(ReadHints);
                 hintsInitialized = true;
-            }
+            }*/
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>

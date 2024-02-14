@@ -50,6 +50,16 @@ namespace ArchipelagoRandomizer
         public static ArchConsoleManager InGameAPConsole;
         public static TrackerManager Tracker;
 
+        /// <summary>
+        /// Runs whenever a new session is created
+        /// </summary>
+        public static event Action<ArchipelagoSession> OnSessionOpened;
+        /// <summary>
+        /// Runs whenever a session is closed manually or the application is closed, returns a null session if none is open. 
+        /// The bool returns true if the session was manually closed, false, if the session was closed via the application closing.
+        /// </summary>
+        public static event Action<ArchipelagoSession, bool> OnSessionClosed;
+
         // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
         private static Task pendingSaveFileWrite = null;
         private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
@@ -173,6 +183,7 @@ namespace ArchipelagoRandomizer
             {
                 APSession.Items.ItemReceived -= APSession_ItemReceived;
                 APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
+                OnSessionClosed(APSession, true);
             }
             APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
             LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: cdata.password, requestSlotData: true);
@@ -213,6 +224,8 @@ namespace ArchipelagoRandomizer
                 .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
                 .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
             APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+
+            OnSessionOpened(APSession);
 
             return result;
         }
@@ -312,6 +325,8 @@ namespace ArchipelagoRandomizer
             ModHelper.Menus.PauseMenu.OnInit += () => StartCoroutine(SetupPauseMenu(menuFramework));
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
+
+            Application.quitting += () => OnSessionClosed(APSession, false);
         }
 
         // The code below is pretty awful because of how limited and broken the UI APIs available to us are.

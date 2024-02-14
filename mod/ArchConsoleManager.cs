@@ -36,7 +36,6 @@ namespace ArchipelagoRandomizer
         private List<float> gameplayConsoleTimers;
         private Material progressMat;
         private Text progressText;
-        private bool initialized = false;
         private ArchipelagoSession session => Randomizer.APSession;
 
         // Console can only handle ~65000 vertices
@@ -55,6 +54,11 @@ namespace ArchipelagoRandomizer
         {
             GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
             GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
+
+            Randomizer.OnSessionOpened += (s) =>
+            {
+                s.Locations.CheckedLocationsUpdated += UpdateProgress;
+            };
         }
 
         private void Update()
@@ -130,11 +134,6 @@ namespace ArchipelagoRandomizer
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
 
-            if (!initialized)
-            {
-                session.Locations.CheckedLocationsUpdated += UpdateProgress;
-                initialized = true;
-            }
             UpdateProgress();
 
             if (loadScene == OWScene.SolarSystem)
