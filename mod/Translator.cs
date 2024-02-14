@@ -58,7 +58,7 @@ internal class Translator
 
     public static void ApplyHasTranslatorFlag(bool hasTranslator)
     {
-        if (translatePrompt is null) return;
+        if (translatePrompt == null) return;
 
         if (hasTranslator)
         {

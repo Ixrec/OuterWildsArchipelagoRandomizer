@@ -31,7 +31,7 @@ internal class DeathLinkManager
         else
             APRandomizer.OWMLModConsole.WriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
 
-        if (setting != DeathLinkSetting.Off && service is null)
+        if (setting != DeathLinkSetting.Off && service == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"creating and enabling DeathLinkService, and attaching OnDeathLinkReceived handler");
             service = APRandomizer.APSession.CreateDeathLinkService();
@@ -160,7 +160,7 @@ internal class DeathLinkManager
             return;
         }
 
-        if (service is null)
+        if (service == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"Unable to send {deathType} death to AP server because death link service is null", OWML.Common.MessageType.Error);
             return;

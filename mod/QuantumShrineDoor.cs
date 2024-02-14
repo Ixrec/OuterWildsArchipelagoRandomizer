@@ -59,7 +59,7 @@ internal class QuantumShrineDoor
         doorIR.OnPressInteract += () =>
         {
             if (!hasQuantumShrineCodes) return;
-            if (gatewayComponent is null)
+            if (gatewayComponent == null)
             {
                 APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract failed to locate NomaiGateway component on shrineGatewayTransform", OWML.Common.MessageType.Error);
                 return;
@@ -79,7 +79,7 @@ internal class QuantumShrineDoor
 
     private static void UpdateIRState()
     {
-        if (doorIR is null || gatewayComponent is null) return;
+        if (doorIR == null || gatewayComponent == null) return;
 
         if (hasQuantumShrineCodes)
         {

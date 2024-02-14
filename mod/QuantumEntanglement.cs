@@ -45,7 +45,7 @@ internal class QuantumEntanglement
     public static void PlayerCharacterController_CastForGrounded_Postfix(PlayerCharacterController __instance)
     {
         collidingWithQuantumObject = (
-            __instance._collidingQuantumObject is not null &&
+            __instance._collidingQuantumObject != null &&
             // for some reason the spaceship has a (disabled) SocketedQuantumObject component,
             // so we have to manually exclude that case here
             !__instance._collidingQuantumObject.CompareTag("Ship")

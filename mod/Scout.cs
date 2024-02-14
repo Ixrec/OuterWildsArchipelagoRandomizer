@@ -56,14 +56,14 @@ internal class Scout
 
     public static void ApplyHasScoutFlag(bool hasScout)
     {
-        if (launchScoutPrompt is null) return;
+        if (launchScoutPrompt == null) return;
 
         // I usually try to fetch references like this only once during startup, but there are so many ways the
         // Scout models can get invalidated or revalidated later on that we have to fetch them here on the fly.
         GameObject scoutInsideShip = null;
         GameObject scoutInShipLauncher = null;
         var ship = Locator.GetShipBody()?.gameObject?.transform;
-        if (ship is not null)
+        if (ship != null)
         {
             scoutInsideShip = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_Probe_STATIC")?.gameObject;
             scoutInShipLauncher = ship.Find("Module_Cockpit/Systems_Cockpit/ProbeLauncher/Props_HEA_Probe_Prelaunch")?.gameObject;
@@ -92,7 +92,7 @@ internal class Scout
     private static GameObject getScoutInPlayerLauncher()
     {
         var player = Locator.GetPlayerBody()?.gameObject?.transform;
-        if (player is not null)
+        if (player != null)
             return player.Find("PlayerCamera/ProbeLauncher/Props_HEA_ProbeLauncher/Props_HEA_Probe_Prelaunch")?.gameObject;
         return null;
     }

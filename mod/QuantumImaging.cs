@@ -63,8 +63,8 @@ internal class QuantumImaging
         {
             var distance = Vector3.Distance(qo.transform.position, __instance.transform.position);
             if (
-                qo is not null &&
-                qo.gameObject is not null && // no idea why CompareTag() NREs inside Unity code without this
+                qo != null &&
+                qo.gameObject != null && // no idea why CompareTag() NREs inside Unity code without this
                 !qo.CompareTag("Ship") &&
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
                 (distance < qo._maxSnapshotLockRange)
