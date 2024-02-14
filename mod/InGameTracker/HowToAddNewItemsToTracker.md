@@ -2,7 +2,7 @@
 To make the item appear in the inventory, you need to go to `TrackerManager.cs` and add a new entry to the `ItemEntries` Dictionary. You'll need to set the key as the item ID, for which you can either use a direct call to the Item enum and convert `ToString()` (recommended), or just use a string directly (useful if you want to register an entry that isn't an obtainable item). You'll then want to set the first two or three arguments in the value, which is an `InventoryItemEntry`. The first argument is the item ID, a copy of the key. The second argument is the display name of the item as it'll appear in the inventory. The third value is a bool that determines if the item is a randomized Archipelago item, which should only be set for dummy items.
 
 ```cs
-public readonly Dictionary<string, string> ItemEntries = new()
+public readonly Dictionary<string, InventoryItemEntry> ItemEntries = new()
 {
     {Item.Coordinates.ToString(), new InventoryItemEntry(Item.Coordinates.ToString(), "Eye of the Universe Coordinates") },
     {Item.LaunchCodes.ToString(), new InventoryItemEntry(Item.LaunchCodes.ToString(), "Launch Codes") },

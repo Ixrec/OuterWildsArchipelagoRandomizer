@@ -55,12 +55,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 entry.SetNew(false);
             }
-            /*for (int i = 0; i < Tracker.ItemEntries.Count; i++)
-            {
-
-                InventoryItemEntry entry = TrackerManager.GetItemEntryByID(Tracker.ItemEntries[i].ID);
-                //entry.ItemIsNew = false;
-            }*/
             Wrapper.Close();
         }
 
