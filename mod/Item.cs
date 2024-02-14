@@ -8,7 +8,7 @@ namespace ArchipelagoRandomizer;
 public enum Item
 {
     LaunchCodes,
-    Spaceship,
+    Spaceship, // no longer in use; keeping for backwards compatibility with existing mod save files
 
     Translator,
     Signalscope,
@@ -46,13 +46,26 @@ public enum Item
     SignalTephra,
 
     Nothing,
+
+    Autopilot,
+    LandingCamera,
+    EjectButton,
+    VelocityMatcher,
+    SurfaceIntegrityScanner,
+
+    OxygenRefill,
+    FuelRefill,
+    Marshmallow,
+    PerfectMarshmallow,
+    BurntMarshmallow,
+
+    ShipDamageTrap,
 };
 
 public static class ItemNames
 {
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
-        { Item.Spaceship, "Spaceship" },
 
         { Item.Translator, "Translator" },
         { Item.Signalscope, "Signalscope" },
@@ -90,6 +103,20 @@ public static class ItemNames
         { Item.SignalTephra, "Tephra's Radio Signal" },
 
         { Item.Nothing, "Nothing" },
+
+        { Item.Autopilot, "Autopilot" },
+        { Item.LandingCamera, "Landing Camera" },
+        { Item.EjectButton, "Eject Button" },
+        { Item.VelocityMatcher, "Velocity Matcher" },
+        { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+
+        { Item.OxygenRefill, "Oxygen Refill" },
+        { Item.FuelRefill, "Jetpack Fuel Refill" },
+        { Item.Marshmallow, "Marshmallow" },
+        { Item.PerfectMarshmallow, "Perfect Marshmallow" },
+        { Item.BurntMarshmallow, "Burnt Marshmallow" },
+
+        { Item.ShipDamageTrap, "Ship Damage Trap" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

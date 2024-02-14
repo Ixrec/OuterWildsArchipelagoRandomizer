@@ -25,9 +25,19 @@ Outer Wilds:
     song_of_five: 50
     song_of_six: 0
 
+  randomize_coordinates:
+    # Randomize the Eye of the Universe coordinates needed to reach the end of the game.
+    false: 0
+    true: 50
+
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
     # The "default" option will not include deaths to meditation, the supernova or the time loop ending.
     off: 50
     default: 0
     all_deaths: 0
+
+  logsanity:
+    # Adds 176 locations for all the (non-DLC, non-rumor, non-missable) ship log facts in the game.
+    false: 50
+    true: 0

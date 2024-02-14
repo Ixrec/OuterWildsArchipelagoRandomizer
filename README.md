@@ -93,11 +93,11 @@ To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Relea
 - Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.
 
 - Create some `useful`, `filler` and `trap` items, instead of just "Nothing"s. Ideas include:
-	- Oxygen, jetpack fuel, jetpack boost, health, ship durability, etc refills (`filler`) and max upgrades (`useful`)
-	- Ship features like autopilot and the landing camera
+	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`)~~ and max upgrades (`useful`)
+	- ~~Ship features like autopilot and the landing camera~~
 	- `trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, anglerfish spawns, playing End Times, increased scout launcher recoil
 
-- A "logsanity" setting (all ship log entries are AP locations). This mod's code currently relies on having fixed locations and logic, but many of the features we want will involve changing locations and logic based on the randomizer settings. Of those features, logsanity is the only one with no difficult game design decisions, so I'd like to implement it first as a stepping stone to e.g. DLC integration, random spawn, in-game tracker, etc.
+- ~~A "logsanity" setting (all ship log entries are AP locations). This mod's code currently relies on having fixed locations and logic, but many of the features we want will involve changing locations and logic based on the randomizer settings. Of those features, logsanity is the only one with no difficult game design decisions, so I'd like to implement it first as a stepping stone to e.g. DLC integration, random spawn, in-game tracker, etc.~~
 
 ### 0.2.x Stretch Goals
 
@@ -105,7 +105,7 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 
 - Additional randomizations that wouldn't affect logic:
 	- random planet orbits
-	- random Eye coordinates (this one is the most likely because I've done so much of the groundwork for it already)
+	- ~~random Eye coordinates (this one is the most likely because I've done so much of the groundwork for it already)~~
 	- random Dark Bramble layout
 	- random ghost matter patches
 
