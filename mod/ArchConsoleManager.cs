@@ -1,8 +1,10 @@
-﻿using Archipelago.MultiClient.Net.MessageLog.Messages;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -34,6 +36,8 @@ namespace ArchipelagoRandomizer
         private List<float> gameplayConsoleTimers;
         private Material progressMat;
         private Text progressText;
+        private bool initialized = false;
+        private ArchipelagoSession session => Randomizer.APSession;
 
         // Console can only handle ~65000 vertices
         // As there's 4 vertices per character, we can only support a quarter of this
@@ -44,7 +48,7 @@ namespace ArchipelagoRandomizer
         private void Awake()
         {
             LoadManager.OnCompleteSceneLoad += CreateConsoles;
-            consoleHistory = new List<string>();
+            consoleHistory = [];
         }
 
         private void Start()
@@ -94,7 +98,7 @@ namespace ArchipelagoRandomizer
             if (loadScene != OWScene.SolarSystem && loadScene != OWScene.EyeOfTheUniverse) return;
             // Create objects and establish references
             gameplayConsoleEntries = new Queue<string>();
-            gameplayConsoleTimers = new List<float>();
+            gameplayConsoleTimers = [];
             console = GameObject.Instantiate(Randomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
@@ -126,6 +130,13 @@ namespace ArchipelagoRandomizer
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
 
+            if (!initialized)
+            {
+                session.Locations.CheckedLocationsUpdated += UpdateProgress;
+                initialized = true;
+            }
+            UpdateProgress();
+
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
         }
@@ -135,16 +146,16 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
+        }
 
-            if (showPauseConsole)
-            {
-                float progress = Randomizer.SaveData.locationsChecked.Where(kv => kv.Value).Count();
-                float maxItems = Randomizer.SaveData.locationsChecked.Count;
-                float progressPercent = progress / maxItems;
-                Randomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
-                progressText.text = $"{progress}/{maxItems}";
-                progressMat.SetFloat("_PercentAccessible", progressPercent);
-            }
+        private void UpdateProgress(ReadOnlyCollection<long> checkedLocations = null)
+        {
+            float progress = session.Locations.AllLocationsChecked.Count;
+            float maxLocations = session.Locations.AllLocations.Count;
+            float progressPercent = progress / maxLocations;
+            Randomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
+            progressText.text = $"{progress}/{maxLocations}";
+            progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
 
         /// <summary>

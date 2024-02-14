@@ -1,6 +1,7 @@
 ﻿using Archipelago.MultiClient.Net.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
@@ -12,15 +13,11 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void DisplayItemText(string itemID, ItemListWrapper Wrapper)
         {
             var inventory = Randomizer.SaveData.itemsAcquired;
-            Dictionary<string, Tuple<string, string>> hints = Randomizer.Tracker.Hints;
             Wrapper.DescriptionFieldClear();
-            List<string> infos = new();
-            bool discoveredItem = Enum.TryParse(itemID, out Item result);
-            // There may be a few dummy items that aren't actually tracked by the randomizer, like FrequencyOWV
-            // In the event of a dummy item being submitted, we want to assume it does exist
-            // If it doesn't it'll run into the default condition
+            List<string> infos = [];
+            InventoryItemEntry itemEntry = Randomizer.Tracker.ItemEntries[itemID];
             // Can't use the enums here for some reason, so use strings as the names
-            if (!discoveredItem || inventory[result] > 0)
+            if (itemEntry.HasMoreThanOne())
             {
                 switch (itemID)
                 {
@@ -102,9 +99,10 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 infos.Add("You have not obtained this yet.");
 
-                if (hints.ContainsKey(itemID))
+                if (itemEntry.HintedLocation != "")
                 {
-                    infos.Add($"It looks like this item can be found at <color=#00FF7F>{hints[itemID].Item1}</color> in <color=#FAFAD2>{hints[itemID].Item2}</color>'s world.");
+                    infos.Add($"It looks like this item can be found at <color=#00FF7F>{itemEntry.HintedLocation}</color> in <color=#FAFAD2>{itemEntry.HintedWorld}</color>'s world" +
+                        $"{(itemEntry.HintedEntrance == "" ? "" : $" at <color=#6291E4>{itemEntry.HintedEntrance}</color>")}.");
                 }
             }
             switch (itemID)

@@ -2,9 +2,4 @@
   <PropertyGroup>
     <OutputPath>$(AppData)\OuterWildsModManager\OWML\Mods\Ixrec.ArchipelagoRandomizer</OutputPath>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Update="InGameTracker\TrackerManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
 </Project>

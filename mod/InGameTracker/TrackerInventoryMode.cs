@@ -18,7 +18,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         private int selectedIndex;
         private Image Icon => Wrapper.GetPhoto();
         private Text QuestionMark => Wrapper.GetQuestionMark();
-        private Dictionary<Item, uint> Inventory => Randomizer.SaveData.itemsAcquired;
 
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
@@ -52,8 +51,16 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is closed
         public override void ExitMode()
         {
-            string[] keys = Tracker.NewItems.Keys.ToArray();
-            foreach (string key in keys) Tracker.NewItems[key] = false;
+            foreach (InventoryItemEntry entry in Tracker.ItemEntries.Values)
+            {
+                entry.SetNew(false);
+            }
+            /*for (int i = 0; i < Tracker.ItemEntries.Count; i++)
+            {
+
+                InventoryItemEntry entry = TrackerManager.GetItemEntryByID(Tracker.ItemEntries[i].ID);
+                //entry.ItemIsNew = false;
+            }*/
             Wrapper.Close();
         }
 
@@ -107,15 +114,15 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Shows the item selected and the associated info
         private void SelectItem(int index)
         {
-            string itemID = Tracker.ItemEntries.ElementAt(index).Key;
-            Sprite tex = TrackerManager.GetSprite(itemID);
-            bool itemExists = Enum.TryParse(itemID, out Item result);
+            InventoryItemEntry entry = Tracker.ItemEntries.ElementAt(index).Value;
+            string itemID = entry.ID;
+            Sprite sprite = TrackerManager.GetSprite(itemID);
             // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
-            if (!itemExists || Inventory[result] > 0)
+            if (entry.HasMoreThanOne())
             {
-                if (tex != null)
+                if (sprite != null)
                 {
-                    Icon.sprite = tex;
+                    Icon.sprite = sprite;
                     Icon.gameObject.SetActive(true);
                     QuestionMark.gameObject.SetActive(false);
                 }

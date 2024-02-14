@@ -10,40 +10,37 @@ namespace ArchipelagoRandomizer.InGameTracker
     public class TrackerManager : MonoBehaviour
     {
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
-        public Dictionary<string, bool> NewItems;
-
-        /// <summary>
-        /// A list of hints received from the AP server. In order, the strings are the item name, the location, and the world.
-        /// </summary>
-        public Dictionary<string, Tuple<string, string>> Hints;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
-        public readonly Dictionary<string, string> ItemEntries = new()
+        // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy for cleaner code
+        public Dictionary<string, InventoryItemEntry> ItemEntries = new()
         {
-            {Item.Coordinates.ToString(), "Eye of the Universe Coordinates" },
-            {Item.LaunchCodes.ToString(), "Launch Codes"},
-            {Item.Translator.ToString(), "Translator" },
-            {Item.Signalscope.ToString(), "Signalscope" },
-            {Item.EntanglementRule.ToString(), "Suit Lights Controls" },
-            {Item.ElectricalInsulation.ToString(), "Electrical Insulation" },
-            {Item.SilentRunning.ToString(), "Silent Running Mode" },
-            {Item.TornadoAdjustment.ToString(), "Tornado Aerodynamic Adjustments" },
-            {Item.Scout.ToString(), "Camera: Scout Launcher" },
-            {Item.CameraGM.ToString(), "Camera: Ghost Matter Frequency" },
-            {Item.CameraQuantum.ToString(), "Camera: Quantum Objects" },
-            {Item.WarpPlatformCodes.ToString(), "Nomai: Warp Platform Codes" },
-            {Item.WarpCoreManual.ToString(), "Nomai: Warp Core Installation Manual" },
-            {Item.ShrineDoorCodes.ToString(), "Nomai: Shrine Door Codes" },
-            {"FrequencyOWV", "Frequency: Outer Wilds Ventures" },
-            {Item.FrequencyDB.ToString(), "Frequency: Distress Beacons" },
-            {Item.FrequencyQF.ToString(), "Frequency: Quantum Fluctuations" },
-            {Item.FrequencyHS.ToString(), "Frequency: Hide and Seek" }
+            {Item.Coordinates.ToString(), new InventoryItemEntry(Item.Coordinates.ToString(), "Eye of the Universe Coordinates") },
+            {Item.LaunchCodes.ToString(), new InventoryItemEntry(Item.LaunchCodes.ToString(), "Launch Codes") },
+            {Item.Translator.ToString(), new InventoryItemEntry(Item.Translator.ToString(), "Translator") },
+            {Item.Signalscope.ToString(), new InventoryItemEntry(Item.Signalscope.ToString(), "Signalscope") },
+            {Item.EntanglementRule.ToString(), new InventoryItemEntry(Item.EntanglementRule.ToString(), "Suit Lights Controls") },
+            {Item.ElectricalInsulation.ToString(), new InventoryItemEntry(Item.ElectricalInsulation.ToString(), "Electrical Insulation") },
+            {Item.SilentRunning.ToString(), new InventoryItemEntry(Item.SilentRunning.ToString(), "Silent Running Mode") },
+            {Item.TornadoAdjustment.ToString(), new InventoryItemEntry(Item.TornadoAdjustment.ToString(), "Tornado Aerodynamic Adjustments") },
+            {Item.Scout.ToString(), new InventoryItemEntry(Item.Scout.ToString(), "Camera: Scout Launcher") },
+            {Item.CameraGM.ToString(), new InventoryItemEntry(Item.CameraGM.ToString(), "Camera: Ghost Matter Frequency") },
+            {Item.CameraQuantum.ToString(), new InventoryItemEntry(Item.CameraQuantum.ToString(), "Camera: Quantum Objects") },
+            {Item.WarpPlatformCodes.ToString(), new InventoryItemEntry(Item.WarpPlatformCodes.ToString(), "Nomai: Warp Platform Codes") },
+            {Item.WarpCoreManual.ToString(), new InventoryItemEntry(Item.WarpCoreManual.ToString(), "Nomai: Warp Core Installation Manual") },
+            {Item.ShrineDoorCodes.ToString(), new InventoryItemEntry(Item.ShrineDoorCodes.ToString(), "Nomai: Shrine Door Codes") },
+            {"FrequencyOWV", new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures", false) },
+            {Item.FrequencyDB.ToString(), new InventoryItemEntry(Item.FrequencyDB.ToString(), "Frequency: Distress Beacons") },
+            {Item.FrequencyQF.ToString(), new InventoryItemEntry(Item.FrequencyQF.ToString(), "Frequency: Quantum Fluctuations") },
+            {Item.FrequencyHS.ToString(), new InventoryItemEntry(Item.FrequencyHS.ToString(), "Frequency: Hide and Seek") }
         };
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
         private ArchipelagoSession session;
+        // We only want to populate the hint list and subscribe to future updates once
+        private bool hintsInitialized = false;
 
         private void Awake()
         {
@@ -63,12 +60,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (loadScene == OWScene.SolarSystem) AddModes();
             };
-
-            NewItems = new();
-            foreach (string item in ItemEntries.Keys)
-            {
-                NewItems.Add(item, false);
-            }
         }
         
         /// <summary>
@@ -80,12 +71,12 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             // Retrive hints from server and set up subscription to hint events in the future
             session = Randomizer.APSession;
-            if (Hints == null)
+            if (!hintsInitialized)
             {
                 ReadHints(session.DataStorage.GetHints());
                 session.DataStorage.TrackHints(ReadHints);
+                hintsInitialized = true;
             }
-
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
             api.ItemListMake(true, true, itemList =>
@@ -99,13 +90,14 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Reads hints from the AP server
         private void ReadHints(Hint[] hintList)
         {
-            Hints = new();
             foreach (Hint hint in hintList)
             {
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
-                string location = session.Locations.GetLocationNameFromId(hint.LocationId);
-                string player = session.Players.GetPlayerName(hint.FindingPlayer);
-                Hints.Add(itemName, new Tuple<string, string>(location, player));
+                Randomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
+                string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
+                string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
+                string hintedEntrance = hint.Entrance;
+                ItemEntries[itemName].SetHints(hintedLocation, hintedWorld, hintedEntrance);
             }
         }
 
@@ -114,25 +106,25 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             Dictionary<Item, uint> items = Randomizer.SaveData.itemsAcquired;
 
-            InventoryItems = new();
-            foreach (string key in ItemEntries.Keys)
+            InventoryItems = [];
+            foreach (InventoryItemEntry item in ItemEntries.Values)
             {
-                if (Enum.TryParse(key, out Item subject))
+                if (Enum.TryParse(item.ID, out Item subject))
                 {
                     uint quantity = items[subject];
-                    string itemName = $"[{(quantity != 0 ? "X" : " ")}] {ItemEntries[key]}"; // Would produce a string like "[X] Launch Codes"
-                    bool hasHint = quantity == 0 && Hints.ContainsKey(key);
+                    string itemName = $"[{(quantity != 0 ? "X" : " ")}] {item.Name}"; // Would produce a string like "[X] Launch Codes"
+                    bool hasHint = quantity == 0 && item.HintedLocation != "";
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
-                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems[key], hasHint));
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, hasHint));
                 }
-                else if (key == "FrequencyOWV")
+                else if (item.ID == "FrequencyOWV")
                 {
                     string itemName = "[X] Frequency: Outer Wilds Ventures";
-                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, NewItems["FrequencyOWV"], false));
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, false));
                 }
                 else
                 {
-                    Randomizer.OWMLModConsole.WriteLine($"Tried to parse {key} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
+                    Randomizer.OWMLModConsole.WriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
                 }
 
             }
@@ -147,7 +139,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             try
             {
-                string path = Path.Combine(new string[] { Randomizer.Instance.ModHelper.Manifest.ModFolderPath, "InGameTracker", "Icons", filename + ".png"});
+                string path = Path.Combine([Randomizer.Instance.ModHelper.Manifest.ModFolderPath, "InGameTracker", "Icons", filename + ".png"]);
 
                 byte[] data = null;
                 if(File.Exists(path)) 
@@ -181,15 +173,15 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void MarkItemAsNew(Item item)
         {
             string itemID = item.ToString();
-            TrackerManager tracker = Randomizer.Tracker;
             if (!itemID.Contains("Signal"))
             {
-                tracker.NewItems[itemID] = true;
+                Randomizer.Tracker.ItemEntries[itemID].SetNew(true);
             }
             else
             {
-                tracker.NewItems[GetFrequency(item)] = true;
+                Randomizer.Tracker.ItemEntries[GetFrequency(item)].SetNew(true);
             }
+            Randomizer.OWMLModConsole.WriteLine($"Marking item {itemID} as new", OWML.Common.MessageType.Success);
         }
 
         /// <summary>
