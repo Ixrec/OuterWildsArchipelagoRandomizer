@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using ArchipelagoRandomizer.InGameTracker;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -47,6 +48,18 @@ namespace ArchipelagoRandomizer
 
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
+        public static TrackerManager Tracker;
+
+        /// <summary>
+        /// Runs whenever a new session is created
+        /// </summary>
+        public static event Action<ArchipelagoSession> OnSessionOpened;
+        /// <summary>
+        /// Runs whenever a session is closed manually or the application is closed, returns a null session if none is open.
+        /// The bool is true if the session was manually closed, false if the session was closed via the application closing.
+        /// Note that if the bool is false, the Mod Manager will have lost its connection to the game before this runs, so you'll need to check the log file manually for errors and other logs.
+        /// </summary>
+        public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
         // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
         private static Task pendingSaveFileWrite = null;
@@ -171,6 +184,7 @@ namespace ArchipelagoRandomizer
             {
                 APSession.Items.ItemReceived -= APSession_ItemReceived;
                 APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
+                OnSessionClosed(APSession, true);
             }
             APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
             LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, version: new Version(0, 4, 4), password: cdata.password, requestSlotData: true);
@@ -211,6 +225,8 @@ namespace ArchipelagoRandomizer
                 .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
                 .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
             APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+
+            OnSessionOpened(APSession);
 
             return result;
         }
@@ -259,6 +275,9 @@ namespace ArchipelagoRandomizer
             {
                 Randomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.");
 
+                // We apply the item as a new item in the tracker
+                TrackerManager.MarkItemAsNew(item);
+
                 Randomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
                 LocationTriggers.ApplyItemToPlayer(item, Randomizer.SaveData.itemsAcquired[item]);
                 return true;
@@ -290,6 +309,8 @@ namespace ArchipelagoRandomizer
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
             InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
+            Tracker = gameObject.AddComponent<TrackerManager>();
+
             WarpPlatforms.Setup();
             Tornadoes.Setup();
             QuantumImaging.Setup();
@@ -305,6 +326,8 @@ namespace ArchipelagoRandomizer
             ModHelper.Menus.PauseMenu.OnInit += () => StartCoroutine(SetupPauseMenu(menuFramework));
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
+
+            Application.quitting += () => OnSessionClosed(APSession, false);
         }
 
         // The code below is pretty awful because of how limited and broken the UI APIs available to us are.
@@ -572,5 +595,6 @@ namespace ArchipelagoRandomizer
                 });
             }
         }
+
     }
 }

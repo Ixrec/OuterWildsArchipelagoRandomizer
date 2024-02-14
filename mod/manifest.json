@@ -8,7 +8,8 @@
   "owmlVersion": "2.9.8",
   "dependencies": [
     "_nebula.MenuFramework",
-    "xen.EnableMeditation"
+    "xen.EnableMeditation",
+    "dgarro.CustomShipLogModes"
   ],
   "pathsToPreserve": [ "SaveData" ],
   "warning": {

@@ -1,8 +1,10 @@
-﻿using Archipelago.MultiClient.Net.MessageLog.Messages;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -32,6 +34,9 @@ namespace ArchipelagoRandomizer
         private Button filterButton;
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
+        private Material progressMat;
+        private Text progressText;
+        private ArchipelagoSession session;
 
         // Console can only handle ~65000 vertices
         // As there's 4 vertices per character, we can only support a quarter of this
@@ -42,13 +47,19 @@ namespace ArchipelagoRandomizer
         private void Awake()
         {
             LoadManager.OnCompleteSceneLoad += CreateConsoles;
-            consoleHistory = new List<string>();
+            consoleHistory = [];
         }
 
         private void Start()
         {
             GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
             GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
+
+            Randomizer.OnSessionOpened += (s) =>
+            {
+                s.Locations.CheckedLocationsUpdated += UpdateProgress;
+                session = s;
+            };
         }
 
         private void Update()
@@ -92,7 +103,7 @@ namespace ArchipelagoRandomizer
             if (loadScene != OWScene.SolarSystem && loadScene != OWScene.EyeOfTheUniverse) return;
             // Create objects and establish references
             gameplayConsoleEntries = new Queue<string>();
-            gameplayConsoleTimers = new List<float>();
+            gameplayConsoleTimers = [];
             console = GameObject.Instantiate(Randomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
@@ -107,6 +118,8 @@ namespace ArchipelagoRandomizer
             overflowWarning.SetActive(false);
             pauseConsoleText = pauseConsole.GetComponent<Text>();
             gameplayConsoleText = gameplayConsole.GetComponent<Text>();
+            progressText = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/Progress").GetComponent<Text>();
+            progressMat = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/WheelBG/WheelProgress").GetComponent<Image>().material;
 
             pauseConsoleText.text = string.Empty;
             gameplayConsoleText.text = string.Empty;
@@ -122,6 +135,8 @@ namespace ArchipelagoRandomizer
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
 
+            UpdateProgress();
+
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
         }
@@ -131,6 +146,16 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
+        }
+
+        private void UpdateProgress(ReadOnlyCollection<long> checkedLocations = null)
+        {
+            float progress = session.Locations.AllLocationsChecked.Count;
+            float maxLocations = session.Locations.AllLocations.Count;
+            float progressPercent = progress / maxLocations;
+            Randomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Success);
+            progressText.text = $"{progress}/{maxLocations}";
+            progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
 
         /// <summary>
@@ -277,7 +302,7 @@ namespace ArchipelagoRandomizer
             if (text == "") return;
 
             // we want to time out relatively quickly if the server happens to be down
-            var sayPacketTask = Task.Run(() => Randomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+            var sayPacketTask = Task.Run(() => session.Socket.SendPacket(new SayPacket() { Text = text }));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(1)))
                 throw new Exception("OnConsoleEntry() task timed out");
 

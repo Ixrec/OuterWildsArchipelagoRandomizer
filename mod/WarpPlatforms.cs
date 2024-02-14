@@ -109,7 +109,13 @@ internal class WarpPlatforms
         // We just want to detect the player, not make an invisible wall
         box.isTrigger = true;
         // Change the size to something easy to interact with
-        box.size = new Vector3(5, 5, 5);
+        box.size = new Vector3(6, 3, 6);
+
+        // We'll also add a capsule collider to make this composite, making it easier to interact with
+        var capsule = warpPlatformInteract.AddComponent<CapsuleCollider>();
+        capsule.isTrigger = true;
+        capsule.radius = 3;
+        capsule.height = 7;
 
         var ir = warpPlatformInteract.AddComponent<InteractReceiver>();
         ApplyHasCodesFlagToIR(hasNomaiWarpCodes, ir);
