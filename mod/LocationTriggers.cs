@@ -191,6 +191,7 @@ internal class LocationTriggers
             case Item.BurntMarshmallow: Marshmallows.burntMarshmallows = count; break;
             case Item.ShipDamageTrap: ShipDamage.shipDamageTraps = count; break;
             case Item.AudioTrap: AudioTrap.audioTraps = count; break;
+            case Item.MeditationTrap: MeditationTrap.meditationTraps = count; break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
