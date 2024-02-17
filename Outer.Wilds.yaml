@@ -30,6 +30,24 @@ Outer Wilds:
     false: 0
     true: 50
 
+  trap_chance: 15
+    # The probability for each filler item (including unique filler) to be replaced with a trap item.
+    # The exact number of trap items will still be somewhat random, so you can't know
+    # if you've seen the 'last trap' in your world without checking the spoiler log.
+    # If you don't want any traps, set this to 0.
+    #
+    # Minimum value is 0
+    # Maximum value is 100
+
+  trap_type_weights:
+    # When a filler item is replaced with a trap, these weights determine the
+    # odds for each trap type to be selected.
+    # If you don't want a specific trap type, set its weight to 0.
+    # Setting all weights to 0 is the same as setting trap_chance to 0.
+    Audio Trap: 1
+    Meditation Trap: 2
+    Ship Damage Trap: 2
+
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
     # The "default" option will not include deaths to meditation, the supernova or the time loop ending.
