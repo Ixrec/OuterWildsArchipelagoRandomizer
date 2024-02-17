@@ -5,6 +5,14 @@ requires:
   version: 0.4.4
 Outer Wilds:
   # generic Archipelago settings
+
+  # In addition to the "Everything" and "Everywhere" name groups that all AP games come with,
+  # the following name groups are provided by Outer Wilds:
+
+  # item name groups: "progression", "useful", "filler", "trap", "Frequencies", "Signals",
+  # "Ship Upgrades", "Tools", and dozens of single-item aliases
+  # location name groups: "Frequencies", "Signals", "Ship Logs", "Ember Twin", "Ash Twin", "Hourglass Twins",
+  # "Timber Hearth", "Attlerock", "Brittle Hollow", "Giant's Deep", "Dark Bramble", "Quantum Moon"
   progression_balancing: normal
   accessibility: items
   local_items: []
