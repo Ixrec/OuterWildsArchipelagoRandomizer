@@ -96,8 +96,7 @@ internal class WarpPlatforms
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(NomaiWarpPlatform), nameof(NomaiWarpPlatform.Start))]
+    [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpPlatform), nameof(NomaiWarpPlatform.Start))]
     public static void NomaiWarpPlatform_Start_Prefix(NomaiWarpPlatform __instance)
     {
         if (!frequenciesOfInterest.Contains(__instance.GetFrequency())) return;
@@ -150,8 +149,7 @@ internal class WarpPlatforms
     //      }
     // So if the black hole is already open, we let both methods be called normally,
     // but if it's not open, we emulate what the base method would've done on its own.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(NomaiWarpTransmitter), nameof(NomaiWarpTransmitter.FixedUpdate))]
+    [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpTransmitter), nameof(NomaiWarpTransmitter.FixedUpdate))]
     public static bool NomaiWarpTransmitter_FixedUpdate_Prefix(NomaiWarpTransmitter __instance)
     {
         if (__instance.IsBlackHoleOpen())

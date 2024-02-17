@@ -54,8 +54,7 @@ internal class GhostMatter
     // need to re-enable the ones that were enabled before.
     static List<ParticleSystemRenderer> disabledParticleRenderers = new();
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
     public static void ProbeLauncher_TakeSnapshotWithCamera_Prefix(ProbeCamera camera)
     {
         if (!hasGhostMatterKnowledge)
@@ -67,8 +66,7 @@ internal class GhostMatter
             }
         }
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
     public static void ProbeLauncher_TakeSnapshotWithCamera_Postfix(ProbeCamera camera)
     {
         if (!hasGhostMatterKnowledge)
@@ -82,8 +80,7 @@ internal class GhostMatter
     }
 
     // This patch prevents the scout from showing "! Hazard" when it's inside ghost matter.
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.GetDisplayDangerMarker))]
+    [HarmonyPostfix, HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.GetDisplayDangerMarker))]
     public static void HazardDetector_GetDisplayDangerMarker_Postfix(HazardDetector __instance, ref bool __result)
     {
         if (__instance._activeVolumes.All(av => av is HazardVolume && (av as HazardVolume).GetHazardType() == HazardVolume.HazardType.DARKMATTER))
@@ -91,8 +88,7 @@ internal class GhostMatter
     }
 
     // This patch prevents the scout from making a big green splash when it enters ghost matter.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.OnVolumeAdded))]
+    [HarmonyPrefix, HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.OnVolumeAdded))]
     public static void HazardDetector_OnVolumeAdded_Prefix(HazardDetector __instance, EffectVolume eVolume)
     {
         HazardVolume hazardVolume = eVolume as HazardVolume;
@@ -105,8 +101,7 @@ internal class GhostMatter
     }
 
     // This patch prevents the scout from leaving a green trail as it passes through ghost matter.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(DarkMatterVolume), nameof(DarkMatterVolume.OnEffectVolumeEnter))]
+    [HarmonyPrefix, HarmonyPatch(typeof(DarkMatterVolume), nameof(DarkMatterVolume.OnEffectVolumeEnter))]
     public static bool DarkMatterVolume_OnEffectVolumeEnter_Prefix(DarkMatterVolume __instance, GameObject hitObj)
     {
         HazardDetector detector = hitObj.GetComponent<HazardDetector>();

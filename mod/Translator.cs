@@ -21,8 +21,7 @@ internal class Translator
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.Translator && !hasTranslator)
@@ -32,8 +31,7 @@ internal class Translator
 
     static ScreenPrompt translatePrompt = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
     public static void ToolModeUI_Start_Postfix(ToolModeUI __instance)
     {
         translatePrompt = __instance._centerTranslatePrompt;
@@ -43,8 +41,7 @@ internal class Translator
 
     // Because of the auto-equip translator setting, the enabling/disabling of the translate
     // prompt is a little more complex than usual and gets evaluated in Update().
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix(ToolModeUI __instance)
     {
         // This is mostly a copy-paste of the body of ToolModeSwapper.IsTranslatorEquipPromptAllowed(),

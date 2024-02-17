@@ -93,8 +93,7 @@ public static class Coordinates
      * Hologram_AllProbeTrajectories
      * Hologram_EyeCoordinates
      */
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
+    [HarmonyPrefix, HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
     public static void OrbitalCannonHologramProjector_OnSlotActivated_Prefix(OrbitalCannonHologramProjector __instance, NomaiInterfaceSlot slot)
     {
         var activeIndex = __instance.GetSlotIndex(slot);
@@ -106,8 +105,7 @@ public static class Coordinates
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
+    [HarmonyPrefix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
     public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
     {
         __instance._promptController.SetEyeCoordinatesVisibility(
@@ -118,8 +116,7 @@ public static class Coordinates
         return false; // skip vanilla implementation
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
+    [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
         __instance._eyeCoordinatesSprite = CreateCoordinatesSprite();

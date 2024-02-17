@@ -18,8 +18,7 @@ internal class Jellyfish
         };
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(JellyfishController), nameof(JellyfishController.OnSectorOccupantsUpdated))]
+    [HarmonyPrefix, HarmonyPatch(typeof(JellyfishController), nameof(JellyfishController.OnSectorOccupantsUpdated))]
     public static void JellyfishController_OnSectorOccupantsUpdated_Prefix(ref JellyfishController __instance)
     {
         var insulators = __instance.gameObject.transform.GetComponentsInChildren<InsulatingVolume>();
@@ -54,14 +53,12 @@ internal class Jellyfish
 
     static ScreenPrompt insulationIntactPrompt = new("Jellyfish Insulation: Intact", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(insulationIntactPrompt, PromptPosition.UpperRight, false);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
         insulationIntactPrompt.SetVisibility(
