@@ -202,8 +202,7 @@ internal class LocationTriggers
     }
 
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.RevealFact))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.RevealFact))]
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
@@ -220,14 +219,12 @@ internal class LocationTriggers
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnLaunchCodes))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnLaunchCodes))]
     public static void PlayerData_LearnLaunchCodes_Prefix()
     {
         CheckLocation(Location.TH_HORNFELS);
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.EndConversation))]
+    [HarmonyPrefix, HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.EndConversation))]
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
@@ -244,8 +241,7 @@ internal class LocationTriggers
     // Currently, translation a Nomai text line is never (directly) a trigger for a location.
     // But I want the released mod to be logging these ids so that players who want a "textsanity"
     // option can help assemble the list of locations and rules for it.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
+    [HarmonyPrefix, HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
     public static void NomaiText_SetAsTranslated_Prefix(NomaiText __instance, int id)
     {
         // This gets called every frame when looking at translated text, so avoid logging if it's already been translated (this loop)

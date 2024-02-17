@@ -134,8 +134,7 @@ internal class DeathLinkManager
         } },
     };
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(DeathManager), nameof(DeathManager.KillPlayer))]
+    [HarmonyPrefix, HarmonyPatch(typeof(DeathManager), nameof(DeathManager.KillPlayer))]
     public static void DeathManager_KillPlayer_Prefix(DeathType deathType)
     {
         // if this death was sent to us by another player's death link, do nothing, since that would start an infinite death loop

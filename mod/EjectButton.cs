@@ -28,8 +28,7 @@ internal class EjectButton
 
     private static SingleInteractionVolume ejectButtonSIV = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.Start))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.Start))]
     public static void ShipEjectionSystem_Start_Postfix(ShipEjectionSystem __instance)
     {
         APRandomizer.OWMLModConsole.WriteLine($"ShipEjectionSystem.Start fetching reference to eject button SIV");
@@ -38,8 +37,7 @@ internal class EjectButton
         ApplyHasEjectButtonFlag(_hasEjectButton);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.OnPressInteract))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.OnPressInteract))]
     public static bool ShipEjectionSystem_OnPressInteract_Prefix(ShipEjectionSystem __instance)
     {
         if (!_hasEjectButton)
@@ -48,8 +46,7 @@ internal class EjectButton
         return _hasEjectButton; // if we have the AP item, allow the base game code to run, otherwise skip it
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.OnLoseFocus))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.OnLoseFocus))]
     public static void ShipEjectionSystem_OnLoseFocus_Postfix(ShipEjectionSystem __instance)
     {
         if (!_hasEjectButton)

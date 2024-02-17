@@ -131,8 +131,7 @@ namespace ArchipelagoRandomizer
         }
 
         // unfortunately hiding the vanilla Resume button with OWML ModHelper doesn't work, so we do that here instead
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
+        [HarmonyPostfix, HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
         public static void TitleScreenManager_SetUpMainMenu_Postfix()
         {
             var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
@@ -142,8 +141,7 @@ namespace ArchipelagoRandomizer
         // The main menu does not autoselect the top visible button, but rather a specific named button, so the fact that we're forced
         // to hide some vanilla buttons means we also have to hijack this autoselection logic to unbreak the main menu.
         // In practice this is primarily a problem for controller input.
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(OWMenuInputModule), nameof(OWMenuInputModule.SelectOnNextUpdate))]
+        [HarmonyPostfix, HarmonyPatch(typeof(OWMenuInputModule), nameof(OWMenuInputModule.SelectOnNextUpdate))]
         public static void OWMenuInputModule_SelectOnNextUpdate(OWMenuInputModule __instance, Selectable selectable)
         {
             // Logging this feels pretty spammy when we're not on the main menu.

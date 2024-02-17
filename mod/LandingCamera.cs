@@ -30,8 +30,7 @@ internal class LandingCamera
     static ScreenPrompt landingCameraLandingPrompt = null; // "(X) Landing Mode" when flying toward a planet
 
     // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize(ShipPromptController __instance)
     {
         landingCameraLandingPrompt = __instance._landingModePrompt;
@@ -64,8 +63,7 @@ internal class LandingCamera
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ShipCockpitController), nameof(ShipCockpitController.EnterLandingView))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipCockpitController), nameof(ShipCockpitController.EnterLandingView))]
     public static bool ShipCockpitController_EnterLandingView_Prefix()
     {
         if (!_hasLandingCamera)
