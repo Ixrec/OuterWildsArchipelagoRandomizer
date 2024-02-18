@@ -61,7 +61,7 @@ public enum Item
 
     ShipDamageTrap,
     AudioTrap,
-    MeditationTrap,
+    NapTrap,
 };
 
 public static class ItemNames
@@ -120,7 +120,7 @@ public static class ItemNames
 
         { Item.ShipDamageTrap, "Ship Damage Trap" },
         { Item.AudioTrap, "Audio Trap" },
-        { Item.MeditationTrap, "Meditation Trap" },
+        { Item.NapTrap, "Nap Trap" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

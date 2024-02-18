@@ -53,7 +53,7 @@ Outer Wilds:
     # If you don't want a specific trap type, set its weight to 0.
     # Setting all weights to 0 is the same as setting trap_chance to 0.
     Audio Trap: 1
-    Meditation Trap: 2
+    Nap Trap: 2
     Ship Damage Trap: 2
 
   death_link:
