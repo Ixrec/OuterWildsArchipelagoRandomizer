@@ -90,7 +90,7 @@ To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Relea
 
 ### 0.2.x Goals/Priorities
 
-- Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.
+- ~~Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.~~
 
 - Create some `useful`, `filler` and `trap` items, instead of just "Nothing"s. Ideas include:
 	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`)~~ and max upgrades (`useful`)
