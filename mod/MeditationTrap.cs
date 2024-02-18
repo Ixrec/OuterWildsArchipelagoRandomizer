@@ -65,6 +65,10 @@ internal class MeditationTrap
 
     private static void ForceMeditation()
     {
+        // We're still on the main menu, being told how many Meditation Traps were received in previous sessions,
+        // so do nothing, not even scheduling future trap execution.
+        if (Locator.GetPauseCommandListener() == null) return;
+
         meditationTrapInProgress = true;
 
         // if the game is currently paused, we need to wait until it's unpaused
