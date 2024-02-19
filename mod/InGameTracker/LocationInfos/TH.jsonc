@@ -1,0 +1,62 @@
+﻿[
+    {
+        "locationModID": "TH_GM",
+        "description": "A plaque near the Zero-G Cave in the Village describes a dangerous substance known as Ghost Matter.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_ZERO_G",
+        "description": "An old piece of mining equipment contained under the Village is in need of repairs.",
+        "thumbnail": "TH_ZERO_G_CAVE"
+    },
+    {
+        "locationModID": "TH_HAL",
+        "description": "Your best friend Hal want to discuss the Translator Tool with you. They're the one at the museum with the orange bandana.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_HORNFELS",
+        "description": "Hornfels likes to spend their days investigating the stars and taking care of their museum.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_SEED_CRATER",
+        "description": "Tektite is concerned about a strange seed that landed on Timber Hearth. The smoke from the impact site is visible from afar.",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "TH_MINES",
+        "description": "The Nomai ran a mining operation under a particularly large geyser mountain. They logged their discoveries about the strange ore inside on a wall.",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "TH_MS_SIGNAL",
+        "description": "The Timber Hearth museum contains the smallest known quantum sample in the solar system. It emits a strange signal.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_GS_SIGNAL",
+        "description": "A grove near the Village would be quite serene and peaceful, if not for all the quantum rocks and trees in the area. One of the rocks emits a signal.",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "TH_GALENA_SIGNAL",
+        "description": "Galena in the Village may not be the most talkative hatchling, but they are secretly really excited to play Hide and Seek with you if you ask. You'll want a Signalscope to find them...",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_TEPHRA_SIGNAL",
+        "description": "Tephra in the Village would love to play Hide and Seek with you! Though, you'll want a Signalscope to find them...",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "AR_WHISTLE",
+        "description": "Esker has been pretty lonely for a while, since Outer Wilds Ventures has not needed to use the Attlerock as an outpost for many years. Maybe pay them a visit, and listen to their song with your Signalscope.",
+        "thumbnail": "TM_ESKER"
+    },
+    {
+        "locationModID": "AR_ESL",
+        "description": "The Nomai's first attempt to locate the Eye of the Universe can be found on the Attlerock. They've written about their findings on a wall.",
+        "thumbnail": "TM_EYE_LOCATOR"
+    }
+]
