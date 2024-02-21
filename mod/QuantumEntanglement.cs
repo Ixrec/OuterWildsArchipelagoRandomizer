@@ -25,16 +25,14 @@ internal class QuantumEntanglement
         }
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(QuantumObject), nameof(QuantumObject.IsPlayerEntangled))]
+    [HarmonyPostfix, HarmonyPatch(typeof(QuantumObject), nameof(QuantumObject.IsPlayerEntangled))]
     public static void QuantumObject_IsPlayerEntangled_Postfix(ref bool __result)
     {
         if (!hasEntanglementKnowledge)
             __result = false;
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(QuantumMoon), nameof(QuantumMoon.IsPlayerEntangled))]
+    [HarmonyPostfix, HarmonyPatch(typeof(QuantumMoon), nameof(QuantumMoon.IsPlayerEntangled))]
     public static void QuantumMoon_IsPlayerEntangled_Postfix(ref bool __result)
     {
         if (!hasEntanglementKnowledge)
@@ -43,8 +41,7 @@ internal class QuantumEntanglement
 
     static bool collidingWithQuantumObject = false;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(PlayerCharacterController), nameof(PlayerCharacterController.CastForGrounded))]
+    [HarmonyPostfix, HarmonyPatch(typeof(PlayerCharacterController), nameof(PlayerCharacterController.CastForGrounded))]
     public static void PlayerCharacterController_CastForGrounded_Postfix(PlayerCharacterController __instance)
     {
         collidingWithQuantumObject = (
@@ -57,14 +54,12 @@ internal class QuantumEntanglement
 
     static ScreenPrompt suitLightsDisabledPrompt = new("Suit Lights: Disabled", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(suitLightsDisabledPrompt, PromptPosition.UpperRight, false);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
         suitLightsDisabledPrompt.SetVisibility(

@@ -61,14 +61,12 @@ internal class Tornadoes
 
     static ScreenPrompt tornadoAdjustmentsActivePrompt = new("Tornado Aerodynamic Adjustments: Active", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(tornadoAdjustmentsActivePrompt, PromptPosition.UpperRight, false);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
         tornadoAdjustmentsActivePrompt.SetVisibility(

@@ -37,15 +37,13 @@ internal class SignalscopeManager
     // So this "duplicate" prompt is for when the player presses Y and I know there won't be an existing prompt about it.
     static ScreenPrompt signalscopeNotAvailablePrompt = new ScreenPrompt("Signalscope Not Available", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(signalscopeNotAvailablePrompt, PromptPosition.Center, false);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.SignalScope && !hasSignalscope)
@@ -75,8 +73,7 @@ internal class SignalscopeManager
     static ScreenPrompt equipSignalscopePrompt = null;
     static ScreenPrompt centerEquipSignalScopePrompt = null; // only shown in specific places, e.g. hide & seek
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
     public static void ToolModeUI_Start_Postfix(ToolModeUI __instance)
     {
         equipSignalscopePrompt = __instance._signalscopePrompt;
@@ -126,8 +123,7 @@ internal class SignalscopeManager
 
     // Aside from LearnFrequency/Signal() which we still want writing to the player's save file,
     // these 4 methods are all the direct reads and writes of .knownFrequencies/Signals
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsFrequency))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsFrequency))]
 
     public static bool PlayerData_KnowsFrequency_Prefix(SignalFrequency frequency, ref bool __result)
     {
@@ -137,8 +133,7 @@ internal class SignalscopeManager
         __result = usableFrequencies.Contains(frequency); // override return value
         return false; // skip vanilla implementation
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
     public static bool PlayerData_KnowsMultipleFrequencies_Prefix(ref bool __result)
     {
         // The SignalFrequency enum has 8 values. 3 of them are AP items/locations, 1 (Radio / Deep Space Radio) is not yet but will be
@@ -149,8 +144,7 @@ internal class SignalscopeManager
         __result = usableFrequencies.Count > 0 || PlayerData.KnowsFrequency(SignalFrequency.Radio); // override return value
         return false; // skip vanilla implementation
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
         if (!ItemNames.signalToItem.ContainsKey(signalName))
@@ -167,8 +161,7 @@ internal class SignalscopeManager
     }
     // In vanilla, this is used to forget the Hide & Seek frequency
     // after each loop. But we never want to forget anything.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ForgetFrequency))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ForgetFrequency))]
     public static bool PlayerData_ForgetFrequency_Prefix(SignalFrequency frequency)
     {
         APRandomizer.OWMLModConsole.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
@@ -177,8 +170,7 @@ internal class SignalscopeManager
 
     // Next, these are the patches to actually check locations when the player scans a frequency and/or signal.
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
     public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
     {
         if (LocationNames.frequencyToLocation.ContainsKey(frequency))
@@ -187,8 +179,7 @@ internal class SignalscopeManager
             LocationTriggers.CheckLocation(locationName);
         }
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
     public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
     {
         if (LocationNames.signalToLocation.ContainsKey(signalName))
@@ -208,8 +199,7 @@ internal class SignalscopeManager
     // If the player has scanned this frequency/signal before, and the vanilla code is calling
     // these methods only because they haven't received the AP item for that frequency/signal yet,
     // then don't "relearn" it.
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
+    [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
     public static bool AudioSignal_IdentifyFrequency_Prefix(AudioSignal __instance)
     {
         if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location location))
@@ -220,8 +210,7 @@ internal class SignalscopeManager
 
         return true;
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
+    [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
         if (!LocationNames.signalToLocation.TryGetValue(__instance.GetName(), out Location location))
@@ -247,8 +236,7 @@ internal class SignalscopeManager
     // And the third is that in vanilla, you cannot scan signals of unknown frequency without wearing
     // the suit, which in rando feels like a bug if you happen to get Signalscope early on TH.
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
+    [HarmonyPrefix, HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
     public static bool AudioSignalDetectionTrigger_Update_Prefix(AudioSignalDetectionTrigger __instance)
     {
         var signalName = __instance._signal.GetName();

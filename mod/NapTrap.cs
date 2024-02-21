@@ -31,15 +31,13 @@ internal class NapTrap
 
     static SleepTimerUI sleepTimerUI = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(SleepTimerUI), nameof(SleepTimerUI.Awake))]
+    [HarmonyPostfix, HarmonyPatch(typeof(SleepTimerUI), nameof(SleepTimerUI.Awake))]
     public static void SleepTimerUI_Awake(SleepTimerUI __instance) => sleepTimerUI = __instance;
 
     // SleepTimerUI is the only caller of IsSleepingAtDreamCampfire, and it uses it to decide whether to render
     // "dream embers" instead of regular campfire embers. For nap traps, we'd like to use dream embers
     // if we get meditated anywhere inside the Stranger or the dream world.
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(PlayerState), nameof(PlayerState.IsSleepingAtDreamCampfire))]
+    [HarmonyPostfix, HarmonyPatch(typeof(PlayerState), nameof(PlayerState.IsSleepingAtDreamCampfire))]
     public static void PlayerState_IsSleepingAtDreamCampfire_Awake(PlayerState __instance, ref bool __result)
     {
         __result = __result // if the vanilla value is already true, don't risk changing it
@@ -48,8 +46,7 @@ internal class NapTrap
     }
 
     // when the game is unpaused, if there's a nap trap that's been waiting to execute, start executing it
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(PauseMenuManager), nameof(PauseMenuManager.OnDeactivatePauseMenu))]
+    [HarmonyPostfix, HarmonyPatch(typeof(PauseMenuManager), nameof(PauseMenuManager.OnDeactivatePauseMenu))]
     public static void PauseMenuManager_OnDeactivatePauseMenu(PauseMenuManager __instance)
     {
         if (napTrapInProgress)

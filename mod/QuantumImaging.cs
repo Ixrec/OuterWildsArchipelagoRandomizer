@@ -53,8 +53,7 @@ internal class QuantumImaging
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
     public static bool ProbeLauncher_TakeSnapshotWithCamera_Prefix(ProbeCamera camera)
     {
         var __instance = camera;

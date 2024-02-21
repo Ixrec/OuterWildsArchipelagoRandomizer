@@ -17,8 +17,7 @@ internal class WarpCoreManual
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ItemTool), nameof(ItemTool.SocketItem))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ItemTool), nameof(ItemTool.SocketItem))]
     private static bool SocketItem(ItemTool __instance, OWItemSocket socket)
     {
         if (__instance._heldItem is WarpCoreItem && !hasWarpCoreManual)
@@ -32,8 +31,7 @@ internal class WarpCoreManual
         }
         return true;
     }
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ItemTool), nameof(ItemTool.StartUnsocketItem))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ItemTool), nameof(ItemTool.StartUnsocketItem))]
     private static bool StartUnsocketItem(ItemTool __instance, OWItemSocket socket)
     {
         if (socket.GetSocketedItem() is WarpCoreItem && !hasWarpCoreManual)
@@ -54,15 +52,13 @@ internal class WarpCoreManual
 
     private static FirstPersonManipulator firstPersonManipulator = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.Start))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.Start))]
     public static void ToolModeSwapper_Start_Postfix(ToolModeSwapper __instance)
     {
         firstPersonManipulator = __instance._firstPersonManipulator;
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ItemTool), nameof(ItemTool.UpdateState))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ItemTool), nameof(ItemTool.UpdateState))]
     public static void ItemTool_UpdateState_Postfix(ItemTool __instance, ItemTool.PromptState newState, string itemName)
     {
         // We only need to edit the prompt if ItemTool was going to say "Insert/Remove Warp Core" and we don't have the codes yet.

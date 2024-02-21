@@ -25,8 +25,7 @@ internal class QuantumShrineDoor
     private static InteractReceiver doorIR = null;
     private static NomaiGateway gatewayComponent = null;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]
+    [HarmonyPrefix, HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]
     public static void QuantumShrine_Start_Prefix(QuantumShrine __instance)
     {
         APRandomizer.OWMLModConsole.WriteLine($"QuantumShrine.Start deleting door orb and adding door prompt");
@@ -95,8 +94,7 @@ internal class QuantumShrineDoor
     }
 
     // This was very helpful for debugging how this door code interfered with the entanglement code
-    /*[HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerState), nameof(PlayerState.OnFlashlightOff))]
+    /*[HarmonyPrefix, HarmonyPatch(typeof(PlayerState), nameof(PlayerState.OnFlashlightOff))]
     public static void PlayerState_OnFlashlightOff_Prefix()
     {
         APRandomizer.OWMLModConsole.WriteLine($"PlayerState.OnFlashlightOff");
