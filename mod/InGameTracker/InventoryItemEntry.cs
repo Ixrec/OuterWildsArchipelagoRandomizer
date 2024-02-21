@@ -40,7 +40,8 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             if (Enum.TryParse(ID, out Item result))
             {
-                return APRandomizer.SaveData.itemsAcquired[result] > 0;
+                var ia = APRandomizer.SaveData.itemsAcquired;
+                return ia.ContainsKey(result) ? ia[result] > 0 : false;
             }
             APRandomizer.OWMLModConsole.WriteLine($"Could not find item with ID {ID} for determining quantity, returning false.", OWML.Common.MessageType.Error);
             return false;

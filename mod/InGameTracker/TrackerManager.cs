@@ -182,7 +182,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (Enum.TryParse(item.ID, out Item subject))
                 {
-                    uint quantity = items[subject];
+                    uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
                     string itemName = $"[{(quantity != 0 ? "X" : " ")}] {item.Name}"; // Would produce a string like "[X] Launch Codes"
                     bool hasHint = quantity == 0 && item.HintedLocation != "";
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
