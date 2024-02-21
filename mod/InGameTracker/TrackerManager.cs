@@ -1,8 +1,10 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.InGameTracker
@@ -10,6 +12,10 @@ namespace ArchipelagoRandomizer.InGameTracker
     public class TrackerManager : MonoBehaviour
     {
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
+        /// <summary>
+        /// Parsed version of locations.jsonc
+        /// </summary>
+        public List<TrackerLocationData> TrackerLocations;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
@@ -38,6 +44,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
+        //private TrackerLocationChecklistMode checklistMode;
         private ArchipelagoSession session;
 
         private void Awake()
@@ -54,6 +61,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
 
             inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
+            //checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
+
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
             {
                 if (loadScene == OWScene.SolarSystem) AddModes();
@@ -81,6 +90,16 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
+
+            string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
+            if (File.Exists(path))
+            {
+                //TrackerLocations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(path); TODO we need to figure out why this doesn't parse
+            }
+            else
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
+            }
         }
         
         /// <summary>
@@ -99,20 +118,33 @@ namespace ArchipelagoRandomizer.InGameTracker
                 inventoryMode.RootObject = itemList.gameObject;
             });
             inventoryMode.Tracker = this;
+            /* add this back later
+            api.AddMode(checklistMode, () => true, () => "Tracker");
+            api.ItemListMake(true, true, itemList =>
+            {
+                checklistMode.Wrapper = new ItemListWrapper(api, itemList);
+                checklistMode.RootObject = itemList.gameObject;
+            });
+            checklistMode.Tracker = this;
+            */
         }
 
         // Reads hints from the AP server
         private void ReadHints(Hint[] hintList)
         {
+            APRandomizer.OWMLModConsole.WriteLine($"Received {hintList.Length} hints!", OWML.Common.MessageType.Info);
             foreach (Hint hint in hintList)
             {
+                // We only care about hints for the current world
+                // Probably change this later once location hinting is implemented
+                if (hint.ReceivingPlayer != session.ConnectionInfo.Slot) continue; 
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
                 APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
                 // We don't need to track hints for items that aren't on the tracker
                 if (!ItemEntries.ContainsKey(itemName))
                 {
                     APRandomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
-                    return;
+                    continue;
                 }
                 string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
                 string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
@@ -121,6 +153,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
         }
 
+        #region Inventory
         // Determines what items the player has and shows them in the inventory mode
         public void CheckInventory()
         {
@@ -252,5 +285,13 @@ namespace ArchipelagoRandomizer.InGameTracker
             frequency = "";
             return false;
         }
+        #endregion
+
+        #region Tracker
+        public TrackerLocationData GetLocationByID(int id)
+        {
+            return TrackerLocations.FirstOrDefault((x) => x.address == id);
+        }
+        #endregion
     }
 }
