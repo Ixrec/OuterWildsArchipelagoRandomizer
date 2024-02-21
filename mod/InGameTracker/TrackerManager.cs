@@ -19,46 +19,48 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
-        // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy for cleaner code
-        public Dictionary<string, InventoryItemEntry> ItemEntries = new()
+        private static List<InventoryItemEntry> _ItemEntries = new()
         {
-            {Item.Coordinates.ToString(), new InventoryItemEntry(Item.Coordinates.ToString(), "Eye of the Universe Coordinates") },
-            {Item.LaunchCodes.ToString(), new InventoryItemEntry(Item.LaunchCodes.ToString(), "Launch Codes") },
-            {Item.Translator.ToString(), new InventoryItemEntry(Item.Translator.ToString(), "Translator") },
-            {Item.Signalscope.ToString(), new InventoryItemEntry(Item.Signalscope.ToString(), "Signalscope") },
-            {Item.EntanglementRule.ToString(), new InventoryItemEntry(Item.EntanglementRule.ToString(), "Suit Lights Controls") },
-            {Item.ElectricalInsulation.ToString(), new InventoryItemEntry(Item.ElectricalInsulation.ToString(), "Electrical Insulation") },
-            {Item.SilentRunning.ToString(), new InventoryItemEntry(Item.SilentRunning.ToString(), "Silent Running Mode") },
-            {Item.TornadoAdjustment.ToString(), new InventoryItemEntry(Item.TornadoAdjustment.ToString(), "Tornado Aerodynamic Adjustments") },
-            {Item.Scout.ToString(), new InventoryItemEntry(Item.Scout.ToString(), "Camera: Scout Launcher") },
-            {Item.CameraGM.ToString(), new InventoryItemEntry(Item.CameraGM.ToString(), "Camera: Ghost Matter Frequency") },
-            {Item.CameraQuantum.ToString(), new InventoryItemEntry(Item.CameraQuantum.ToString(), "Camera: Quantum Objects") },
-            {Item.WarpPlatformCodes.ToString(), new InventoryItemEntry(Item.WarpPlatformCodes.ToString(), "Nomai: Warp Platform Codes") },
-            {Item.WarpCoreManual.ToString(), new InventoryItemEntry(Item.WarpCoreManual.ToString(), "Nomai: Warp Core Installation Manual") },
-            {Item.ShrineDoorCodes.ToString(), new InventoryItemEntry(Item.ShrineDoorCodes.ToString(), "Nomai: Shrine Door Codes") },
+            new InventoryItemEntry(Item.Coordinates, "Eye of the Universe Coordinates"),
+            new InventoryItemEntry(Item.LaunchCodes, "Launch Codes"),
+            new InventoryItemEntry(Item.Translator, "Translator"),
+            new InventoryItemEntry(Item.Signalscope, "Signalscope"),
+            new InventoryItemEntry(Item.EntanglementRule, "Suit Lights Controls"),
+            new InventoryItemEntry(Item.ElectricalInsulation, "Electrical Insulation"),
+            new InventoryItemEntry(Item.SilentRunning, "Silent Running Mode"),
+            new InventoryItemEntry(Item.TornadoAdjustment, "Tornado Aerodynamic Adjustments"),
+            new InventoryItemEntry(Item.Scout, "Camera: Scout Launcher"),
+            new InventoryItemEntry(Item.CameraGM, "Camera: Ghost Matter Frequency"),
+            new InventoryItemEntry(Item.CameraQuantum, "Camera: Quantum Objects"),
+            new InventoryItemEntry(Item.WarpPlatformCodes, "Nomai: Warp Platform Codes"),
+            new InventoryItemEntry(Item.WarpCoreManual, "Nomai: Warp Core Installation Manual"),
+            new InventoryItemEntry(Item.ShrineDoorCodes, "Nomai: Shrine Door Codes"),
 
-            {"FrequencyOWV", new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures", false) },
-            {Item.FrequencyDB.ToString(), new InventoryItemEntry(Item.FrequencyDB.ToString(), "Frequency: Distress Beacons") },
-            {Item.FrequencyQF.ToString(), new InventoryItemEntry(Item.FrequencyQF.ToString(), "Frequency: Quantum Fluctuations") },
-            {Item.FrequencyHS.ToString(), new InventoryItemEntry(Item.FrequencyHS.ToString(), "Frequency: Hide and Seek") },
+            new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures"),
+            new InventoryItemEntry(Item.FrequencyDB, "Frequency: Distress Beacons"),
+            new InventoryItemEntry(Item.FrequencyQF, "Frequency: Quantum Fluctuations"),
+            new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
 
-            {Item.Autopilot.ToString(), new InventoryItemEntry(Item.Autopilot.ToString(), "Autopilot") },
-            {Item.LandingCamera.ToString(), new InventoryItemEntry(Item.LandingCamera.ToString(), "Landing Camera") },
-            {Item.EjectButton.ToString(), new InventoryItemEntry(Item.EjectButton.ToString(), "Eject Button") },
-            {Item.VelocityMatcher.ToString(), new InventoryItemEntry(Item.VelocityMatcher.ToString(), "Velocity Matcher") },
-            {Item.SurfaceIntegrityScanner.ToString(), new InventoryItemEntry(Item.SurfaceIntegrityScanner.ToString(), "Surface Integrity Scanner") },
-            {Item.OxygenCapacityUpgrade.ToString(), new InventoryItemEntry(Item.OxygenCapacityUpgrade.ToString(), "Oxygen Capacity Upgrade") },
-            {Item.FuelCapacityUpgrade.ToString(), new InventoryItemEntry(Item.FuelCapacityUpgrade.ToString(), "Fuel Capacity Upgrade") },
-            {Item.BoostDurationUpgrade.ToString(), new InventoryItemEntry(Item.BoostDurationUpgrade.ToString(), "Boost Duration Upgrade") },
+            new InventoryItemEntry(Item.Autopilot, "Autopilot"),
+            new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
+            new InventoryItemEntry(Item.EjectButton, "Eject Button"),
+            new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
+            new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
+            new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade"),
+            new InventoryItemEntry(Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade"),
+            new InventoryItemEntry(Item.BoostDurationUpgrade, "Boost Duration Upgrade"),
 
-            {Item.OxygenRefill.ToString(), new InventoryItemEntry(Item.OxygenRefill.ToString(), "Oxygen Refill") },
-            {Item.FuelRefill.ToString(), new InventoryItemEntry(Item.FuelRefill.ToString(), "Jetpack Fuel Refill") },
-            {Item.Marshmallow.ToString(), new InventoryItemEntry(Item.Marshmallow.ToString(), "Marshmallow") }, // includes Perfect and Burnt
+            new InventoryItemEntry(Item.OxygenRefill, "Oxygen Refill"),
+            new InventoryItemEntry(Item.FuelRefill, "Jetpack Fuel Refill"),
+            new InventoryItemEntry(Item.Marshmallow, "Marshmallow"), // includes Perfect and Burnt
 
-            {Item.ShipDamageTrap.ToString(), new InventoryItemEntry(Item.ShipDamageTrap.ToString(), "Ship Damage Trap") },
-            {Item.AudioTrap.ToString(), new InventoryItemEntry(Item.AudioTrap.ToString(), "Audio Trap") },
-            {Item.NapTrap.ToString(), new InventoryItemEntry(Item.NapTrap.ToString(), "Nap Trap") },
+            new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
+            new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
+            new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
         };
+
+        // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
+        public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
