@@ -90,6 +90,56 @@ namespace ArchipelagoRandomizer.InGameTracker
                     case "FrequencyHS":
                         infos.Add("Tephra and Galena want to play Hide and Seek with you!");
                         break;
+                    case "Autopilot":
+                        infos.Add("You fixed the faulty wiring between the autopilot module and your spaceship controls.");
+                        break;
+                    case "LandingCamera":
+                        infos.Add("It can be hard to land on things without looking at them, but landing cockpit-first is considered dangerous for some reason.");
+                        infos.Add("You cleaned a half-melted marshmallow off of the lens.");
+                        break;
+                    case "EjectButton":
+                        infos.Add("You finally got the cover unstuck, giving you an exciting new way to destroy your spaceship.");
+                        break;
+                    case "VelocityMatcher":
+                        infos.Add("Hold the button to gradually 'stop moving' relative to the planet you're on, or the object you're locked on to.");
+                        infos.Add("Applies to both your spaceship and your spacesuit.");
+                        break;
+                    case "SurfaceIntegrityScanner":
+                        infos.Add("An upgrade for your Little Scout that reports the structural integrity of a fragile surface it's attached to.");
+                        infos.Add("Most useful on Brittle Hollow.");
+                        break;
+                    case "OxygenCapacityUpgrade":
+                        infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
+                        infos.Add("Your tank started with half of that. Each upgrade doubles its capacity.");
+                        break;
+                    case "FuelCapacityUpgrade":
+                        infos.Add("An Outer Wilds Ventures standard-issue jetpack fuel tank holds enough fuel to fire thrusters for 100 seconds.");
+                        infos.Add("Your tank started with half of that. Each upgrade doubles its capacity.");
+                        break;
+                    case "BoostDurationUpgrade":
+                        infos.Add("An Outer Wilds Ventures standard-issue jetpack can boost for 1 second before recharging.");
+                        infos.Add("Your jetpack started with half a second of boost. Each upgrade doubles its length.");
+                        break;
+                    case "OxygenRefill":
+                        infos.Add("Fully refills your suit's oxygen tank.");
+                        break;
+                    case "FuelRefill":
+                        infos.Add("Fully refills your suit jetpack's fuel tank.");
+                        break;
+                    case "Marshmallow":
+                        infos.Add("Refills half your health. Also comes in 'perfect' and 'burnt' variants.");
+                        break;
+                    case "ShipDamageTrap":
+                        infos.Add("Mysterious forces spontaneously damage parts of your spaceship.");
+                        infos.Add("If you're not in your ship when this happens, your suit will helpfully inform you of what broke.");
+                        break;
+                    case "AudioTrap":
+                        infos.Add("A glitch in your suit speakers randomly plays disturbing sounds or music. But they're just sounds, they can't hurt you.");
+                        break;
+                    case "NapTrap":
+                        infos.Add("Did you know over 27% of Timber Hearthians suffer from narcolepsy?");
+                        infos.Add("The primary symptoms are sporadic 'sleep attacks' which last about one minute. Patients report feeling a sleep attack about three seconds before loss of vision and motor control.");
+                        break;
                     default:
                         infos.Add($"Hmm, looks like an incorrect item ID was requested: {itemID}");
                         infos.Add("Please let Ixrec or Gamewyrm on the Archipelago or Outer Wilds Modding Discord know if you see this.");

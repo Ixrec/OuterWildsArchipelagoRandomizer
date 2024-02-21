@@ -36,10 +36,28 @@ namespace ArchipelagoRandomizer.InGameTracker
             {Item.WarpPlatformCodes.ToString(), new InventoryItemEntry(Item.WarpPlatformCodes.ToString(), "Nomai: Warp Platform Codes") },
             {Item.WarpCoreManual.ToString(), new InventoryItemEntry(Item.WarpCoreManual.ToString(), "Nomai: Warp Core Installation Manual") },
             {Item.ShrineDoorCodes.ToString(), new InventoryItemEntry(Item.ShrineDoorCodes.ToString(), "Nomai: Shrine Door Codes") },
+
             {"FrequencyOWV", new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures", false) },
             {Item.FrequencyDB.ToString(), new InventoryItemEntry(Item.FrequencyDB.ToString(), "Frequency: Distress Beacons") },
             {Item.FrequencyQF.ToString(), new InventoryItemEntry(Item.FrequencyQF.ToString(), "Frequency: Quantum Fluctuations") },
-            {Item.FrequencyHS.ToString(), new InventoryItemEntry(Item.FrequencyHS.ToString(), "Frequency: Hide and Seek") }
+            {Item.FrequencyHS.ToString(), new InventoryItemEntry(Item.FrequencyHS.ToString(), "Frequency: Hide and Seek") },
+
+            {Item.Autopilot.ToString(), new InventoryItemEntry(Item.Autopilot.ToString(), "Autopilot") },
+            {Item.LandingCamera.ToString(), new InventoryItemEntry(Item.LandingCamera.ToString(), "Landing Camera") },
+            {Item.EjectButton.ToString(), new InventoryItemEntry(Item.EjectButton.ToString(), "Eject Button") },
+            {Item.VelocityMatcher.ToString(), new InventoryItemEntry(Item.VelocityMatcher.ToString(), "Velocity Matcher") },
+            {Item.SurfaceIntegrityScanner.ToString(), new InventoryItemEntry(Item.SurfaceIntegrityScanner.ToString(), "Surface Integrity Scanner") },
+            {Item.OxygenCapacityUpgrade.ToString(), new InventoryItemEntry(Item.OxygenCapacityUpgrade.ToString(), "Oxygen Capacity Upgrade") },
+            {Item.FuelCapacityUpgrade.ToString(), new InventoryItemEntry(Item.FuelCapacityUpgrade.ToString(), "Fuel Capacity Upgrade") },
+            {Item.BoostDurationUpgrade.ToString(), new InventoryItemEntry(Item.BoostDurationUpgrade.ToString(), "Boost Duration Upgrade") },
+
+            {Item.OxygenRefill.ToString(), new InventoryItemEntry(Item.OxygenRefill.ToString(), "Oxygen Refill") },
+            {Item.FuelRefill.ToString(), new InventoryItemEntry(Item.FuelRefill.ToString(), "Jetpack Fuel Refill") },
+            {Item.Marshmallow.ToString(), new InventoryItemEntry(Item.Marshmallow.ToString(), "Marshmallow") }, // includes Perfect and Burnt
+
+            {Item.ShipDamageTrap.ToString(), new InventoryItemEntry(Item.ShipDamageTrap.ToString(), "Ship Damage Trap") },
+            {Item.AudioTrap.ToString(), new InventoryItemEntry(Item.AudioTrap.ToString(), "Audio Trap") },
+            {Item.NapTrap.ToString(), new InventoryItemEntry(Item.NapTrap.ToString(), "Nap Trap") },
         };
 
         private ICustomShipLogModesAPI api;
