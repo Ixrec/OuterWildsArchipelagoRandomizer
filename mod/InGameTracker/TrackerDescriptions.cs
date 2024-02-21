@@ -111,22 +111,22 @@ namespace ArchipelagoRandomizer.InGameTracker
                         infos.Add("You can obtain items by discovering signals.");
                         break;
                     case Item.Scout:
-                        infos.Add("A standard-issue scout launcher, equipped with a light and camera.");
-                        infos.Add("Your cameras require special lenses to detect certain frequencies.");
-                        infos.Add("Note that you can still use Photo Mode even if your Scout Launcher is not functional.");
+                        infos.Add("A standard-issue Little Scout, equipped with a light and camera.");
+                        infos.Add("Like your Photo Mode camera, it requires special lenses to detect certain wavelengths.");
+                        infos.Add("Note that your scout launcher can still use Photo Mode even if there's no Scout in it.");
                         break;
                     case Item.CameraGM:
                         infos.Add("A special lens attached to your cameras that allow them to detect deadly Ghost Matter.");
-                        infos.Add("Note that you can still use Photo Mode even if your Scout Launcher is not functional.");
+                        infos.Add("Note that your scout launcher can still use Photo Mode even if there's no Scout in it.");
                         break;
                     case Item.CameraQuantum:
                         infos.Add("A special lens attached to your cameras that allow them to avoid jamming when observing Quantum Objects.");
                         infos.Add("This will permit you to utilize the Rule of Quantum Imaging.");
-                        infos.Add("Note that you can still use Photo Mode even if your Scout Launcher is not functional.");
+                        infos.Add("Note that your scout launcher can still use Photo Mode even if there's no Scout in it.");
                         break;
                     case Item.WarpPlatformCodes:
                         infos.Add("Special Nomai instructions for activating their Warp Platform technology at will.");
-                        infos.Add("You do not need to wait for the Warp Platform to align with its target body to use the warp.");
+                        infos.Add("You don't need to wait for the Warp Platform to align with its target astral body to use the warp.");
                         infos.Add("Simply step on the Warp Platform and look down at it to activate a warp.");
                         break;
                     case Item.WarpCoreManual:
@@ -139,7 +139,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                         break;
                     case Item.ShrineDoorCodes:
                         infos.Add("The shrine on the Quantum Moon used to be locked by a Nomai Interface Orb, but the shrine has fallen into disrepair and the orb seems to have disappeared.");
-                        infos.Add("Fortunately, you've found some codes allowing you to override the door controls.");
+                        infos.Add("Fortunately, you've found some codes allowing you to override the door controls, so now you can utilize the Rule of the Sixth Location.");
                         break;
                     case Item.TornadoAdjustment:
                         infos.Add("With some slight adjustments to your ship's aerodynamics, you can utilize retrograde tornados to sink below the current on Giant's Deep.");
@@ -148,8 +148,9 @@ namespace ArchipelagoRandomizer.InGameTracker
                         infos.Add("You managed to fix the mufflers on your ship's and your jetpack's engines, allowing you to cruise in silence.");
                         break;
                     case Item.ElectricalInsulation:
-                        infos.Add("Special padding applied to your space suit which allows you to endure low amounts of voltage, such as bioelectricity.");
-                        infos.Add("However, it will not protect you from strong current from electrical wires or a damaged space ship.");
+                        infos.Add("Special padding applied to your space suit which allows you to endure low amounts of voltage, such as the bioelectricity inside a jellyfish's body.");
+                        infos.Add("However, it will not protect you from strong current from electrical wires, a damaged space ship, or jellyfish tentacles.");
+                        infos.Add("Did you know a jellyfish's fluffier inner tentacles are actually called 'oral arms'? I can't forget that, so now you can't either.");
                         break;
                     case Item.Autopilot:
                         infos.Add("You fixed the faulty wiring between the autopilot module and your spaceship controls.");

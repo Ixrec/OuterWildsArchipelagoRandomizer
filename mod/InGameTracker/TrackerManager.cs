@@ -21,39 +21,46 @@ namespace ArchipelagoRandomizer.InGameTracker
         // They'll also display in this order, with the second string as the visible name
         private static List<InventoryItemEntry> _ItemEntries = new()
         {
-            new InventoryItemEntry(Item.Coordinates, "Eye of the Universe Coordinates"),
+            // Progression items you normally start with in vanilla
             new InventoryItemEntry(Item.LaunchCodes, "Launch Codes"),
             new InventoryItemEntry(Item.Translator, "Translator"),
             new InventoryItemEntry(Item.Signalscope, "Signalscope"),
-            new InventoryItemEntry(Item.EntanglementRule, "Suit Lights Controls"),
+            new InventoryItemEntry(Item.Scout, "Scout"),
+            new InventoryItemEntry(Item.CameraGM, "Ghost Matter Wavelength"),
+
+            // Progression items that represent vanilla knowledge checks you wouldn't have at the start
             new InventoryItemEntry(Item.ElectricalInsulation, "Electrical Insulation"),
             new InventoryItemEntry(Item.SilentRunning, "Silent Running Mode"),
             new InventoryItemEntry(Item.TornadoAdjustment, "Tornado Aerodynamic Adjustments"),
-            new InventoryItemEntry(Item.Scout, "Camera: Scout Launcher"),
-            new InventoryItemEntry(Item.CameraGM, "Camera: Ghost Matter Frequency"),
-            new InventoryItemEntry(Item.CameraQuantum, "Camera: Quantum Objects"),
-            new InventoryItemEntry(Item.WarpPlatformCodes, "Nomai: Warp Platform Codes"),
-            new InventoryItemEntry(Item.WarpCoreManual, "Nomai: Warp Core Installation Manual"),
-            new InventoryItemEntry(Item.ShrineDoorCodes, "Nomai: Shrine Door Codes"),
+            new InventoryItemEntry(Item.WarpPlatformCodes, "Nomai Warp Platform Codes"),
+            new InventoryItemEntry(Item.WarpCoreManual, "Nomai Warp Core Installation Manual"),
+            new InventoryItemEntry(Item.CameraQuantum, "Imaging Rule / Quantum Wavelength"),
+            new InventoryItemEntry(Item.EntanglementRule, "Entanglement Rule / Suit Lights Controls"),
+            new InventoryItemEntry(Item.ShrineDoorCodes, "Sixth Location Rule / Shrine Door Codes"),
+            new InventoryItemEntry(Item.Coordinates, "Eye of the Universe Coordinates"),
 
+            // Signalscope frequencies. The individual signals are listed within each frequency entry.
             new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures"),
             new InventoryItemEntry(Item.FrequencyDB, "Frequency: Distress Beacons"),
             new InventoryItemEntry(Item.FrequencyQF, "Frequency: Quantum Fluctuations"),
             new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
 
+            // Non-progression ship and equipment upgrades
             new InventoryItemEntry(Item.Autopilot, "Autopilot"),
             new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
             new InventoryItemEntry(Item.EjectButton, "Eject Button"),
             new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
             new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
-            new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade"),
-            new InventoryItemEntry(Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade"),
-            new InventoryItemEntry(Item.BoostDurationUpgrade, "Boost Duration Upgrade"),
+            new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Suit Upgrade: Oxygen Capacity"),
+            new InventoryItemEntry(Item.FuelCapacityUpgrade, "Suit Upgrade: Fuel Capacity"),
+            new InventoryItemEntry(Item.BoostDurationUpgrade, "Suit Upgrade: Boost Duration"),
 
+            // Filler items
             new InventoryItemEntry(Item.OxygenRefill, "Oxygen Refill"),
             new InventoryItemEntry(Item.FuelRefill, "Jetpack Fuel Refill"),
             new InventoryItemEntry(Item.Marshmallow, "Marshmallow"), // includes Perfect and Burnt
 
+            // Trap items
             new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
             new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
             new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
