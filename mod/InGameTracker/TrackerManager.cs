@@ -44,7 +44,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
-        private TrackerItemChecklistMode checklistMode;
+        //private TrackerLocationChecklistMode checklistMode;
         private ArchipelagoSession session;
 
         private void Awake()
@@ -61,7 +61,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
 
             inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
-            checklistMode = gameObject.AddComponent <TrackerItemChecklistMode>();
+            //checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
 
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
             {

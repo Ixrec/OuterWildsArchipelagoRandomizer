@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
-    public class TrackerItemChecklistMode : ShipLogMode
+    public class TrackerLocationChecklistMode : ShipLogMode
     {
         public ItemListWrapper Wrapper;
         public GameObject RootObject;
