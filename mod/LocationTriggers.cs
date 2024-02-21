@@ -190,8 +190,11 @@ internal class LocationTriggers
             case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;
             case Item.VelocityMatcher: VelocityMatcher.hasVelocityMatcher = (count > 0); break;
             case Item.SurfaceIntegrityScanner: SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
-            case Item.OxygenRefill: Oxygen.oxygenRefills = count; break;
-            case Item.FuelRefill: Jetpack.fuelRefills = count; break;
+            case Item.OxygenCapacityUpgrade: SuitResources.oxygenCapacityUpgrades = count; break;
+            case Item.FuelCapacityUpgrade: SuitResources.fuelCapacityUpgrades = count; break;
+            case Item.BoostDurationUpgrade: SuitResources.boostDurationUpgrades = count; break;
+            case Item.OxygenRefill: SuitResources.oxygenRefills = count; break;
+            case Item.FuelRefill: SuitResources.fuelRefills = count; break;
             case Item.Marshmallow: Marshmallows.normalMarshmallows = count; break;
             case Item.PerfectMarshmallow: Marshmallows.perfectMarshmallows = count; break;
             case Item.BurntMarshmallow: Marshmallows.burntMarshmallows = count; break;

@@ -52,6 +52,9 @@ public enum Item
     EjectButton,
     VelocityMatcher,
     SurfaceIntegrityScanner,
+    OxygenCapacityUpgrade,
+    FuelCapacityUpgrade,
+    BoostDurationUpgrade,
 
     OxygenRefill,
     FuelRefill,
@@ -111,6 +114,9 @@ public static class ItemNames
         { Item.EjectButton, "Eject Button" },
         { Item.VelocityMatcher, "Velocity Matcher" },
         { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+        { Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade" },
+        { Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade" },
+        { Item.BoostDurationUpgrade, "Boost Duration Upgrade" },
 
         { Item.OxygenRefill, "Oxygen Refill" },
         { Item.FuelRefill, "Jetpack Fuel Refill" },
