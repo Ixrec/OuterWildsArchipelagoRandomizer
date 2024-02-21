@@ -191,9 +191,13 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (Enum.TryParse(item.ID, out Item subject))
                 {
+                    // Produce a string like "[X] Launch Codes" or "[5] Marshmallow"
                     uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
-                    string itemName = $"[{(quantity != 0 ? "X" : " ")}] {item.Name}"; // Would produce a string like "[X] Launch Codes"
-                    bool hasHint = quantity == 0 && item.HintedLocation != "";
+                    bool couldHaveMultiple = item.ApItem >= Item.OxygenCapacityUpgrade; // see comments in Item enum
+                    string countText = couldHaveMultiple ? quantity.ToString() : (quantity != 0 ? "X" : " "); // only unique items use X
+                    string itemName = $"[{countText}] {item.Name}";
+
+                    bool hasHint = item.HintedLocation != "" && (quantity == 0 || couldHaveMultiple); // TODO: distinguish "found" hints from "not found" hints
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
                     InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, hasHint));
                 }

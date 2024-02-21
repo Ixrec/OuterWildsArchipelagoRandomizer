@@ -52,6 +52,9 @@ public enum Item
     EjectButton,
     VelocityMatcher,
     SurfaceIntegrityScanner,
+
+    // The following items are non-unique, i.e. the player can and likely will receive more than 1 of each.
+    // The tracker currently relies on this item order to tell whether to display an X or a number.
     OxygenCapacityUpgrade,
     FuelCapacityUpgrade,
     BoostDurationUpgrade,
