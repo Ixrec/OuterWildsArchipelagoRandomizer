@@ -172,15 +172,15 @@ namespace ArchipelagoRandomizer.InGameTracker
                         break;
                     case Item.OxygenCapacityUpgrade:
                         infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
-                        infos.Add("Your tank started with half of that. Each upgrade doubles its capacity.");
+                        infos.Add("Your tank started with half of that, at 3.5 minutes. Each upgrade adds another 3.5 minutes.");
                         break;
                     case Item.FuelCapacityUpgrade:
                         infos.Add("An Outer Wilds Ventures standard-issue jetpack fuel tank holds enough fuel to fire thrusters for 100 seconds.");
-                        infos.Add("Your tank started with half of that. Each upgrade doubles its capacity.");
+                        infos.Add("Your tank started with half of that, at 50 seconds. Each upgrade adds another 50 seconds.");
                         break;
                     case Item.BoostDurationUpgrade:
                         infos.Add("An Outer Wilds Ventures standard-issue jetpack can boost for 1 second before recharging.");
-                        infos.Add("Your jetpack started with half a second of boost. Each upgrade doubles its length.");
+                        infos.Add("Your jetpack started with half a second of boost. Each upgrade adds another half of a second.");
                         break;
                     case Item.OxygenRefill:
                         infos.Add("Fully refills your suit's oxygen tank.");

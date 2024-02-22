@@ -183,7 +183,7 @@ internal class SuitResources
     private static void ApplyMaxOxygen()
     {
         // in this file "multiplier" means: 1 = 100% of the vanilla value, 0.5 = 50%, 2 = 200%, etc
-        double multiplier = 0.5 * Math.Pow(2, _oxygenCapacityUpgrades);
+        double multiplier = 0.5 * (1 + _oxygenCapacityUpgrades);
         PlayerResources._maxOxygen = (float)(vanillaMaxOxygen * multiplier);
 
         if (oxygenPercent != null)
@@ -205,14 +205,14 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateOxygen))]
     public static void HUDCanvas_UpdateOxygen_Postfix(HUDCanvas __instance)
     {
-        double maxOxygenMultiplier = 0.5 * Math.Pow(2, _oxygenCapacityUpgrades);
+        double maxOxygenMultiplier = 0.5 * (1 + _oxygenCapacityUpgrades);
 
         oxygenPercent.text = (__instance._oxygenFraction * maxOxygenMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxFuel()
     {
-        double multiplier = 0.5 * Math.Pow(2, _fuelCapacityUpgrades);
+        double multiplier = 0.5 * (1 + _fuelCapacityUpgrades);
         PlayerResources._maxFuel = (float)(vanillaMaxFuel * multiplier);
 
         if (fuelPercent != null)
@@ -233,14 +233,14 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateFuel))]
     public static void HUDCanvas_UpdateFuel_Postfix(HUDCanvas __instance)
     {
-        double maxFuelMultiplier = 0.5 * Math.Pow(2, _fuelCapacityUpgrades);
+        double maxFuelMultiplier = 0.5 * (1 + _fuelCapacityUpgrades);
 
         fuelPercent.text = (__instance._fuelFraction * maxFuelMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxBoost()
     {
-        double multiplier = 0.5 * Math.Pow(2, _boostDurationUpgrades);
+        double multiplier = 0.5 * (1 + _boostDurationUpgrades);
         if (jetpackThrusterModel != null)
             jetpackThrusterModel._boostSeconds = (float)(vanillaBoostSeconds * multiplier);
 
@@ -251,7 +251,7 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateBoost))]
     public static void HUDCanvas_UpdateBoost_Postfix(HUDCanvas __instance)
     {
-        double boostSecondsMultiplier = 0.5 * Math.Pow(2, _boostDurationUpgrades);
+        double boostSecondsMultiplier = 0.5 * (1 + _boostDurationUpgrades);
 
         __instance._boostValueDisplay.text = (__instance._chargeFraction * boostSecondsMultiplier).ToString("P1");
     }
