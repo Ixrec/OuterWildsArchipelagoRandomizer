@@ -68,13 +68,14 @@ namespace ArchipelagoRandomizer.InGameTracker
             new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
             new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
         };
+        
+        // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
+        public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
         /// <summary>
         /// List of all locations and associated info for the currently selected category in the tracker
         /// </summary>
         public Dictionary<string, TrackerInfo> Infos;
-        // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
-        public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
