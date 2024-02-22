@@ -1,6 +1,7 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,11 +12,13 @@ namespace ArchipelagoRandomizer.InGameTracker
 {
     public class TrackerManager : MonoBehaviour
     {
+        // Tuples: name, green arrow, green exclamation point, orange asterisk
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
+        public List<Tuple<string, bool, bool, bool>> CurrentLocations;
         /// <summary>
         /// Parsed version of locations.jsonc
         /// </summary>
-        public List<TrackerLocationData> TrackerLocations;
+        public Dictionary<string, TrackerLocationData> TrackerLocations;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
@@ -65,13 +68,18 @@ namespace ArchipelagoRandomizer.InGameTracker
             new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
             new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
         };
-
+        
         // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
         public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
+        /// <summary>
+        /// List of all locations and associated info for the currently selected category in the tracker
+        /// </summary>
+        public Dictionary<string, TrackerInfo> Infos;
+
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
-        //private TrackerLocationChecklistMode checklistMode;
+        private TrackerLocationChecklistMode checklistMode;
         private ArchipelagoSession session;
 
         private void Awake()
@@ -88,7 +96,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
 
             inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
-            //checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
+            checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
 
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
             {
@@ -117,16 +125,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
-
-            string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
-            if (File.Exists(path))
-            {
-                //TrackerLocations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(path); TODO we need to figure out why this doesn't parse
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
-            }
         }
         
         /// <summary>
@@ -145,7 +143,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 inventoryMode.RootObject = itemList.gameObject;
             });
             inventoryMode.Tracker = this;
-            /* add this back later
+
             api.AddMode(checklistMode, () => true, () => "Tracker");
             api.ItemListMake(true, true, itemList =>
             {
@@ -153,7 +151,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 checklistMode.RootObject = itemList.gameObject;
             });
             checklistMode.Tracker = this;
-            */
         }
 
         // Reads hints from the AP server
@@ -319,9 +316,47 @@ namespace ArchipelagoRandomizer.InGameTracker
         #endregion
 
         #region Tracker
+        public void GenerateLocationChecklist()
+        {
+            CurrentLocations = new();
+            foreach (TrackerInfo info in Infos.Values)
+            {
+                // TODO add hints and confirmation of checked locations
+                CurrentLocations.Add(new($"[ ] {info.locationModID}", false, false, false));
+            }
+        }
+
         public TrackerLocationData GetLocationByID(int id)
         {
-            return TrackerLocations.FirstOrDefault((x) => x.address == id);
+            return TrackerLocations.Values.FirstOrDefault((x) => x.address == id);
+        }
+
+        // parses the locations.jsonc file
+        private void ParseLocations()
+        {
+            string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                JObject obj = JObject.Parse(json);
+
+
+
+
+
+
+
+                List<TrackerLocationData> locations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(File.ReadAllText(path));
+                // index the locations for faster searching
+                foreach (TrackerLocationData location in locations)
+                {
+                    TrackerLocations.Add(location.name, location);
+                }
+            }
+            else
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
+            }
         }
         #endregion
     }

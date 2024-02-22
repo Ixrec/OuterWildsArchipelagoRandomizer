@@ -22,6 +22,8 @@ namespace ArchipelagoRandomizer.InGameTracker
         public struct Requirements
         {
             public string Value;
+            public string region;
+            public string location;
             public List<AnyOf> anyOf;
         }
 
