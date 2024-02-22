@@ -25,8 +25,7 @@ internal class ShipDamage
 
     static ShipDamageController shipDamageController = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipDamageController), nameof(ShipDamageController.Awake))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipDamageController), nameof(ShipDamageController.Awake))]
     public static void ShipDamageController_Awake(ShipDamageController __instance) => shipDamageController = __instance;
 
     private static Random rng = new Random();

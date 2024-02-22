@@ -71,7 +71,6 @@ internal class Marshmallows
 
     static PlayerResources playerResources = null;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(PlayerResources), nameof(PlayerResources.Awake))]
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerResources), nameof(PlayerResources.Awake))]
     public static void PlayerResources_Awake(PlayerResources __instance) => playerResources = __instance;
 }

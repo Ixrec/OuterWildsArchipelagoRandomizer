@@ -31,22 +31,19 @@ internal class VelocityMatcher
     private static ScreenPrompt JetpackMVPrompt = null;
     private static ScreenPrompt LockOnMVPrompt = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize_Postfix(ShipPromptController __instance)
     {
         ShipMVPrompt = __instance._matchVelocityPrompt;
         ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(JetpackPromptController), nameof(JetpackPromptController.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(JetpackPromptController), nameof(JetpackPromptController.LateInitialize))]
     public static void JetpackPromptController_LateInitialize_Postfix(JetpackPromptController __instance)
     {
         JetpackMVPrompt = __instance._matchVelocityPrompt;
         ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(LockOnReticule), nameof(LockOnReticule.Init))]
+    [HarmonyPostfix, HarmonyPatch(typeof(LockOnReticule), nameof(LockOnReticule.Init))]
     public static void LockOnReticule_Init_Postfix(LockOnReticule __instance)
     {
         LockOnMVPrompt = __instance._matchVelocityPrompt;
@@ -105,8 +102,7 @@ internal class VelocityMatcher
     // we need a more unmissable prompt for when they do try holding A and it "doesn't work".
     static ScreenPrompt velocityMatcherNotAvailableCenterPrompt = new ScreenPrompt("Velocity Matcher Not Available", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(velocityMatcherNotAvailableCenterPrompt, PromptPosition.Center, false);
@@ -130,8 +126,7 @@ internal class VelocityMatcher
     // is described this way, and Autopilot stage 3 is what goes through the same StartMatchVelocity()
     // method as the Match Velocity feature.
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Autopilot), nameof(Autopilot.StartMatchVelocity))]
+    [HarmonyPrefix, HarmonyPatch(typeof(Autopilot), nameof(Autopilot.StartMatchVelocity))]
     public static bool Autopilot_StartMatchVelocity_Prefix(Autopilot __instance)
     {
         if (__instance._isShipAutopilot && __instance._isFlyingToDestination)

@@ -22,8 +22,7 @@ internal class Scout
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static void ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.Probe && !hasScout)
@@ -33,8 +32,7 @@ internal class Scout
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.LaunchProbe))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.LaunchProbe))]
     public static bool ProbeLauncher_LaunchProbe_Prefix()
     {
         if (!hasScout) {
@@ -47,8 +45,7 @@ internal class Scout
     static ScreenPrompt launchScoutPrompt = null;
 
     // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
     public static void ProbePromptController_LateInitialize_Postfix(ProbePromptController __instance)
     {
         APRandomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");

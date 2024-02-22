@@ -32,8 +32,7 @@ internal class Anglerfish
     // In the vanilla game, _noiseRadius is always between 0 and 400.
     // In testing, 200 seemed like an ideal distance for this because it allows you to think you
     // might make it, but it's still too high to survive the 3 fish at the start of fog zone 2.
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipNoiseMaker), nameof(ShipNoiseMaker.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipNoiseMaker), nameof(ShipNoiseMaker.Update))]
     public static void ShipNoiseMaker_Update_Postfix(ref ShipNoiseMaker __instance)
     {
         if (!hasAnglerfishKnowledge)
@@ -46,8 +45,7 @@ internal class Anglerfish
             UpdatePromptText();
         }
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(PlayerNoiseMaker), nameof(PlayerNoiseMaker.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(PlayerNoiseMaker), nameof(PlayerNoiseMaker.Update))]
     public static void PlayerNoiseMaker_Update_Postfix(ref PlayerNoiseMaker __instance)
     {
         if (!hasAnglerfishKnowledge)
@@ -73,14 +71,12 @@ internal class Anglerfish
             silentRunningPrompt.SetText(activeText);
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(silentRunningPrompt, PromptPosition.UpperRight, false);
     }
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
         silentRunningPrompt.SetVisibility(

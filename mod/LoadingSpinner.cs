@@ -23,8 +23,7 @@ internal class LoadingSpinner
         }
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(SpinnerUI), nameof(SpinnerUI.Instantiate))]
+    [HarmonyPostfix, HarmonyPatch(typeof(SpinnerUI), nameof(SpinnerUI.Instantiate))]
     public static void SpinnerUI_Instantiate_Postfix()
     {
         var size = 512;
@@ -70,8 +69,7 @@ internal class LoadingSpinner
     }
 
     // Keeps the spinner visible indefinitely once shown. Useful for testing.
-    /*[HarmonyPrefix]
-    [HarmonyPatch(typeof(SpinnerUI), nameof(SpinnerUI.Hide))]
+    /*[HarmonyPrefix, HarmonyPatch(typeof(SpinnerUI), nameof(SpinnerUI.Hide))]
     public static bool SpinnerUI_Hide_Prefix()
     {
         APRandomizer.OWMLModConsole.WriteLine($"skipping SpinnerUI.Hide() call");

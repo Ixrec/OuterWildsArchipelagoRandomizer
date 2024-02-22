@@ -55,8 +55,7 @@ public static class Coordinates
      * Hologram_AllProbeTrajectories
      * Hologram_EyeCoordinates
      */
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
+    [HarmonyPrefix, HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
     public static void OrbitalCannonHologramProjector_OnSlotActivated_Prefix(OrbitalCannonHologramProjector __instance, NomaiInterfaceSlot slot)
     {
         var activeIndex = __instance.GetSlotIndex(slot);
@@ -76,8 +75,7 @@ public static class Coordinates
 
     private static ShipLogManager logManager = null;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Awake))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Awake))]
     public static void ShipLogManager_Awake_Prefix(ShipLogManager __instance)
     {
         logManager = __instance;
@@ -153,8 +151,7 @@ public static class Coordinates
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
+    [HarmonyPrefix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
     public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
     {
         __instance._promptController.SetEyeCoordinatesVisibility(
@@ -165,16 +162,14 @@ public static class Coordinates
         return false; // skip vanilla implementation
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
+    [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
         // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
         __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, correctCoordinates, Color.clear, doKerning: true);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
+    [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
     public static bool NomaiCoordinateInterface_CheckEyeCoordinates_Prefix(NomaiCoordinateInterface __instance, ref bool __result)
     {
         CoordinateDrawing.CoordinatePoint NodeToCoordPoint(int node)

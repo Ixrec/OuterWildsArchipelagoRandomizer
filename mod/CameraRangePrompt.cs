@@ -11,15 +11,13 @@ internal class CameraRangePrompt
 {
     static ScreenPrompt cameraEMRangePrompt = new("", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(cameraEMRangePrompt, PromptPosition.UpperRight, false);
     }
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix()
     {
         var text = "Camera EM Range: Visible";

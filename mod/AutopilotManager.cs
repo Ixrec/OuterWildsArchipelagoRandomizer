@@ -29,8 +29,7 @@ internal class AutopilotManager
     static ScreenPrompt autopilotPrompt = null;
 
     // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize(ShipPromptController __instance)
     {
         autopilotPrompt = __instance._autopilotPrompt;
@@ -58,8 +57,7 @@ internal class AutopilotManager
         }
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(Autopilot), nameof(Autopilot.FlyToDestination))]
+    [HarmonyPrefix, HarmonyPatch(typeof(Autopilot), nameof(Autopilot.FlyToDestination))]
     public static bool Autopilot_FlyToDestination_Prefix()
     {
         if (!_hasAutopilot)

@@ -53,6 +53,12 @@ public enum Item
     VelocityMatcher,
     SurfaceIntegrityScanner,
 
+    // The following items are non-unique, i.e. the player can and likely will receive more than 1 of each.
+    // The tracker currently relies on this item order to tell whether to display an X or a number.
+    OxygenCapacityUpgrade,
+    FuelCapacityUpgrade,
+    BoostDurationUpgrade,
+
     OxygenRefill,
     FuelRefill,
     Marshmallow,
@@ -61,7 +67,7 @@ public enum Item
 
     ShipDamageTrap,
     AudioTrap,
-    MeditationTrap,
+    NapTrap,
 };
 
 public static class ItemNames
@@ -111,6 +117,9 @@ public static class ItemNames
         { Item.EjectButton, "Eject Button" },
         { Item.VelocityMatcher, "Velocity Matcher" },
         { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+        { Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade" },
+        { Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade" },
+        { Item.BoostDurationUpgrade, "Boost Duration Upgrade" },
 
         { Item.OxygenRefill, "Oxygen Refill" },
         { Item.FuelRefill, "Jetpack Fuel Refill" },
@@ -120,7 +129,7 @@ public static class ItemNames
 
         { Item.ShipDamageTrap, "Ship Damage Trap" },
         { Item.AudioTrap, "Audio Trap" },
-        { Item.MeditationTrap, "Meditation Trap" },
+        { Item.NapTrap, "Nap Trap" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

@@ -90,12 +90,12 @@ To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Relea
 
 ### 0.2.x Goals/Priorities
 
-- Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.
+- ~~Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.~~
 
 - Create some `useful`, `filler` and `trap` items, instead of just "Nothing"s. Ideas include:
-	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`)~~ and max upgrades (`useful`)
+	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`) and max upgrades (`useful`)~~
 	- ~~Ship features like autopilot and the landing camera~~
-	- `trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, anglerfish spawns, playing End Times, increased scout launcher recoil
+	- ~~`trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, playing End Times~~
 
 - ~~A "logsanity" setting (all ship log entries are AP locations). This mod's code currently relies on having fixed locations and logic, but many of the features we want will involve changing locations and logic based on the randomizer settings. Of those features, logsanity is the only one with no difficult game design decisions, so I'd like to implement it first as a stepping stone to e.g. DLC integration, random spawn, in-game tracker, etc.~~
 
@@ -119,7 +119,7 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 - Random player & ship spawn, with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items
 	- Random warp pad destinations should go well with this
 
-### Other
+### Other Ideas
 
 - A dedicated tracker. Will probably be added to the in-game ship log, and contributed by GameWyrm, hence this does not have a target release yet.
 
@@ -135,6 +135,8 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 - "rumorsanity" (all the ship log rumors too), "textsanity" (every note, casette tape, Nomai text line, dialogue line, etc) settings?
 
 - More base game progression items: Gravity crystals? The ability to move Nomai orbs?
+
+- More trap items/features, in particular try Anglerfish Trap again
 
 - "Log Hunt", where the goal is getting N ship logs? Similarly: a Relic Hunt like Outer Relics, or literally by interfacing with Outer Relics?
 

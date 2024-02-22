@@ -28,12 +28,10 @@ internal class SurfaceIntegrity
 
     private static ProbeAnchor probeAnchor = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ProbeAnchor), nameof(ProbeAnchor.Awake))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbeAnchor), nameof(ProbeAnchor.Awake))]
     public static void ProbeAnchor_Awake_Postfix(ProbeAnchor __instance) => probeAnchor = __instance;
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ProbeAnchor), nameof(ProbeAnchor.BuildIntegrityString))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeAnchor), nameof(ProbeAnchor.BuildIntegrityString))]
     public static bool ProbeAnchor_BuildIntegrityString_Prefix(ProbeAnchor __instance, ref string __result)
     {
         __result = string.Empty; // if we do skip the base game code, make sure the return value will be "" instead of null
