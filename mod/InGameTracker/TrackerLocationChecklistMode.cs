@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using Newtonsoft.Json;
 
 namespace ArchipelagoRandomizer.InGameTracker
@@ -14,18 +15,30 @@ namespace ArchipelagoRandomizer.InGameTracker
         public ItemListWrapper Wrapper;
         public GameObject RootObject;
         public TrackerManager Tracker;
-        public Dictionary<string, TrackerInfo> Infos;
+
+        private int selectedIndex;
+        private GameObject shipLogPanRoot;
+
 
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            
+            APRandomizer.OWMLModConsole.WriteLine("Location Checklist Mode Created");
         }
 
         // Runs when the mode is opened in the ship computer
         public override void EnterMode(string entryID = "", List<ShipLogFact> revealQueue = null)
         {
-            
+            PopulateInfos(TrackerCategory.TimberHearth);
+            Wrapper.Open();
+            Wrapper.SetName("Timber Hearth");
+            Wrapper.SetItems(Tracker.CurrentLocations);
+            Wrapper.SetSelectedIndex(0);
+            Wrapper.UpdateList();
+            selectedIndex = 0;
+            RootObject.name = "ArchipelagoChecklistMode";
+
+
         }
 
         // Runs when the mode is closed
@@ -49,7 +62,17 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs every frame the mode is active
         public override void UpdateMode()
         {
-            
+            int changeIndex = Wrapper.UpdateList();
+
+            if (changeIndex != 0)
+            {
+                selectedIndex += changeIndex;
+
+                if (selectedIndex < 0) selectedIndex = Tracker.CurrentLocations.Count - 1;
+                if (selectedIndex >= Tracker.CurrentLocations.Count) selectedIndex = 0;
+
+                SelectItem(selectedIndex);
+            }
         }
 
         // Allows leaving the computer in this mode
@@ -70,17 +93,27 @@ namespace ArchipelagoRandomizer.InGameTracker
             return "";
         }
 
+        private void SelectItem(int index)
+        {
+            TrackerInfo info = Tracker.Infos.ElementAt(index).Value;
+            Wrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
+            Wrapper.GetPhoto().gameObject.SetActive(true);
+            Wrapper.GetQuestionMark().gameObject.SetActive(false);
+        }
+
         public void PopulateInfos(TrackerCategory category)
         {
+            Tracker.Infos = new Dictionary<string, TrackerInfo>();
             string filepath = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/InGameTracker/LocationInfos/" + GetTrackerInfoFilename(category);
             if (File.Exists(filepath + ".jsonc"))
             {
-                string locations = File.ReadAllText(filepath + ".jsonc");
-                List<TrackerInfo> trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(locations);
+                List<TrackerInfo> trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + ".jsonc"));
                 foreach (TrackerInfo info in trackerInfos)
                 {
-                    
+                    Tracker.Infos.Add(info.locationModID, info);
                 }
+
+                Tracker.GenerateLocationChecklist();
             }
             else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
         }
@@ -119,6 +152,14 @@ namespace ArchipelagoRandomizer.InGameTracker
                     break;
             }
             return filename;
+        }
+        
+        // gets the ship log image for the associated fact
+        private Sprite GetShipLogImage(string fact)
+        {
+            if (shipLogPanRoot == null) shipLogPanRoot = Locator.GetShipBody().gameObject.transform.Find("Module_Cabin/Systems_Cabin/ShipLogPivot/ShipLog/ShipLogPivot/ShipLogCanvas/DetectiveMode/ScaleRoot/PanRoot").gameObject;
+            Sprite sprite = shipLogPanRoot.transform.Find($"{fact}/EntryCardRoot/EntryCardBackground/PhotoImage").GetComponent<Image>().sprite;
+            return sprite;
         }
     }
 }
