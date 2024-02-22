@@ -10,6 +10,7 @@ public enum Item
     LaunchCodes,
     Spaceship, // no longer in use; keeping for backwards compatibility with existing mod save files
 
+    Spacesuit,
     Translator,
     Signalscope,
     Scout,
@@ -75,6 +76,7 @@ public static class ItemNames
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
 
+        { Item.Spacesuit, "Spacesuit" },
         { Item.Translator, "Translator" },
         { Item.Signalscope, "Signalscope" },
         { Item.Scout, "Scout" },

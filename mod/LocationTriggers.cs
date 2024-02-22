@@ -172,6 +172,7 @@ internal class LocationTriggers
         {
             case Item.LaunchCodes: break; // Not necessary until launch codes can be shuffled, and it's surprisingly subtle to set them without crashing.
 
+            case Item.Spacesuit: Spacesuit.hasSpacesuit = (count > 0); break;
             case Item.Translator: Translator.hasTranslator = (count > 0); break;
             case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
             case Item.Scout: Scout.hasScout = (count > 0); break;
