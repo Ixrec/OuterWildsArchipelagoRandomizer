@@ -38,7 +38,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             selectedIndex = 0;
             RootObject.name = "ArchipelagoChecklistMode";
 
-
+            SelectItem(0);
         }
 
         // Runs when the mode is closed
@@ -99,6 +99,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             Wrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
             Wrapper.GetPhoto().gameObject.SetActive(true);
             Wrapper.GetQuestionMark().gameObject.SetActive(false);
+            Wrapper.DescriptionFieldClear();
+            Wrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
         }
 
         public void PopulateInfos(TrackerCategory category)

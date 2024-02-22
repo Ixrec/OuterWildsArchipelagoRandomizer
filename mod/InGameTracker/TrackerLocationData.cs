@@ -13,7 +13,7 @@ namespace ArchipelagoRandomizer.InGameTracker
     public class TrackerLocationData
     {
         public string[] creation_settings;
-        public int address;
+        public int? address;
         public string name;
         public string region;
         public List<Requirements> requires;
@@ -21,7 +21,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         
         public struct Requirements
         {
-            public string Value;
+            public string item;
             public string region;
             public string location;
             public List<AnyOf> anyOf;
