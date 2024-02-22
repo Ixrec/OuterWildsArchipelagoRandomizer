@@ -125,6 +125,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
+            ParseLocations();
         }
         
         /// <summary>
@@ -337,24 +338,17 @@ namespace ArchipelagoRandomizer.InGameTracker
         // parses the locations.jsonc file
         private void ParseLocations()
         {
+            TrackerLocations = new();
             string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
             if (File.Exists(path))
             {
-                string json = File.ReadAllText(path);
-                JObject obj = JObject.Parse(json);
-
-
-
-
-
-
-
                 List<TrackerLocationData> locations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(File.ReadAllText(path));
                 // index the locations for faster searching
                 foreach (TrackerLocationData location in locations)
                 {
                     TrackerLocations.Add(location.name, location);
                 }
+                APRandomizer.OWMLModConsole.WriteLine($"{TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
             }
             else
             {
