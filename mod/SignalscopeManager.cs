@@ -231,6 +231,56 @@ internal class SignalscopeManager
         return true;
     }
 
+    public static Dictionary<SignalName, SignalFrequency> signalToFrequency = new Dictionary<SignalName, SignalFrequency>{
+        { SignalName.Traveler_Chert, SignalFrequency.Traveler },
+        { SignalName.Traveler_Esker, SignalFrequency.Traveler },
+        { SignalName.Traveler_Riebeck, SignalFrequency.Traveler },
+        { SignalName.Traveler_Gabbro, SignalFrequency.Traveler },
+        { SignalName.Traveler_Feldspar, SignalFrequency.Traveler },
+        { SignalName.Quantum_TH_MuseumShard, SignalFrequency.Quantum },
+        { SignalName.Quantum_TH_GroveShard, SignalFrequency.Quantum },
+        { SignalName.Quantum_CT_Shard, SignalFrequency.Quantum },
+        { SignalName.Quantum_BH_Shard, SignalFrequency.Quantum },
+        { SignalName.Quantum_GD_Shard, SignalFrequency.Quantum },
+        { SignalName.Quantum_QM, SignalFrequency.Quantum },
+        { SignalName.EscapePod_CT, SignalFrequency.EscapePod },
+        { SignalName.EscapePod_BH, SignalFrequency.EscapePod },
+        { SignalName.EscapePod_DB, SignalFrequency.EscapePod },
+        { SignalName.HideAndSeek_Galena, SignalFrequency.HideAndSeek },
+        { SignalName.HideAndSeek_Tephra, SignalFrequency.HideAndSeek },
+        // DLC will add: SignalFrequency.Radio
+        // left out Default, WarpCore and Statue frequencies because I don't believe they get used
+        // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
+        // left out Nomai and Prisoner because I believe those are only available during the finale
+    };
+    public static Dictionary<SignalFrequency, HashSet<SignalName>> frequencyToSignals = new Dictionary<SignalFrequency, HashSet<SignalName>>
+    {
+        { SignalFrequency.Traveler, new HashSet<SignalName>{
+            SignalName.Traveler_Chert,
+            SignalName.Traveler_Esker,
+            SignalName.Traveler_Riebeck,
+            SignalName.Traveler_Gabbro,
+            SignalName.Traveler_Feldspar,
+        } },
+        { SignalFrequency.Quantum, new HashSet<SignalName>{
+            SignalName.Quantum_TH_MuseumShard,
+            SignalName.Quantum_TH_GroveShard,
+            SignalName.Quantum_CT_Shard,
+            SignalName.Quantum_BH_Shard,
+            SignalName.Quantum_GD_Shard,
+            SignalName.Quantum_QM,
+        } },
+        { SignalFrequency.EscapePod, new HashSet<SignalName>{
+            SignalName.EscapePod_CT,
+            SignalName.EscapePod_CT,
+            SignalName.EscapePod_DB,
+        } },
+        { SignalFrequency.HideAndSeek, new HashSet<SignalName>{
+            SignalName.HideAndSeek_Galena,
+            SignalName.HideAndSeek_Tephra,
+        } },
+    };
+
     // The second UX problem I want to solve is the "Unidentified Signal Nearby" notifications for
     // signal sources the player has already scanned.
     // And the third is that in vanilla, you cannot scan signals of unknown frequency without wearing
