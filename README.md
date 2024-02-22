@@ -109,7 +109,7 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 	- random Dark Bramble layout
 	- random ghost matter patches
 
-- Change signalscope logic so each frequency item is required to scan signals in that frequency, as many players seem to expect.
+~~- Change signalscope logic so each frequency item is required to scan signals in that frequency, as many players seem to expect.~~
 
 ### 0.3.x Goals/Priorities
 
