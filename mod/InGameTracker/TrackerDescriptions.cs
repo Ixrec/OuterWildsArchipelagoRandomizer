@@ -46,6 +46,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     case "FrequencyOWV":
                         infos.Add("The official frequency of the Outer Wilds Ventures space-faring travelers. Give it a listen to hear each Traveler's unique instrument!");
                         infos.Add("Signals found: ");
+                        // we don't use the SignalsAndFrequencies maps here because these names are slightly different from the AP item names
                         if (inventory[Item.SignalEsker] > 0) infos.Add("  Esker's Whistling");
                         if (inventory[Item.SignalChert] > 0) infos.Add("  Chert's Drums");
                         if (inventory[Item.SignalRiebeck] > 0) infos.Add("  Riebeck's Banjo");
@@ -72,28 +73,31 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // The "normal" case: We have at least 1 of this item, and it's a real AP item
                 switch (itemEntry.ApItem)
                 {
-                    case Item.FrequencyQF:
-                        infos.Add("Strange signals emanate from the various Quantum objects scattered across the solar system.");
+                    // Frequency items are special though
+                    case Item.FrequencyQF: case Item.FrequencyDB: case Item.FrequencyHS:
+                        switch (itemEntry.ApItem)
+                        {
+                            case Item.FrequencyQF:
+                                infos.Add("Strange signals emanate from the various Quantum objects scattered across the solar system.");
+                                break;
+                            case Item.FrequencyDB:
+                                infos.Add("The Nomai seem to have left various distress beacons connected to their escape pods.");
+                                break;
+                            case Item.FrequencyHS:
+                                infos.Add("Tephra and Galena want to play Hide and Seek with you!");
+                                break;
+                        }
+
                         infos.Add("Signals found: ");
-                        if (inventory[Item.SignalMuseumShard] > 0) infos.Add("  Museum Shard");
-                        if (inventory[Item.SignalGroveShard] > 0) infos.Add("  Grove Shard");
-                        if (inventory[Item.SignalCaveShard] > 0) infos.Add("  Cave Shard");
-                        if (inventory[Item.SignalTowerShard] > 0) infos.Add("  Tower Shard");
-                        if (inventory[Item.SignalIslandShard] > 0) infos.Add("  Island Shard");
-                        if (inventory[Item.SignalQM] > 0) infos.Add("  Quantum Moon");
-                        break;
-                    case Item.FrequencyDB:
-                        infos.Add("The Nomai seem to have left various distress beacons connected to their escape pods.");
-                        infos.Add("Signals found: ");
-                        if (inventory[Item.SignalEP1] > 0) infos.Add("  Escape Pod 1");
-                        if (inventory[Item.SignalEP2] > 0) infos.Add("  Escape Pod 2");
-                        if (inventory[Item.SignalEP3] > 0) infos.Add("  Escape Pod 3");
-                        break;
-                    case Item.FrequencyHS:
-                        infos.Add("Tephra and Galena want to play Hide and Seek with you!");
-                        infos.Add("Signals found: ");
-                        if (inventory[Item.SignalTephra] > 0) infos.Add("  Tephra");
-                        if (inventory[Item.SignalGalena] > 0) infos.Add("  Galena");
+
+                        var signals = SignalsAndFrequencies.frequencyToSignals[ItemNames.itemToFrequency[Item.FrequencyQF]];
+                        foreach (var signal in signals)
+                        {
+                            var item = ItemNames.signalToItem[signal];
+                            var name = ItemNames.ItemToName(item);
+                            if (inventory[item] > 0)
+                                infos.Add("  " + name.Replace(" Signal", ""));
+                        }
                         break;
 
                     case Item.Coordinates:
