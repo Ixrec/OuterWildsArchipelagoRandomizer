@@ -219,15 +219,6 @@ internal class SignalscopeManager
         if (APRandomizer.SaveData.locationsChecked[location])
             return false; // skip vanilla implementation
 
-        // If you have the frequency *item* already, the game won't Identify/LearnFrequency(),
-        // because we do want a frequency to be "usable" with the item and not the location,
-        // so in this specific case we need to check the frequency *location* manually.
-        if (ItemNames.frequencyToItem.TryGetValue(__instance.GetFrequency(), out Item item))
-            if (APRandomizer.SaveData.itemsAcquired[item] > 0)
-                if (LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location frequencyLocation))
-                    if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
-                        LocationTriggers.CheckLocation(frequencyLocation);
-
         return true;
     }
 
@@ -281,10 +272,11 @@ internal class SignalscopeManager
         } },
     };
 
-    // The second UX problem I want to solve is the "Unidentified Signal Nearby" notifications for
-    // signal sources the player has already scanned.
-    // And the third is that in vanilla, you cannot scan signals of unknown frequency without wearing
-    // the suit, which in rando feels like a bug if you happen to get Signalscope early on TH.
+    // This next patch does multiple things:
+    // - Prevent scanning a signal we don't have the frequency item for
+    // - Prevent showing "Unidentified Signal Nearby" notifications for signal sources you've already scanned
+    // - Allow scanning signals without the suit. This is how vanilla works, but in rando it feels like a bug
+    // if you happen to get Signalscope early on TH.
 
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignalDetectionTrigger), nameof(AudioSignalDetectionTrigger.Update))]
     public static bool AudioSignalDetectionTrigger_Update_Prefix(AudioSignalDetectionTrigger __instance)
@@ -299,15 +291,21 @@ internal class SignalscopeManager
         // which we do want hidden in all the vanilla cases.
         var mightDisplayUnidentifiedSignalMessage = !__instance._isDetecting;
 
+        // If this signal corresponds to an AP frequency item that we don't have yet,
+        // prevent us from "detecting" and thus scanning it until we get that item.
+        if (signalToFrequency.TryGetValue(signalName, out var frequency))
+            if (!usableFrequencies.Contains(frequency) && mightDisplayUnidentifiedSignalMessage)
+                return false; // skip vanilla implementation
+
+        // If the player has already scanned this signal, then don't display "Unidentified Signal Nearby"
         var location = LocationNames.signalToLocation[signalName];
-        if (APRandomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage) {
+        if (APRandomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage)
             return false; // skip vanilla implementation
-        }
 
         // copy-pasted and tweaked from vanilla implementation
         bool flag = PlayerData.KnowsSignal(__instance._signal.GetName());
         bool flag2 = __instance._signal.IsActive() && !flag && __instance._isPlayerInside && !PlayerState.IsInsideShip() &&
-            // remove only the Locator.GetPlayerSuit().IsWearingHelmet() && part
+            // remove only the `Locator.GetPlayerSuit().IsWearingHelmet() &&` part
             (__instance._allowUnderwater || !PlayerState.IsCameraUnderwater()) && __instance._inDarkZone == PlayerState.InDarkZone();
 
         // if the only reason we "don't detect" an unidentified signal nearby is that the player is not wearing the helmet,
@@ -330,5 +328,40 @@ internal class SignalscopeManager
         }
 
         return true;
+    }
+
+    // When we get into an "Unidentified Signal Nearby" state, track what that signal is
+    private static AudioSignal nearbyUnscannedSignal = null;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnEnterSignalDetectionTrigger))]
+    public static void Signalscope_OnEnterSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
+        nearbyUnscannedSignal = signal;
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnExitSignalDetectionTrigger))]
+    public static void Signalscope_OnExitSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnExitSignalDetectionTrigger {signal.GetName()}");
+        nearbyUnscannedSignal = null;
+    }
+
+    // Last but not least, this patch ensures that any signal you have not yet received the AP item for
+    // will not show up in the Signalscope's UI, and not make any sound when holding the Signalscope.
+
+    [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.UpdateSignalStrength))]
+    public static bool AudioSignal_UpdateSignalStrength_Prefix(AudioSignal __instance, Signalscope scope, float distToClosestScopeObstruction)
+    {
+        if (usableSignals.Contains(__instance.GetName()))
+            return true;
+
+        if (__instance.GetName() == nearbyUnscannedSignal?.GetName())
+            return true;
+
+        // copy-pasted from several early returns in the vanilla code
+        __instance._signalStrength = 0f;
+        __instance._degreesFromScope = 180f;
+
+        return false; // skip vanilla implementation
     }
 }
