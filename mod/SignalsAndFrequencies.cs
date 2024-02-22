@@ -273,6 +273,11 @@ internal class SignalsAndFrequencies
         if (__instance.GetName() == nearbyUnscannedSignal?.GetName())
             return true;
 
+        // The Hide & Seek signals don't do the whole "Unidentified Signal Nearby" thing,
+        // so we can't "hide them at long range" without breaking scanning them.
+        if (signalToFrequency.TryGetValue(__instance.GetName(), out var f) && f == SignalFrequency.HideAndSeek)
+            return true;
+
         // copy-pasted from several early returns in the vanilla code
         __instance._signalStrength = 0f;
         __instance._degreesFromScope = 180f;
