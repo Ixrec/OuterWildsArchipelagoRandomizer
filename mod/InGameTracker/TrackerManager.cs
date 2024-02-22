@@ -77,11 +77,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public Dictionary<string, TrackerInfo> Infos;
 
-        /// <summary>
-        /// List of all locations and associated info for the currently selected category in the tracker
-        /// </summary>
-        public Dictionary<string, TrackerInfo> Infos;
-
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
         private TrackerLocationChecklistMode checklistMode;
