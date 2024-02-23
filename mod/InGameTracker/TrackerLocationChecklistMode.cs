@@ -44,7 +44,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is closed
         public override void ExitMode()
         {
-            
+            Wrapper.Close();
         }
 
         // Runs when player enters computer, update info that changes between computer sessions. Runs after EnterMode
@@ -101,6 +101,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             Wrapper.GetQuestionMark().gameObject.SetActive(false);
             Wrapper.DescriptionFieldClear();
             Wrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
+            Wrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.GetLogicString(Tracker.GetLocationByName(info)));
         }
 
         public void PopulateInfos(TrackerCategory category)
