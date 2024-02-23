@@ -209,8 +209,9 @@ internal class SignalsAndFrequencies
         // If this signal corresponds to an AP frequency item that we don't have yet,
         // prevent us from "detecting" and thus scanning it until we get that item.
         if (signalToFrequency.TryGetValue(signalName, out var frequency))
-            if (!usableFrequencies.Contains(frequency) && mightDisplayUnidentifiedSignalMessage)
-                return false; // skip vanilla implementation
+            if (frequency != SignalFrequency.Traveler)
+                if (!usableFrequencies.Contains(frequency) && mightDisplayUnidentifiedSignalMessage)
+                    return false; // skip vanilla implementation
 
         // If the player has already scanned this signal, then don't display "Unidentified Signal Nearby"
         var location = LocationNames.signalToLocation[signalName];
