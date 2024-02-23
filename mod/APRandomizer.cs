@@ -192,6 +192,13 @@ namespace ArchipelagoRandomizer
             SlotData = ((LoginSuccessful)result).SlotData;
             OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(SlotData)}");
 
+            if (SlotData.ContainsKey("apworld_version"))
+            {
+                var apworld_version = (string)SlotData["apworld_version"];
+                if (apworld_version.StartsWith("0.1."))
+                    APRandomizer.InGameAPConsole.AddText($"This multiworld was <color=red>generated with an older release ({apworld_version})</color> of the randomizer. " +
+                        "You can keep playing if you want, but because of logic changes made since that release, please be aware this world <color=red>might be unbeatable</color>, among other problems.");
+            }
             if (SlotData.ContainsKey("death_link"))
                 DeathLinkManager.Enable((long)SlotData["death_link"]);
             if (SlotData.ContainsKey("goal"))
