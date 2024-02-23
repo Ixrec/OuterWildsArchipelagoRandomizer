@@ -1,0 +1,82 @@
+[
+    {
+        "locationModID": "ET_DRUM",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_HEL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_SC_SHRINE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_QML",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_FOSSIL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_LAKEBED_CAVE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_COLEUS_CAVE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_SHARD_SIGNAL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_EP2_SIGNAL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_SC",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_QML_TR",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_QML_TANK",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "ET_CHERT_TANK",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "AT_HGT_TOWERS",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "AT_BH_TOWER",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "AT_ATP",
+        "description": "",
+        "thumbnail": ""
+    }
+]

@@ -1,0 +1,88 @@
+﻿[
+    {
+        "locationModID": "SLF__TH_VILLAGE_X1",
+        "description": "",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "SLF__TH_VILLAGE_X2",
+        "description": "",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        // Technically not used for now but keeping this just in case
+        "locationModID": "SLF__TH_VILLAGE_X3",
+        "description": "",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "SLF__TH_ZERO_G_CAVE_X1",
+        "description": "",
+        "thumbnail": "TH_ZERO_G_CAVE"
+    },
+    {
+        "locationModID": "SLF__TH_ZERO_G_CAVE_X2",
+        "description": "",
+        "thumbnail": "TH_ZERO_G_CAVE"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X1",
+        "description": "",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X2",
+        "description": "",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X3",
+        "description": "",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X1",
+        "description": "",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X2",
+        "description": "",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X3",
+        "description": "",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_QUANTUM_SHARD_X1",
+        "description": "",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__TH_QUANTUM_SHARD_X2",
+        "description": "",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__TM_ESKER_X1",
+        "description": "",
+        "thumbnail": "TM_ESKER"
+    },
+    {
+        "locationModID": "SLF__TM_NORTH_POLE_X1",
+        "description": "",
+        "thumbnail": "TM_NORTH_POLE"
+    },
+    {
+        "locationModID": "SLF__TM_EYE_LOCATOR_X1",
+        "description": "",
+        "thumbnail": "TM_EYE_LOCATOR"
+    },
+    {
+        "locationModID": "SLF__TM_EYE_LOCATOR_X2",
+        "description": "",
+        "thumbnail": "TM_EYE_LOCATOR"
+    }
+]

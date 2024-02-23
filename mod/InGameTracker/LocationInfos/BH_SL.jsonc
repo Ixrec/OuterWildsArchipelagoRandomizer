@@ -1,0 +1,218 @@
+[
+    {
+        "locationModID": "SLF__BH_RIEBECK_X1",
+        "description": "",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "SLF__BH_RIEBECK_X2",
+        "description": "",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "SLF__BH_GRAVITY_CANNON_X1",
+        "description": "",
+        "thumbnail": "BH_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__BH_GRAVITY_CANNON_X2",
+        "description": "",
+        "thumbnail": "BH_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X1",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X2",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X3",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X1",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X2",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X3",
+        "description": "",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_RECEIVER_X1",
+        "description": "",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_RECEIVER_X2",
+        "description": "",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "SLF__BH_ESCAPE_POD_X1",
+        "description": "",
+        "thumbnail": "BH_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__BH_ESCAPE_POD_X2",
+        "description": "",
+        "thumbnail": "BH_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X1",
+        "description": "",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X2",
+        "description": "",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X3",
+        "description": "",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X4",
+        "description": "",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_3_X1",
+        "description": "",
+        "thumbnail": "BH_MURAL_3"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_2_X1",
+        "description": "",
+        "thumbnail": "BH_MURAL_2"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_1_X1",
+        "description": "",
+        "thumbnail": "BH_MURAL_1"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X1",
+        "description": "",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X2",
+        "description": "",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X3",
+        "description": "",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X4",
+        "description": "",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X1",
+        "description": "",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        // 2 is skipped internally
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X3",
+        "description": "",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X4",
+        "description": "",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X5",
+        "description": "",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X6",
+        "description": "",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X1",
+        "description": "",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X2",
+        "description": "",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X3",
+        "description": "",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X4",
+        "description": "",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X1",
+        "description": "",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X2",
+        "description": "",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X3",
+        "description": "",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X4",
+        "description": "",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_TORNADO_SIMULATION_X1",
+        "description": "",
+        "thumbnail": "BH_TORNADO_SIMULATION"
+    },
+    {
+        "locationModID": "SLF__BH_TORNADO_SIMULATION_X2",
+        "description": "",
+        "thumbnail": "BH_TORNADO_SIMULATION"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X1",
+        "description": "",
+        "thumbnail": "VM_VOLCANO"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X2",
+        "description": "",
+        "thumbnail": "VH_VOLCANO"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X3",
+        "description": "",
+        "thumbnail": "VM_VOLCANO"
+    }
+]

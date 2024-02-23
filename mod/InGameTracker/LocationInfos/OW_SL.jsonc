@@ -1,0 +1,152 @@
+[
+    {
+        "locationModID": "SLF__S_SUNSTATION_X1",
+        "description": "",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X2",
+        "description": "",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X3",
+        "description": "",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X4",
+        "description": "",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__WHS_X1",
+        "description": "",
+        "thumbnail": "WHS"
+    },
+    {
+        "locationModID": "SLF__WHS_X2",
+        "description": "",
+        "thumbnail": "WHS"
+    },
+    {
+        "locationModID": "SLF__WHS_X3",
+        "description": "",
+        "thumbnail": "WHS"
+    },
+    {
+        "locationModID": "SLF__WHS_X4",
+        "description": "",
+        "thumbnail": "WHS"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X1",
+        "description": "",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X2",
+        "description": "",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X3",
+        "description": "",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X4",
+        "description": "",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X1",
+        "description": "",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X2",
+        "description": "",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X3",
+        "description": "",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X4",
+        "description": "",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__QUANTUM_MOON_X1",
+        "description": "",
+        "thumbnail": "QUANTUM_MOON"
+    },
+    {
+        "locationModID": "SLF__QUANTUM_MOON_X2",
+        "description": "",
+        "thumbnail": "QUANTUM_MOON"
+    },
+    {
+        "locationModID": "SLF__QM_SHUTTLE_X1",
+        "description": "",
+        "thumbnail": "QM_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__QM_SHUTTLE_X2",
+        "description": "",
+        "thumbnail": "QM_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X1",
+        "description": "",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X2",
+        "description": "",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X3",
+        "description": "",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X4",
+        "description": "",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X1",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X2",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X3",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X4",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X5",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X6",
+        "description": "",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    }
+]

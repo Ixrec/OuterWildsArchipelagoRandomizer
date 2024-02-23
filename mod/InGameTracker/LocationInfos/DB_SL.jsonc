@@ -1,0 +1,97 @@
+[
+    {
+        "locationModID": "SLF__DB_FELDSPAR_X1",
+        "description": "",
+        "thumbnail": "DB_FELDSPAR"
+    },
+    {
+        "locationModID": "SLF__DB_FELDSPAR_X2",
+        "description": "",
+        "thumbnail": "DB_FELDSPAR"
+    },
+    {
+        "locationModID": "SLF__DB_FELDSPAR_X3",
+        "description": "",
+        "thumbnail": "DB_FELDSPAR"
+    },
+    {
+        "locationModID": "SLF__DB_FROZEN_JELLYFISH_X1",
+        "description": "",
+        "thumbnail": "DB_FROZEN_JELLYFISH"
+    },
+    {
+        "locationModID": "SLF__DB_FROZEN_JELLYFISH_X2",
+        "description": "",
+        "thumbnail": "DB_FROZEN_JELLYFISH"
+    },
+    {
+        "locationModID": "SLF__DB_FROZEN_JELLYFISH_X3",
+        "description": "",
+        "thumbnail": "DB_FROZEN_JELLYFISH"
+    },
+    {
+        "locationModID": "SLF__DB_ESCAPE_POD_X1",
+        "description": "",
+        "thumbnail": "DB_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__DB_ESCAPE_POD_X2",
+        "description": "",
+        "thumbnail": "DB_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__DB_ESCAPE_POD_X3",
+        "description": "",
+        "thumbnail": "ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__DB_NOMAI_GRAVE_X1",
+        "description": "",
+        "thumbnail": "DB_NOMAI_GRAVE"
+    },
+    {
+        "locationModID": "SLF__DB_NOMAI_GRAVE_X2",
+        "description": "",
+        "thumbnail": "DB_NOMAI_GRAVE"
+    },
+    {
+        "locationModID": "SLF__DB_NOMAI_GRAVE_X3",
+        "description": "",
+        "thumbnail": "DB_NOMAI_GRAVE"
+    },
+    {
+        "locationModID": "SLF__DB_NOMAI_GRAVE_X4",
+        "description": "",
+        "thumbnail": "DB_NOMAI_GRAVE"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X1",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X2",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X3",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X4",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X5",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "SLF__DB_VESSEL_X6",
+        "description": "",
+        "thumbnail": "DB_VESSEL"
+    }
+]

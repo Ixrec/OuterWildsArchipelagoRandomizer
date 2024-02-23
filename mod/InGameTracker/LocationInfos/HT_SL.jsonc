@@ -1,0 +1,187 @@
+[
+    {
+        "locationModID": "SLF__CT_CHERT_X1",
+        "description": "",
+        "thumbnail": "CT_CHERT"
+    },
+    {
+        "locationModID": "SLF__CT_CHERT_X2",
+        "description": "",
+        "thumbnail": "CT_CHERT"
+    },
+    {
+        "locationModID": "SLF__CT_CHERT_X3",
+        "description": "",
+        "thumbnail": "CT_CHERT"
+    },
+    {
+        "locationModID": "SLF__CT_CHERT_X4",
+        "description": "",
+        "thumbnail": "CT_CHERT"
+    },
+    {
+        "locationModID": "SLF__CT_CHERT_X5",
+        "description": "",
+        "thumbnail": "CT_CHERT"
+    },
+    {
+        "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X1",
+        "description": "",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
+    },
+    {
+        "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X2",
+        "description": "",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
+    },
+    {
+        "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X3",
+        "description": "",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
+    },
+    {
+        "locationModID": "SLF__CT_GRAVITY_CANNON_X1",
+        "description": "",
+        "thumbnail": "CT_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__CT_GRAVITY_CANNON_X2",
+        "description": "",
+        "thumbnail": "CT_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__CT_ESCAPE_POD_X1",
+        "description": "",
+        "thumbnail": "CT_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__CT_ESCAPE_POD_S2",
+        "description": "",
+        "thumbnail": "CT_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X1",
+        "description": "",
+        "thumbnail": "CT_HIGH_ENERGY_LAB"
+    },
+    {
+        "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X2",
+        "description": "",
+        "thumbnail": "CT_HIGH_ENERGY_LAB"
+    },
+    {
+        "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X3",
+        "description": "",
+        "thumbnail": "CT_HIGH_ENERGY_LAB"
+    },
+    {
+        "locationModID": "SLF__CT_WARP_TOWER_MAP_X1",
+        "description": "",
+        "thumbnail": "CT_WARP_TOWER_MAP"
+    },
+    {
+        "locationModID": "SLF__CT_WARP_TOWER_MAP_X2",
+        "description": "",
+        "thumbnail": "CT_WARP_TOWER_MAP"
+    },
+    {
+        "locationModID": "SLF__CT_WARP_TOWER_MAP_X3",
+        "description": "",
+        "thumbnail": "CT_WARP_TOWER_MAP"
+    },
+    {
+        "locationModID": "SLF__CT_WARP_TOWER_MAP_X4",
+        "description": "",
+        "thumbnail": "CT_WARP_TOWER_MAP"
+    },
+    {
+        "locationModID": "SLF__CT_SUNLESS_CITY_X1",
+        "description": "",
+        "thumbnail": "CT_SUNLESS_CITY"
+    },
+    {
+        "locationModID": "SLF__CT_SUNLESS_CITY_X2",
+        "description": "",
+        "thumbnail": "CT_SUNLESS_CITY"
+    },
+    {
+        "locationModID": "SLF__CT_SUNLESS_CITY_X3",
+        "description": "",
+        "thumbnail": "CT_SUNLESS_CITY"
+    },
+    {
+        "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X1",
+        "description": "",
+        "thumbnail": "CT_ANGLERFISH_FOSSIL"
+    },
+    {
+        "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X2",
+        "description": "",
+        "thumbnail": "CT_ANGLERFISH_FOSSIL"
+    },
+    {
+        "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X3",
+        "description": "",
+        "thumbnail": "CT_ANGLERFISH_FOSSIL"
+    },
+    {
+        "locationModID": "SLF__CT_QUANTUM_CAVES_X1",
+        "description": "",
+        "thumbnail": "CT_QUANTUM_CAVES"
+    },
+    {
+        "locationModID": "SLF__CT_QUANTUM_CAVES_X2",
+        "description": "",
+        "thumbnail": "CT_QUANTUM_CAVES"
+    },
+    {
+        "locationModID": "SLF__CT_LAKEBED_CAVERN_X1",
+        "description": "",
+        "thumbnail": "CT_LAKEBED_CAVERN"
+    },
+    {
+        "locationModID": "SLF__CT_LAKEBED_CAVERN_X2",
+        "description": "",
+        "thumbnail": "CT_LAKEBED_CAVERN"
+    },
+    {
+        "locationModID": "SLF__CT_LAKEBED_CAVERN_X3",
+        "description": "",
+        "thumbnail": "CT_LAKEBED_CAVERN"
+    },
+    {
+        "locationModID": "SLF__TT_WARP_TOWERS_X1",
+        "description": "",
+        "thumbnail": "TT_WARP_TOWERS"
+    },
+    {
+        "locationModID": "SLF__TT_WARP_TOWERS_X2",
+        "description": "",
+        "thumbnail": "TT_WARP_TOWERS"
+    },
+    {
+        "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X1",
+        "description": "",
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
+    },
+    {
+        "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X2",
+        "description": "",
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
+    },
+    {
+        "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X3",
+        "description": "",
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
+    },
+    {
+        "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X4",
+        "description": "",
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
+    },
+    {
+        "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X5",
+        "description": "",
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
+    }
+]

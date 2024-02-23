@@ -1,0 +1,57 @@
+[
+    {
+        "locationModID": "SS",
+        "description": "A Nomai text wall in the Sun Station contains information on the performance of the station.",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "WHS",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "FROZEN_SHUTTLE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "IL_CORE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "SOLANUM_SHUTTLE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "QM_LAND",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "QM_6L",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "QM_SIGNAL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "FREQ_DISTRESS",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "FREQ_QUANTUM",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "FREQ_HIDE_SEEK",
+        "description": "",
+        "thumbnail": ""
+    }
+]

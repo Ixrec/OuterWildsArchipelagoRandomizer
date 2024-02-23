@@ -1,0 +1,158 @@
+[
+    {
+        "locationModID": "SLF__GD_OCEAN_X1",
+        "description": "",
+        "thumbnail": "GD_OCEAN"
+    },
+    {
+        "locationModID": "SLF__GD_OCEAN_X2",
+        "description": "",
+        "thumbnail": "GD_OCEAN"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X0",
+        "description": "",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X1",
+        "description": "",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X2",
+        "description": "",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X3",
+        "description": "",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X1",
+        "description": "",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X2",
+        "description": "",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X3",
+        "description": "",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_BRAMBLE_ISLAND_X1",
+        "description": "",
+        "thumbnail": "GD_BRAMBLE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_ISLAND_X1",
+        "description": "",
+        "thumbnail": "GD_STATUE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_ISLAND_X2",
+        "description": "",
+        "thumbnail": "GD_STATUE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X1",
+        "description": "",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X2",
+        "description": "",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X3",
+        "description": "",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X1",
+        "description": "",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X2",
+        "description": "",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X3",
+        "description": "",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X4",
+        "description": "",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X1",
+        "description": "",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X2",
+        "description": "",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X3",
+        "description": "",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X1",
+        "description": "",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X2",
+        "description": "",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X3",
+        "description": "",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_EYE_COORDINATES_X1",
+        "description": "",
+        // Since coordinates are randomized, showing the coordinates picture is probably not a great idea
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X1",
+        "description": "",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X2",
+        "description": "",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X3",
+        "description": "",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_INTACT_MODULE_X1",
+        "description": "",
+        "thumbnail": "OPC_INTACT_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_INTACT_MODULE_X2",
+        "description": "",
+        "thumbnail": "OPC_INTACT_MODULE"
+    }
+]
