@@ -1,0 +1,82 @@
+[
+    {
+        "locationModID": "OPC_ENTER",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "OPC_CM",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_FLUTE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_BI",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_CY",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_SIW",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_DEPTHS",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_CORE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_TOWER_RULE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_TOWER_COMPLETE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_COORDINATES",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_SHARD_SIGNAL",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_STATUE",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_SHIP",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_BI_TANK",
+        "description": "",
+        "thumbnail": ""
+    },
+    {
+        "locationModID": "GD_GABBRO_TANK",
+        "description": "",
+        "thumbnail": ""
+    }
+]
