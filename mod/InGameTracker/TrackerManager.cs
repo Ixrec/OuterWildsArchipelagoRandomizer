@@ -2,6 +2,7 @@
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -323,13 +324,74 @@ namespace ArchipelagoRandomizer.InGameTracker
             foreach (TrackerInfo info in Infos.Values)
             {
                 // TODO add hints and confirmation of checked locations
-                CurrentLocations.Add(new($"[ ] {info.locationModID}", false, false, false));
+                if (Enum.TryParse<Location>(info.locationModID, out Location loc))
+                {
+                    long id = LocationNames.locationToArchipelagoId[loc];
+                    bool locationChecked = session.Locations.AllLocationsChecked.Contains(id);
+                    string name = GetLocationByID(id).name;
+                    bool inLogic = IsInLogic(GetLocationByName(info));
+                    string colorTag;
+                    if (locationChecked) colorTag = "white";
+                    else if (inLogic) colorTag = "green";
+                    else colorTag = "red";
+                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, false));
+                }
+                else
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skiipping.", OWML.Common.MessageType.Warning);
+                }
             }
         }
+        
+        public string GetLogicString(TrackerLocationData data)
+        {
+            string logicString = "Logic: ";
+            foreach (TrackerLocationData.Requirement req in data.requires)
+            {
+                if (!string.IsNullOrEmpty(req.item))
+                {
+                    logicString += $"(item: {req.item}) ";
+                }
+                if (!string.IsNullOrEmpty(req.location))
+                {
+                    logicString += $"(location: {req.location}) ";
+                }
+                if (!string.IsNullOrEmpty(req.region))
+                {
+                    logicString += $"(region: {req.region}) ";
+                }
+            }
 
-        public TrackerLocationData GetLocationByID(int id)
+            return logicString;
+        }
+
+        public bool IsInLogic(TrackerLocationData data)
+        {
+            bool inLogic = true;
+            var ia = APRandomizer.SaveData.itemsAcquired;
+            foreach (TrackerLocationData.Requirement req in data.requires)
+            {
+                if (ia[ItemNames.itemNamesReversed[req.item]] <= 0) inLogic = false;
+            }
+            return inLogic;
+        }
+
+        public TrackerLocationData GetLocationByID(long id)
         {
             return TrackerLocations.Values.FirstOrDefault((x) => x.address == id);
+        }
+
+        public TrackerLocationData GetLocationByName(TrackerInfo info)
+        {
+            if (Enum.TryParse<Location>(info.locationModID, out Location loc))
+            {
+                return TrackerLocations[LocationNames.locationNames[loc]];
+            }
+            else
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info} by name!", OWML.Common.MessageType.Error);
+                return null;
+            }
         }
 
         // parses the locations.jsonc file
