@@ -25,6 +25,10 @@ internal class AudioTrap
 
     private static void PlayDisruptiveAudio()
     {
+        // We're still on the main menu, being told how many Audio Traps were received in previous sessions,
+        // so do nothing, not even scheduling future trap execution.
+        if (Locator.GetPlayerAudioController() == null) return;
+
         var playerAudioSource = Locator.GetPlayerAudioController()._oneShotSource;
         var selection = prng.Next(0, 3);
         switch (selection)
