@@ -43,7 +43,7 @@ internal class WarpPlatforms
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLModConsole.WriteLine($"WarpPlatforms.Setup fetching references to warp transmitters");
+            APRandomizer.OWMLModConsole.WriteLine($"WarpPlatforms.Setup fetching references to warp transmitters", OWML.Common.MessageType.Debug);
 
             var at = Locator.GetAstroObject(AstroObject.Name.TowerTwin); // Ash Twin
             var whs = GameObject.Find("WhiteholeStation_Body");

@@ -48,7 +48,7 @@ internal class Scout
     [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
     public static void ProbePromptController_LateInitialize_Postfix(ProbePromptController __instance)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt");
+        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptController_LateInitialize_Postfix fetching references to scout models and scout prompt", OWML.Common.MessageType.Debug);
         launchScoutPrompt = __instance._launchPrompt;
 
         ApplyHasScoutFlag(hasScout);

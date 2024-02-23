@@ -16,7 +16,7 @@ internal class GhostMatter
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLModConsole.WriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers");
+            APRandomizer.OWMLModConsole.WriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers", OWML.Common.MessageType.Debug);
 
             var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
             var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");

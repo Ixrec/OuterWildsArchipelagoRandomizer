@@ -216,7 +216,7 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
+        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}", OWML.Common.MessageType.Debug);
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
@@ -238,7 +238,7 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
-        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
+        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}", OWML.Common.MessageType.Debug);
 
         // If it ever comes up, avoid using "Feldspar_Journal" or "Gabbro_1" here.
         // Those "conversations" seem to spontaneously complete themselves every so often no matter what the player's doing.
@@ -268,7 +268,7 @@ internal class LocationTriggers
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-        APRandomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}");
+        APRandomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}", OWML.Common.MessageType.Debug);
 
         switch (textAssetName)
         {
@@ -282,7 +282,7 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
-        APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint.OnPressInteract: {parentName}/{__instance?.name}");
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint.OnPressInteract: {parentName}/{__instance?.name}", OWML.Common.MessageType.Debug);
 
         // the ship's medkit has name=PlayerRecoveryPoint and parentName=Systems_Supplies
         if (__instance?.name != "Prefab_HEA_FuelTank") return;
@@ -303,7 +303,7 @@ internal class LocationTriggers
     [HarmonyPrefix, HarmonyPatch(typeof(DialogueConditionTrigger), nameof(DialogueConditionTrigger.OnEntry))]
     public static void DialogueConditionManager_OnEntry(DialogueConditionTrigger __instance, GameObject hitObj)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}");
+        APRandomizer.OWMLModConsole.WriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}", OWML.Common.MessageType.Debug);
 
         switch (__instance._conditionID)
         {

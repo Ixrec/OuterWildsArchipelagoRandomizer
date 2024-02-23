@@ -149,7 +149,7 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.Start))]
     public static void HUDCanvas_Start(HUDCanvas __instance)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"HUDCanvas_Start fetching HUD references and adding fuel/oxygen percent labels");
+        APRandomizer.OWMLModConsole.WriteLine($"HUDCanvas_Start fetching HUD references and adding fuel/oxygen percent labels", OWML.Common.MessageType.Debug);
 
         var gaugeStuff = GameObject.Find("PlayerHUD/HelmetOnUI/UICanvas/GaugeGroup/");
         var gaugeAnchor = gaugeStuff.transform.Find("Gauge");

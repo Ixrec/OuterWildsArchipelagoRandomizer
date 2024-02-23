@@ -80,7 +80,7 @@ public static class Coordinates
     {
         logManager = __instance;
 
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates");
+        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates", OWML.Common.MessageType.Debug);
 
         ApplyHasCoordinatesFlag(_hasCoordinates);
     }
@@ -202,7 +202,7 @@ public static class Coordinates
 
             APRandomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
                 $" [{nodes.Count}]{string.Join("|", nodes)} vs [{correctCoordinate.Count}]{string.Join("|", correctCoordinate)}, " +
-                $"inputIsCorrect={inputIsCorrect}");
+                $"inputIsCorrect={inputIsCorrect}", OWML.Common.MessageType.Debug);
 
             if (!inputIsCorrect)
                 __result = false;

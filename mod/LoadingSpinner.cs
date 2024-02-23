@@ -65,7 +65,7 @@ internal class LoadingSpinner
             100.0f
         );
 
-        APRandomizer.OWMLModConsole.WriteLine($"SpinnerUI.Instantiate patch successfully edited loading spinner");
+        APRandomizer.OWMLModConsole.WriteLine($"SpinnerUI.Instantiate patch successfully edited loading spinner", OWML.Common.MessageType.Debug);
     }
 
     // Keeps the spinner visible indefinitely once shown. Useful for testing.

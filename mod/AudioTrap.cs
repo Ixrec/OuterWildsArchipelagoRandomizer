@@ -53,7 +53,7 @@ internal class AudioTrap
                 endTimesSource.AssignAudioLibraryClip(global::AudioType.EndOfTime);
                 endTimesSource.FadeInToLibraryVolume(2f, false, false);
                 break;
-            default: APRandomizer.OWMLModConsole.WriteLine($"Invalid audio selection: {selection}"); break;
+            default: APRandomizer.OWMLModConsole.WriteLine($"Invalid audio selection: {selection}", OWML.Common.MessageType.Error); break;
         }
     }
 }

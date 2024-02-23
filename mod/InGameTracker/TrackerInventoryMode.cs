@@ -22,7 +22,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            APRandomizer.OWMLModConsole.WriteLine("Tracker Mode created");
+            APRandomizer.OWMLModConsole.WriteLine("Tracker Mode created", OWML.Common.MessageType.Debug);
         }
 
         // Runs when the mode is opened in the ship computer
