@@ -200,8 +200,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             ChecklistWrapper.GetQuestionMark().gameObject.SetActive(false);
             ChecklistWrapper.DescriptionFieldClear();
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + Tracker.GetLocationByName(info).name);
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(TrackerLogic.GetLogicString(Tracker.GetLocationByName(info)));
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + TrackerLogic.GetLocationByName(info).name);
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(TrackerLogic.GetLogicString(TrackerLogic.GetLocationByName(info)));
         }
 
         public void PopulateInfos(TrackerCategory category)
@@ -230,7 +230,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                         }
                     }
                 }
-                else APRandomizer.OWMLModConsole.WriteLine("No logsanity key found in Slot Data!");
 
                 Tracker.GenerateLocationChecklist(category);
             }

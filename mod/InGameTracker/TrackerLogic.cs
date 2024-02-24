@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
@@ -15,6 +16,11 @@ namespace ArchipelagoRandomizer.InGameTracker
     public class TrackerLogic
     {
         public static ReadOnlyCollection<NetworkItem> previouslyObtainedItems;
+
+        /// <summary>
+        /// Parsed version of locations.jsonc
+        /// </summary>
+        public static Dictionary<string, TrackerLocationData> TrackerLocations;
 
         private static TrackerManager tracker;
 
@@ -32,7 +38,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void ParseLocations()
         {
             tracker = APRandomizer.Tracker;
-            tracker.TrackerLocations = new();
+            TrackerLocations = new();
             string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
             if (File.Exists(path))
             {
@@ -40,9 +46,9 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // index the locations for faster searching
                 foreach (TrackerLocationData location in locations)
                 {
-                    tracker.TrackerLocations.Add(location.name, location);
+                    TrackerLocations.Add(location.name, location);
                 }
-                APRandomizer.OWMLModConsole.WriteLine($"{tracker.TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
+                APRandomizer.OWMLModConsole.WriteLine($"{TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
             }
             else
             {
@@ -88,28 +94,27 @@ namespace ArchipelagoRandomizer.InGameTracker
             tracker.GDLocations = new();
             tracker.DBLocations = new();
             tracker.OWLocations = new();
-            foreach (TrackerInfo info in tracker.Infos.Values)
+            foreach (TrackerLocationData loc in TrackerLocations.Values)
             {
                 string prefix;
-                string name = info.locationModID;
-                if (name.StartsWith("SLF")) name = name.Replace("SLF__", "");
+                string name = loc.name;
                 prefix = name.Substring(0, 2);
-                string nameKey = tracker.GetLocationByName(info).name;
                 TrackerChecklistData data = new(false, false, "", "");
-                if (HTPrefixes.Contains(prefix)) tracker.HTLocations.Add(info.locationModID, data);
-                else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(info.locationModID, data);
-                else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(info.locationModID, data);
-                else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(info.locationModID, data);
-                else if (BHPrefixes.Contains(prefix)) tracker.DBLocations.Add(info.locationModID, data);
-                else tracker.OWLocations.Add(info.locationModID, data);
+                if (HTPrefixes.Contains(prefix)) tracker.HTLocations.Add(name, data);
+                else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(name, data);
+                else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
+                else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
+                else if (BHPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
+                else tracker.OWLocations.Add(name, data);
             }
+            DetermineAllAccessibility(false);
         }
 
         /// <summary>
         /// Runs when the player receives a new item
         /// </summary>
         /// <param name="itemsHelper"></param>
-        public static void RecheckLogic(ReceivedItemsHelper itemsHelper)
+        public static void RecheckAccessibility(ReceivedItemsHelper itemsHelper)
         {
             // only gets new items
             var xorCollection = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
@@ -119,7 +124,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // Only bother recalculating logic if the item actually unlocks checks
                 if (item.Flags == Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)
                 {
-                    DetermineAllLogic();
+                    DetermineAllAccessibility();
                     // We only need recalculate logic once
                     return;
                 }
@@ -130,7 +135,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// Determines all the accessibility for all locations
         /// </summary>
         /// <param name="category"></param>
-        public static void DetermineAllLogic()
+        public static void DetermineAllAccessibility(bool useSaveFileLocations = true)
         {
             Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
             foreach (var data in datas)
@@ -139,8 +144,29 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // we can skip accessibility calculation if the location has been checked or ever been accessible
                 if (!checklistEntry.hasBeenChecked || !checklistEntry.isAccessible)
                 {
-                    checklistEntry.SetAccessible(IsAccessible(tracker.TrackerLocations[data.Key]));
+                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
                 }
+            }
+        }
+
+        public static void CheckItems(ReadOnlyCollection<long> checkedLocations)
+        {
+            foreach (long location in checkedLocations)
+            {
+                TrackerLocationData loc = GetLocationByID(location);
+                if (tracker.HTLocations.ContainsKey(loc.name)) tracker.HTLocations[loc.name].hasBeenChecked = true;
+                else if (tracker.THLocations.ContainsKey(loc.name)) tracker.THLocations[loc.name].hasBeenChecked = true;
+                else if (tracker.BHLocations.ContainsKey(loc.name)) tracker.BHLocations[loc.name].hasBeenChecked = true;
+                else if (tracker.GDLocations.ContainsKey(loc.name)) tracker.GDLocations[loc.name].hasBeenChecked = true;
+                else if (tracker.DBLocations.ContainsKey(loc.name)) tracker.DBLocations[loc.name].hasBeenChecked = true;
+                else if (tracker.OWLocations.ContainsKey(loc.name)) tracker.OWLocations[loc.name].hasBeenChecked = true;
+                else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
             }
         }
 
@@ -149,15 +175,26 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static bool IsAccessible(TrackerLocationData data)
+        public static bool IsAccessible(TrackerLocationData data, bool useSaveFileItems)
         {
-            bool inLogic = true;
-            var ia = APRandomizer.SaveData.itemsAcquired;
+            bool accessible = true;
+            Dictionary<Item, uint> ia;
+            if (useSaveFileItems)
+            {
+                ia = APRandomizer.SaveData.itemsAcquired;
+            }
+            else
+            {
+                // If we're not reading from the save file, then we have nothing
+                ia = APRandomizer.APSession.Items.AllItemsReceived.ToDictionary(x => ItemNames.archipelagoIdToItem[x.Item], x => (uint)0);
+            }
+            APRandomizer.OWMLModConsole.WriteLine($"Determining requirements for {data.name}");
             foreach (TrackerLocationData.Requirement req in data.requires)
             {
-                if (ia[ItemNames.itemNamesReversed[req.item]] <= 0) inLogic = false;
+                // If we don't have at least one of the quantity of required items, the location is inaccessible
+                if (req.item != null && !ia.ContainsKey(ItemNames.itemNamesReversed[req.item])) accessible = false;
             }
-            return inLogic;
+            return accessible;
         }
 
         /// <summary>
@@ -230,6 +267,44 @@ namespace ArchipelagoRandomizer.InGameTracker
                     }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Returns a location in the tracker data by its Archipelago numeric ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static TrackerLocationData GetLocationByID(long id)
+        {
+            TrackerLocationData loc;
+            try
+            {
+                loc = TrackerLocations.Values.FirstOrDefault((x) => x.address == id);
+            }
+            catch (Exception e)
+            {
+                APRandomizer.OWMLModConsole.WriteLine(e.Message, OWML.Common.MessageType.Error);
+                loc = new();
+            }
+            return loc;
+        }
+
+        /// <summary>
+        /// Returns a location in the tracker data by its OWAP string ID (which can be found in the Item enum)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static TrackerLocationData GetLocationByName(TrackerInfo info)
+        {
+            if (Enum.TryParse<Location>(info.locationModID, out Location loc))
+            {
+                return TrackerLocations[LocationNames.locationNames[loc]];
+            }
+            else
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info} by name!", OWML.Common.MessageType.Error);
+                return null;
+            }
         }
     }
 }

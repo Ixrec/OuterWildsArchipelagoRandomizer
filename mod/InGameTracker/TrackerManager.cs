@@ -17,10 +17,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Tuples: name, green arrow, green exclamation point, orange asterisk
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
         public List<Tuple<string, bool, bool, bool>> CurrentLocations;
-        /// <summary>
-        /// Parsed version of locations.jsonc
-        /// </summary>
-        public Dictionary<string, TrackerLocationData> TrackerLocations;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
@@ -123,7 +119,10 @@ namespace ArchipelagoRandomizer.InGameTracker
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
                 TrackerLogic.previouslyObtainedItems = s.Items.AllItemsReceived;
-                s.Items.ItemReceived += TrackerLogic.RecheckLogic;
+                TrackerLogic.InitializeAccessibility();
+                s.Items.ItemReceived += TrackerLogic.RecheckAccessibility;
+                s.Locations.CheckedLocationsUpdated += TrackerLogic.CheckItems;
+                TrackerLogic.CheckItems(s.Locations.AllLocationsChecked);
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
@@ -343,6 +342,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             CurrentLocations = new();
             Dictionary<string, TrackerChecklistData> checklistDatas = TrackerLogic.GetLocationChecklist(category);
+            if (checklistDatas == null) APRandomizer.OWMLModConsole.WriteLine("Yeah this is null right now");
             foreach (TrackerInfo info in Infos.Values)
             {
                 // TODO add hints and confirmation of checked locations
@@ -353,10 +353,10 @@ namespace ArchipelagoRandomizer.InGameTracker
                         APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
                         continue;
                     }
-                    TrackerChecklistData data = checklistDatas[GetLocationByName(info).name];
+                    TrackerChecklistData data = checklistDatas[TrackerLogic.GetLocationByName(info).name];
                     long id = LocationNames.locationToArchipelagoId[loc];
                     bool locationChecked = data.hasBeenChecked;
-                    string name = GetLocationByID(id).name;
+                    string name = TrackerLogic.GetLocationByID(id).name;
                     // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
                     name = Regex.Replace(name, ".*:.{1}", "");
 
@@ -376,25 +376,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         
 
 
-        public TrackerLocationData GetLocationByID(long id)
-        {
-            return TrackerLocations.Values.FirstOrDefault((x) => x.address == id);
-        }
 
-        public TrackerLocationData GetLocationByName(TrackerInfo info)
-        {
-            if (Enum.TryParse<Location>(info.locationModID, out Location loc))
-            {
-                return TrackerLocations[LocationNames.locationNames[loc]];
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info} by name!", OWML.Common.MessageType.Error);
-                return null;
-            }
-        }
-
-        // parses the locations.jsonc file
         
         #endregion
     }
