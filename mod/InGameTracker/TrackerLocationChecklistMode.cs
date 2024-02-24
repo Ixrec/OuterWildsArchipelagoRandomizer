@@ -201,7 +201,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             ChecklistWrapper.DescriptionFieldClear();
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + Tracker.GetLocationByName(info).name);
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.GetLogicString(Tracker.GetLocationByName(info)));
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(TrackerLogic.GetLogicString(Tracker.GetLocationByName(info)));
         }
 
         public void PopulateInfos(TrackerCategory category)
@@ -232,7 +232,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("No logsanity key found in Slot Data!");
 
-                Tracker.GenerateLocationChecklist();
+                Tracker.GenerateLocationChecklist(category);
             }
             else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
         }

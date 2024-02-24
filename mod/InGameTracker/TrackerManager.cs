@@ -79,6 +79,14 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public Dictionary<string, TrackerInfo> Infos;
 
+        // Location checklist data for each area
+        public Dictionary<string, TrackerChecklistData> HTLocations;
+        public Dictionary<string, TrackerChecklistData> THLocations;
+        public Dictionary<string, TrackerChecklistData> BHLocations;
+        public Dictionary<string, TrackerChecklistData> GDLocations;
+        public Dictionary<string, TrackerChecklistData> DBLocations;
+        public Dictionary<string, TrackerChecklistData> OWLocations;
+
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
         //private TrackerSelectionMode selectionMode;
@@ -114,6 +122,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 session = s;
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
+                TrackerLogic.previouslyObtainedItems = s.Items.AllItemsReceived;
+                s.Items.ItemReceived += TrackerLogic.RecheckLogic;
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
@@ -128,7 +138,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
-            ParseLocations();
+            TrackerLogic.ParseLocations();
         }
         
         /// <summary>
@@ -329,9 +339,10 @@ namespace ArchipelagoRandomizer.InGameTracker
         #endregion
 
         #region Tracker
-        public void GenerateLocationChecklist()
+        public void GenerateLocationChecklist(TrackerCategory category)
         {
             CurrentLocations = new();
+            Dictionary<string, TrackerChecklistData> checklistDatas = TrackerLogic.GetLocationChecklist(category);
             foreach (TrackerInfo info in Infos.Values)
             {
                 // TODO add hints and confirmation of checked locations
@@ -342,16 +353,19 @@ namespace ArchipelagoRandomizer.InGameTracker
                         APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
                         continue;
                     }
+                    TrackerChecklistData data = checklistDatas[GetLocationByName(info).name];
                     long id = LocationNames.locationToArchipelagoId[loc];
-                    bool locationChecked = session.Locations.AllLocationsChecked.Contains(id);
+                    bool locationChecked = data.hasBeenChecked;
                     string name = GetLocationByID(id).name;
+                    // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
                     name = Regex.Replace(name, ".*:.{1}", "");
-                    bool inLogic = IsInLogic(GetLocationByName(info));
+
                     string colorTag;
                     if (locationChecked) colorTag = "white";
-                    else if (inLogic) colorTag = "green";
+                    else if (data.isAccessible) colorTag = "green";
                     else colorTag = "red";
-                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, false));
+
+                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintItem)));
                 }
                 else
                 {
@@ -360,38 +374,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
         }
         
-        public string GetLogicString(TrackerLocationData data)
-        {
-            string logicString = "Logic: ";
-            foreach (TrackerLocationData.Requirement req in data.requires)
-            {
-                if (!string.IsNullOrEmpty(req.item))
-                {
-                    logicString += $"(item: {req.item}) ";
-                }
-                if (!string.IsNullOrEmpty(req.location))
-                {
-                    logicString += $"(location: {req.location}) ";
-                }
-                if (!string.IsNullOrEmpty(req.region))
-                {
-                    logicString += $"(region: {req.region}) ";
-                }
-            }
 
-            return logicString;
-        }
-
-        public bool IsInLogic(TrackerLocationData data)
-        {
-            bool inLogic = true;
-            var ia = APRandomizer.SaveData.itemsAcquired;
-            foreach (TrackerLocationData.Requirement req in data.requires)
-            {
-                if (ia[ItemNames.itemNamesReversed[req.item]] <= 0) inLogic = false;
-            }
-            return inLogic;
-        }
 
         public TrackerLocationData GetLocationByID(long id)
         {
@@ -412,25 +395,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         }
 
         // parses the locations.jsonc file
-        private void ParseLocations()
-        {
-            TrackerLocations = new();
-            string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
-            if (File.Exists(path))
-            {
-                List<TrackerLocationData> locations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(File.ReadAllText(path));
-                // index the locations for faster searching
-                foreach (TrackerLocationData location in locations)
-                {
-                    TrackerLocations.Add(location.name, location);
-                }
-                APRandomizer.OWMLModConsole.WriteLine($"{TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
-            }
-        }
+        
         #endregion
     }
 }
