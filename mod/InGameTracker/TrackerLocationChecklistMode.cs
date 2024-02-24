@@ -12,39 +12,52 @@ namespace ArchipelagoRandomizer.InGameTracker
 {
     public class TrackerLocationChecklistMode : ShipLogMode
     {
-        public ItemListWrapper Wrapper;
+        public ItemListWrapper ChecklistWrapper;
+        public ItemListWrapper SelectionWrapper;
+        
         public GameObject RootObject;
         public TrackerManager Tracker;
+
+        public bool IsInChecklist = false;
 
         private int selectedIndex;
         private GameObject shipLogPanRoot;
 
+        private readonly string[] optionsEntries =
+        {
+            "Mission",
+            "Hourglass Twins",
+            "Timber Hearth",
+            "Brittle Hollow",
+            "Giant's Deep",
+            "Dark Bramble",
+            "The Outer Wilds"
+            // When DLC support is added, add Stranger and Dreamworld conditionally
+        };
+        private List<Tuple<string, bool, bool, bool>> optionsList;
 
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            APRandomizer.OWMLModConsole.WriteLine("Location Checklist Mode Created");
+            optionsList = new();
+            foreach (var entry in optionsEntries)
+            {
+                optionsList.Add(new(entry, false, false, false));
+            }
+            APRandomizer.OWMLModConsole.WriteLine("Location Checklist Mode Created", OWML.Common.MessageType.Success);
         }
 
         // Runs when the mode is opened in the ship computer
         public override void EnterMode(string entryID = "", List<ShipLogFact> revealQueue = null)
         {
-            PopulateInfos(TrackerCategory.TimberHearth);
-            Wrapper.Open();
-            Wrapper.SetName("Timber Hearth");
-            Wrapper.SetItems(Tracker.CurrentLocations);
-            Wrapper.SetSelectedIndex(0);
-            Wrapper.UpdateList();
-            selectedIndex = 0;
-            RootObject.name = "ArchipelagoChecklistMode";
-
-            SelectItem(0);
+            IsInChecklist = false;
+            OpenSelectionMode();
         }
 
         // Runs when the mode is closed
         public override void ExitMode()
         {
-            Wrapper.Close();
+            ChecklistWrapper.Close();
         }
 
         // Runs when player enters computer, update info that changes between computer sessions. Runs after EnterMode
@@ -62,7 +75,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs every frame the mode is active
         public override void UpdateMode()
         {
-            int changeIndex = Wrapper.UpdateList();
+            int changeIndex = ChecklistWrapper.UpdateList();
 
             if (changeIndex != 0)
             {
@@ -71,20 +84,43 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (selectedIndex < 0) selectedIndex = Tracker.CurrentLocations.Count - 1;
                 if (selectedIndex >= Tracker.CurrentLocations.Count) selectedIndex = 0;
 
-                SelectItem(selectedIndex);
+                if (IsInChecklist)
+                {
+                    SelectChecklistItem(selectedIndex);
+                }
+                else
+                {
+                    
+                }
+            }
+
+            if (IsInChecklist)
+            {
+                if (OWInput.IsNewlyPressed(InputLibrary.cancel))
+                {
+                    ChecklistWrapper.Close();
+                    OpenSelectionMode();
+                }
+            }
+            else
+            {
+                if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm))
+                {
+                    OpenChecklistPage(selectedIndex);
+                }
             }
         }
 
         // Allows leaving the computer in this mode
         public override bool AllowCancelInput()
         {
-            return true; //change to false later
+            return !IsInChecklist; 
         }
 
         // Allows swapping modes while in this mode
         public override bool AllowModeSwap()
         {
-            return true; //change to false later
+            return !IsInChecklist; 
         }
 
         // Returns the ID of the selected ship entry, used for knowing which entry should be highlighted when switching to Map Mode. Useless for us probably.
@@ -93,15 +129,69 @@ namespace ArchipelagoRandomizer.InGameTracker
             return "";
         }
 
-        private void SelectItem(int index)
+        #region checklist
+        private void OpenChecklistPage(int index)
+        {
+            string pageName;
+            switch (index)
+            {
+                case 1:
+                    {
+                        Tracker.OpenTrackerPage(TrackerCategory.HourglassTwins);
+                        pageName = "Hourglass Twins";
+                        break;
+                    }
+                case 2:
+                    {
+                        Tracker.OpenTrackerPage(TrackerCategory.TimberHearth);
+                        pageName = "Timber Hearth";
+                        break;
+                    }
+                case 3:
+                    {
+                        Tracker.OpenTrackerPage(TrackerCategory.BrittleHollow);
+                        pageName = "Brittle Hollow";
+                        break;
+                    }
+                case 4:
+                    {
+                        Tracker.OpenTrackerPage(TrackerCategory.GiantsDeep);
+                        pageName = "Giant's Deep";
+                        break;
+                    }
+                case 5:
+                    {
+                        Tracker.OpenTrackerPage(TrackerCategory.DarkBramble);
+                        pageName = "Dark Bramble";
+                        break;
+                    }
+                default:
+                    {
+                        // We don't need to care about switching to the checklist if an invalid entry is selected
+                        return;
+                    }
+            }
+            SelectionWrapper.Close();
+            ChecklistWrapper.Open();
+            ChecklistWrapper.SetName(pageName);
+            ChecklistWrapper.SetItems(Tracker.CurrentLocations);
+            ChecklistWrapper.SetSelectedIndex(0);
+            ChecklistWrapper.UpdateList();
+            selectedIndex = 0;
+            RootObject.name = "ArchipelagoChecklistMode";
+
+            SelectChecklistItem(0);
+        }
+
+        private void SelectChecklistItem(int index)
         {
             TrackerInfo info = Tracker.Infos.ElementAt(index).Value;
-            Wrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
-            Wrapper.GetPhoto().gameObject.SetActive(true);
-            Wrapper.GetQuestionMark().gameObject.SetActive(false);
-            Wrapper.DescriptionFieldClear();
-            Wrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
-            Wrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.GetLogicString(Tracker.GetLocationByName(info)));
+            ChecklistWrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
+            ChecklistWrapper.GetPhoto().gameObject.SetActive(true);
+            ChecklistWrapper.GetQuestionMark().gameObject.SetActive(false);
+            ChecklistWrapper.DescriptionFieldClear();
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.GetLogicString(Tracker.GetLocationByName(info)));
         }
 
         public void PopulateInfos(TrackerCategory category)
@@ -115,6 +205,22 @@ namespace ArchipelagoRandomizer.InGameTracker
                 {
                     Tracker.Infos.Add(info.locationModID, info);
                 }
+
+                if (APRandomizer.SlotData.ContainsKey("logsanity"))
+                {
+                    if ((long)APRandomizer.SlotData["logsanity"] != 0)
+                    {
+                        if (File.Exists(filepath + "_SL.jsonc"))
+                        {
+                            trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
+                            foreach (TrackerInfo info in trackerInfos)
+                            {
+                                Tracker.Infos.Add(info.locationModID, info);
+                            }
+                        }
+                    }
+                }
+                else APRandomizer.OWMLModConsole.WriteLine("No logsanity key found in Slot Data!");
 
                 Tracker.GenerateLocationChecklist();
             }
@@ -160,9 +266,36 @@ namespace ArchipelagoRandomizer.InGameTracker
         // gets the ship log image for the associated fact
         private Sprite GetShipLogImage(string fact)
         {
+            if (string.IsNullOrEmpty(fact))
+            {
+                return TrackerManager.GetSprite("PLACEHOLDER");
+            }
             if (shipLogPanRoot == null) shipLogPanRoot = Locator.GetShipBody().gameObject.transform.Find("Module_Cabin/Systems_Cabin/ShipLogPivot/ShipLog/ShipLogPivot/ShipLogCanvas/DetectiveMode/ScaleRoot/PanRoot").gameObject;
             Sprite sprite = shipLogPanRoot.transform.Find($"{fact}/EntryCardRoot/EntryCardBackground/PhotoImage").GetComponent<Image>().sprite;
             return sprite;
         }
+        #endregion
+
+        #region Selection
+
+        private void OpenSelectionMode()
+        {
+            SelectionWrapper.Open();
+            SelectionWrapper.SetName("AP Tracker");
+            SelectionWrapper.SetItems(optionsList);
+            SelectionWrapper.SetSelectedIndex(0);
+            SelectionWrapper.UpdateList();
+            selectedIndex = 0;
+            RootObject.name = "ArchipelagoSelectorMode";
+
+            SelectSelectionItem(0);
+        }
+
+        private void SelectSelectionItem(int index)
+        {
+
+        }
+
+        #endregion
     }
 }

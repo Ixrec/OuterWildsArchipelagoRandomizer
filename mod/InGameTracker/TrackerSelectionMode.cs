@@ -1,28 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
-    /// <summary>
-    /// The inventory screen. All the functions here are required, even if empty.
-    /// </summary>
-    public class TrackerInventoryMode : ShipLogMode
+    public class TrackerSelectionMode : ShipLogMode
     {
         public ItemListWrapper Wrapper;
         public GameObject RootObject;
         public TrackerManager Tracker;
 
         private int selectedIndex;
-        private Image Icon => Wrapper.GetPhoto();
-        private Text QuestionMark => Wrapper.GetQuestionMark();
+        
 
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            APRandomizer.OWMLModConsole.WriteLine("Tracker Mode created", OWML.Common.MessageType.Success);
+            APRandomizer.OWMLModConsole.WriteLine("Selector Mode created", OWML.Common.MessageType.Success);
         }
 
         // Runs when the mode is opened in the ship computer
@@ -35,15 +32,15 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             else
             {
-                APRandomizer.OWMLModConsole.WriteLine("Opened Inventory Mode", OWML.Common.MessageType.Info);
+                APRandomizer.OWMLModConsole.WriteLine("Opened Selector Mode", OWML.Common.MessageType.Info);
             }
             Wrapper.Open();
-            Wrapper.SetName("AP Inventory");
-            Wrapper.SetItems(Tracker.InventoryItems);
+            Wrapper.SetName("AP Tracker");
+            Wrapper.SetItems(optionsList);
             Wrapper.SetSelectedIndex(0);
             Wrapper.UpdateList();
             selectedIndex = 0;
-            RootObject.name = "ArchipelagoTrackerMode";
+            RootObject.name = "ArchipelagoSelectorMode";
 
             SelectItem(0);
         }
@@ -51,10 +48,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is closed
         public override void ExitMode()
         {
-            foreach (InventoryItemEntry entry in Tracker.ItemEntries.Values)
-            {
-                entry.SetNew(false);
-            }
             Wrapper.Close();
         }
 
@@ -85,6 +78,10 @@ namespace ArchipelagoRandomizer.InGameTracker
 
                 SelectItem(selectedIndex);
             }
+            if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm))
+            {
+                OpenTrackerPage(selectedIndex);
+            }
         }
 
         // Allows leaving the computer in this mode
@@ -92,7 +89,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             return true;
         }
-        
+
         // Allows swapping modes while in this mode
         public override bool AllowModeSwap()
         {
@@ -108,28 +105,9 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Shows the item selected and the associated info
         private void SelectItem(int index)
         {
-            InventoryItemEntry entry = Tracker.ItemEntries.ElementAt(index).Value;
-            string itemID = entry.ID;
-            Sprite sprite = TrackerManager.GetSprite(itemID);
-            // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
-            if (entry.HasOneOrMore())
-            {
-                if (sprite != null)
-                {
-                    Icon.sprite = sprite;
-                    Icon.gameObject.SetActive(true);
-                    QuestionMark.gameObject.SetActive(false);
-                }
-            }
-            else
-            {
-                Icon.gameObject.SetActive(false);
-                QuestionMark.gameObject.SetActive(true);
-            }
-
-            TrackerDescriptions.DisplayItemText(itemID, Wrapper);
+            
         }
 
-        
+
     }
 }
