@@ -112,7 +112,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     APRandomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Success);
                     foreach (InventoryItemEntry entry in ItemEntries.Values)
                     {
-                        entry.SetHints("", "");
+                        entry.Hints.Clear();
                     }
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
@@ -164,7 +164,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 // We only care about hints for the current world
                 // Probably change this later once location hinting is implemented
-                if (hint.ReceivingPlayer != session.ConnectionInfo.Slot) continue; 
+                if (hint.ReceivingPlayer != session.ConnectionInfo.Slot) continue;
+
+                // We don't care about hints for items that have already been found
+                if (hint.Found) continue;
+
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
                 APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
                 // We don't need to track hints for items that aren't on the tracker
@@ -176,7 +180,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
                 string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
                 string hintedEntrance = hint.Entrance;
-                ItemEntries[itemName].SetHints(hintedLocation, hintedWorld, hintedEntrance);
+                ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
             }
         }
 
@@ -197,9 +201,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                     string countText = couldHaveMultiple ? quantity.ToString() : (quantity != 0 ? "X" : " "); // only unique items use X
                     string itemName = $"[{countText}] {item.Name}";
 
-                    bool hasHint = item.HintedLocation != "" && (quantity == 0 || couldHaveMultiple); // TODO: distinguish "found" hints from "not found" hints
                     // Tuple: name, green arrow, green exclamation point, orange asterisk
-                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, hasHint));
+                    InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, item.Hints.Any()));
                 }
                 else if (item.ID == "FrequencyOWV")
                 {

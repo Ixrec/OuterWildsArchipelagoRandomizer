@@ -61,12 +61,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             else if (!itemEntry.HasOneOrMore())
             {
                 infos.Add("You have not obtained this yet.");
-
-                if (itemEntry.HintedLocation != "")
-                {
-                    infos.Add($"It looks like this item can be found at <color=#00FF7F>{itemEntry.HintedLocation}</color> in <color=#FAFAD2>{itemEntry.HintedWorld}</color>'s world" +
-                        $"{(itemEntry.HintedEntrance == "" ? "" : $" at <color=#6291E4>{itemEntry.HintedEntrance}</color>")}.");
-                }
             }
             else
             {
@@ -209,6 +203,12 @@ namespace ArchipelagoRandomizer.InGameTracker
                     default:
                         return GetErrorDescription(itemID);
                 }
+            }
+
+            foreach (var hint in itemEntry.Hints)
+            {
+                infos.Add($"It looks like this item can be found at <color=#00FF7F>{hint.Location}</color> in <color=#FAFAD2>{hint.World}</color>'s world" +
+                    $"{(hint.Entrance == "" ? "" : $" at <color=#6291E4>{hint.Entrance}</color>")}.");
             }
 
             return infos;
