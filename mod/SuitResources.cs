@@ -200,6 +200,15 @@ internal class SuitResources
             // replace 100 with 99, since for some reason this text cannot render a 3rd digit
             oxygenNumbers[5].text = ((int)Math.Min(Math.Round(multiplier * 50), 99)).ToString("D2");
         }
+
+        // The "3 Minutes Remaining" notification becomes more annoying than helpful when your
+        // maximum oxygen capacity is only 3.5 minutes. The 60 second warning is plenty.
+        if (multiplier < 1)
+            // Because the "low" threshold is only ever checked after the "critical" threshold (in UpdateOxygen()),
+            // the simplest way to disable the low-but-not-critical warning is to set the thresholds equal.
+            PlayerResources._lowOxygen = PlayerResources._criticalOxygen;
+        else
+            PlayerResources._lowOxygen = 180f; // vanilla value
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateOxygen))]
