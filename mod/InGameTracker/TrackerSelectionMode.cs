@@ -34,15 +34,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 APRandomizer.OWMLModConsole.WriteLine("Opened Selector Mode", OWML.Common.MessageType.Info);
             }
-            Wrapper.Open();
-            Wrapper.SetName("AP Tracker");
-            Wrapper.SetItems(optionsList);
-            Wrapper.SetSelectedIndex(0);
-            Wrapper.UpdateList();
-            selectedIndex = 0;
-            RootObject.name = "ArchipelagoSelectorMode";
-
-            SelectItem(0);
         }
 
         // Runs when the mode is closed
@@ -77,10 +68,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (selectedIndex >= Tracker.InventoryItems.Count) selectedIndex = 0;
 
                 SelectItem(selectedIndex);
-            }
-            if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm))
-            {
-                OpenTrackerPage(selectedIndex);
             }
         }
 

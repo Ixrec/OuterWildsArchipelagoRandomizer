@@ -57,6 +57,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is closed
         public override void ExitMode()
         {
+            SelectionWrapper.Close();
             ChecklistWrapper.Close();
         }
 
@@ -75,14 +76,15 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs every frame the mode is active
         public override void UpdateMode()
         {
-            int changeIndex = ChecklistWrapper.UpdateList();
+            int changeIndex = IsInChecklist ? ChecklistWrapper.UpdateList() : SelectionWrapper.UpdateList();
 
             if (changeIndex != 0)
             {
                 selectedIndex += changeIndex;
 
-                if (selectedIndex < 0) selectedIndex = Tracker.CurrentLocations.Count - 1;
-                if (selectedIndex >= Tracker.CurrentLocations.Count) selectedIndex = 0;
+                int listLength = IsInChecklist ? Tracker.CurrentLocations.Count : optionsList.Count;
+                if (selectedIndex < 0) selectedIndex = listLength - 1;
+                if (selectedIndex >= listLength) selectedIndex = 0;
 
                 if (IsInChecklist)
                 {
@@ -137,32 +139,38 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 case 1:
                     {
-                        Tracker.OpenTrackerPage(TrackerCategory.HourglassTwins);
+                        PopulateInfos(TrackerCategory.HourglassTwins);
                         pageName = "Hourglass Twins";
                         break;
                     }
                 case 2:
                     {
-                        Tracker.OpenTrackerPage(TrackerCategory.TimberHearth);
+                        PopulateInfos(TrackerCategory.TimberHearth);
                         pageName = "Timber Hearth";
                         break;
                     }
                 case 3:
                     {
-                        Tracker.OpenTrackerPage(TrackerCategory.BrittleHollow);
+                        PopulateInfos(TrackerCategory.BrittleHollow);
                         pageName = "Brittle Hollow";
                         break;
                     }
                 case 4:
                     {
-                        Tracker.OpenTrackerPage(TrackerCategory.GiantsDeep);
+                        PopulateInfos(TrackerCategory.GiantsDeep);
                         pageName = "Giant's Deep";
                         break;
                     }
                 case 5:
                     {
-                        Tracker.OpenTrackerPage(TrackerCategory.DarkBramble);
+                        PopulateInfos(TrackerCategory.DarkBramble);
                         pageName = "Dark Bramble";
+                        break;
+                    }
+                case 6:
+                    {
+                        PopulateInfos(TrackerCategory.OuterWilds);
+                        pageName = "The Outer Wilds";
                         break;
                     }
                 default:
@@ -180,6 +188,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             selectedIndex = 0;
             RootObject.name = "ArchipelagoChecklistMode";
 
+            IsInChecklist = true;
             SelectChecklistItem(0);
         }
 
@@ -191,6 +200,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             ChecklistWrapper.GetQuestionMark().gameObject.SetActive(false);
             ChecklistWrapper.DescriptionFieldClear();
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + Tracker.GetLocationByName(info).name);
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.GetLogicString(Tracker.GetLocationByName(info)));
         }
 
@@ -288,6 +298,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             selectedIndex = 0;
             RootObject.name = "ArchipelagoSelectorMode";
 
+            IsInChecklist = false;
             SelectSelectionItem(0);
         }
 
