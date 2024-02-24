@@ -61,13 +61,23 @@ internal class QuantumImaging
 
         foreach (var qo in relevantQuantumObjects)
         {
+            var maxSnapshotLockRange = qo._maxSnapshotLockRange;
+
+            // The QM has a habit of accidentally blocking photos that weren't meant to contain it at all,
+            // even from the other side of a planet, which confuses a lot of players.
+            // So when the player doesn't have the Imaging Rule yet and is out of their ship (thus more
+            // likely to be confused by a QM-blocked photo than by an incorrectly allowed QM photo),
+            // nerf the QM's lock range from 30k units to 5k units.
+            if (qo == Locator.GetQuantumMoon() && !PlayerState.IsInsideShip())
+                maxSnapshotLockRange = 5000;
+
             var distance = Vector3.Distance(qo.transform.position, __instance.transform.position);
             if (
                 qo != null &&
                 qo.gameObject != null && // no idea why CompareTag() NREs inside Unity code without this
                 !qo.CompareTag("Ship") &&
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
-                (distance < qo._maxSnapshotLockRange)
+                (distance < maxSnapshotLockRange)
             ) {
                 APRandomizer.OWMLModConsole.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible " +
                     $"and is {distance} distance units away (within the object's 'max snapshot lock range' of {qo._maxSnapshotLockRange})");
