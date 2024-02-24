@@ -51,13 +51,13 @@
     },
     {
         "locationModID": "TH_CAMPFIRE_NOTE",
-        "description": "TH_VILLAGE",
-        "thumbnail": "There is a radio tower north of the village that has a small forest and campfire near it. At that campfire, you can find a note."
+        "description": "There is a radio tower north of the village that has a small forest and campfire near it. At that campfire, you can find a note.",
+        "thumbnail": "TH_VILLAGE"
     },
     {
         "locationModID": "TH_GROVE_PLAQUE",
-        "description": "TH_QUANTUM_SHARD",
-        "thumbnail": "Chert has made some interesting observations and recorded them on a plaque near the Quantum Grove. Check a tall tree in a connected grove."
+        "description": "Chert has made some interesting observations and recorded them on a plaque near the Quantum Grove. Check a tall tree in a connected grove.",
+        "thumbnail": "TH_QUANTUM_SHARD"
     },
     {
         "locationModID": "AR_WHISTLE",
