@@ -51,13 +51,13 @@
     },
     {
         "locationModID": "TH_CAMPFIRE_NOTE",
-        "description": "",
-        "thumbnail": ""
+        "description": "TH_VILLAGE",
+        "thumbnail": "There is a radio tower north of the village that has a small forest and campfire near it. At that campfire, you can find a note."
     },
     {
         "locationModID": "TH_GROVE_PLAQUE",
-        "description": "",
-        "thumbnail": ""
+        "description": "TH_QUANTUM_SHARD",
+        "thumbnail": "Chert has made some interesting observations and recorded them on a plaque near the Quantum Grove. Check a tall tree in a connected grove."
     },
     {
         "locationModID": "AR_WHISTLE",
@@ -71,22 +71,22 @@
     },
     {
         "locationModID": "AR_ESL_TR",
-        "description": "",
-        "thumbnail": ""
+        "description": "Another Traveller has visited the Eye Signal Locator on the Attlerock before you. They left their musings on a tape recorder.",
+        "thumbnail": "TM_EYE_LOCATOR"
     },
     {
         "locationModID": "AR_ICE_TR",
-        "description": "",
-        "thumbnail": ""
+        "description": "The dark side of the Attlerock has quite a crater! A Traveller's tape recorder gives some information on the source of the impact.",
+        "thumbnail": "TM_NORTH_POLE"
     },
     {
         "locationModID": "AR_ICE_TANK",
-        "description": "",
-        "thumbnail": ""
+        "description": "An enterprising Traveller takes advantage of any opportuntiy for fuel and looks for it anywhere, even on the dark side of the Attlerock.",
+        "thumbnail": "TM_NORTH_POLE"
     },
     {
         "locationModID": "AR_LL",
-        "description": "",
-        "thumbnail": ""
+        "description": "Esker has a Lunar Lookout station they use to listen to the other Travellers and spy on the village. They have written their recent discoveries on a sign there.",
+        "thumbnail": "TM_NORTH_POLE"
     }
 ]
