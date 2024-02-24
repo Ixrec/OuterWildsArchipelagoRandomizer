@@ -10,12 +10,6 @@
         "thumbnail": "TH_VILLAGE"
     },
     {
-        // Technically not used for now but keeping this just in case
-        "locationModID": "SLF__TH_VILLAGE_X3",
-        "description": "",
-        "thumbnail": "TH_VILLAGE"
-    },
-    {
         "locationModID": "SLF__TH_ZERO_G_CAVE_X1",
         "description": "",
         "thumbnail": "TH_ZERO_G_CAVE"

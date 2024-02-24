@@ -80,6 +80,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
+        private TrackerSelectionMode selectionMode;
         private TrackerLocationChecklistMode checklistMode;
         private ArchipelagoSession session;
 
@@ -97,6 +98,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
 
             inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
+            selectionMode = gameObject.AddComponent<TrackerSelectionMode>();
             checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
 
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
@@ -146,10 +148,18 @@ namespace ArchipelagoRandomizer.InGameTracker
             });
             inventoryMode.Tracker = this;
 
-            api.AddMode(checklistMode, () => true, () => "Tracker");
+            api.AddMode(selectionMode, () => true, () => "AP Tracker");
+            api.ItemListMake(false, false, itemList =>
+            {
+                selectionMode.Wrapper = new(api, itemList);
+                selectionMode.RootObject = itemList.gameObject;
+            });
+            selectionMode.Tracker = this;
+
+            api.AddMode(checklistMode, () => false, () => "AP Checklist");
             api.ItemListMake(true, true, itemList =>
             {
-                checklistMode.Wrapper = new ItemListWrapper(api, itemList);
+                checklistMode.ChecklistWrapper = new ItemListWrapper(api, itemList);
                 checklistMode.RootObject = itemList.gameObject;
             });
             checklistMode.Tracker = this;
@@ -326,6 +336,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // TODO add hints and confirmation of checked locations
                 if (Enum.TryParse<Location>(info.locationModID, out Location loc))
                 {
+                    if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
+                        continue;
+                    }
                     long id = LocationNames.locationToArchipelagoId[loc];
                     bool locationChecked = session.Locations.AllLocationsChecked.Contains(id);
                     string name = GetLocationByID(id).name;
@@ -338,9 +353,22 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skiipping.", OWML.Common.MessageType.Warning);
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
                 }
             }
+        }
+
+        public void OpenTrackerPage(TrackerCategory category)
+        {
+            checklistMode.PopulateInfos(category);
+            selectionMode.ExitMode();
+            checklistMode.EnterMode();
+        }
+
+        public void CloseTracker()
+        {
+            checklistMode.ExitMode();
+            selectionMode.EnterMode();
         }
         
         public string GetLogicString(TrackerLocationData data)
