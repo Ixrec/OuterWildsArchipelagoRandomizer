@@ -1,6 +1,6 @@
 ﻿namespace ArchipelagoRandomizer.InGameTracker
 {
-    public class TrackerChecklistData(bool isAccessible, bool hasBeenChecked, string hintItem, string hintReceiver)
+    public class TrackerChecklistData(bool isAccessible, bool hasBeenChecked, string hintText)
     {
         /// <summary>
         /// Whether the item has ever been accessible
@@ -13,11 +13,7 @@
         /// <summary>
         /// If a hint says something is here, this is the name of the item
         /// </summary>
-        public string hintItem = hintItem;
-        /// <summary>
-        /// The player that owns the hinted item
-        /// </summary>
-        public string hintReceiver = hintReceiver;
+        public string hintText = hintText;
 
         public void SetAccessible(bool access)
         {

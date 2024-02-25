@@ -116,13 +116,13 @@ namespace ArchipelagoRandomizer.InGameTracker
             APRandomizer.OnSessionOpened += (s) =>
             {
                 session = s;
-                ReadHints(s.DataStorage.GetHints());
-                s.DataStorage.TrackHints(ReadHints);
                 TrackerLogic.previouslyObtainedItems = s.Items.AllItemsReceived;
                 TrackerLogic.InitializeAccessibility();
                 s.Items.ItemReceived += TrackerLogic.RecheckAccessibility;
-                s.Locations.CheckedLocationsUpdated += TrackerLogic.CheckItems;
-                TrackerLogic.CheckItems(s.Locations.AllLocationsChecked);
+                s.Locations.CheckedLocationsUpdated += TrackerLogic.CheckLocations;
+                TrackerLogic.CheckLocations(s.Locations.AllLocationsChecked);
+                ReadHints(s.DataStorage.GetHints());
+                s.DataStorage.TrackHints(ReadHints);
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
@@ -178,25 +178,30 @@ namespace ArchipelagoRandomizer.InGameTracker
             APRandomizer.OWMLModConsole.WriteLine($"Received {hintList.Length} hints!", OWML.Common.MessageType.Info);
             foreach (Hint hint in hintList)
             {
-                // We only care about hints for the current world
-                // Probably change this later once location hinting is implemented
-                if (hint.ReceivingPlayer != session.ConnectionInfo.Slot) continue;
-
-                // We don't care about hints for items that have already been found
-                if (hint.Found) continue;
-
-                string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
-                APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
-                // We don't need to track hints for items that aren't on the tracker
-                if (!ItemEntries.ContainsKey(itemName))
+                // hints for items that belong to your world
+                if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
                 {
-                    APRandomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
-                    continue;
+                    // We don't care about hints for items that have already been found
+                    if (hint.Found) continue;
+
+                    string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
+                    APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
+                    // We don't need to track hints for items that aren't on the tracker
+                    if (!ItemEntries.ContainsKey(itemName))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                        continue;
+                    }
+                    string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
+                    string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
+                    string hintedEntrance = hint.Entrance;
+                    ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
                 }
-                string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
-                string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
-                string hintedEntrance = hint.Entrance;
-                ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
+                // hints for items placed in your world
+                if (hint.FindingPlayer == session.ConnectionInfo.Slot)
+                {
+                    TrackerLogic.ApplyHint(hint, session);
+                }
             }
         }
 
@@ -342,7 +347,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             CurrentLocations = new();
             Dictionary<string, TrackerChecklistData> checklistDatas = TrackerLogic.GetLocationChecklist(category);
-            if (checklistDatas == null) APRandomizer.OWMLModConsole.WriteLine("Yeah this is null right now");
             foreach (TrackerInfo info in Infos.Values)
             {
                 // TODO add hints and confirmation of checked locations
@@ -367,10 +371,10 @@ namespace ArchipelagoRandomizer.InGameTracker
 
                     string colorTag;
                     if (locationChecked) colorTag = "white";
-                    else if (data.isAccessible) colorTag = "green";
+                    else if (data.isAccessible) colorTag = "lime";
                     else colorTag = "red";
 
-                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintItem)));
+                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
                 }
                 else
                 {

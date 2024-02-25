@@ -21,6 +21,10 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// Parsed version of locations.jsonc
         /// </summary>
         public static Dictionary<string, TrackerLocationData> TrackerLocations;
+        /// <summary>
+        /// List of all locations with their connections
+        /// </summary>
+        public static Dictionary<string, TrackerRegionData> TrackerRegions;
 
         private static TrackerManager tracker;
 
@@ -39,20 +43,35 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             tracker = APRandomizer.Tracker;
             TrackerLocations = new();
+            TrackerRegions = new();
             string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
             if (File.Exists(path))
             {
                 List<TrackerLocationData> locations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(File.ReadAllText(path));
                 // index the locations for faster searching
-                foreach (TrackerLocationData location in locations)
+                TrackerLocations = locations.ToDictionary(x => x.name, x => x);
+                /*foreach (TrackerLocationData location in locations)
                 {
                     TrackerLocations.Add(location.name, location);
-                }
+                }*/
                 APRandomizer.OWMLModConsole.WriteLine($"{TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
             }
             else
             {
                 APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
+            }
+            path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/connections.jsonc";
+            if ( File.Exists(path))
+            {
+                List<TrackerConnectionData> connections = JsonConvert.DeserializeObject<List<TrackerConnectionData>>(File.ReadAllText(path));
+                APRandomizer.OWMLModConsole.WriteLine($"{connections.Count} connections parsed!", OWML.Common.MessageType.Success);
+                foreach (TrackerConnectionData connection in connections)
+                {
+                    if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new());
+                    if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new());
+                    TrackerRegions[connection.from].fromConnections.Add(connection);
+                    TrackerRegions[connection.to].toConnections.Add(connection);
+                }
             }
         }
 
@@ -99,7 +118,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 string prefix;
                 string name = loc.name;
                 prefix = name.Substring(0, 2);
-                TrackerChecklistData data = new(false, false, "", "");
+                TrackerChecklistData data = new(false, false, "");
                 if (HTPrefixes.Contains(prefix)) tracker.HTLocations.Add(name, data);
                 else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(name, data);
                 else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
@@ -155,7 +174,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
         }
 
-        public static void CheckItems(ReadOnlyCollection<long> checkedLocations)
+        /// <summary>
+        /// Checks which locations have been checked
+        /// </summary>
+        /// <param name="checkedLocations"></param>
+        public static void CheckLocations(ReadOnlyCollection<long> checkedLocations)
         {
             foreach (long location in checkedLocations)
             {
@@ -168,6 +191,41 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else if (tracker.OWLocations.ContainsKey(loc.name)) tracker.OWLocations[loc.name].hasBeenChecked = true;
                 else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
             }
+        }
+
+        /// <summary>
+        /// Reads a hint and applies it to the checklist
+        /// </summary>
+        /// <param name="hint"></param>
+        public static void ApplyHint(Hint hint, ArchipelagoSession session)
+        {
+            string playerName;
+            if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
+            {
+                playerName = "your";
+            }
+            else
+            {
+                playerName = session.Players.GetPlayerName(hint.ReceivingPlayer) + "'s";
+            }
+            string itemColor;
+            switch (hint.ItemFlags)
+            {
+                case Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement: itemColor = "#B883B4"; break;
+                case Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude: itemColor = "#524798"; break;
+                case Archipelago.MultiClient.Net.Enums.ItemFlags.Trap: itemColor = "#DA6F62"; break;
+                default: itemColor = "#01CACA"; break;
+            }
+            string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
+            string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
+            TrackerLocationData loc = GetLocationByID(hint.LocationId);
+            if (tracker.HTLocations.ContainsKey(loc.name)) tracker.HTLocations[loc.name].hintText = hintDescription;
+            else if (tracker.THLocations.ContainsKey(loc.name)) tracker.THLocations[loc.name].hintText = hintDescription;
+            else if (tracker.BHLocations.ContainsKey(loc.name)) tracker.BHLocations[loc.name].hintText = hintDescription;
+            else if (tracker.GDLocations.ContainsKey(loc.name)) tracker.GDLocations[loc.name].hintText = hintDescription;
+            else if (tracker.DBLocations.ContainsKey(loc.name)) tracker.DBLocations[loc.name].hintText = hintDescription;
+            else if (tracker.OWLocations.ContainsKey(loc.name)) tracker.OWLocations[loc.name].hintText = hintDescription;
+            else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
         }
 
         /// <summary>
@@ -191,9 +249,16 @@ namespace ArchipelagoRandomizer.InGameTracker
             foreach (TrackerLocationData.Requirement req in data.requires)
             {
                 // If we don't have at least one of the quantity of required items, the location is inaccessible
-                if (req.item != null && !ia.ContainsKey(ItemNames.itemNamesReversed[req.item])) accessible = false;
+                if (req.item != null && !ia.ContainsKey(ItemNames.itemNamesReversed[req.item])) accessible = CheckObtained(data);
             }
             return accessible;
+        }
+
+        // Before saying something is inaccessible, let's double-check that it hasn't been obtained yet
+        private static bool CheckObtained(TrackerLocationData data)
+        {
+            if (GetLocationChecklist(TrackerCategory.All)[data.name].hasBeenChecked) return true;
+            else return false;
         }
 
         /// <summary>
@@ -224,6 +289,11 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static int GetTotalCount(TrackerCategory category)
         {
             return GetLocationChecklist(category).Count();
+        }
+
+        public static bool GetHasHint(TrackerCategory category)
+        {
+            return GetLocationChecklist(category).Count(x => x.Value.hintText != "") > 0;
         }
 
         /// <summary>
