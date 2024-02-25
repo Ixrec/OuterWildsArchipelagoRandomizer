@@ -30,6 +30,19 @@ internal class ShipDamage
 
     private static Random rng = new Random();
 
+    /* In playtesting I've personally experienced four native crashes that share the stack trace:
+     * ShipElectricalComponent:OnComponentDamaged ()
+     * LandingCamera:SetPowered (bool)
+     * LandingCamera:UpdateState ()
+     * LandingCamera:ClearTargetTexture ()
+     * UnityEngine.RenderTexture:get_active ()
+    despite being impossible to reliably reproduce when I'm actively trying to cause it.
+    In lieu of any less drastic solution, I'm preventing the trap from ever touching the Electrical component.
+    */
+    private static string[] componentDenylist = [
+        "MainElectricalComponent"
+    ];
+
     // Randomly choose 2 hulls and 2 components to damage.
     // The one special wrinkle is that we want to avoid damaging both thruster banks in a single trap if possible.
     private static void DamageShip()
@@ -38,7 +51,9 @@ internal class ShipDamage
         {
             // Ignore ship parts that are already damaged, so multiple traps back-to-back work correctly
             var hulls = new List<ShipHull>(shipDamageController._shipHulls.Where(h => !h.isDamaged));
-            var components = new List<ShipComponent>(shipDamageController._shipComponents.Where(c => !c.isDamaged));
+            var components = new List<ShipComponent>(shipDamageController._shipComponents.Where(c =>
+                !c.isDamaged && !componentDenylist.Contains(c.name)
+            ));
 
             // For future reference, these are the hull names:
             /*Module_Cockpit
