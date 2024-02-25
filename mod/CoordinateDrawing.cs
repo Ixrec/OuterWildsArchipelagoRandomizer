@@ -76,20 +76,21 @@ public static class CoordinateDrawing
             CoordinatePoint.Right
         },
     };
-    public static Sprite CreateCoordinatesSprite(int width, int height, List<HexagonalCoordinate> coordinates, Color bgColor, bool doKerning)
+    public static Sprite CreateCoordinatesSprite(Texture2D texture, List<HexagonalCoordinate> coordinates, Color bgColor, bool doKerning)
     {
-        var texture = drawCoordinates(width, height, Color.white, bgColor, coordinates, doKerning);
+        drawCoordinates(texture, Color.white, bgColor, coordinates, doKerning);
 
-        return Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
     // This coordinate drawing code is similar to and often borrows directly from:
     // https://github.com/PacificEngine/OW_CommonResources 's EyeCoordinates.cs and Shapes2D.cs
     // https://github.com/Outer-Wilds-New-Horizons/new-horizons/ 's VesselCoordinatePromptHandler.cs
 
-    private static Texture2D drawCoordinates(int width, int textureHeight, Color foreground, Color background, List<HexagonalCoordinate> coordinates, bool doKerning)
+    private static void drawCoordinates(Texture2D tex, Color foreground, Color background, List<HexagonalCoordinate> coordinates, bool doKerning)
     {
-        var tex = new Texture2D(width, textureHeight, TextureFormat.ARGB32, false);
+        var width = tex.width;
+        var textureHeight = tex.height;
         foreach (var x in Enumerable.Range(0, width))
             foreach (var y in Enumerable.Range(0, textureHeight))
                 tex.SetPixel(x, y, background);
@@ -122,7 +123,6 @@ public static class CoordinateDrawing
         }
 
         tex.Apply();
-        return tex;
     }
 
     private static void drawCoordinate(Texture2D tex, Vector2Int center, int hexagonRadius, Color color, Color backgroundColor, HexagonalCoordinate coordinate)
