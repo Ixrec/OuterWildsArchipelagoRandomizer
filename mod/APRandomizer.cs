@@ -197,7 +197,8 @@ namespace ArchipelagoRandomizer
                 var apworld_version = (string)SlotData["apworld_version"];
                 if (apworld_version.StartsWith("0.1."))
                     APRandomizer.InGameAPConsole.AddText($"This multiworld was <color=red>generated with an older release ({apworld_version})</color> of the randomizer. " +
-                        "You can keep playing if you want, but because of logic changes made since that release, please be aware this world <color=red>might be unbeatable</color>, among other problems.");
+                        "You can try to keep playing if you want, but because of logic changes made since that release, please be aware that this world " +
+                        "<color=red>might be unbeatable</color> and <color=red>missing your spacesuit</color>, among other problems.");
             }
             if (SlotData.ContainsKey("death_link"))
                 DeathLinkManager.Enable((long)SlotData["death_link"]);

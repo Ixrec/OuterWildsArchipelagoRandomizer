@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 
@@ -27,6 +28,20 @@ public static class Coordinates
 
     private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = CoordinateDrawing.vanillaEOTUCoordinates;
 
+    // thestrangepie and I have both experienced a rare, unreproducible native crash leaving no OWML logs when acquiring the Coordinates item.
+    // When I experienced it, the native stack pointed to the Texture2D constructor. Since I was unable to reproduce it (even with mod code that
+    // spammed Texture2D constructions), my only guess for how to mitigate this is to construct the Texture2Ds we need as early as possible
+    // instead of waiting for them to become needed in game.
+    private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
+    // some ship log views will stretch their sprites into a square, so we need to draw squares (600 x 600) to avoid distortion
+    private static Texture2D shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
+    private static Texture2D shipLogBlankTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
+
+    // Although I have no evidence implicating the Sprite constructors, we might as well create those eagerly and avoid wasteful recreations later.
+    private static Sprite promptCoordsSprite = null;
+    private static Sprite shipLogCoordsSprite = null;
+    private static Sprite shipLogBlankSprite = null;
+
     public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
     {
         if (coordsSlotData is string coordsString && coordsString == "vanilla")
@@ -37,7 +52,36 @@ public static class Coordinates
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
             APRandomizer.OWMLModConsole.WriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
-                $"{string.Join(", ", correctCoordinates.Select(coord => string.Join("|", coord)))}");
+                $"{string.Join(", ", correctCoordinates.Select(coord => string.Join("|", coord)))}" +
+                $"\nand generating appropriate sprites.");
+
+            // These need to be regenerated whenever we switch profiles and change the correct coordinates
+            APRandomizer.OWMLModConsole.WriteLine($"calling CreateCoordinatesSprite with shipLogCoordsTexture");
+            shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
+                shipLogCoordsTexture,
+                correctCoordinates,
+                UnityEngine.Color.black,
+                doKerning: false
+            );
+            APRandomizer.OWMLModConsole.WriteLine($"calling CreateCoordinatesSprite with promptCoordsTexture");
+            promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
+                promptCoordsTexture,
+                correctCoordinates,
+                UnityEngine.Color.clear,
+                doKerning: true
+            );
+
+            // This only needs to be generated once, since it doesn't depend on the coordinates
+            if (shipLogBlankSprite == null)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"creating shipLogBlankSprite");
+                var tex = shipLogBlankTexture;
+                foreach (var x in Enumerable.Range(0, tex.width))
+                    foreach (var y in Enumerable.Range(0, tex.height))
+                        tex.SetPixel(x, y, UnityEngine.Color.black);
+                tex.Apply();
+                shipLogBlankSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+            }
         }
         else
         {
@@ -126,24 +170,23 @@ public static class Coordinates
 
             if (hasCoordinates)
             {
-                // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-                var s = CoordinateDrawing.CreateCoordinatesSprite(600, 600, correctCoordinates, Color.black, doKerning: false);
-                ptmLibraryEntry.altSprite = s;
-                ptmGeneratedEntry?.SetAltSprite(s);
+                if (shipLogCoordsSprite == null)
+                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogCoordsSprite is still null", OWML.Common.MessageType.Error);
+                else
+                {
+                    ptmLibraryEntry.altSprite = shipLogCoordsSprite;
+                    ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
+                }
             }
             else
             {
-                // just show a black square if you don't have the coordinates yet
-                var size = 600;
-                var tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
-                foreach (var x in Enumerable.Range(0, size))
-                    foreach (var y in Enumerable.Range(0, size))
-                        tex.SetPixel(x, y, Color.black);
-                tex.Apply();
-
-                var s = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
-                ptmLibraryEntry.altSprite = s;
-                ptmGeneratedEntry?.SetAltSprite(s);
+                if (shipLogBlankSprite == null)
+                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogBlankSprite is still null", OWML.Common.MessageType.Error);
+                else
+                {
+                    ptmLibraryEntry.altSprite = shipLogBlankSprite;
+                    ptmGeneratedEntry?.SetAltSprite(shipLogBlankSprite);
+                }
             }
 
             // Because libraryEntryData is an array, not a list, we have to assign our edited object into the array afterward
@@ -166,7 +209,10 @@ public static class Coordinates
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
         // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
-        __instance._eyeCoordinatesSprite = CoordinateDrawing.CreateCoordinatesSprite(600, 200, correctCoordinates, Color.clear, doKerning: true);
+        if (promptCoordsSprite != null)
+            __instance._eyeCoordinatesSprite = promptCoordsSprite;
+        else
+            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_Awake_Prefix called but promptCoordsSprite is still null", OWML.Common.MessageType.Error);
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]

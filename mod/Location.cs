@@ -543,7 +543,7 @@ public static class LocationNames
         { Location.BH_NG_TANK, "BH: Northern Glacier Fuel Tank" },
         { Location.BH_RIEBECK_TANK, "BH: Riebeck's Camp Fuel Tank" },
 
-        { Location.HL_VTS, "Volcanic Testing Site (Text Wall)" },
+        { Location.HL_VTS, "HL: Volcanic Testing Site (Text Wall)" },
 
         { Location.WHS, "WHS (Text Wall)" },
 
@@ -695,9 +695,9 @@ public static class LocationNames
         { Location.SLF__BH_OBSERVATORY_X4, "BH Ship Log: Southern Observatory 4 - Probability" },
         { Location.SLF__BH_TORNADO_SIMULATION_X1, "BH Ship Log: Tornado Simulation 1 - Mostly Clockwise" },
         { Location.SLF__BH_TORNADO_SIMULATION_X2, "BH Ship Log: Tornado Simulation 2 - Below the Current" },
-        { Location.SLF__VM_VOLCANO_X1, "Ship Log: Volcanic Testing Site 1 - Purpose" },
-        { Location.SLF__VM_VOLCANO_X2, "Ship Log: Volcanic Testing Site 2 - Briefly Supernova-Proof" },
-        { Location.SLF__VM_VOLCANO_X3, "Ship Log: Volcanic Testing Site 3 - Smallest Crack" },
+        { Location.SLF__VM_VOLCANO_X1, "HL Ship Log: Volcanic Testing Site 1 - Purpose" },
+        { Location.SLF__VM_VOLCANO_X2, "HL Ship Log: Volcanic Testing Site 2 - Briefly Supernova-Proof" },
+        { Location.SLF__VM_VOLCANO_X3, "HL Ship Log: Volcanic Testing Site 3 - Smallest Crack" },
         { Location.SLF__GD_OCEAN_X1, "GD Ship Log: Ocean Depths 1 - Electrical Field" },
         { Location.SLF__GD_OCEAN_X2, "GD Ship Log: Ocean Depths 2 - Coral Forest" },
         { Location.SLF__GD_GABBRO_ISLAND_X0, "GD Ship Log: Gabbro's Island 1 - Hammock" },

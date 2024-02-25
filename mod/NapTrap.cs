@@ -95,9 +95,7 @@ internal class NapTrap
             Locator.GetPromptManager().AddScreenPrompt(thisIsANapTrapPrompt, PromptPosition.Center, false);
             thisIsANapTrapPrompt.SetVisibility(true);
 
-            var oldInputMode = OWInput.GetInputMode();
             OWInput.ChangeInputMode(InputMode.None);
-
             Locator.GetPlayerCamera().GetComponent<PlayerCameraEffectController>().CloseEyes(3f);
             Locator.GetPlayerAudioController().OnStartSleepingAtCampfire(useGreenFireSounds);
             OWTime.SetTimeScale(fastForwardFactor);
@@ -109,8 +107,7 @@ internal class NapTrap
 
                 Locator.GetPromptManager().RemoveScreenPrompt(thisIsANapTrapPrompt);
 
-                OWInput.ChangeInputMode(oldInputMode);
-
+                OWInput.RestorePreviousInputs();
                 Locator.GetPlayerCamera().GetComponent<PlayerCameraEffectController>().OpenEyes(1f, false);
                 Locator.GetPlayerAudioController().OnStopSleepingAtCampfire(false, false); // no gasping sound
                 OWTime.SetTimeScale(1);
