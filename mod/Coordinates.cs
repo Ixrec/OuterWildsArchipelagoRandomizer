@@ -56,14 +56,12 @@ public static class Coordinates
                 $"\nand generating appropriate sprites.");
 
             // These need to be regenerated whenever we switch profiles and change the correct coordinates
-            APRandomizer.OWMLModConsole.WriteLine($"calling CreateCoordinatesSprite with shipLogCoordsTexture");
             shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
                 shipLogCoordsTexture,
                 correctCoordinates,
                 UnityEngine.Color.black,
                 doKerning: false
             );
-            APRandomizer.OWMLModConsole.WriteLine($"calling CreateCoordinatesSprite with promptCoordsTexture");
             promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
                 promptCoordsTexture,
                 correctCoordinates,
@@ -74,7 +72,6 @@ public static class Coordinates
             // This only needs to be generated once, since it doesn't depend on the coordinates
             if (shipLogBlankSprite == null)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"creating shipLogBlankSprite");
                 var tex = shipLogBlankTexture;
                 foreach (var x in Enumerable.Range(0, tex.width))
                     foreach (var y in Enumerable.Range(0, tex.height))
