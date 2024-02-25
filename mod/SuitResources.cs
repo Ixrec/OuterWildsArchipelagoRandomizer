@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -190,7 +191,7 @@ internal class SuitResources
             oxygenPercent.text = multiplier.ToString("P1"); // percentage with 1dp, e.g. turns 1 into "100.0%"
 
         // the vanilla values are: 00 10 20 30 40 50 in that order
-        if (oxygenNumbers.Length > 0)
+        if (oxygenNumbers.Length > 0 && oxygenNumbers.All(on => on != null))
         {
             oxygenNumbers[0].text = ((int)Math.Round(multiplier * 0)).ToString("D2"); // 2 digit integer, e.g. turns 1 into "01"
             oxygenNumbers[1].text = ((int)Math.Round(multiplier * 10)).ToString("D2");
@@ -228,7 +229,7 @@ internal class SuitResources
             fuelPercent.text = multiplier.ToString("P1"); // percentage with 1dp, e.g. turns 1 into "100.0%"
 
         // the vanilla values are: 5 4 3 2 1 0 in that order
-        if (fuelNumbers.Length > 0)
+        if (fuelNumbers.Length > 0 && fuelNumbers.All(fn => fn != null))
         {
             fuelNumbers[0].text = (multiplier * 5).ToString();
             fuelNumbers[1].text = (multiplier * 4).ToString();
