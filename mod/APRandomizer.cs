@@ -74,19 +74,19 @@ namespace ArchipelagoRandomizer
 
             if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
             {
-                OWMLModConsole.WriteLine($"WriteToSaveFile() actually writing immediately");
+                OWMLModConsole.WriteLine($"WriteToSaveFile() actually writing immediately", MessageType.Debug);
                 ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                 lastWriteTime = DateTimeOffset.UtcNow;
             }
             else
             {
-                OWMLModConsole.WriteLine("WriteToSaveFile() scheduling a pending write in 1 second");
+                OWMLModConsole.WriteLine("WriteToSaveFile() scheduling a pending write in 1 second", MessageType.Debug);
 
                 pendingSaveFileWrite = Task.Run(async () =>
                 {
                     await Task.Delay(1000);
 
-                    OWMLModConsole.WriteLine($"WriteToSaveFile() executing a pending write after 1 second");
+                    OWMLModConsole.WriteLine($"WriteToSaveFile() executing a pending write after 1 second", MessageType.Debug);
                     ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                     lastWriteTime = DateTimeOffset.UtcNow;
 
@@ -247,7 +247,7 @@ namespace ArchipelagoRandomizer
 
         private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
         {
-            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called");
+            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called", MessageType.Debug);
 
             bool saveDataChanged = false;
             while (receivedItemsHelper.PeekItem().Item != 0)
