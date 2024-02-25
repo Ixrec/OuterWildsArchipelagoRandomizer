@@ -103,13 +103,13 @@ namespace ArchipelagoRandomizer.InGameTracker
                 session = s;
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
-                APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
+                APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Debug);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
             {
                 if (s != null)
                 {
-                    APRandomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Success);
+                    APRandomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Debug);
                     foreach (InventoryItemEntry entry in ItemEntries.Values)
                     {
                         entry.Hints.Clear();
@@ -170,11 +170,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (hint.Found) continue;
 
                 string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
-                APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
+                APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName} ({hint.ItemId})", OWML.Common.MessageType.Debug);
                 // We don't need to track hints for items that aren't on the tracker
                 if (!ItemEntries.ContainsKey(itemName))
                 {
-                    APRandomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                    APRandomizer.OWMLModConsole.WriteLine($"Skipping hint for item {itemName} ({hint.ItemId}) because it's not an item in the inventory", OWML.Common.MessageType.Warning);
                     continue;
                 }
                 string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
