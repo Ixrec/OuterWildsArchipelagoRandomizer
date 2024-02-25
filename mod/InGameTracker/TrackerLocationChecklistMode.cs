@@ -15,13 +15,36 @@ namespace ArchipelagoRandomizer.InGameTracker
         public ItemListWrapper ChecklistWrapper;
         public ItemListWrapper SelectionWrapper;
         
-        public GameObject RootObject;
+        public GameObject SelectionRootObject;
+        public GameObject ChecklistRootObject;
         public TrackerManager Tracker;
 
         public bool IsInChecklist = false;
 
         private int selectedIndex;
         private GameObject shipLogPanRoot;
+
+        private Material selectorMaterial;
+        private Dictionary<string, GameObject> icons;
+        private GameObject selectorInfo;
+        private GameObject missionGroup;
+        private Text missionStatement;
+        private Text missionTags;
+        private GameObject bodyGroup;
+        private Text bodyName;
+        private Text locationsChecked;
+        private Text locationsAccessible;
+        private Text moreToExplore;
+
+        private string victoryCondition;
+        private string apTags;
+
+        // colors for various string tags
+        private const string so5 = "orange";
+        private const string so6 = "#6C81FE";
+        private const string so7 = "#92FEF0";
+        private const string completed = "#82BD8E";
+        private const string noAccessible = "red";
 
         private readonly string[] optionsEntries =
         {
@@ -44,6 +67,21 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 optionsList.Add(new(entry, false, false, false));
             }
+            if (Victory.goalSetting == Victory.GoalSetting.SongOfFive)
+            {
+                victoryCondition = $"<color={so5}>THE SONG OF FIVE</color>";
+            }
+            else if (Victory.goalSetting == Victory.GoalSetting.SongOfSix)
+            {
+                victoryCondition = $"<color={so6}>THE SONG OF SIX</color>";
+            }
+            else
+            {
+                victoryCondition = $"<color={so7}>THE SONG OF SEVEN</color>";
+            }
+
+            var slotData = APRandomizer.SlotData;
+            apTags = $"Logsanity: {((long)slotData["logsanity"] != 0 ? "On" : "Off")}\nDeathlink: {((long)slotData["death_link"] != 0 ? "On" : "Off")}";
             APRandomizer.OWMLModConsole.WriteLine("Location Checklist Mode Created", OWML.Common.MessageType.Success);
         }
 
@@ -51,6 +89,10 @@ namespace ArchipelagoRandomizer.InGameTracker
         public override void EnterMode(string entryID = "", List<ShipLogFact> revealQueue = null)
         {
             IsInChecklist = false;
+            if (selectorInfo == null)
+            {
+                CreateTrackerUI();
+            }
             OpenSelectionMode();
         }
 
@@ -92,7 +134,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    
+                    SelectSelectionItem(selectedIndex);
                 }
             }
 
@@ -186,7 +228,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             ChecklistWrapper.SetSelectedIndex(0);
             ChecklistWrapper.UpdateList();
             selectedIndex = 0;
-            RootObject.name = "ArchipelagoChecklistMode";
+            ChecklistRootObject.name = "ArchipelagoChecklistMode";
 
             IsInChecklist = true;
             SelectChecklistItem(0);
@@ -286,6 +328,32 @@ namespace ArchipelagoRandomizer.InGameTracker
         #endregion
 
         #region Selection
+        private void CreateTrackerUI()
+        {
+            selectorInfo = GameObject.Instantiate(APRandomizer.Assets.LoadAsset<GameObject>("APTracker"), SelectionRootObject.transform);
+            RectTransform rect = selectorInfo.GetComponent<RectTransform>();
+            rect.localScale = Vector3.one;
+            rect.anchorMax = Vector3.one;
+            rect.anchoredPosition = Vector3.zero;
+            rect.anchoredPosition3D = Vector3.zero;
+
+            icons = new();
+            foreach (Transform child in selectorInfo.transform.Find("Tracker/PlanetHolder"))
+            {
+                icons.Add(child.name, child.gameObject);
+            }
+            missionGroup = selectorInfo.transform.Find("Tracker/MissionText").gameObject;
+            missionStatement = missionGroup.transform.Find("MissionStatement").GetComponent<Text>();
+            missionStatement.text = victoryCondition;
+            missionTags = missionGroup.transform.Find("MissionTags").GetComponent<Text>();
+            missionTags.text = apTags;
+            bodyGroup = selectorInfo.transform.Find("Tracker/TrackerText").gameObject;
+            bodyName = bodyGroup.transform.Find("BodyName").GetComponent<Text>();
+            locationsChecked = bodyGroup.transform.Find("LocationsChecked").GetComponent<Text>();
+            locationsAccessible = bodyGroup.transform.Find("LocationsAccessible").GetComponent<Text>();
+            moreToExplore = bodyGroup.transform.Find("MoreToExplore").GetComponent<Text>();
+            selectorMaterial = icons["PlanetTH"].GetComponent<Image>().material;
+        }
 
         private void OpenSelectionMode()
         {
@@ -295,7 +363,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             SelectionWrapper.SetSelectedIndex(0);
             SelectionWrapper.UpdateList();
             selectedIndex = 0;
-            RootObject.name = "ArchipelagoSelectorMode";
+            SelectionRootObject.name = "ArchipelagoSelectorMode";
 
             IsInChecklist = false;
             SelectSelectionItem(0);
@@ -303,9 +371,78 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private void SelectSelectionItem(int index)
         {
-
+            // toggle visibility of icons so only the currently selected planet or emblem is visible
+            for (int i = 0; i < icons.Count; i++)
+            {
+                icons.ElementAt(i).Value.SetActive(i == index);
+            }
+            if (index == 0)
+            {
+                missionGroup.SetActive(true);
+                bodyGroup.SetActive(false);
+            }
+            else
+            {
+                missionGroup.SetActive(false);
+                bodyGroup.SetActive(true);
+                float checkedLocs;
+                float accessLocs;
+                float allLocs;
+                TrackerCategory category = TrackerCategory.All;
+                switch (index)
+                {
+                    case 1:
+                        category = TrackerCategory.HourglassTwins;
+                        break;
+                    case 2:
+                        category = TrackerCategory.TimberHearth;
+                        break;
+                    case 3:
+                        category = TrackerCategory.BrittleHollow;
+                        break;
+                    case 4:
+                        category = TrackerCategory.GiantsDeep;
+                        break;
+                    case 5:
+                        category = TrackerCategory.DarkBramble;
+                        break;
+                    case 6:
+                        category = TrackerCategory.OuterWilds;
+                        break;
+                }
+                checkedLocs = TrackerLogic.GetCheckedCount(category);
+                accessLocs = TrackerLogic.GetAccessibleCount(category);
+                allLocs = TrackerLogic.GetTotalCount(category);
+                float accessiblePercentage = accessLocs / allLocs;
+                float checkedPercentage = checkedLocs / allLocs;
+                selectorMaterial.SetFloat("_PercentAccessible", accessiblePercentage);
+                selectorMaterial.SetFloat("_PercentComplete", checkedPercentage);
+                bodyName.text = CategoryToName(category);
+                locationsChecked.text = $"Locations Checked: {checkedLocs}/{allLocs}";
+                locationsAccessible.text = $"Locations Accessible: {(int)(accessLocs - checkedLocs)}/{allLocs}";
+                string exploreText;
+                if (checkedLocs >= allLocs) exploreText = $"<color={completed}>There's no more to explore here.\nGood job!</color>";
+                else if (checkedLocs < accessLocs) exploreText = $"<color={so5}>There's more to explore here.</color>";
+                else exploreText = $"<color={noAccessible}>There's more to explore here, but you need more items.</color>";
+                moreToExplore.text = exploreText;
+            }
         }
 
         #endregion
+
+        private string CategoryToName(TrackerCategory category)
+        {
+            switch (category)
+            {
+                case TrackerCategory.All: return "All";
+                case TrackerCategory.HourglassTwins: return "The Hourglass Twins";
+                case TrackerCategory.TimberHearth: return "Timber Hearth";
+                case TrackerCategory.BrittleHollow: return "Brittle Hollow";
+                case TrackerCategory.GiantsDeep: return "Giant's Deep";
+                case TrackerCategory.DarkBramble: return "Dark Bramble";
+                case TrackerCategory.OuterWilds: return "The Outer Wilds";
+            }
+            return "NULL";
+        }
     }
 }

@@ -8,13 +8,13 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Victory
 {
-    enum GoalSetting: long
+    public enum GoalSetting: long
     {
         SongOfFive = 0,
         SongOfSix = 1,
     }
 
-    private static GoalSetting goalSetting = GoalSetting.SongOfFive;
+    public static GoalSetting goalSetting = GoalSetting.SongOfFive;
 
     public static void SetGoal(long goal)
     {

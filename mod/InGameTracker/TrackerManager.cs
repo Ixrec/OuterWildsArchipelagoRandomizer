@@ -161,12 +161,12 @@ namespace ArchipelagoRandomizer.InGameTracker
             api.ItemListMake(false, false, itemList =>
             {
                 checklistMode.SelectionWrapper = new ItemListWrapper(api, itemList);
-                checklistMode.RootObject = itemList.gameObject;
+                checklistMode.SelectionRootObject = itemList.gameObject;
             });
             api.ItemListMake(true, true, itemList =>
             {
                 checklistMode.ChecklistWrapper = new ItemListWrapper(api, itemList);
-                checklistMode.RootObject = itemList.gameObject;
+                checklistMode.ChecklistRootObject = itemList.gameObject;
             });
             checklistMode.Tracker = this;
 
@@ -351,6 +351,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                     if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
                     {
                         APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
+                        continue;
+                    }
+                    if (!checklistDatas.ContainsKey(TrackerLogic.GetLocationByName(info).name))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {TrackerLogic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
                         continue;
                     }
                     TrackerChecklistData data = checklistDatas[TrackerLogic.GetLocationByName(info).name];

@@ -104,7 +104,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(name, data);
                 else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
                 else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
-                else if (BHPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
+                else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
                 else tracker.OWLocations.Add(name, data);
             }
             DetermineAllAccessibility(false);
@@ -188,7 +188,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // If we're not reading from the save file, then we have nothing
                 ia = APRandomizer.APSession.Items.AllItemsReceived.ToDictionary(x => ItemNames.archipelagoIdToItem[x.Item], x => (uint)0);
             }
-            APRandomizer.OWMLModConsole.WriteLine($"Determining requirements for {data.name}");
             foreach (TrackerLocationData.Requirement req in data.requires)
             {
                 // If we don't have at least one of the quantity of required items, the location is inaccessible
