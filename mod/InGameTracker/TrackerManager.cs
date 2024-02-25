@@ -261,7 +261,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             string itemID = item.ToString();
             TrackerManager tracker = APRandomizer.Tracker;
-            if (itemID.Contains("Signal"))
+            if (ItemNames.itemToSignal.ContainsKey(item))
             {
                 if (TryGetFrequency(item, out string frequency))
                 {
