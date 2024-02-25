@@ -187,7 +187,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                         infos.Add("Fully refills your suit jetpack's fuel tank.");
                         break;
                     case Item.Marshmallow:
-                        infos.Add("Refills half your health. Also comes in 'perfect' and 'burnt' variants.");
+                        infos.Add("Refills half your health. Also comes in rare 'perfect' and 'burnt' variants that restore full health and no health.");
+                        var perfectCount = inventory[Item.PerfectMarshmallow];
+                        var burntCount = inventory[Item.BurntMarshmallow];
+                        var total = inventory[Item.Marshmallow] + perfectCount + burntCount;
+                        infos.Add($"Of the {total} marshmallows you've eaten, {burntCount} were burnt and {perfectCount} were perfect.");
                         break;
                     case Item.ShipDamageTrap:
                         infos.Add("Mysterious forces spontaneously damage parts of your spaceship.");
