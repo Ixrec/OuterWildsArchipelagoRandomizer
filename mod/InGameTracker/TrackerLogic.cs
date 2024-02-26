@@ -123,6 +123,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
                 else tracker.OWLocations.Add(name, data);
             }
+            BuildLocationLogic(TrackerRegions["Menu"]);
             DetermineAllAccessibility(false);
         }
 
@@ -154,7 +155,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         public static void DetermineAllAccessibility(bool useSaveFileLocations = true)
         {
             Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
-            BuildLocationLogic(TrackerRegions["Menu"]);
             foreach (var data in datas)
             {
                 TrackerChecklistData checklistEntry = data.Value;
@@ -180,8 +180,9 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <param name="previousRegions"></param>
         public static void BuildLocationLogic(TrackerRegionData region, List<TrackerRegionData> previousRegions = null)
         {
-            previousRegions ??= [region];
-            APRandomizer.OWMLModConsole.WriteLine($"Connections: From: {region.fromConnections.Count}, To: {region.toConnections.Count}");
+            previousRegions ??= [];
+            previousRegions.Add(region);
+            APRandomizer.OWMLModConsole.WriteLine($"Connections: From: {region.fromConnections.Count}, To: {region.toConnections.Count}, and we have {previousRegions.Count} previous regions");
             // If we're out of children, we've reached a dead end and don't need to calculate any more logic
             if (region.toConnections.Count <= 0) return;
             APRandomizer.OWMLModConsole.WriteLine($"Building logic for {region.toConnections[0].from}'s children...", OWML.Common.MessageType.Info);
