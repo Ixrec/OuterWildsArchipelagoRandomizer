@@ -10,5 +10,7 @@ namespace ArchipelagoRandomizer.InGameTracker
     {
         public List<TrackerConnectionData> fromConnections = new();
         public List<TrackerConnectionData> toConnections = new();
+
+        public List<List<TrackerConnectionData.Requirement>> reqs = new();
     }
 }
