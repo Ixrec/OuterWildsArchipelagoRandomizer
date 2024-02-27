@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -85,5 +86,23 @@ internal class Anglerfish
                 Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.BrambleDimension)
             )
         );
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.SpawnPlayer))]
+    public static void PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer");
+
+        var sp = __instance.GetSpawnPoint(SpawnLocation.HourglassTwin_1);
+        //__instance._initialSpawnPoint = sp;
+        //APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set player spawn");
+
+        APRandomizer.OWMLModConsole.WriteLine($"_spawnList: {string.Join("\n",
+            __instance._spawnList.Select(sp => $"{sp?._spawnLocation}|{sp?._isShipSpawn}|{sp?._triggerVolumes?.Count()}|{sp?._attachedBody?.name}"))}");
+
+        OWRigidbody owrigidbody = Locator.GetShipBody();
+        owrigidbody.WarpToPositionRotation(sp.transform.position + new UnityEngine.Vector3(10, 10, 10), sp.transform.rotation);
+        owrigidbody.SetVelocity(sp.GetPointVelocity());
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn");
     }
 }
