@@ -222,6 +222,9 @@ public class APRandomizer : ModBehaviour
         if (SlotData.ContainsKey("planet_order") && SlotData.ContainsKey("orbit_angles") && SlotData.ContainsKey("rotation_axes"))
             Orbits.ApplySlotData(SlotData["planet_order"], SlotData["orbit_angles"], SlotData["rotation_axes"]);
 
+        if (SlotData.ContainsKey("spawn"))
+            Spawn.ApplySlotData((long)SlotData["spawn"]);
+
         // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
         // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
         var totalItemsAcquired = SaveData.itemsAcquired.Sum(kv => kv.Value);
@@ -353,6 +356,7 @@ public class APRandomizer : ModBehaviour
             Victory.OnCompleteSceneLoad(scene, loadScene);
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
+            Spawn.OnCompleteSceneLoad(scene, loadScene);
         };
 
         // update the Nomai text setting before any can be created
