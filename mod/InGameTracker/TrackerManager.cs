@@ -14,6 +14,8 @@ namespace ArchipelagoRandomizer.InGameTracker
 {
     public class TrackerManager : MonoBehaviour
     {
+        public TrackerLogic logic;
+
         // Tuples: name, green arrow, green exclamation point, orange asterisk
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
         public List<Tuple<string, bool, bool, bool>> CurrentLocations;
@@ -109,6 +111,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (loadScene == OWScene.SolarSystem) AddModes();
             };
+
+            logic = new();
         }
 
         private void Start()
@@ -116,11 +120,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             APRandomizer.OnSessionOpened += (s) =>
             {
                 session = s;
-                TrackerLogic.previouslyObtainedItems = s.Items.AllItemsReceived;
-                TrackerLogic.InitializeAccessibility();
-                s.Items.ItemReceived += TrackerLogic.RecheckAccessibility;
-                s.Locations.CheckedLocationsUpdated += TrackerLogic.CheckLocations;
-                TrackerLogic.CheckLocations(s.Locations.AllLocationsChecked);
+                logic.previouslyObtainedItems = s.Items.AllItemsReceived;
+                logic.InitializeAccessibility();
+                s.Items.ItemReceived += logic.RecheckAccessibility;
+                s.Locations.CheckedLocationsUpdated += logic.CheckLocations;
+                logic.CheckLocations(s.Locations.AllLocationsChecked);
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
@@ -137,7 +141,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
-            TrackerLogic.ParseLocations();
+            logic.ParseLocations();
         }
         
         /// <summary>
@@ -200,7 +204,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // hints for items placed in your world
                 if (hint.FindingPlayer == session.ConnectionInfo.Slot)
                 {
-                    TrackerLogic.ApplyHint(hint, session);
+                    logic.ApplyHint(hint, session);
                 }
             }
         }
@@ -346,7 +350,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         public void GenerateLocationChecklist(TrackerCategory category)
         {
             CurrentLocations = new();
-            Dictionary<string, TrackerChecklistData> checklistDatas = TrackerLogic.GetLocationChecklist(category);
+            Dictionary<string, TrackerChecklistData> checklistDatas = logic.GetLocationChecklist(category);
             foreach (TrackerInfo info in Infos.Values)
             {
                 // TODO add hints and confirmation of checked locations
@@ -357,15 +361,15 @@ namespace ArchipelagoRandomizer.InGameTracker
                         APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
                         continue;
                     }
-                    if (!checklistDatas.ContainsKey(TrackerLogic.GetLocationByName(info).name))
+                    if (!checklistDatas.ContainsKey(logic.GetLocationByName(info).name))
                     {
-                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {TrackerLogic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
                         continue;
                     }
-                    TrackerChecklistData data = checklistDatas[TrackerLogic.GetLocationByName(info).name];
+                    TrackerChecklistData data = checklistDatas[logic.GetLocationByName(info).name];
                     long id = LocationNames.locationToArchipelagoId[loc];
                     bool locationChecked = data.hasBeenChecked;
-                    string name = TrackerLogic.GetLocationByID(id).name;
+                    string name = logic.GetLocationByID(id).name;
                     // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
                     name = Regex.Replace(name, ".*:.{1}", "");
 

@@ -15,31 +15,31 @@ namespace ArchipelagoRandomizer.InGameTracker
     /// </summary>
     public class TrackerLogic
     {
-        public static ReadOnlyCollection<NetworkItem> previouslyObtainedItems;
+        public ReadOnlyCollection<NetworkItem> previouslyObtainedItems;
 
         /// <summary>
         /// Parsed version of locations.jsonc
         /// </summary>
-        public static Dictionary<string, TrackerLocationData> TrackerLocations;
+        public Dictionary<string, TrackerLocationData> TrackerLocations;
         /// <summary>
         /// List of all locations with their connections
         /// </summary>
-        public static Dictionary<string, TrackerRegionData> TrackerRegions;
+        public Dictionary<string, TrackerRegionData> TrackerRegions;
 
-        private static TrackerManager tracker;
+        private TrackerManager tracker;
 
         // Ember Twin, Ash Twin, Cave Twin, Tower Twin
-        private static readonly string[] HTPrefixes = ["ET", "AT", "CT", "TT"];
+        private readonly string[] HTPrefixes = ["ET", "AT", "CT", "TT"];
         // Timber Hearth, Attlerock, Timber Moon
-        private static readonly string[] THPrefixes = ["TH", "AR", "TM"];
+        private readonly string[] THPrefixes = ["TH", "AR", "TM"];
         // Brittle Hollow, Hollow's Lantern, Volcano Moon
-        private static readonly string[] BHPrefixes = ["BH", "HL", "VM"];
+        private readonly string[] BHPrefixes = ["BH", "HL", "VM"];
         // Giant's Deep, Orbital Probe Cannon x2
-        private static readonly string[] GDPrefixes = ["GD", "OP", "OR"];
+        private readonly string[] GDPrefixes = ["GD", "OP", "OR"];
         // Dark Bramble
-        private static readonly string[] DBPrefixes = ["DB"];
+        private readonly string[] DBPrefixes = ["DB"];
 
-        public static void ParseLocations()
+        public void ParseLocations()
         {
             tracker = APRandomizer.Tracker;
             TrackerLocations = new();
@@ -63,11 +63,10 @@ namespace ArchipelagoRandomizer.InGameTracker
                 APRandomizer.OWMLModConsole.WriteLine($"{connections.Count} connections parsed!", OWML.Common.MessageType.Success);
                 foreach (TrackerConnectionData connection in connections)
                 {
-                    if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new());
-                    if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new());
+                    if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new(connection.from));
+                    if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new(connection.to));
                     TrackerRegions[connection.from].toConnections.Add(connection);
                     TrackerRegions[connection.to].fromConnections.Add(connection);
-                    APRandomizer.OWMLModConsole.WriteLine($"From: {connection.from} with {TrackerRegions[connection.from].fromConnections.Count}, To: {connection.to} with {TrackerRegions[connection.to].toConnections.Count}");
                 }
             }
         }
@@ -77,22 +76,15 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static string GetLogicString(TrackerLocationData data)
+        public string GetLocationLogicString(TrackerLocationData data)
         {
-            string logicString = "Logic: ";
-            foreach (TrackerLocationData.Requirement req in data.requires)
+            string logicString = "Location Logic: ";
+            foreach (TrackerRequirement req in data.requires)
             {
                 if (!string.IsNullOrEmpty(req.item))
                 {
-                    logicString += $"(item: {req.item}) ";
-                }
-                if (!string.IsNullOrEmpty(req.location))
-                {
-                    logicString += $"(location: {req.location}) ";
-                }
-                if (!string.IsNullOrEmpty(req.region))
-                {
-                    logicString += $"(region: {req.region}) ";
+                    if (!logicString.EndsWith(": ")) logicString += " AND ";
+                    logicString += $"(item: {req.item})";
                 }
             }
 
@@ -100,9 +92,46 @@ namespace ArchipelagoRandomizer.InGameTracker
         }
 
         /// <summary>
+        /// Returns the logic of a region as a string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public string GetRegionLogicString(string region)
+        {
+            TrackerRegionData data = TrackerRegions[region];
+            string logicString = "Regional Logic: ";
+            foreach (List<TrackerRequirement> requirementList in data.requirements)
+            {
+                if (!logicString.EndsWith(": ")) logicString += " OR ";
+                logicString += "(";
+                foreach (TrackerRequirement req in requirementList)
+                {
+                    if (!string.IsNullOrEmpty(req.item)) logicString += $"(item: {req.item})";
+                    if (req.anyOf != null) logicString += GetAnyOfString(req);
+                }
+                logicString += ")";
+                // if the condition is empty, remove the " AND ()" at the end
+                if (logicString.EndsWith("()")) logicString = logicString.Substring(0, logicString.Length - 6);
+            }
+            return logicString;
+        }
+
+        private string GetAnyOfString(TrackerRequirement requirement)
+        {
+            string logicString = "";
+            foreach (TrackerRequirement req in requirement.anyOf)
+            {
+                if (!string.IsNullOrEmpty(req.item)) logicString += $"OR (item: {req.item})";
+                if (req.anyOf != null) logicString += GetAnyOfString(req);
+            }
+            if (logicString.StartsWith("OR ")) logicString = logicString.Substring(3);
+            return logicString;
+        }
+
+        /// <summary>
         /// Populates all the (prefix)Locations dictionaries in Tracker Manager
         /// </summary>
-        public static void InitializeAccessibility()
+        public void InitializeAccessibility()
         {
             tracker.HTLocations = new();
             tracker.THLocations = new();
@@ -124,14 +153,14 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else tracker.OWLocations.Add(name, data);
             }
             BuildLocationLogic(TrackerRegions["Menu"]);
-            DetermineAllAccessibility(false);
+            DetermineAllAccessibility();
         }
 
         /// <summary>
         /// Runs when the player receives a new item
         /// </summary>
         /// <param name="itemsHelper"></param>
-        public static void RecheckAccessibility(ReceivedItemsHelper itemsHelper)
+        public void RecheckAccessibility(ReceivedItemsHelper itemsHelper)
         {
             // only gets new items
             var xorCollection = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
@@ -152,7 +181,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// Determines all the accessibility for all locations
         /// </summary>
         /// <param name="category"></param>
-        public static void DetermineAllAccessibility(bool useSaveFileLocations = true)
+        public void DetermineAllAccessibility()
         {
             Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
             foreach (var data in datas)
@@ -162,12 +191,12 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // we can skip accessibility calculation if the location has been checked or ever been accessible
                 if (!checklistEntry.hasBeenChecked || !checklistEntry.isAccessible)
                 {
-                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
-                    else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
-                    else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
-                    else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
-                    else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
-                    else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], useSaveFileLocations));
+                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
                     else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
                 }
             }
@@ -178,46 +207,91 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="region"></param>
         /// <param name="previousRegions"></param>
-        public static void BuildLocationLogic(TrackerRegionData region, List<TrackerRegionData> previousRegions = null)
+        public void BuildLocationLogic(TrackerRegionData region, List<TrackerRegionData> previousRegions = null)
         {
             previousRegions ??= [];
             previousRegions.Add(region);
-            APRandomizer.OWMLModConsole.WriteLine($"Connections: From: {region.fromConnections.Count}, To: {region.toConnections.Count}, and we have {previousRegions.Count} previous regions");
+            APRandomizer.OWMLModConsole.WriteLine($"We are at {region.name} which has {region.fromConnections.Count} parents and {region.toConnections.Count} children, and we have been to {previousRegions.Count} regions including this one.");
             // If we're out of children, we've reached a dead end and don't need to calculate any more logic
-            if (region.toConnections.Count <= 0) return;
-            APRandomizer.OWMLModConsole.WriteLine($"Building logic for {region.toConnections[0].from}'s children...", OWML.Common.MessageType.Info);
+            if (region.toConnections.Count <= 0)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
+                return;
+            }
+            APRandomizer.OWMLModConsole.WriteLine($"Building logic for {region.name}'s children...", OWML.Common.MessageType.Info);
             foreach (TrackerConnectionData connection in region.toConnections)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"Building logic for {region.toConnections[0].to}", OWML.Common.MessageType.Message);
+                APRandomizer.OWMLModConsole.WriteLine($"Building logic for {connection.to} from {region.name}", OWML.Common.MessageType.Message);
                 // Prevents looping if we've hit a region we've already been to
                 if (previousRegions.Contains(TrackerRegions[connection.to])) continue;
 
-                List<List<TrackerConnectionData.Requirement>> requirements = new();
-                if (region.reqs != null && region.reqs.Count > 0)
+                APRandomizer.OWMLModConsole.WriteLine($"Source old {region.name} {GetRegionLogicString(region.name)}");
+                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
+                List<List<TrackerRequirement>> oldRequirements = new(TrackerRegions[region.name].requirements);
+                int oldCount = 0;
+
+                if (region.requirements != null && region.requirements.Count > 0)
                 {
                     // inherit all parent conditions
-                    requirements.AddRange(region.reqs);
+                    APRandomizer.OWMLModConsole.WriteLine($"Pulling in {region.requirements.Count} conditions from parent");
+                    TrackerRegions[connection.to].requirements.AddRange(region.requirements); 
+                    APRandomizer.OWMLModConsole.WriteLine($"1 Source old {region.name} {GetRegionLogicString(region.name)}");
+                    APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
                 }
                 if (connection.requires != null && connection.requires.Count > 0)
                 {
+                    APRandomizer.OWMLModConsole.WriteLine($"Adding conditions {connection.requires.ElementAt(0).item}{(connection.requires.Count > 1 ? $" plus {connection.requires.Count - 1} more" : "")}");
+                    APRandomizer.OWMLModConsole.WriteLine($"2 Source old {region.name} {GetRegionLogicString(region.name)}");
+                    APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
                     // Add condition from the connection
-                    requirements.Add(connection.requires);
+                    List<List<TrackerRequirement>> workingRequirement = new(TrackerRegions[connection.to].requirements);
+                    if (workingRequirement.Count > 0)
+                    {
+                        foreach (List<TrackerRequirement> reqList in workingRequirement)
+                        {
+                            APRandomizer.OWMLModConsole.WriteLine($"reqList length: {reqList.Count}");
+                            APRandomizer.OWMLModConsole.WriteLine($"3 Source old {region.name} {GetRegionLogicString(region.name)}");
+                            APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
+                            foreach (TrackerRequirement newReq in connection.requires)
+                            {
+                                if (reqList.Contains(newReq)) continue;
+                                TrackerRequirement req = new();
+                                req.item = newReq.item;
+                                req.anyOf = newReq.anyOf;
+                                reqList.Add(req);
+                                APRandomizer.OWMLModConsole.WriteLine($"Adding condition {newReq.item}");
+                                oldCount++;
+                            }
+                            APRandomizer.OWMLModConsole.WriteLine($"4 Source old {region.name} {GetRegionLogicString(region.name)}");
+                            APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
+                        }
+                        TrackerRegions[connection.to].requirements = workingRequirement;
+                    }
+                    else
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Requirements are empty, so just adding {connection.requires.Count} existing conditions.");
+                        TrackerRegions[connection.to].requirements.Add(connection.requires);
+                        oldCount++;
+                    }
                 }
-                TrackerRegions[connection.to].reqs.AddRange(requirements);
-                TrackerRegions[connection.to].reqs = RemoveDuplicates(TrackerRegions[connection.to].reqs);
-                APRandomizer.OWMLModConsole.WriteLine($"Built logic for {connection.to} with {requirements.Count} extra conditions.", OWML.Common.MessageType.Success);
-                BuildLocationLogic(TrackerRegions[connection.to], previousRegions);
+                TrackerRegions[connection.to].requirements = RemoveDuplicates(TrackerRegions[connection.to].requirements);
+                TrackerRegions[region.name].requirements = oldRequirements;
+                APRandomizer.OWMLModConsole.WriteLine($"Built logic for {connection.to} with {oldCount} extra conditions.", OWML.Common.MessageType.Success);
+                APRandomizer.OWMLModConsole.WriteLine($"Source {region.name} {GetRegionLogicString(region.name)}");
+                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} new {GetRegionLogicString(connection.to)}");
+                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));
             }
+            APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
         }
 
-        private static List<List<TrackerConnectionData.Requirement>> RemoveDuplicates(List<List<TrackerConnectionData.Requirement>> requirements)
+        private List<List<TrackerRequirement>> RemoveDuplicates(List<List<TrackerRequirement>> requirements)
         {
             foreach (var requirement in requirements)
             {
                 // Sorts all item requirements alphabetically
                 requirement.OrderBy(x => x.item).ToList();
             }
-            List<List<TrackerConnectionData.Requirement>> newRequirements = new();
+            List<List<TrackerRequirement>> newRequirements = new();
             foreach (var requirement in requirements)
             {
                 // Hopefully this actually prevents duplicates from being added
@@ -231,7 +305,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// Checks which locations have been checked
         /// </summary>
         /// <param name="checkedLocations"></param>
-        public static void CheckLocations(ReadOnlyCollection<long> checkedLocations)
+        public void CheckLocations(ReadOnlyCollection<long> checkedLocations)
         {
             foreach (long location in checkedLocations)
             {
@@ -250,7 +324,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// Reads a hint and applies it to the checklist
         /// </summary>
         /// <param name="hint"></param>
-        public static void ApplyHint(Hint hint, ArchipelagoSession session)
+        public void ApplyHint(Hint hint, ArchipelagoSession session)
         {
             string playerName;
             if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
@@ -286,40 +360,41 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static bool IsAccessible(TrackerLocationData data, bool useSaveFileItems)
+        public bool IsAccessible(TrackerLocationData data)
         {
-            Dictionary<Item, uint> ia;
-            if (useSaveFileItems)
+            Dictionary<Item, uint> ia = new();
+            foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
             {
-                ia = APRandomizer.SaveData.itemsAcquired;
+                Item item = ItemNames.archipelagoIdToItem[itemID.Item];
+                if (ia.ContainsKey(item)) ia[item] += 1;
+                else ia.Add(item, 1);
             }
-            else
-            {
-                // If we're not reading from the save file, then we have nothing
-                ia = APRandomizer.APSession.Items.AllItemsReceived.ToDictionary(x => ItemNames.archipelagoIdToItem[x.Item], x => (uint)0);
-            }
-            // Region logic
-            foreach (List<TrackerConnectionData.Requirement> requirementsList in TrackerRegions[data.region].reqs)
-            {
-                foreach (TrackerConnectionData.Requirement req in requirementsList)
-                {
-                    // we don't have the item
-                    if (req.item != null && !ia.ContainsKey(ItemNames.itemNamesReversed[req.item])) return false;
-                    // we don't fulfill any of the AnyOf requirements
-                    if (req.anyOf != null) if (!AnyOfAccess(req.anyOf, ia)) return false;
-                }
-            }
+
             // Location logic
-            foreach (TrackerLocationData.Requirement req in data.requires)
+            if (!CanAccess(data.requires, ia)) return false;
+
+            // Region logic
+            if (TrackerRegions[data.region].requirements == null || TrackerRegions[data.region].requirements.Count == 0) return true;
+            foreach (List<TrackerRequirement> requirementsList in TrackerRegions[data.region].requirements)
             {
-                // If we don't have at least one of the quantity of required items, the location is inaccessible
-                if (req.item != null && !ia.ContainsKey(ItemNames.itemNamesReversed[req.item])) return false;
+                if (CanAccess(requirementsList, ia)) return true;
             }
-            
+            return false;
+        }
+
+        private bool CanAccess(List<TrackerRequirement> requirementsList, Dictionary<Item, uint> itemsAcquired)
+        {
+            foreach (TrackerRequirement regionRequirement in requirementsList)
+            {
+                // we don't have the item
+                if (!string.IsNullOrEmpty(regionRequirement.item) && !itemsAcquired.ContainsKey(ItemNames.itemNamesReversed[regionRequirement.item])) return false;
+                // we don't fulfill any of the AnyOf requirements
+                if (regionRequirement.anyOf != null) if (!AnyOfAccess(regionRequirement.anyOf, itemsAcquired)) return false;
+            }
             return true;
         }
 
-        private static bool AnyOfAccess(List<TrackerConnectionData.Requirement> reqs, Dictionary<Item, uint> itemsAcquired)
+        private bool AnyOfAccess(List<TrackerRequirement> reqs, Dictionary<Item, uint> itemsAcquired)
         {
             foreach (var req in reqs)
             {
@@ -336,7 +411,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public static int GetCheckedCount(TrackerCategory category)
+        public int GetCheckedCount(TrackerCategory category)
         {
             return GetLocationChecklist(category).Count(x => x.Value.hasBeenChecked);
         }
@@ -346,7 +421,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public static int GetAccessibleCount(TrackerCategory category)
+        public int GetAccessibleCount(TrackerCategory category)
         {
             return GetLocationChecklist(category).Count(x => (x.Value.isAccessible || x.Value.hasBeenChecked));
         }
@@ -356,12 +431,12 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public static int GetTotalCount(TrackerCategory category)
+        public int GetTotalCount(TrackerCategory category)
         {
             return GetLocationChecklist(category).Count();
         }
 
-        public static bool GetHasHint(TrackerCategory category)
+        public bool GetHasHint(TrackerCategory category)
         {
             return GetLocationChecklist(category).Count(x => x.Value.hintText != "") > 0;
         }
@@ -371,7 +446,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public static Dictionary<string, TrackerChecklistData> GetLocationChecklist(TrackerCategory category)
+        public Dictionary<string, TrackerChecklistData> GetLocationChecklist(TrackerCategory category)
         {
             switch (category)
             {
@@ -413,7 +488,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static TrackerLocationData GetLocationByID(long id)
+        public TrackerLocationData GetLocationByID(long id)
         {
             TrackerLocationData loc;
             try
@@ -433,7 +508,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static TrackerLocationData GetLocationByName(TrackerInfo info)
+        public TrackerLocationData GetLocationByName(TrackerInfo info)
         {
             if (Enum.TryParse<Location>(info.locationModID, out Location loc))
             {

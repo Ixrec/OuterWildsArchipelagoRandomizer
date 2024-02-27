@@ -14,12 +14,6 @@ namespace ArchipelagoRandomizer.InGameTracker
     {
         public string from;
         public string to;
-        public List<Requirement> requires;
-
-        public struct Requirement
-        {
-            public string item;
-            public List<Requirement> anyOf;
-        }
+        public List<TrackerRequirement> requires;
     }
 }

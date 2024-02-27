@@ -74,8 +74,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 bool hasHint = false;
                 if (i != 0)
                 { 
-                    hasAvailableChecks = TrackerLogic.GetAccessibleCount(category) - TrackerLogic.GetCheckedCount(category) > 0;
-                    hasHint = TrackerLogic.GetHasHint(category);
+                    hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
+                    hasHint = Tracker.logic.GetHasHint(category);
                 }
                 optionsList.Add(new(entry, false, hasAvailableChecks, hasHint));
             }
@@ -250,7 +250,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         private void SelectChecklistItem(int index)
         {
             TrackerInfo info = Tracker.Infos.ElementAt(index).Value;
-            TrackerLocationData data = TrackerLogic.GetLocationByName(info);
+            TrackerLocationData data = Tracker.logic.GetLocationByName(info);
             TrackerChecklistData locData = checklist[data.name];
             ChecklistWrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
             ChecklistWrapper.GetPhoto().gameObject.SetActive(true);
@@ -261,8 +261,9 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
             }
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + TrackerLogic.GetLocationByName(info).name);
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(TrackerLogic.GetLogicString(TrackerLogic.GetLocationByName(info)));
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + data.name);
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetLocationLogicString(data));
         }
 
         public void PopulateInfos(TrackerCategory category)
@@ -291,7 +292,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                         }
                     }
                 }
-                checklist = TrackerLogic.GetLocationChecklist(category);
+                checklist = Tracker.logic.GetLocationChecklist(category);
                 Tracker.GenerateLocationChecklist(category);
             }
             else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
@@ -428,9 +429,9 @@ namespace ArchipelagoRandomizer.InGameTracker
                         category = TrackerCategory.OuterWilds;
                         break;
                 }
-                checkedLocs = TrackerLogic.GetCheckedCount(category);
-                accessLocs = TrackerLogic.GetAccessibleCount(category);
-                allLocs = TrackerLogic.GetTotalCount(category);
+                checkedLocs = Tracker.logic.GetCheckedCount(category);
+                accessLocs = Tracker.logic.GetAccessibleCount(category);
+                allLocs = Tracker.logic.GetTotalCount(category);
                 float accessiblePercentage = accessLocs / allLocs;
                 float checkedPercentage = checkedLocs / allLocs;
                 selectorMaterial.SetFloat("_PercentAccessible", accessiblePercentage);

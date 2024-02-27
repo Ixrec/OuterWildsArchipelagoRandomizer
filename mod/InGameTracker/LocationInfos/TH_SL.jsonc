@@ -1,22 +1,22 @@
 ﻿[
     {
         "locationModID": "SLF__TH_VILLAGE_X1",
-        "description": "",
+        "description": "You should visit home.",
         "thumbnail": "TH_VILLAGE"
     },
     {
         "locationModID": "SLF__TH_VILLAGE_X2",
-        "description": "",
+        "description": "The Nomai Sculpture in the museum wants to look deep into your eyes...",
         "thumbnail": "TH_VILLAGE"
     },
     {
         "locationModID": "SLF__TH_ZERO_G_CAVE_X1",
-        "description": "",
+        "description": "Under the village is a cave where the gravity is pretty light.",
         "thumbnail": "TH_ZERO_G_CAVE"
     },
     {
         "locationModID": "SLF__TH_ZERO_G_CAVE_X2",
-        "description": "",
+        "description": "In the Zero-G cave, there's a mining rig in need of repair.",
         "thumbnail": "TH_ZERO_G_CAVE"
     },
     {
