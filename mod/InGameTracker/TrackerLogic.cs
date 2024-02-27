@@ -227,9 +227,41 @@ namespace ArchipelagoRandomizer.InGameTracker
 
                 APRandomizer.OWMLModConsole.WriteLine($"Source old {region.name} {GetRegionLogicString(region.name)}");
                 APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-                List<List<TrackerRequirement>> oldRequirements = new(TrackerRegions[region.name].requirements);
-                int oldCount = 0;
 
+                List<List<TrackerRequirement>> sourceRequirements = new();
+                if (region.requirements != null && region.requirements.Count > 0)
+                {
+                    sourceRequirements = new(region.requirements);
+                    if (connection.requires != null && connection.requires.Count > 0)
+                    {
+                        foreach (List<TrackerRequirement> reqs in sourceRequirements)
+                        {
+                            reqs.AddRange(connection.requires);
+                        }
+                    }
+                }
+                else
+                {
+                    if (connection.requires != null && connection.requires.Count > 0)
+                    {
+                        sourceRequirements.Add(connection.requires);
+                    }
+                }
+                TrackerRegions[connection.to].requirements.AddRange(sourceRequirements);
+                TrackerRegions[connection.to].requirements = RemoveDuplicates(TrackerRegions[connection.to].requirements);
+                APRandomizer.OWMLModConsole.WriteLine($"Source new {region.name} {GetRegionLogicString(region.name)}");
+                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} new {GetRegionLogicString(connection.to)}");
+
+            }
+            APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
+            foreach (TrackerConnectionData connection in region.toConnections)
+            {
+                // Prevents looping if we've hit a region we've already been to
+                if (previousRegions.Contains(TrackerRegions[connection.to])) continue;
+                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));
+            }
+
+                /*
                 if (region.requirements != null && region.requirements.Count > 0)
                 {
                     // inherit all parent conditions
@@ -255,9 +287,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                             foreach (TrackerRequirement newReq in connection.requires)
                             {
                                 if (reqList.Contains(newReq)) continue;
-                                TrackerRequirement req = new();
-                                req.item = newReq.item;
-                                req.anyOf = newReq.anyOf;
+                                TrackerRequirement req = new()
+                                {
+                                    item = newReq.item,
+                                    anyOf = newReq.anyOf
+                                };
                                 reqList.Add(req);
                                 APRandomizer.OWMLModConsole.WriteLine($"Adding condition {newReq.item}");
                                 oldCount++;
@@ -279,9 +313,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 APRandomizer.OWMLModConsole.WriteLine($"Built logic for {connection.to} with {oldCount} extra conditions.", OWML.Common.MessageType.Success);
                 APRandomizer.OWMLModConsole.WriteLine($"Source {region.name} {GetRegionLogicString(region.name)}");
                 APRandomizer.OWMLModConsole.WriteLine($"{connection.to} new {GetRegionLogicString(connection.to)}");
-                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));
-            }
-            APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
+                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));*/
+            
         }
 
         private List<List<TrackerRequirement>> RemoveDuplicates(List<List<TrackerRequirement>> requirements)
