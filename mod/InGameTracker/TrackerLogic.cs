@@ -142,6 +142,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (ia.ContainsKey(item)) ia[item] += 1;
                 else ia.Add(item, 1);
             }
+            CanAccessRegion = new();
             BuildRegionLogic("Menu", ia);
 
             // Determine locaiton logic
