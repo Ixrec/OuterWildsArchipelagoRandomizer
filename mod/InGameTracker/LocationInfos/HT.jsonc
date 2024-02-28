@@ -6,8 +6,8 @@
     },
     {
         "locationModID": "ET_HEL",
-        "description": "",
-        "thumbnail": ""
+        "description": "The upper floor of the HEL has a scroll wall with a scroll already entered that discusses how the Nomai might create a 22-minute interval.",
+        "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "ET_SC_SHRINE",
@@ -16,13 +16,13 @@
     },
     {
         "locationModID": "ET_QML",
-        "description": "",
-        "thumbnail": ""
+        "description": "At the Quantum Moon Locator on Ember Twin's south pole has a scroll nearby.",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_FOSSIL",
-        "description": "",
-        "thumbnail": ""
+        "description": "Above the Stepping Stone Cave by the Sunless City, there is an anglerfish fossil that the Nomai children used to play in. They wrote the rules for a game on the ground nearby.",
+        "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {
         "locationModID": "ET_LAKEBED_CAVE",
@@ -46,33 +46,33 @@
     },
     {
         "locationModID": "ET_SC",
-        "description": "",
-        "thumbnail": ""
+        "description": "The Nomai have a city hidden underground somewhere on Ember Twin.",
+        "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "ET_QML_TR",
-        "description": "",
-        "thumbnail": ""
+        "description": "At Ember Twin's south pole, there's a strange locator device built by the Nomai. Chert has left a tape recording and a tank nearby.",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_QML_TANK",
-        "description": "",
-        "thumbnail": ""
+        "description": "At Ember Twin's south pole, there's a strange locator device built by the Nomai. Chert has left a tape recording and a tank nearby.",
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_CHERT_TANK",
-        "description": "",
-        "thumbnail": ""
+        "description": "Chert has a fuel tank that can be used by any passersby, not that it matters when the sun is about to explode...",
+        "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "AT_HGT_TOWERS",
-        "description": "",
-        "thumbnail": ""
+        "description": "There's a warp tower on Ash Twin that looks a lot like the Hourglass Twins. There's a scroll wall inside, perhaps a scroll can be found nearby?",
+        "thumbnail": "TT_WARP_TOWERS"
     },
     {
         "locationModID": "AT_BH_TOWER",
-        "description": "",
-        "thumbnail": ""
+        "description": "There's a warp tower on Ash Twin that looks a lot like Brittle Hollow. Maybe there's something inside?",
+        "thumbnail": "TT_WARP_TOWERS"
     },
     {
         "locationModID": "AT_ATP",

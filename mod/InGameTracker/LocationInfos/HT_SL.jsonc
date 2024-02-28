@@ -1,132 +1,132 @@
 [
     {
         "locationModID": "SLF__CT_CHERT_X1",
-        "description": "",
+        "description": "Chert has been sent to Ember Twin to update the various Hearthian star charts. They would probably love an ear to ramble on about it to.",
         "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "SLF__CT_CHERT_X2",
-        "description": "",
+        "description": "Chert has noticed a surprising uptick in supernovae early in the loop. They'll certainly let you know about that if you talk to them.",
         "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "SLF__CT_CHERT_X3",
-        "description": "",
+        "description": "Near the end of the loop, Chert sounds quite panicked.",
         "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "SLF__CT_CHERT_X4",
-        "description": "",
+        "description": "Near the end of the loop, Chert seems to have an idea as to why all the stars are dying.",
         "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "SLF__CT_CHERT_X5",
-        "description": "",
+        "description": "With the supernova and the end of the solar system looming above them, Chert has become catatonic. They'd apprciate some company in their final moments.",
         "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X1",
-        "description": "",
+        "description": "The Quantum Moon Locator on Ember Twin's south pole has a scroll nearby that discusses the locator's purpose.",
         "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X2",
-        "description": "",
+        "description": "The Quantum Moon Locator on Ember Twin's south pole has a scroll wall discussing how the Quantum Moon displays macroscopic quantum mechanics.",
         "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "SLF__CT_QUANTUM_MOON_LOCATOR_X3",
-        "description": "",
+        "description": "The Quantum Moon Locator on Ember Twin's south pole has a scroll nearby that discusses how the moon seems to occasionally disappear.",
         "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "SLF__CT_GRAVITY_CANNON_X1",
-        "description": "",
+        "description": "There are controls at the Gravity Cannon for its shuttle. The control on the left launches it.",
         "thumbnail": "CT_GRAVITY_CANNON"
     },
     {
         "locationModID": "SLF__CT_GRAVITY_CANNON_X2",
-        "description": "",
+        "description": "There are controls at the Gravity Cannon for its shuttle. The control on the right recalls it.",
         "thumbnail": "CT_GRAVITY_CANNON"
     },
     {
         "locationModID": "SLF__CT_ESCAPE_POD_X1",
-        "description": "",
+        "description": "There is a crashed Nomai Escape Pod on Ember Twin. Certainly there must be something inside of it worth reading.",
         "thumbnail": "CT_ESCAPE_POD"
     },
     {
         "locationModID": "SLF__CT_ESCAPE_POD_X2",
-        "description": "",
+        "description": "The status report on the Nomai Escape Pod on Ember Twin mentions something called \"The Vessel\".",
         "thumbnail": "CT_ESCAPE_POD"
     },
     {
         "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X1",
-        "description": "",
+        "description": "The lower floor of the High Energy Lab has a scroll on the floor discussing the idea that time travel via a black hole is possible.",
         "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X2",
-        "description": "",
+        "description": "The upper floor of the HEL has a scroll wall with a scroll already entered that discusses the possibility of increasing the amount of time travel by increasing the power output to a black hole.",
         "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X3",
-        "description": "",
+        "description": "The upper floor of the HEL has a scroll wall with a scroll already entered that discusses how the Nomai might create a 22-minute interval.",
         "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X1",
-        "description": "",
+        "description": "At the High Energy Lab, there are various murals of the warp towers on Ash Twin.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X2",
-        "description": "",
+        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how each warp tower will lead to a different planet.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X3",
-        "description": "",
+        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how each tower will reflect its destination in appearance.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X4",
-        "description": "",
+        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how big an undertaking the ATP will be.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_SUNLESS_CITY_X1",
-        "description": "",
+        "description": "The Nomai have a city underground on Ember Twin.",
         "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "SLF__CT_SUNLESS_CITY_X2",
-        "description": "",
+        "description": "Within the Sunless City, the Nomai have been discussing the construction of a Sun Station, and debating whether it should be built by the garden.",
         "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "SLF__CT_SUNLESS_CITY_X3",
-        "description": "",
+        "description": "Within the Sunless City, in the Eye Shrine District, there is text at the entry of the main shrine describing the strange signal that brought the Nomai to this Solar System.",
         "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X1",
-        "description": "",
+        "description": "Above the Stepping Stone Cave by the Sunless City, there is an anglerfish fossil that the Nomai children used to play in. They wrote the rules for a game on the ground nearby.",
         "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {
         "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X2",
-        "description": "",
+        "description": "Above the Stepping Stone Cave by the Sunless City, there is an anglerfish fossil that the Nomai children used to play in. They wrote the rules for a game on the ground nearby. One of their new rules involves one, who plays as the anglerfish, donning a blindfold.",
         "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {
         "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X3",
-        "description": "",
+        "description": "In a chamber above the anglerfish fossil, Nomai scientists have been studying the biology of the anglerfish and have recorded their findings on a text wall.",
         "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {
         "locationModID": "SLF__CT_QUANTUM_CAVES_X1",
-        "description": "",
+        "description": "In some of the various caves on Ember Twin, there is Nomai text describing a quantum rock that is sometimes in the vicinity.",
         "thumbnail": "CT_QUANTUM_CAVES"
     },
     {
@@ -151,12 +151,12 @@
     },
     {
         "locationModID": "SLF__TT_WARP_TOWERS_X1",
-        "description": "",
+        "description": "Ash Twin is covered in warp towers. Maybe there is some text inside one of them worth reading.",
         "thumbnail": "TT_WARP_TOWERS"
     },
     {
         "locationModID": "SLF__TT_WARP_TOWERS_X2",
-        "description": "",
+        "description": "Under the Brittle Hollow Tower, there's a mention of a warp on the White Hole Station.",
         "thumbnail": "TT_WARP_TOWERS"
     },
     {

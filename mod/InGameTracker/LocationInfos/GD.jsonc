@@ -8,12 +8,12 @@
     {
         "locationModID": "OPC_CM",
         "description": "There is one module you can reach from inside the OPC. Find what information is stored there to further your knowledge.",
-        "thumbnail": ""
+        "thumbnail": "OPC_INTACT_MODULE"
     },
     {
         "locationModID": "GD_FLUTE",
         "description": "Your signalscope picks up the sound of a flute from Giant's Deep. You might want to talk to whomever is playing it.",
-        "thumbnail": ""
+        "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "GD_BI",
@@ -22,8 +22,8 @@
     },
     {
         "locationModID": "GD_CY",
-        "description": "The OPC had to have been made somewhere. Try checking one of the various islands that populate Giant's Deep's waters.",
-        "thumbnail": ""
+        "description": "The OPC had to have been made somewhere. Try checking one of the various islands that populate Giant's Deep's waters, and look for a scroll that explains its purpose.",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
     },
     {
         "locationModID": "GD_SIW",
@@ -43,7 +43,7 @@
     {
         "locationModID": "GD_TOWER_RULE",
         "description": "These Quantum objects like to move around when you aren't looking at them. There must be somewhere that teaches you how to make them stop moving.",
-        "thumbnail": ""
+        "thumbnail": "GD_QUANTUM_TOWER"
     },
     {
         "locationModID": "GD_TOWER_COMPLETE",
@@ -68,7 +68,7 @@
     {
         "locationModID": "GD_SHIP",
         "description": "There is something floating out in the water. You should figure out what exactly it is.",
-        "thumbnail": ""
+        "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "GD_BI_TANK",
@@ -78,6 +78,6 @@
     {
         "locationModID": "GD_GABBRO_TANK",
         "description": "It might be good to refill your fuel tank after you talk to your timeloop buddy. They likely put it near their campfire.",
-        "thumbnail": ""
+        "thumbnail": "GD_GABBRO_ISLAND"
     }
 ]

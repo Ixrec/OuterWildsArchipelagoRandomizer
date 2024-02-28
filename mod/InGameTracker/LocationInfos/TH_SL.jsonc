@@ -36,17 +36,17 @@
     },
     {
         "locationModID": "SLF__TH_NOMAI_MINE_X1",
-        "description": "",
+        "description": "Within the Nomai Mines, a scroll wall mentions how the Nomai needed to create an extremely durable shell for something.",
         "thumbnail": "TH_NOMAI_MINE"
     },
     {
         "locationModID": "SLF__TH_NOMAI_MINE_X2",
-        "description": "",
+        "description": "A projection stone within the mines mentions that the Ash Twin Project has no physical entrance.",
         "thumbnail": "TH_NOMAI_MINE"
     },
     {
         "locationModID": "SLF__TH_NOMAI_MINE_X3",
-        "description": "",
+        "description": "In the water at the bottom of the geyser outside the mine, the Nomai documented their discovery of a new alien species.",
         "thumbnail": "TH_NOMAI_MINE"
     },
     {
@@ -71,12 +71,12 @@
     },
     {
         "locationModID": "SLF__TM_EYE_LOCATOR_X1",
-        "description": "",
+        "description": "Under the Eye Signal Locator on the Attlerock, the Nomai have a scroll wall detailing the purpose of the structure.",
         "thumbnail": "TM_EYE_LOCATOR"
     },
     {
         "locationModID": "SLF__TM_EYE_LOCATOR_X2",
-        "description": "",
+        "description": "Under the Eye Signal Locator on the Attlerock, the Nomai have a scroll wall detailing how the structure was unable to fulfill its purpose.",
         "thumbnail": "TM_EYE_LOCATOR"
     }
 ]

@@ -40,6 +40,11 @@
         "thumbnail": "TH_QUANTUM_SHARD"
     },
     {
+        "locationModID": "FREQ_HIDE_SEEK",
+        "description": "Tephra and Galena are so eager for you to play Hide and Seek with them, that they don't even bother to check if you even have your Signalscope to play with them!",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
         "locationModID": "TH_GALENA_SIGNAL",
         "description": "Galena in the Village may not be the most talkative hatchling, but they are secretly really excited to play Hide and Seek with you if you ask. You'll want a Signalscope to find them...",
         "thumbnail": "TH_VILLAGE"
