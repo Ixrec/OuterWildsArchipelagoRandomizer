@@ -41,12 +41,12 @@
     },
     {
         "locationModID": "FREQ_DISTRESS",
-        "description": "",
+        "description": "The Nomai Escape Pods all have a Distress Beacon that emits a loud signal.",
         "thumbnail": "BH_ESCAPE_POD"
     },
     {
         "locationModID": "FREQ_QUANTUM",
-        "description": "",
+        "description": "The various quantum shards in The Outer Wilds emit a strong, haunting signal.",
         "thumbnail": "BH_QUANTUM_SHARD"
     }
 ]

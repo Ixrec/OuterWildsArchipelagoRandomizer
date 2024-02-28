@@ -41,7 +41,7 @@
     },
     {
         "locationModID": "ET_EP2_SIGNAL",
-        "description": "",
+        "description": "The Nomai Escape pod has a distress beacon emitting a signal.",
         "thumbnail": "CT_ESCAPE_POD"
     },
     {

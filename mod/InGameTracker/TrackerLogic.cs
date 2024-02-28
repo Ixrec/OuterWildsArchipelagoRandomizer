@@ -102,7 +102,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
                 else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
                 else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
-                else tracker.OWLocations.Add(name, data);
+                // Ignore the two Victory locations
+                else if (!name.StartsWith("Victory")) tracker.OWLocations.Add(name, data);
             }
             DetermineAllAccessibility();
         }
