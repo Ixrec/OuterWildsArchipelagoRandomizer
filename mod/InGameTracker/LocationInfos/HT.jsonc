@@ -2,81 +2,81 @@
     {
         "locationModID": "ET_DRUM",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "ET_HEL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "ET_SC_SHRINE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "ET_QML",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_FOSSIL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {
         "locationModID": "ET_LAKEBED_CAVE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_COLEUS_CAVE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_SHARD_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_QUANTUM_CAVES"
     },
     {
         "locationModID": "ET_EP2_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_ESCAPE_POD"
     },
     {
         "locationModID": "ET_SC",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "ET_QML_TR",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_QML_TANK",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_QUANTUM_MOON_LOCATOR"
     },
     {
         "locationModID": "ET_CHERT_TANK",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "AT_HGT_TOWERS",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "TT_WARP_TOWERS"
     },
     {
         "locationModID": "AT_BH_TOWER",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "TT_WARP_TOWERS"
     },
     {
         "locationModID": "AT_ATP",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
     }
 ]

@@ -1,82 +1,82 @@
 [
     {
         "locationModID": "BH_BANJO",
-        "description": "",
-        "thumbnail": ""
+        "description": "Your signalscope picks up the sound of a banjo from Brittle Hollow. You might want to talk to whomever is playing it.",
+        "thumbnail": "BH_RIEBECK"
     },
     {
         "locationModID": "BH_OBSERVATORY",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_OBSERVATORY"
     },
     {
         "locationModID": "BH_OS_MURAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_MURAL_1"
     },
     {
         "locationModID": "BH_FORGE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
     },
     {
         "locationModID": "BH_TOWER",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
     },
     {
         "locationModID": "BH_SHARD_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_QUANTUM_SHARD"
     },
     {
         "locationModID": "BH_EP1_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_ESCAPE_POD"
     },
     {
         "locationModID": "BH_NG_NOTE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_WARP_RECEIVER"
     },
     {
         "locationModID": "BH_OBSERVATORY_TR",
-        "description": "",
-        "thumbnail": ""
+        "description": "The entrance to the Observatory from the surface is destroyed. Perhaps another traveler left a recorder with information about how to get inside.",
+        "thumbnail": "BH_OBSERVATORY"
     },
     {
         "locationModID": "BH_CAMPSITE_NOTE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_RIEBECK"
     },
     {
         "locationModID": "BH_SOLANUM_REPORT",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_HANGING_CITY"
     },
     {
         "locationModID": "BH_HC_SHRINE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_HANGING_CITY"
     },
     {
         "locationModID": "BH_HC",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_HANGING_CITY"
     },
     {
         "locationModID": "BH_NG_TANK",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_WARP_RECEIVER"
     },
     {
         "locationModID": "BH_RIEBECK_TANK",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_RIEBECK"
     },
     {
         "locationModID": "HL_VTS",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "VM_VOLCANO"
     }
 ]
