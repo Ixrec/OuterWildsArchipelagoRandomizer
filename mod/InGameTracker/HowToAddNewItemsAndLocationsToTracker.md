@@ -76,11 +76,13 @@ The way the Tracker determines which major region a location is in is by looking
 * Giant's Deep: **"GD"** (Giant's Deep), **"OP"**, or **"OR"** (both for Orbital Probe Cannon)
 * Dark Bramble: **"DB"** (Dark Bramble)
 
-Anything else gets thrown into the generic "Outer Wilds" region. Thus, when naming a location, it should include the relevant prefix.
+Anything else gets thrown into the generic "Outer Wilds" region.
+Thus, when naming a location, it should include the relevant prefix.
 
 ## Making the Location Show Up in the Tracker
 
-To add a location to the Tracker, open the .jsonc file within the LocationInfos file that corresponds to the correct prefix, and if the location is a Ship Log location, you'll need to open the version of the file that ends in `_SL`. Create a new entry with the following format:
+To add a location to the Tracker, open the .jsonc file within the LocationInfos file that corresponds to the correct prefix, and if the location is a Ship Log location, you'll need to open the version of the file that ends in `_SL`.
+Create a new entry with the following format:
 
 ```json
     {
@@ -90,9 +92,12 @@ To add a location to the Tracker, open the .jsonc file within the LocationInfos 
     }
 ```
 
-`locationModID` is the ID of the location as it appears within location.cs (*not* the .jsonc file).
-`description` is a text description telling the player where they need to go to check the location. It should be specific enough to tell the player where they need to look to get the location check, for example telling them to talk to an NPC or check a scroll wall.
-`thumbnail` is a a Ship Log fact thumbnail that shows the relevant area that the location is in. To find the list of ship log facts, they can be found in location.cs, they start with `SLF__` and end with `_X#`. Remove the prefix and suffix to get the Ship Log Fact ID, so `SLF__TH_VILLAGE_X1` becomes `TH_VILLAGE`.
+* `locationModID` is the ID of the location as it appears within location.cs (*not* the .jsonc file).
+* `description` is a text description telling the player where they need to go to check the location.
+It should be specific enough to tell the player where they need to look to get the location check, for example telling them to talk to an NPC or check a scroll wall.
+* `thumbnail` is a a Ship Log fact thumbnail that shows the relevant area that the location is in. 
+To find the list of ship log facts, they can be found in location.cs, they start with `SLF__` and end with `_X#`.
+Remove the prefix and suffix to get the Ship Log Fact ID, so `SLF__TH_VILLAGE_X1` becomes `TH_VILLAGE`.
 (Note: I have found one exception, `SLF__WHS_X#` is actually for the `WHITE_HOLE_STATION` fact)
 
 Once you have created the entry, it should automatically show up in the Tracker (if not, check for errors in the OWML log.)
