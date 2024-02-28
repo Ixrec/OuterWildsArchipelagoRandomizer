@@ -11,22 +11,22 @@
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X0",
-        "description": "",
+        "description": "Your old pal Gabbro is chilling on their own little island on Giant's Deep. A conversation with them is always a good time.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X1",
-        "description": "",
+        "description": "Gabbro remembers seeing some kind of weird statue and linking with it. Get some details from them.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X2",
-        "description": "",
+        "description": "Gabbro died, and not in the metaphorical sense. They probably have more information.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X3",
-        "description": "",
+        "description": "After a few loops and a few conversations with you, Gabbro is pretty confident that you and them are the only two aware of the time loop.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
         "locationModID": "SLF__ORBITAL_PROBE_CANNON_X1",
-        "description": "",
+        "description": "There is a mysterious structure orbiting Giant's Deep. It has a landing pad.",
         "thumbnail": "ORBITAL_PROBE_CANNON"
     },
     {
@@ -132,7 +132,7 @@
     },
     {
         "locationModID": "SLF__OPC_BROKEN_MODULE_X1",
-        "description": "",
+        "description": "One of the modules on the Orbital Probe Cannon has a large crack in its window, large enough for a person to fit inside.",
         "thumbnail": "OPC_BROKEN_MODULE"
     },
     {

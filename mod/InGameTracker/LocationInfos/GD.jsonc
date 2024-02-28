@@ -1,82 +1,83 @@
 [
+    // provided by Hopop
     {
         "locationModID": "OPC_ENTER",
-        "description": "",
-        "thumbnail": ""
+        "description": "Have you checked out the structure in orbit around Giant's Deep? It looks like it has a landing pad.",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
     },
     {
         "locationModID": "OPC_CM",
-        "description": "",
+        "description": "There is one module you can reach from inside the OPC. Find what information is stored there to further your knowledge.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_FLUTE",
-        "description": "",
+        "description": "Your signalscope picks up the sound of a flute from Giant's Deep. You might want to talk to whomever is playing it.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_BI",
-        "description": "",
+        "description": "There is an island covered in brambles and a large chunk of ice. There might be some useful information there if you can navigate it.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_CY",
-        "description": "",
+        "description": "The OPC had to have been made somewhere. Try checking one of the various islands that populate Giant's Deep's waters.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_SIW",
-        "description": "",
+        "description": "The statue at the start of the game was peculiar. Where were they made and how do they work?",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_DEPTHS",
-        "description": "",
+        "description": "A strong current prevents you from going too far underneath the water. There might be a way to get past it.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_CORE",
-        "description": "",
+        "description": "It takes a lot of effort to get to the center of Giant's Deep. Make sure you have the tools needed to get down there safely.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_TOWER_RULE",
-        "description": "",
+        "description": "These Quantum objects like to move around when you aren't looking at them. There must be somewhere that teaches you how to make them stop moving.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_TOWER_COMPLETE",
-        "description": "",
+        "description": "That is a large tower hidden on Giant's Deep. Try making your way through it and see what information it gives you at the end.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_COORDINATES",
-        "description": "",
+        "description": "One of the game's key mysterious lies in the core of Giant's Deep. I heard it might even be randomized.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_SHARD_SIGNAL",
-        "description": "",
+        "description": "Your signalscope is detecting quantum fluctuations coming from Giant's Deep",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_STATUE",
-        "description": "",
+        "description": "How did your friend get pulled into the timeloop as well? They must have had an encounter with a statue like you did.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_SHIP",
-        "description": "",
+        "description": "There is something floating out in the water. You should figure out what exactly it is.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_BI_TANK",
-        "description": "",
+        "description": "Hopefully you didn't use up too much fuel getting through the brambles. You should refuel to be safe.",
         "thumbnail": ""
     },
     {
         "locationModID": "GD_GABBRO_TANK",
-        "description": "",
+        "description": "It might be good to refill your fuel tank after you talk to your timeloop buddy. They likely put it near their campfire.",
         "thumbnail": ""
     }
 ]

@@ -26,6 +26,8 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public Dictionary<string, TrackerRegionData> TrackerRegions;
 
+        public Dictionary<string, bool> CanAccessRegion;
+
         private TrackerManager tracker;
 
         // Ember Twin, Ash Twin, Cave Twin, Tower Twin
@@ -100,31 +102,39 @@ namespace ArchipelagoRandomizer.InGameTracker
         {
             TrackerRegionData data = TrackerRegions[region];
             string logicString = "Regional Logic: ";
-            foreach (List<TrackerRequirement> requirementList in data.requirements)
+            if (data.fromConnections != null && data.fromConnections.Count > 0)
             {
-                if (!logicString.EndsWith(": ")) logicString += " OR ";
-                logicString += "(";
-                foreach (TrackerRequirement req in requirementList)
+                foreach (TrackerConnectionData connection in data.fromConnections)
                 {
-                    if (!string.IsNullOrEmpty(req.item)) logicString += $"(item: {req.item})";
-                    if (req.anyOf != null) logicString += GetAnyOfString(req);
+                    if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " OR ";
+                    logicString += $"(Can Access: {connection.from} ";
+                    if (connection.requires != null && connection.requires.Count > 0)
+                    {
+                        logicString += "AND (";
+                        foreach (TrackerRequirement req in connection.requires)
+                        {
+                            if (!string.IsNullOrEmpty(req.item))
+                            {
+                                if (!logicString.EndsWith("(")) logicString += " AND ";
+                                logicString += $"Item: {req.item}";
+                            }
+                            if (req.anyOf != null &&  req.anyOf.Count > 0)
+                            {
+                                logicString = "(";
+                                foreach (var con in req.anyOf)
+                                {
+                                    if (!logicString.EndsWith("(")) logicString += " OR ";
+                                    logicString += $"Item: {con.item}";
+                                    // not going to bother with nested any ofs for now, not sure if those will ever have a reason to be used.
+                                }
+                                logicString += ")";
+                            }
+                        }
+                        logicString += ")";
+                    }
+                    logicString += ")";
                 }
-                logicString += ")";
-                // if the condition is empty, remove the " AND ()" at the end
-                if (logicString.EndsWith("()")) logicString = logicString.Substring(0, logicString.Length - 6);
             }
-            return logicString;
-        }
-
-        private string GetAnyOfString(TrackerRequirement requirement)
-        {
-            string logicString = "";
-            foreach (TrackerRequirement req in requirement.anyOf)
-            {
-                if (!string.IsNullOrEmpty(req.item)) logicString += $"OR (item: {req.item})";
-                if (req.anyOf != null) logicString += GetAnyOfString(req);
-            }
-            if (logicString.StartsWith("OR ")) logicString = logicString.Substring(3);
             return logicString;
         }
 
@@ -133,6 +143,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public void InitializeAccessibility()
         {
+            CanAccessRegion = new();
             tracker.HTLocations = new();
             tracker.THLocations = new();
             tracker.BHLocations = new();
@@ -152,7 +163,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
                 else tracker.OWLocations.Add(name, data);
             }
-            BuildLocationLogic(TrackerRegions["Menu"]);
             DetermineAllAccessibility();
         }
 
@@ -183,155 +193,57 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <param name="category"></param>
         public void DetermineAllAccessibility()
         {
+            // Build region logic, we always start from the Menu region
+            Dictionary<Item, uint> ia = new();
+            foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
+            {
+                Item item = ItemNames.archipelagoIdToItem[itemID.Item];
+                if (ia.ContainsKey(item)) ia[item] += 1;
+                else ia.Add(item, 1);
+            }
+            BuildRegionLogic("Menu", ia);
+
+            // Determine locaiton logic
             Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
             foreach (var data in datas)
             {
                 TrackerChecklistData checklistEntry = data.Value;
-                // Build region logic, we always start from the Menu region
                 // we can skip accessibility calculation if the location has been checked or ever been accessible
                 if (!checklistEntry.hasBeenChecked || !checklistEntry.isAccessible)
                 {
-                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                    else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                    else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                    else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                    else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                    else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
                 }
             }
+
         }
 
         /// <summary>
-        /// Assigns location logic to a region
+        /// Determines which regions you can access
         /// </summary>
-        /// <param name="region"></param>
-        /// <param name="previousRegions"></param>
-        public void BuildLocationLogic(TrackerRegionData region, List<TrackerRegionData> previousRegions = null)
+        /// <param name="regionName"></param>
+        /// <param name="itemsAccessible"></param>
+        public void BuildRegionLogic(string regionName, Dictionary<Item, uint> itemsAccessible)
         {
-            previousRegions ??= [];
-            previousRegions.Add(region);
-            APRandomizer.OWMLModConsole.WriteLine($"We are at {region.name} which has {region.fromConnections.Count} parents and {region.toConnections.Count} children, and we have been to {previousRegions.Count} regions including this one.");
-            // If we're out of children, we've reached a dead end and don't need to calculate any more logic
-            if (region.toConnections.Count <= 0)
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
-                return;
-            }
-            APRandomizer.OWMLModConsole.WriteLine($"Building logic for {region.name}'s children...", OWML.Common.MessageType.Info);
+            if (!CanAccessRegion.ContainsKey(regionName)) CanAccessRegion.Add(regionName, true);
+            TrackerRegionData region = TrackerRegions[regionName];
             foreach (TrackerConnectionData connection in region.toConnections)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"Building logic for {connection.to} from {region.name}", OWML.Common.MessageType.Message);
-                // Prevents looping if we've hit a region we've already been to
-                if (previousRegions.Contains(TrackerRegions[connection.to])) continue;
-
-                APRandomizer.OWMLModConsole.WriteLine($"Source old {region.name} {GetRegionLogicString(region.name)}");
-                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-
-                List<List<TrackerRequirement>> sourceRequirements = new();
-                if (region.requirements != null && region.requirements.Count > 0)
+                string to = connection.to;
+                if (!CanAccessRegion.ContainsKey(to)) CanAccessRegion.Add(to, false);
+                // We don't need to calculate this connection if the target region is already accessible
+                if (CanAccessRegion[to]) continue;
+                if (CanAccess(connection.requires, itemsAccessible))
                 {
-                    sourceRequirements = new(region.requirements);
-                    if (connection.requires != null && connection.requires.Count > 0)
-                    {
-                        foreach (List<TrackerRequirement> reqs in sourceRequirements)
-                        {
-                            reqs.AddRange(connection.requires);
-                        }
-                    }
+                    CanAccessRegion[to] = true;
+                    BuildRegionLogic(to, itemsAccessible);
                 }
-                else
-                {
-                    if (connection.requires != null && connection.requires.Count > 0)
-                    {
-                        sourceRequirements.Add(connection.requires);
-                    }
-                }
-                TrackerRegions[connection.to].requirements.AddRange(sourceRequirements);
-                TrackerRegions[connection.to].requirements = RemoveDuplicates(TrackerRegions[connection.to].requirements);
-                APRandomizer.OWMLModConsole.WriteLine($"Source new {region.name} {GetRegionLogicString(region.name)}");
-                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} new {GetRegionLogicString(connection.to)}");
-
             }
-            APRandomizer.OWMLModConsole.WriteLine($"Finished building logic for {region.name}");
-            foreach (TrackerConnectionData connection in region.toConnections)
-            {
-                // Prevents looping if we've hit a region we've already been to
-                if (previousRegions.Contains(TrackerRegions[connection.to])) continue;
-                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));
-            }
-
-                /*
-                if (region.requirements != null && region.requirements.Count > 0)
-                {
-                    // inherit all parent conditions
-                    APRandomizer.OWMLModConsole.WriteLine($"Pulling in {region.requirements.Count} conditions from parent");
-                    TrackerRegions[connection.to].requirements.AddRange(region.requirements); 
-                    APRandomizer.OWMLModConsole.WriteLine($"1 Source old {region.name} {GetRegionLogicString(region.name)}");
-                    APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-                }
-                if (connection.requires != null && connection.requires.Count > 0)
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Adding conditions {connection.requires.ElementAt(0).item}{(connection.requires.Count > 1 ? $" plus {connection.requires.Count - 1} more" : "")}");
-                    APRandomizer.OWMLModConsole.WriteLine($"2 Source old {region.name} {GetRegionLogicString(region.name)}");
-                    APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-                    // Add condition from the connection
-                    List<List<TrackerRequirement>> workingRequirement = new(TrackerRegions[connection.to].requirements);
-                    if (workingRequirement.Count > 0)
-                    {
-                        foreach (List<TrackerRequirement> reqList in workingRequirement)
-                        {
-                            APRandomizer.OWMLModConsole.WriteLine($"reqList length: {reqList.Count}");
-                            APRandomizer.OWMLModConsole.WriteLine($"3 Source old {region.name} {GetRegionLogicString(region.name)}");
-                            APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-                            foreach (TrackerRequirement newReq in connection.requires)
-                            {
-                                if (reqList.Contains(newReq)) continue;
-                                TrackerRequirement req = new()
-                                {
-                                    item = newReq.item,
-                                    anyOf = newReq.anyOf
-                                };
-                                reqList.Add(req);
-                                APRandomizer.OWMLModConsole.WriteLine($"Adding condition {newReq.item}");
-                                oldCount++;
-                            }
-                            APRandomizer.OWMLModConsole.WriteLine($"4 Source old {region.name} {GetRegionLogicString(region.name)}");
-                            APRandomizer.OWMLModConsole.WriteLine($"{connection.to} old {GetRegionLogicString(connection.to)}");
-                        }
-                        TrackerRegions[connection.to].requirements = workingRequirement;
-                    }
-                    else
-                    {
-                        APRandomizer.OWMLModConsole.WriteLine($"Requirements are empty, so just adding {connection.requires.Count} existing conditions.");
-                        TrackerRegions[connection.to].requirements.Add(connection.requires);
-                        oldCount++;
-                    }
-                }
-                TrackerRegions[connection.to].requirements = RemoveDuplicates(TrackerRegions[connection.to].requirements);
-                TrackerRegions[region.name].requirements = oldRequirements;
-                APRandomizer.OWMLModConsole.WriteLine($"Built logic for {connection.to} with {oldCount} extra conditions.", OWML.Common.MessageType.Success);
-                APRandomizer.OWMLModConsole.WriteLine($"Source {region.name} {GetRegionLogicString(region.name)}");
-                APRandomizer.OWMLModConsole.WriteLine($"{connection.to} new {GetRegionLogicString(connection.to)}");
-                BuildLocationLogic(TrackerRegions[connection.to], new(previousRegions));*/
-            
-        }
-
-        private List<List<TrackerRequirement>> RemoveDuplicates(List<List<TrackerRequirement>> requirements)
-        {
-            foreach (var requirement in requirements)
-            {
-                // Sorts all item requirements alphabetically
-                requirement.OrderBy(x => x.item).ToList();
-            }
-            List<List<TrackerRequirement>> newRequirements = new();
-            foreach (var requirement in requirements)
-            {
-                // Hopefully this actually prevents duplicates from being added
-                if (!newRequirements.Contains(requirement)) newRequirements.Add(requirement);
-            }
-            return newRequirements;
-            // AnyOfs should be dealt with later
         }
 
         /// <summary>
@@ -393,26 +305,15 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public bool IsAccessible(TrackerLocationData data)
+        public bool IsAccessible(TrackerLocationData data, Dictionary<Item, uint> itemsAccessible)
         {
-            Dictionary<Item, uint> ia = new();
-            foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
-            {
-                Item item = ItemNames.archipelagoIdToItem[itemID.Item];
-                if (ia.ContainsKey(item)) ia[item] += 1;
-                else ia.Add(item, 1);
-            }
-
             // Location logic
-            if (!CanAccess(data.requires, ia)) return false;
+            if (!CanAccess(data.requires, itemsAccessible)) return false;
 
             // Region logic
-            if (TrackerRegions[data.region].requirements == null || TrackerRegions[data.region].requirements.Count == 0) return true;
-            foreach (List<TrackerRequirement> requirementsList in TrackerRegions[data.region].requirements)
-            {
-                if (CanAccess(requirementsList, ia)) return true;
-            }
-            return false;
+            if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
+            if (!CanAccessRegion[data.region]) return false;
+            return true;
         }
 
         private bool CanAccess(List<TrackerRequirement> requirementsList, Dictionary<Item, uint> itemsAcquired)

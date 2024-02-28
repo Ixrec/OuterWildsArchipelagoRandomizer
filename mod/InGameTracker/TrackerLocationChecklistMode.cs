@@ -262,8 +262,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
             }
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + data.name);
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetLocationLogicString(data));
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
         }
 
         public void PopulateInfos(TrackerCategory category)

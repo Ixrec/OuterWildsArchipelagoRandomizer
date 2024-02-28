@@ -21,7 +21,7 @@
     },
     {
         "locationModID": "SLF__TH_IMPACT_CRATER_X1",
-        "description": "",
+        "description": "Tektite is concerned about a strange seed that fell from the sky. Talk to them about it.",
         "thumbnail": "TH_IMPACT_CRATER"
     },
     {
@@ -56,17 +56,17 @@
     },
     {
         "locationModID": "SLF__TH_QUANTUM_SHARD_X2",
-        "description": "",
+        "description": "Gabbro wrote a beautiful poem in the Quantum Grove, how about admiring their handiwork?",
         "thumbnail": "TH_QUANTUM_SHARD"
     },
     {
         "locationModID": "SLF__TM_ESKER_X1",
-        "description": "",
+        "description": "Esker has been pretty lonely, strike up some conversation with them and brighten up their day.",
         "thumbnail": "TM_ESKER"
     },
     {
         "locationModID": "SLF__TM_NORTH_POLE_X1",
-        "description": "",
+        "description": "Esker's Lunar Lookout is pretty great this time of year. The info on their plaque must be absolutely riveting.",
         "thumbnail": "TM_NORTH_POLE"
     },
     {
