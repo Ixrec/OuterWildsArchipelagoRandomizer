@@ -440,7 +440,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 selectorMaterial.SetFloat("_PercentComplete", checkedPercentage);
                 bodyName.text = CategoryToName(category);
                 locationsChecked.text = $"Locations Checked: {checkedLocs}/{allLocs}";
-                locationsAccessible.text = $"Locations Accessible: {(int)(accessLocs - checkedLocs)}/{allLocs}";
+                locationsAccessible.text = $"Locations Accessible: {(int)(accessLocs - checkedLocs)}/{allLocs - checkedLocs}";
                 string exploreText;
                 if (checkedLocs >= allLocs) exploreText = $"<color={completed}>There's no more to explore here.\nGood job!</color>";
                 else if (checkedLocs < accessLocs) exploreText = $"<color={so5}>There's more to explore here.</color>";
