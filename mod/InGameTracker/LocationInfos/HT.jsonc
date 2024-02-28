@@ -2,7 +2,7 @@
     {
         "locationModID": "ET_DRUM",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_CHERT"
     },
     {
         "locationModID": "ET_HEL",
@@ -12,7 +12,7 @@
     {
         "locationModID": "ET_SC_SHRINE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_SUNLESS_CITY"
     },
     {
         "locationModID": "ET_QML",
@@ -27,22 +27,22 @@
     {
         "locationModID": "ET_LAKEBED_CAVE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_COLEUS_CAVE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_SHARD_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_QUANTUM_CAVES"
     },
     {
         "locationModID": "ET_EP2_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "CT_ESCAPE_POD"
     },
     {
         "locationModID": "ET_SC",
@@ -77,6 +77,6 @@
     {
         "locationModID": "AT_ATP",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "TT_TIME_LOOP_DEVICE"
     }
 ]

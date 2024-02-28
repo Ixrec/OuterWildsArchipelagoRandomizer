@@ -2,7 +2,7 @@
     {
         "locationModID": "SS",
         "description": "A Nomai text wall in the Sun Station contains information on the performance of the station.",
-        "thumbnail": ""
+        "thumbnail": "S_SUNSTATION"
     },
     {
         "locationModID": "WHS",
@@ -22,31 +22,31 @@
     {
         "locationModID": "SOLANUM_SHUTTLE",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "QM_SHUTTLE"
     },
     {
         "locationModID": "QM_LAND",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "QUANTUM_MOON"
     },
     {
         "locationModID": "QM_6L",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "QM_SIXTH_LOCATION"
     },
     {
         "locationModID": "QM_SIGNAL",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "QUANTUM_MOON"
     },
     {
         "locationModID": "FREQ_DISTRESS",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_ESCAPE_POD"
     },
     {
         "locationModID": "FREQ_QUANTUM",
         "description": "",
-        "thumbnail": ""
+        "thumbnail": "BH_QUANTUM_SHARD"
     }
 ]
