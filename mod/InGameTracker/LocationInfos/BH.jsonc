@@ -1,0 +1,82 @@
+[
+    {
+        "locationModID": "BH_BANJO",
+        "description": "Your signalscope picks up the sound of a banjo from Brittle Hollow. You might want to talk to whomever is playing it and scan their signal.",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "BH_OBSERVATORY",
+        "description": "The Observatory on Brittle Hollow's South Pole contains a noteworthy scroll wall.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "BH_OS_MURAL",
+        "description": "Below their Escape Pod, in their Old Settlement, the Nomai recounted their journey to Brittle Hollow. Within their settlement, they made three murals detailing their escape from Dark Bramble.",
+        "thumbnail": "BH_MURAL_1"
+    },
+    {
+        "locationModID": "BH_FORGE",
+        "description": "The Black Hole Forge likely has some interesting scrolls to read within itself.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "BH_TOWER",
+        "description": "The top floor of the Tower of Quantum Knowledge has a scroll wall with important information for any pilgrim going on a journey to the Quantum Moon.",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "BH_SHARD_SIGNAL",
+        "description": "There's a Quantum Shard on Brittle Hollow, emitting a strange signal.",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "BH_EP1_SIGNAL",
+        "description": "The Escape Pod on Brittle Hollow has a Distress Beacon emitting a signal.",
+        "thumbnail": "BH_ESCAPE_POD"
+    },
+    {
+        "locationModID": "BH_NG_NOTE",
+        "description": "Feldspar has been to the Northern Glacier before you and left a note.",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "BH_OBSERVATORY_TR",
+        "description": "The entrance to the Observatory from the surface is destroyed. Perhaps another traveler left a recorder with information about how to get inside.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "BH_CAMPSITE_NOTE",
+        "description": "Above the crossroads lies a small surface Nomai settlement where Gravity Crystals were made. Riebeck has been there before you and has left a note on a wall near their abandoned campfire.",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "BH_SOLANUM_REPORT",
+        "description": "Within the Hanging City School District, the Nomai children wrote various reports as part of their ciriculum. Some of these reports are maintained on scrolls within the school house.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "BH_HC_SHRINE",
+        "description": "The Hanging City has an impressive Eye Shrine that mentions a strange signal on its most prominent wall.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "BH_HC",
+        "description": "The Nomai have a grand settlement under Brittle Hollow's crust. Any archaeologist would love to pay the place a visit.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "BH_NG_TANK",
+        "description": "Feldspar has left a fuel tank for other Travellers on the Northern Glacier.",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "BH_RIEBECK_TANK",
+        "description": "Riebeck is certainly willing to share fuel with you if you need it.",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "HL_VTS",
+        "description": "A testing site within one of Hollow's Lantern's volcanos contains a projection stone.",
+        "thumbnail": "VM_VOLCANO"
+    }
+]

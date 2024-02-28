@@ -40,6 +40,11 @@
         "thumbnail": "TH_QUANTUM_SHARD"
     },
     {
+        "locationModID": "FREQ_HIDE_SEEK",
+        "description": "Tephra and Galena are so eager for you to play Hide and Seek with them, that they don't even bother to check if you even have your Signalscope to play with them!",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
         "locationModID": "TH_GALENA_SIGNAL",
         "description": "Galena in the Village may not be the most talkative hatchling, but they are secretly really excited to play Hide and Seek with you if you ask. You'll want a Signalscope to find them...",
         "thumbnail": "TH_VILLAGE"
@@ -50,6 +55,16 @@
         "thumbnail": "TH_VILLAGE"
     },
     {
+        "locationModID": "TH_CAMPFIRE_NOTE",
+        "description": "There is a radio tower north of the village that has a small forest and campfire near it. At that campfire, you can find a note.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "TH_GROVE_PLAQUE",
+        "description": "Chert has made some interesting observations and recorded them on a plaque near the Quantum Grove. Check a tall tree in a connected grove.",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
         "locationModID": "AR_WHISTLE",
         "description": "Esker has been pretty lonely for a while, since Outer Wilds Ventures has not needed to use the Attlerock as an outpost for many years. Maybe pay them a visit, and listen to their song with your Signalscope.",
         "thumbnail": "TM_ESKER"
@@ -58,5 +73,25 @@
         "locationModID": "AR_ESL",
         "description": "The Nomai's first attempt to locate the Eye of the Universe can be found on the Attlerock. They've written about their findings on a wall.",
         "thumbnail": "TM_EYE_LOCATOR"
+    },
+    {
+        "locationModID": "AR_ESL_TR",
+        "description": "Another Traveller has visited the Eye Signal Locator on the Attlerock before you. They left their musings on a tape recorder.",
+        "thumbnail": "TM_EYE_LOCATOR"
+    },
+    {
+        "locationModID": "AR_ICE_TR",
+        "description": "The dark side of the Attlerock has quite a crater! A Traveller's tape recorder gives some information on the source of the impact.",
+        "thumbnail": "TM_NORTH_POLE"
+    },
+    {
+        "locationModID": "AR_ICE_TANK",
+        "description": "An enterprising Traveller takes advantage of any opportuntiy for fuel and looks for it anywhere, even on the dark side of the Attlerock.",
+        "thumbnail": "TM_NORTH_POLE"
+    },
+    {
+        "locationModID": "AR_LL",
+        "description": "Esker has a Lunar Lookout station they use to listen to the other Travellers and spy on the village. They have written their recent discoveries on a sign there.",
+        "thumbnail": "TM_NORTH_POLE"
     }
 ]

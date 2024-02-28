@@ -22,28 +22,20 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            APRandomizer.OWMLModConsole.WriteLine("Tracker Mode created", OWML.Common.MessageType.Debug);
+            APRandomizer.OWMLModConsole.WriteLine("Tracker Mode created", OWML.Common.MessageType.Success);
         }
 
         // Runs when the mode is opened in the ship computer
         public override void EnterMode(string entryID = "", List<ShipLogFact> revealQueue = null)
         {
             Tracker.CheckInventory();
-            if (Wrapper == null)
-            {
-                APRandomizer.OWMLModConsole.WriteLine("Wrapper is null!", OWML.Common.MessageType.Error);
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine("Opened Inventory Mode", OWML.Common.MessageType.Info);
-            }
             Wrapper.Open();
             Wrapper.SetName("AP Inventory");
             Wrapper.SetItems(Tracker.InventoryItems);
             Wrapper.SetSelectedIndex(0);
             Wrapper.UpdateList();
             selectedIndex = 0;
-            RootObject.name = "ArchipelagoTrackerMode";
+            RootObject.name = "ArchipelagoInventoryMode";
 
             SelectItem(0);
         }

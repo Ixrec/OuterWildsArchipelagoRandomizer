@@ -1,21 +1,24 @@
 ﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
     public class TrackerManager : MonoBehaviour
     {
+        public TrackerLogic logic;
+
+        // Tuples: name, green arrow, green exclamation point, orange asterisk
         public List<Tuple<string, bool, bool, bool>> InventoryItems;
-        /// <summary>
-        /// Parsed version of locations.jsonc
-        /// </summary>
-        public List<TrackerLocationData> TrackerLocations;
+        public List<Tuple<string, bool, bool, bool>> CurrentLocations;
 
         // This dictionary is the list of items in the Inventory Mode
         // They'll also display in this order, with the second string as the visible name
@@ -65,13 +68,27 @@ namespace ArchipelagoRandomizer.InGameTracker
             new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
             new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
         };
-
+        
         // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
         public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
+        /// <summary>
+        /// List of all locations and associated info for the currently selected category in the tracker
+        /// </summary>
+        public Dictionary<string, TrackerInfo> Infos;
+
+        // Location checklist data for each area
+        public Dictionary<string, TrackerChecklistData> HGTLocations;
+        public Dictionary<string, TrackerChecklistData> THLocations;
+        public Dictionary<string, TrackerChecklistData> BHLocations;
+        public Dictionary<string, TrackerChecklistData> GDLocations;
+        public Dictionary<string, TrackerChecklistData> DBLocations;
+        public Dictionary<string, TrackerChecklistData> OWLocations;
+
         private ICustomShipLogModesAPI api;
         private TrackerInventoryMode inventoryMode;
-        //private TrackerLocationChecklistMode checklistMode;
+        //private TrackerSelectionMode selectionMode;
+        private TrackerLocationChecklistMode checklistMode;
         private ArchipelagoSession session;
 
         private void Awake()
@@ -88,12 +105,14 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
 
             inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
-            //checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
+            checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
 
             LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
             {
                 if (loadScene == OWScene.SolarSystem) AddModes();
             };
+
+            logic = new();
         }
 
         private void Start()
@@ -101,6 +120,11 @@ namespace ArchipelagoRandomizer.InGameTracker
             APRandomizer.OnSessionOpened += (s) =>
             {
                 session = s;
+                logic.previouslyObtainedItems = s.Items.AllItemsReceived;
+                logic.InitializeAccessibility();
+                s.Items.ItemReceived += logic.RecheckAccessibility;
+                s.Locations.CheckedLocationsUpdated += logic.CheckLocations;
+                logic.CheckLocations(s.Locations.AllLocationsChecked);
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Debug);
@@ -117,16 +141,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
-
-            string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
-            if (File.Exists(path))
-            {
-                //TrackerLocations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(path); TODO we need to figure out why this doesn't parse
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
-            }
+            logic.ParseLocations();
         }
         
         /// <summary>
@@ -145,15 +160,20 @@ namespace ArchipelagoRandomizer.InGameTracker
                 inventoryMode.RootObject = itemList.gameObject;
             });
             inventoryMode.Tracker = this;
-            /* add this back later
-            api.AddMode(checklistMode, () => true, () => "Tracker");
+
+            api.AddMode(checklistMode, () => true, () => "AP Checklist");
+            api.ItemListMake(false, false, itemList =>
+            {
+                checklistMode.SelectionWrapper = new ItemListWrapper(api, itemList);
+                checklistMode.SelectionRootObject = itemList.gameObject;
+            });
             api.ItemListMake(true, true, itemList =>
             {
-                checklistMode.Wrapper = new ItemListWrapper(api, itemList);
-                checklistMode.RootObject = itemList.gameObject;
+                checklistMode.ChecklistWrapper = new ItemListWrapper(api, itemList);
+                checklistMode.ChecklistRootObject = itemList.gameObject;
             });
             checklistMode.Tracker = this;
-            */
+
         }
 
         // Reads hints from the AP server
@@ -162,25 +182,30 @@ namespace ArchipelagoRandomizer.InGameTracker
             APRandomizer.OWMLModConsole.WriteLine($"Received {hintList.Length} hints!", OWML.Common.MessageType.Info);
             foreach (Hint hint in hintList)
             {
-                // We only care about hints for the current world
-                // Probably change this later once location hinting is implemented
-                if (hint.ReceivingPlayer != session.ConnectionInfo.Slot) continue;
-
-                // We don't care about hints for items that have already been found
-                if (hint.Found) continue;
-
-                string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
-                APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName} ({hint.ItemId})", OWML.Common.MessageType.Debug);
-                // We don't need to track hints for items that aren't on the tracker
-                if (!ItemEntries.ContainsKey(itemName))
+                // hints for items that belong to your world
+                if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
                 {
-                    APRandomizer.OWMLModConsole.WriteLine($"Skipping hint for item {itemName} ({hint.ItemId}) because it's not an item in the inventory", OWML.Common.MessageType.Warning);
-                    continue;
+                    // We don't care about hints for items that have already been found
+                    if (hint.Found) continue;
+
+                    string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
+                    APRandomizer.OWMLModConsole.WriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
+                    // We don't need to track hints for items that aren't on the tracker
+                    if (!ItemEntries.ContainsKey(itemName))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                        continue;
+                    }
+                    string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
+                    string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
+                    string hintedEntrance = hint.Entrance;
+                    ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
                 }
-                string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
-                string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
-                string hintedEntrance = hint.Entrance;
-                ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
+                // hints for items placed in your world
+                if (hint.FindingPlayer == session.ConnectionInfo.Slot)
+                {
+                    logic.ApplyHint(hint, session);
+                }
             }
         }
 
@@ -331,9 +356,44 @@ namespace ArchipelagoRandomizer.InGameTracker
         #endregion
 
         #region Tracker
-        public TrackerLocationData GetLocationByID(int id)
+        public void GenerateLocationChecklist(TrackerCategory category)
         {
-            return TrackerLocations.FirstOrDefault((x) => x.address == id);
+            CurrentLocations = new();
+            Dictionary<string, TrackerChecklistData> checklistDatas = logic.GetLocationChecklist(category);
+            foreach (TrackerInfo info in Infos.Values)
+            {
+                // TODO add hints and confirmation of checked locations
+                if (Enum.TryParse<Location>(info.locationModID, out Location loc))
+                {
+                    if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
+                        continue;
+                    }
+                    if (!checklistDatas.ContainsKey(logic.GetLocationByName(info).name))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
+                        continue;
+                    }
+                    TrackerChecklistData data = checklistDatas[logic.GetLocationByName(info).name];
+                    long id = LocationNames.locationToArchipelagoId[loc];
+                    bool locationChecked = data.hasBeenChecked;
+                    string name = logic.GetLocationByID(id).name;
+                    // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
+                    name = Regex.Replace(name, ".*:.{1}", "");
+
+                    string colorTag;
+                    if (locationChecked) colorTag = "white";
+                    else if (data.isAccessible) colorTag = "lime";
+                    else colorTag = "red";
+
+                    CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
+                }
+                else
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
+                }
+            }
         }
         #endregion
     }

@@ -1,0 +1,159 @@
+[
+    {
+        "locationModID": "SLF__GD_OCEAN_X1",
+        "description": "With some luck, skill, patience, or craftiness, a Hearthian may be able to find a way beneath the current within Giant's Deep's ocean.",
+        "thumbnail": "GD_OCEAN"
+    },
+    {
+        "locationModID": "SLF__GD_OCEAN_X2",
+        "description": "Finding a way beneath the electrical field, however, has fewer options.",
+        "thumbnail": "GD_OCEAN"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X0",
+        "description": "Your old pal Gabbro is chilling on their own little island on Giant's Deep. A conversation with them is always a good time.",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X1",
+        "description": "Gabbro remembers seeing some kind of weird statue and linking with it. Get some details from them.",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X2",
+        "description": "Gabbro died, and not in the metaphorical sense. They probably have more information.",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_GABBRO_ISLAND_X3",
+        "description": "After a few loops and a few conversations with you, Gabbro is pretty confident that you and them are the only two aware of the time loop.",
+        "thumbnail": "GD_GABBRO_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X1",
+        "description": "On the floor of the construction yard is a scroll explaining how the island was used to build the Orbital Probe Cannon.",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X2",
+        "description": "A projection stone at the construction yard presents the news that the Orbital Probe Cannon will not be asked to fire.",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_CONSTRUCTION_YARD_X3",
+        "description": "A text wheel in the construction yard mentions that the cannon fired recently.",
+        "thumbnail": "GD_CONSTRUCTION_YARD"
+    },
+    {
+        "locationModID": "SLF__GD_BRAMBLE_ISLAND_X1",
+        "description": "Feldspar left a recording of their journey to the Bramble Island.",
+        "thumbnail": "GD_BRAMBLE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_ISLAND_X1",
+        "description": "The Statue Island must have some kind of Nomai plaque mentioning what the purpose of the island is.",
+        "thumbnail": "GD_STATUE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_ISLAND_X2",
+        "description": "On the Statue Island, there is a Nomai Statue with its eyes open.",
+        "thumbnail": "GD_STATUE_ISLAND"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X1",
+        "description": "Inside the Statue Island Workshop, there is a Nomai audio recorder. One segment mentions how a statue will pair memories with someone nearby.",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X2",
+        "description": "Inside the Statue Island Workshop, there is a Nomai audio recorder. One segment mentions how memories are stored in a counterpart to the statue, decorated with a mask.",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_STATUE_WORKSHOP_X3",
+        "description": "Inside the Statue Island Workshop, there is a projection stone mentioning what the Nomai did with the statues.",
+        "thumbnail": "GD_STATUE_WORKSHOP"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X1",
+        "description": "A mysterious tower on the north pole of Giant's Deep has a sign inviting pilgrims.",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X2",
+        "description": "Within the tower, on the second floor, a Nomai plaque states the Rule of Quantum Imaging.",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X3",
+        "description": "On the bottom floor of the tower, Nomai text congratulates you on your discovery of the Quantum Rule.",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__GD_QUANTUM_TOWER_X4",
+        "description": "Text on the bottom floor of the tower mentions the existence of other Quantum Shards.",
+        "thumbnail": "GD_QUANTUM_TOWER"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X1",
+        "description": "There is a mysterious structure orbiting Giant's Deep. It has a landing pad.",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X2",
+        "description": "Some text within the cannon must explain what its purpose is.",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    {
+        "locationModID": "SLF__ORBITAL_PROBE_CANNON_X3",
+        "description": "Some text within the cannon explains that the cannon was shot with more power than was anticipated.",
+        "thumbnail": "ORBITAL_PROBE_CANNON"
+    },
+    // The OPC_SUNKEN_MODULE entry does show a correct thumbnail for the module, showing the exterior, UNTIL you get the coordinates
+    // At that point the picture changes to show the coordinates
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X1",
+        "description": "Within the sunken module, a text wheel mentions that the Orbital Probe Cannon has fired millions of times.",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X2",
+        "description": "Within the sunken module, a text wheel mentions that the probe has located an anomaly.",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_SUNKEN_MODULE_X3",
+        "description": "Within the sunken module, a projection stone mentions how the Ash Twin Project is ready to receive data from the Orbital Probe Cannon.",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_EYE_COORDINATES_X1",
+        "description": "Within the sunken module, a text wheel explains the meaning of some strange symbols.",
+        "thumbnail": "OPC_SUNKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X1",
+        "description": "One of the modules on the Orbital Probe Cannon has a large crack in its window, large enough for a person to fit inside.",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X2",
+        "description": "Within the broken module, text on a projection stone mentions that the cannon only needs to fire once.",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_BROKEN_MODULE_X3",
+        "description": "Within the broken module, text on a projection stone mentions that the cannon won't be able to retrieve data from the probe if it's destroyed",
+        "thumbnail": "OPC_BROKEN_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_INTACT_MODULE_X1",
+        "description": "Within the intact module of the Orbital Probe Cannon, a text wheel on the liquid display floor indicates that the cannon was fired recently.",
+        "thumbnail": "OPC_INTACT_MODULE"
+    },
+    {
+        "locationModID": "SLF__OPC_INTACT_MODULE_X2",
+        "description": "Within the intact module of the Orbital Probe Cannon, a text wheel on the liquid display floor states that the structure has been compromised.",
+        "thumbnail": "OPC_INTACT_MODULE"
+    }
+]

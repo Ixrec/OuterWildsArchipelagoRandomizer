@@ -1,0 +1,82 @@
+﻿[
+    {
+        "locationModID": "SLF__TH_VILLAGE_X1",
+        "description": "You should visit home.",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "SLF__TH_VILLAGE_X2",
+        "description": "The Nomai Sculpture in the museum wants to look deep into your eyes...",
+        "thumbnail": "TH_VILLAGE"
+    },
+    {
+        "locationModID": "SLF__TH_ZERO_G_CAVE_X1",
+        "description": "Under the village is a cave where the gravity is pretty light.",
+        "thumbnail": "TH_ZERO_G_CAVE"
+    },
+    {
+        "locationModID": "SLF__TH_ZERO_G_CAVE_X2",
+        "description": "In the Zero-G cave, there's a mining rig in need of repair.",
+        "thumbnail": "TH_ZERO_G_CAVE"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X1",
+        "description": "Tektite is concerned about a strange seed that fell from the sky. Talk to them about it.",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X2",
+        "description": "Supposedly a harmonica signal can be heard from within the seed, if you had a Signalscope that could hear it.",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_IMPACT_CRATER_X3",
+        "description": "Your scout is just small enough to fit inside the strange seed and take some pictures of the strange space within.",
+        "thumbnail": "TH_IMPACT_CRATER"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X1",
+        "description": "Within the Nomai Mines, a scroll wall mentions how the Nomai needed to create an extremely durable shell for something.",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X2",
+        "description": "A projection stone within the mines mentions that the Ash Twin Project has no physical entrance.",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_NOMAI_MINE_X3",
+        "description": "In the water at the bottom of the geyser outside the mine, the Nomai documented their discovery of a new alien species.",
+        "thumbnail": "TH_NOMAI_MINE"
+    },
+    {
+        "locationModID": "SLF__TH_QUANTUM_SHARD_X1",
+        "description": "Within the Quantum Grove lies a strange rock that is responsible for the grove's properties. It emits a strange signal.",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__TH_QUANTUM_SHARD_X2",
+        "description": "Gabbro wrote a beautiful poem in the Quantum Grove, how about admiring their handiwork?",
+        "thumbnail": "TH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__TM_ESKER_X1",
+        "description": "Esker has been pretty lonely, strike up some conversation with them and brighten up their day.",
+        "thumbnail": "TM_ESKER"
+    },
+    {
+        "locationModID": "SLF__TM_NORTH_POLE_X1",
+        "description": "Esker's Lunar Lookout is pretty great this time of year. The info on their plaque must be absolutely riveting.",
+        "thumbnail": "TM_NORTH_POLE"
+    },
+    {
+        "locationModID": "SLF__TM_EYE_LOCATOR_X1",
+        "description": "Under the Eye Signal Locator on the Attlerock, the Nomai have a scroll wall detailing the purpose of the structure.",
+        "thumbnail": "TM_EYE_LOCATOR"
+    },
+    {
+        "locationModID": "SLF__TM_EYE_LOCATOR_X2",
+        "description": "Under the Eye Signal Locator on the Attlerock, the Nomai have a scroll wall detailing how the structure was unable to fulfill its purpose.",
+        "thumbnail": "TM_EYE_LOCATOR"
+    }
+]
