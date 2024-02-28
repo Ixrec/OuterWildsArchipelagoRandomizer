@@ -131,22 +131,22 @@
     },
     {
         "locationModID": "SLF__CT_QUANTUM_CAVES_X2",
-        "description": "",
+        "description": "The quantum shard that visits these caves emits a strange signal.",
         "thumbnail": "CT_QUANTUM_CAVES"
     },
     {
         "locationModID": "SLF__CT_LAKEBED_CAVERN_X1",
-        "description": "",
+        "description": "Deep within the Lakebed Cave, the Nomai mention the disappearance of another Nomai in text on the floor.",
         "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "SLF__CT_LAKEBED_CAVERN_X2",
-        "description": "",
+        "description": "A cave without exits contains text on a new quantum rule.",
         "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "SLF__CT_LAKEBED_CAVERN_X3",
-        "description": "",
+        "description": "A cave without exits contains text on a new quantum rule. It requires a concious observer to no longer be aware of their surroundings.",
         "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {

@@ -1,7 +1,7 @@
 [
     {
         "locationModID": "ET_DRUM",
-        "description": "",
+        "description": "Chert is quite the percussionist! Scan their sick beats with your signalscope.",
         "thumbnail": "CT_CHERT"
     },
     {
@@ -11,7 +11,7 @@
     },
     {
         "locationModID": "ET_SC_SHRINE",
-        "description": "",
+        "description": "Within the Sunless City, the Nomai have a shrine that they've built. Some text inside must explain what the shrine is for.",
         "thumbnail": "CT_SUNLESS_CITY"
     },
     {
@@ -26,17 +26,17 @@
     },
     {
         "locationModID": "ET_LAKEBED_CAVE",
-        "description": "",
+        "description": "In the deepest chamber of the Lakebed Cave, the Nomai have written a report of a Nomai disappearance.",
         "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_COLEUS_CAVE",
-        "description": "",
+        "description": "The missing Nomai wrote down information on how they disappeared within their sealed chamber.",
         "thumbnail": "CT_LAKEBED_CAVERN"
     },
     {
         "locationModID": "ET_SHARD_SIGNAL",
-        "description": "",
+        "description": "Within Ember Twin's caves, a quantum rock is sometimes seen, and it emits an odd signal.",
         "thumbnail": "CT_QUANTUM_CAVES"
     },
     {

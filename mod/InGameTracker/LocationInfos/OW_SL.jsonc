@@ -26,12 +26,12 @@
     },
     {
         "locationModID": "SLF__WHS_X2",
-        "description": "",
+        "description": "A projection stone that was in the White Hole Station mentioned some odd temporal fluncuations from warping.",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
         "locationModID": "SLF__WHS_X3",
-        "description": "",
+        "description": "A projection stone that was in the White Hole Station mentioned that those who warped arrived at their destination a miniscule amount of time before they left.",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
         "locationModID": "SLF__COMET_SHUTTLE_X2",
-        "description": "",
+        "description": "A Nomai Audio Log within the Frozen Shuttle mentions the expedition to the comet, and the strange energy readings they detected.",
         "thumbnail": "COMET_SHUTTLE"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
         "locationModID": "SLF__COMET_SHUTTLE_X4",
-        "description": "",
+        "description": "A Nomai Audio Log within the Frozen Shuttle mentions that the Nomai who stayed with the shuttle has lost contact with her friends.",
         "thumbnail": "COMET_SHUTTLE"
     },
     {
@@ -91,12 +91,12 @@
     },
     {
         "locationModID": "SLF__QM_SHUTTLE_X1",
-        "description": "",
+        "description": "A Nomai Audio Log on the Quantum Moon Shuttle mentions that a Nomain named Solanum landed it there.",
         "thumbnail": "QM_SHUTTLE"
     },
     {
         "locationModID": "SLF__QM_SHUTTLE_X2",
-        "description": "",
+        "description": "The Nomai Audio Log on the Quantum Moon Shuttle mentions that it landed on the South Pole.",
         "thumbnail": "QM_SHUTTLE"
     },
     {
