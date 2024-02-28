@@ -15,6 +15,9 @@ namespace ArchipelagoRandomizer.InGameTracker
     /// </summary>
     public class TrackerLogic
     {
+        /// <summary>
+        /// List of items the player has obtained prior to receiving a new item
+        /// </summary>
         public ReadOnlyCollection<NetworkItem> previouslyObtainedItems;
 
         /// <summary>
@@ -31,7 +34,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         private TrackerManager tracker;
 
         // Ember Twin, Ash Twin, Cave Twin, Tower Twin
-        private readonly string[] HTPrefixes = ["ET", "AT", "CT", "TT"];
+        private readonly string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
         // Timber Hearth, Attlerock, Timber Moon
         private readonly string[] THPrefixes = ["TH", "AR", "TM"];
         // Brittle Hollow, Hollow's Lantern, Volcano Moon
@@ -41,11 +44,14 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Dark Bramble
         private readonly string[] DBPrefixes = ["DB"];
 
+        /// <summary>
+        /// Parse locations.jsonc and connections.json into data that we can use
+        /// </summary>
         public void ParseLocations()
         {
             tracker = APRandomizer.Tracker;
-            TrackerLocations = new();
-            TrackerRegions = new();
+            TrackerLocations = [];
+            TrackerRegions = [];
             string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
             if (File.Exists(path))
             {
@@ -74,77 +80,12 @@ namespace ArchipelagoRandomizer.InGameTracker
         }
 
         /// <summary>
-        /// Returns the logic of a location as a string
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public string GetLocationLogicString(TrackerLocationData data)
-        {
-            string logicString = "Location Logic: ";
-            foreach (TrackerRequirement req in data.requires)
-            {
-                if (!string.IsNullOrEmpty(req.item))
-                {
-                    if (!logicString.EndsWith(": ")) logicString += " AND ";
-                    logicString += $"(item: {req.item})";
-                }
-            }
-
-            return logicString;
-        }
-
-        /// <summary>
-        /// Returns the logic of a region as a string
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public string GetRegionLogicString(string region)
-        {
-            TrackerRegionData data = TrackerRegions[region];
-            string logicString = "Regional Logic: ";
-            if (data.fromConnections != null && data.fromConnections.Count > 0)
-            {
-                foreach (TrackerConnectionData connection in data.fromConnections)
-                {
-                    if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " OR ";
-                    logicString += $"(Can Access: {connection.from} ";
-                    if (connection.requires != null && connection.requires.Count > 0)
-                    {
-                        logicString += "AND (";
-                        foreach (TrackerRequirement req in connection.requires)
-                        {
-                            if (!string.IsNullOrEmpty(req.item))
-                            {
-                                if (!logicString.EndsWith("(")) logicString += " AND ";
-                                logicString += $"Item: {req.item}";
-                            }
-                            if (req.anyOf != null &&  req.anyOf.Count > 0)
-                            {
-                                logicString = "(";
-                                foreach (var con in req.anyOf)
-                                {
-                                    if (!logicString.EndsWith("(")) logicString += " OR ";
-                                    logicString += $"Item: {con.item}";
-                                    // not going to bother with nested any ofs for now, not sure if those will ever have a reason to be used.
-                                }
-                                logicString += ")";
-                            }
-                        }
-                        logicString += ")";
-                    }
-                    logicString += ")";
-                }
-            }
-            return logicString;
-        }
-
-        /// <summary>
         /// Populates all the (prefix)Locations dictionaries in Tracker Manager
         /// </summary>
         public void InitializeAccessibility()
         {
             CanAccessRegion = new();
-            tracker.HTLocations = new();
+            tracker.HGTLocations = new();
             tracker.THLocations = new();
             tracker.BHLocations = new();
             tracker.GDLocations = new();
@@ -156,7 +97,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 string name = loc.name;
                 prefix = name.Substring(0, 2);
                 TrackerChecklistData data = new(false, false, "");
-                if (HTPrefixes.Contains(prefix)) tracker.HTLocations.Add(name, data);
+                if (HGTPrefixes.Contains(prefix)) tracker.HGTLocations.Add(name, data);
                 else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(name, data);
                 else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
                 else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
@@ -211,7 +152,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 // we can skip accessibility calculation if the location has been checked or ever been accessible
                 if (!checklistEntry.hasBeenChecked || !checklistEntry.isAccessible)
                 {
-                    if (tracker.HTLocations.ContainsKey(data.Key)) tracker.HTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                    if (tracker.HGTLocations.ContainsKey(data.Key)) tracker.HGTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
@@ -255,16 +196,56 @@ namespace ArchipelagoRandomizer.InGameTracker
             foreach (long location in checkedLocations)
             {
                 TrackerLocationData loc = GetLocationByID(location);
-                if (tracker.HTLocations.ContainsKey(loc.name)) tracker.HTLocations[loc.name].hasBeenChecked = true;
-                else if (tracker.THLocations.ContainsKey(loc.name)) tracker.THLocations[loc.name].hasBeenChecked = true;
-                else if (tracker.BHLocations.ContainsKey(loc.name)) tracker.BHLocations[loc.name].hasBeenChecked = true;
-                else if (tracker.GDLocations.ContainsKey(loc.name)) tracker.GDLocations[loc.name].hasBeenChecked = true;
-                else if (tracker.DBLocations.ContainsKey(loc.name)) tracker.DBLocations[loc.name].hasBeenChecked = true;
-                else if (tracker.OWLocations.ContainsKey(loc.name)) tracker.OWLocations[loc.name].hasBeenChecked = true;
+                if (tracker.HGTLocations.ContainsKey(loc.name))
+                {
+                    tracker.HGTLocations[loc.name].hasBeenChecked = true;
+                    tracker.HGTLocations[loc.name].hintText = "";
+                }
+                else if (tracker.THLocations.ContainsKey(loc.name))
+                { 
+                    tracker.THLocations[loc.name].hasBeenChecked = true;
+                    tracker.THLocations[loc.name].hintText = "";
+                }
+                else if (tracker.BHLocations.ContainsKey(loc.name))
+                {
+                    tracker.BHLocations[loc.name].hasBeenChecked = true;
+                    tracker.BHLocations[loc.name].hintText = "";
+                }
+                else if (tracker.GDLocations.ContainsKey(loc.name))
+                {
+                    tracker.GDLocations[loc.name].hasBeenChecked = true;
+                    tracker.GDLocations[loc.name].hintText = "";
+                }
+                else if (tracker.DBLocations.ContainsKey(loc.name))
+                { 
+                    tracker.DBLocations[loc.name].hasBeenChecked = true;
+                    tracker.DBLocations[loc.name].hintText = "";
+                }
+                else if (tracker.OWLocations.ContainsKey(loc.name))
+                {
+                    tracker.OWLocations[loc.name].hasBeenChecked = true;
+                    tracker.OWLocations[loc.name].hintText = "";
+                }
                 else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
             }
         }
 
+        /// <summary>
+        /// Returns if a location should be accessible according to logic
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public bool IsAccessible(TrackerLocationData data, Dictionary<Item, uint> itemsAccessible)
+        {
+            // Location logic
+            if (!CanAccess(data.requires, itemsAccessible)) return false;
+
+            // Region logic
+            if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
+            if (!CanAccessRegion[data.region]) return false;
+            return true;
+        }
+        
         /// <summary>
         /// Reads a hint and applies it to the checklist
         /// </summary>
@@ -291,31 +272,16 @@ namespace ArchipelagoRandomizer.InGameTracker
             string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
             string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
             TrackerLocationData loc = GetLocationByID(hint.LocationId);
-            if (tracker.HTLocations.ContainsKey(loc.name)) tracker.HTLocations[loc.name].hintText = hintDescription;
-            else if (tracker.THLocations.ContainsKey(loc.name)) tracker.THLocations[loc.name].hintText = hintDescription;
-            else if (tracker.BHLocations.ContainsKey(loc.name)) tracker.BHLocations[loc.name].hintText = hintDescription;
-            else if (tracker.GDLocations.ContainsKey(loc.name)) tracker.GDLocations[loc.name].hintText = hintDescription;
-            else if (tracker.DBLocations.ContainsKey(loc.name)) tracker.DBLocations[loc.name].hintText = hintDescription;
-            else if (tracker.OWLocations.ContainsKey(loc.name)) tracker.OWLocations[loc.name].hintText = hintDescription;
+            if (tracker.HGTLocations.ContainsKey(loc.name) && !tracker.HGTLocations[loc.name].hasBeenChecked) tracker.HGTLocations[loc.name].hintText = hintDescription;
+            else if (tracker.THLocations.ContainsKey(loc.name) && !tracker.THLocations[loc.name].hasBeenChecked) tracker.THLocations[loc.name].hintText = hintDescription;
+            else if (tracker.BHLocations.ContainsKey(loc.name) && !tracker.BHLocations[loc.name].hasBeenChecked) tracker.BHLocations[loc.name].hintText = hintDescription;
+            else if (tracker.GDLocations.ContainsKey(loc.name) && !tracker.GDLocations[loc.name].hasBeenChecked) tracker.GDLocations[loc.name].hintText = hintDescription;
+            else if (tracker.DBLocations.ContainsKey(loc.name) && !tracker.DBLocations[loc.name].hasBeenChecked) tracker.DBLocations[loc.name].hintText = hintDescription;
+            else if (tracker.OWLocations.ContainsKey(loc.name) && !tracker.OWLocations[loc.name].hasBeenChecked) tracker.OWLocations[loc.name].hintText = hintDescription;
             else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
         }
 
-        /// <summary>
-        /// Returns if a location should be accessible according to logic
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public bool IsAccessible(TrackerLocationData data, Dictionary<Item, uint> itemsAccessible)
-        {
-            // Location logic
-            if (!CanAccess(data.requires, itemsAccessible)) return false;
-
-            // Region logic
-            if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
-            if (!CanAccessRegion[data.region]) return false;
-            return true;
-        }
-
+        // AND condition
         private bool CanAccess(List<TrackerRequirement> requirementsList, Dictionary<Item, uint> itemsAcquired)
         {
             foreach (TrackerRequirement regionRequirement in requirementsList)
@@ -327,7 +293,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             return true;
         }
-
+        
+        // OR condition
         private bool AnyOfAccess(List<TrackerRequirement> reqs, Dictionary<Item, uint> itemsAcquired)
         {
             foreach (var req in reqs)
@@ -338,6 +305,71 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (req.item != null && itemsAcquired.ContainsKey(ItemNames.itemNamesReversed[req.item])) return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns the logic of a location as a string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public string GetLocationLogicString(TrackerLocationData data)
+        {
+            string logicString = "Location Logic: ";
+            foreach (TrackerRequirement req in data.requires)
+            {
+                if (!string.IsNullOrEmpty(req.item))
+                {
+                    if (!logicString.EndsWith(": ")) logicString += " AND ";
+                    logicString += $"(item: {req.item})";
+                }
+            }
+
+            return logicString;
+        }
+
+        /// <summary>
+        /// Returns the logic of a region as a string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public string GetRegionLogicString(string region)
+        {
+            TrackerRegionData data = TrackerRegions[region];
+            string logicString = "Regional Logic: ";
+            if (data.fromConnections != null && data.fromConnections.Count > 0)
+            {
+                foreach (TrackerConnectionData connection in data.fromConnections)
+                {
+                    if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " OR ";
+                    logicString += $"(Can Access: {connection.from} ";
+                    if (connection.requires != null && connection.requires.Count > 0)
+                    {
+                        logicString += "AND (";
+                        foreach (TrackerRequirement req in connection.requires)
+                        {
+                            if (!string.IsNullOrEmpty(req.item))
+                            {
+                                if (!logicString.EndsWith("(")) logicString += " AND ";
+                                logicString += $"Item: {req.item}";
+                            }
+                            if (req.anyOf != null && req.anyOf.Count > 0)
+                            {
+                                logicString = "(";
+                                foreach (var con in req.anyOf)
+                                {
+                                    if (!logicString.EndsWith("(")) logicString += " OR ";
+                                    logicString += $"Item: {con.item}";
+                                    // not going to bother with nested any ofs for now, not sure if those will ever have a reason to be used.
+                                }
+                                logicString += ")";
+                            }
+                        }
+                        logicString += ")";
+                    }
+                    logicString += ")";
+                }
+            }
+            return logicString;
         }
 
         /// <summary>
@@ -370,9 +402,14 @@ namespace ArchipelagoRandomizer.InGameTracker
             return GetLocationChecklist(category).Count();
         }
 
+        /// <summary>
+        /// Returns if there's a location with a hint in the area
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
         public bool GetHasHint(TrackerCategory category)
         {
-            return GetLocationChecklist(category).Count(x => x.Value.hintText != "") > 0;
+            return GetLocationChecklist(category).Count(x => x.Value.hintText != "" && !x.Value.hasBeenChecked) > 0;
         }
 
         /// <summary>
@@ -386,7 +423,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 case TrackerCategory.HourglassTwins:
                     {
-                        return tracker.HTLocations;
+                        return tracker.HGTLocations;
                     }
                 case TrackerCategory.TimberHearth:
                     {
@@ -411,7 +448,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 case TrackerCategory.All:
                     {
                         // returns all of them
-                        return tracker.HTLocations.Concat(tracker.THLocations).Concat(tracker.BHLocations).Concat(tracker.GDLocations).Concat(tracker.DBLocations).Concat(tracker.OWLocations).ToDictionary(x => x.Key, x => x.Value);
+                        return tracker.HGTLocations.Concat(tracker.THLocations).Concat(tracker.BHLocations).Concat(tracker.GDLocations).Concat(tracker.DBLocations).Concat(tracker.OWLocations).ToDictionary(x => x.Key, x => x.Value);
                     }
             }
             return null;

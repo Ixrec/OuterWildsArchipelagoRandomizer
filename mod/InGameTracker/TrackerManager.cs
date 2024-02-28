@@ -78,7 +78,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         public Dictionary<string, TrackerInfo> Infos;
 
         // Location checklist data for each area
-        public Dictionary<string, TrackerChecklistData> HTLocations;
+        public Dictionary<string, TrackerChecklistData> HGTLocations;
         public Dictionary<string, TrackerChecklistData> THLocations;
         public Dictionary<string, TrackerChecklistData> BHLocations;
         public Dictionary<string, TrackerChecklistData> GDLocations;
@@ -395,11 +395,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
             }
         }
-        
-
-
-
-        
         #endregion
     }
 }

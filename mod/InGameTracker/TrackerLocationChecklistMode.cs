@@ -64,21 +64,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Runs when the mode is created
         public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
         {
-            optionsList = new();
-            for (int i = 0; i < optionsEntries.Length; i++)
-            {
-                var entry = optionsEntries[i];
-
-                TrackerCategory category = (TrackerCategory)i;
-                bool hasAvailableChecks = false;
-                bool hasHint = false;
-                if (i != 0)
-                { 
-                    hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
-                    hasHint = Tracker.logic.GetHasHint(category);
-                }
-                optionsList.Add(new(entry, false, hasAvailableChecks, hasHint));
-            }
+            
             if (Victory.goalSetting == Victory.GoalSetting.SongOfFive)
             {
                 victoryCondition = $"<color={so5}>THE SONG OF FIVE</color>";
@@ -377,6 +363,22 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         private void OpenSelectionMode()
         {
+            optionsList = new();
+            for (int i = 0; i < optionsEntries.Length; i++)
+            {
+                var entry = optionsEntries[i];
+
+                TrackerCategory category = (TrackerCategory)i;
+                bool hasAvailableChecks = false;
+                bool hasHint = false;
+                if (i != 0)
+                {
+                    hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
+                    hasHint = Tracker.logic.GetHasHint(category);
+                }
+                optionsList.Add(new(entry, false, hasAvailableChecks, hasHint));
+            }
+
             SelectionWrapper.Open();
             SelectionWrapper.SetName("AP Tracker");
             SelectionWrapper.SetItems(optionsList);

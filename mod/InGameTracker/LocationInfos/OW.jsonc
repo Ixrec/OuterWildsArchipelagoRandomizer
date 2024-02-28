@@ -6,8 +6,8 @@
     },
     {
         "locationModID": "WHS",
-        "description": "",
-        "thumbnail": ""
+        "description": "In the distant reaches of the Solar System lies a white hole, with a station in close proximity. Certainly there is some text within explaining its purpose.",
+        "thumbnail": "WHITE_HOLE_STATION"
     },
     {
         "locationModID": "FROZEN_SHUTTLE",

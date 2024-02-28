@@ -21,7 +21,7 @@
     },
     {
         "locationModID": "SLF__WHS_X1",
-        "description": "",
+        "description": "The White Hole station contains a text wall mentioning that it is a warp tower.",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
@@ -36,7 +36,7 @@
     },
     {
         "locationModID": "SLF__WHS_X4",
-        "description": "",
+        "description": "A text wall within the station mentions that the tower is only active during a very short period (for those without override codes, of course).",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
