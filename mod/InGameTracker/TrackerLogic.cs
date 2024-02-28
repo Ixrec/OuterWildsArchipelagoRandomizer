@@ -152,7 +152,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 TrackerChecklistData checklistEntry = data.Value;
                 // we can skip accessibility calculation if the location has been checked or ever been accessible
-                if (!checklistEntry.hasBeenChecked || !checklistEntry.isAccessible)
+                if (!checklistEntry.hasBeenChecked && !checklistEntry.isAccessible)
                 {
                     if (tracker.HGTLocations.ContainsKey(data.Key)) tracker.HGTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
