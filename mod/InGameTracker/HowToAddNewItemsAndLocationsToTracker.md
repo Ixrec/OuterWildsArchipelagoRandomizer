@@ -70,11 +70,11 @@ The Ship Log Tracker includes a Location Tracker mode, displaying a list of majo
 
 The way the Tracker determines which major region a location is in is by looking at the name value for the location in locations.jsonc and looking at the prefix (first two characters) of the name:
 
-Hourglass Twins: **"ET"** (Ember Twin), **"AT"** (Ash Twin), **"CT"** (Cave Twin), or **"TT"** (Tower Twin)
-Timber Hearth: **"TH"** (Timber Hearth), **"AR"** (Attlerock), or **"TM"** (Timber Moon)
-Brittle Hollow: **"BH" (Brittle Hollow), **"HL" (Hollow's Lantern), or **"VM" (Volcanic Moon)
-Giant's Deep: **"GD"** (Giant's Deep), **"OP"**, or **"OR"** (both for Orbital Probe Cannon)
-Dark Bramble: **"DB"** (Dark Bramble)
+* Hourglass Twins: **"ET"** (Ember Twin), **"AT"** (Ash Twin), **"CT"** (Cave Twin), or **"TT"** (Tower Twin)
+* Timber Hearth: **"TH"** (Timber Hearth), **"AR"** (Attlerock), or **"TM"** (Timber Moon)
+* Brittle Hollow: **"BH" (Brittle Hollow), **"HL" (Hollow's Lantern), or **"VM" (Volcanic Moon)
+* Giant's Deep: **"GD"** (Giant's Deep), **"OP"**, or **"OR"** (both for Orbital Probe Cannon)
+* Dark Bramble: **"DB"** (Dark Bramble)
 
 Anything else gets thrown into the generic "Outer Wilds" region. Thus, when naming a location, it should include the relevant prefix.
 
