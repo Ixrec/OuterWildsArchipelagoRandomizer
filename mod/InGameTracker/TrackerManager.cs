@@ -127,13 +127,13 @@ namespace ArchipelagoRandomizer.InGameTracker
                 logic.CheckLocations(s.Locations.AllLocationsChecked);
                 ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
-                APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Success);
+                APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Debug);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
             {
                 if (s != null)
                 {
-                    APRandomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Success);
+                    APRandomizer.OWMLModConsole.WriteLine("Session closed!", OWML.Common.MessageType.Debug);
                     foreach (InventoryItemEntry entry in ItemEntries.Values)
                     {
                         entry.Hints.Clear();
@@ -220,8 +220,13 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 if (Enum.TryParse(item.ID, out Item subject))
                 {
-                    // Produce a string like "[X] Launch Codes" or "[5] Marshmallow"
                     uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
+
+                    // The three marshmallow items are treated as a single "Marshmallow" entry by the tracker
+                    if (subject == Item.Marshmallow)
+                        quantity += items[Item.BurntMarshmallow] + items[Item.PerfectMarshmallow];
+
+                    // Produce a string like "[X] Launch Codes" or "[5] Marshmallow"
                     bool couldHaveMultiple = item.ApItem >= Item.OxygenCapacityUpgrade; // see comments in Item enum
                     string countText = couldHaveMultiple ? quantity.ToString() : (quantity != 0 ? "X" : " "); // only unique items use X
                     string itemName = $"[{countText}] {item.Name}";
@@ -284,9 +289,13 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <param name="item"></param>
         public static void MarkItemAsNew(Item item)
         {
+            // The three marshmallow items are treated as a single "Marshmallow" entry by the tracker
+            if (item == Item.BurntMarshmallow || item == Item.PerfectMarshmallow)
+                item = Item.Marshmallow;
+
             string itemID = item.ToString();
             TrackerManager tracker = APRandomizer.Tracker;
-            if (itemID.Contains("Signal"))
+            if (ItemNames.itemToSignal.ContainsKey(item))
             {
                 if (TryGetFrequency(item, out string frequency))
                 {

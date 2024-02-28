@@ -178,10 +178,23 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifySignal))]
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
-        if (!LocationNames.signalToLocation.TryGetValue(__instance.GetName(), out Location location))
+        var signal = __instance.GetName();
+        if (!LocationNames.signalToLocation.TryGetValue(signal, out Location signalLocation))
             return true;
 
-        if (APRandomizer.SaveData.locationsChecked[location])
+        // Because of all the different states you can be in with frequency item, frequency location,
+        // signal item and signal location all being separate things you may or may not have,
+        // there are corner cases where the vanilla "scanning a signal implies scanning the frequency"
+        // doesn't work and we have to do a frequency check here instead of relying on IdentifyFrequency.
+        if (signalToFrequency.TryGetValue(signal, out var frequency))
+            if (LocationNames.frequencyToLocation.TryGetValue(frequency, out var frequencyLocation))
+                if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"AudioSignal_IdentifySignal_Prefix checking corresponding frequency location: {frequencyLocation}");
+                    LocationTriggers.CheckLocation(frequencyLocation);
+                }
+
+        if (APRandomizer.SaveData.locationsChecked[signalLocation])
             return false; // skip vanilla implementation
 
         return true;

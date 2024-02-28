@@ -66,25 +66,33 @@ namespace ArchipelagoRandomizer
         private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
         public void WriteToSaveFile()
         {
-            if (pendingSaveFileWrite != null) return;
+            if (pendingSaveFileWrite != null)
+            {
+                OWMLModConsole.WriteLine($"WriteToSaveFile() doing nothing because a write is already pending", MessageType.Debug);
+                return;
+            }
 
             if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
             {
-                OWMLModConsole.WriteLine("WriteToSaveFile() actually writing immediately, and scheduling a pending write in 1 second", MessageType.Debug);
+                OWMLModConsole.WriteLine($"WriteToSaveFile() actually writing immediately", MessageType.Debug);
                 ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                 lastWriteTime = DateTimeOffset.UtcNow;
             }
             else
+            {
                 OWMLModConsole.WriteLine("WriteToSaveFile() scheduling a pending write in 1 second", MessageType.Debug);
 
-            pendingSaveFileWrite = Task.Run(async () =>
-            {
-                await Task.Delay(1000);
+                pendingSaveFileWrite = Task.Run(async () =>
+                {
+                    await Task.Delay(1000);
 
-                OWMLModConsole.WriteLine("WriteToSaveFile() executing a pending write after 1 second", MessageType.Debug);
-                ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
-                lastWriteTime = DateTimeOffset.UtcNow;
-            });
+                    OWMLModConsole.WriteLine($"WriteToSaveFile() executing a pending write after 1 second", MessageType.Debug);
+                    ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+                    lastWriteTime = DateTimeOffset.UtcNow;
+
+                    pendingSaveFileWrite = null;
+                });
+            }
         }
 
         private void SetupSaveData()
@@ -239,7 +247,7 @@ namespace ArchipelagoRandomizer
 
         private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
         {
-            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called");
+            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called", MessageType.Debug);
 
             bool saveDataChanged = false;
             while (receivedItemsHelper.PeekItem().Item != 0)
