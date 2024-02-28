@@ -41,7 +41,7 @@
     },
     {
         "locationModID": "SLF__COMET_SHUTTLE_X1",
-        "description": "",
+        "description": "On the Interloper, there is a Nomai shuttle on the dark side of it. Some text near or in the shuttle might explain what it is.",
         "thumbnail": "COMET_SHUTTLE"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
         "locationModID": "SLF__COMET_SHUTTLE_X3",
-        "description": "",
+        "description": "A Nomai Audio Log outside the Frozen Shuttle's landing site explains that one Nomai stayed behind to keep the shuttle warm, while others went on an expedition into the comet.",
         "thumbnail": "COMET_SHUTTLE"
     },
     {
@@ -61,22 +61,22 @@
     },
     {
         "locationModID": "SLF__COMET_INTERIOR_X1",
-        "description": "",
+        "description": "An expedition was lead to the Interloper. What became of the crew members who went inside it?",
         "thumbnail": "COMET_INTERIOR"
     },
     {
         "locationModID": "SLF__COMET_INTERIOR_X2",
-        "description": "",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that it is filled with strange exotic matter.",
         "thumbnail": "COMET_INTERIOR"
     },
     {
         "locationModID": "SLF__COMET_INTERIOR_X3",
-        "description": "",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that the matter within could blanket the Solar System instantly if it were released.",
         "thumbnail": "COMET_INTERIOR"
     },
     {
         "locationModID": "SLF__COMET_INTERIOR_X4",
-        "description": "",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that one Nomai stayed behind to study the core, while another left in a vain attempt to warn the other Nomai.",
         "thumbnail": "COMET_INTERIOR"
     },
     {

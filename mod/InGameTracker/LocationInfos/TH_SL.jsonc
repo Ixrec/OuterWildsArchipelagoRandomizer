@@ -26,12 +26,12 @@
     },
     {
         "locationModID": "SLF__TH_IMPACT_CRATER_X2",
-        "description": "",
+        "description": "Supposedly a harmonica signal can be heard from within the seed, if you had a Signalscope that could hear it.",
         "thumbnail": "TH_IMPACT_CRATER"
     },
     {
         "locationModID": "SLF__TH_IMPACT_CRATER_X3",
-        "description": "",
+        "description": "Your scout is just small enough to fit inside the strange seed and take some pictures of the strange space within.",
         "thumbnail": "TH_IMPACT_CRATER"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
         "locationModID": "SLF__TH_QUANTUM_SHARD_X1",
-        "description": "",
+        "description": "Within the Quantum Grove lies a strange rock that is responsible for the grove's properties. It emits a strange signal.",
         "thumbnail": "TH_QUANTUM_SHARD"
     },
     {

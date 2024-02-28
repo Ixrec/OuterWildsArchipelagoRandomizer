@@ -1,12 +1,12 @@
 [
     {
         "locationModID": "SLF__GD_OCEAN_X1",
-        "description": "",
+        "description": "With some luck, skill, patience, or craftiness, a Hearthian may be able to find a way beneath the current within Giant's Deep's ocean.",
         "thumbnail": "GD_OCEAN"
     },
     {
         "locationModID": "SLF__GD_OCEAN_X2",
-        "description": "",
+        "description": "Finding a way beneath the electrical field, however, has fewer options.",
         "thumbnail": "GD_OCEAN"
     },
     {
@@ -46,32 +46,32 @@
     },
     {
         "locationModID": "SLF__GD_BRAMBLE_ISLAND_X1",
-        "description": "",
+        "description": "Feldspar left a recording of their journey to the Bramble Island.",
         "thumbnail": "GD_BRAMBLE_ISLAND"
     },
     {
         "locationModID": "SLF__GD_STATUE_ISLAND_X1",
-        "description": "",
+        "description": "The Statue Island must have some kind of Nomai plaque mentioning what the purpose of the island is.",
         "thumbnail": "GD_STATUE_ISLAND"
     },
     {
         "locationModID": "SLF__GD_STATUE_ISLAND_X2",
-        "description": "",
+        "description": "On the Statue Island, there is a Nomai Statue with its eyes open.",
         "thumbnail": "GD_STATUE_ISLAND"
     },
     {
         "locationModID": "SLF__GD_STATUE_WORKSHOP_X1",
-        "description": "",
+        "description": "Inside the Statue Island Workshop, there is a Nomai audio recorder. One segment mentions how a statue will pair memories with someone nearby.",
         "thumbnail": "GD_STATUE_WORKSHOP"
     },
     {
         "locationModID": "SLF__GD_STATUE_WORKSHOP_X2",
-        "description": "",
+        "description": "Inside the Statue Island Workshop, there is a Nomai audio recorder. One segment mentions how memories are stored in a counterpart to the statue, decorated with a mask.",
         "thumbnail": "GD_STATUE_WORKSHOP"
     },
     {
         "locationModID": "SLF__GD_STATUE_WORKSHOP_X3",
-        "description": "",
+        "description": "Inside the Statue Island Workshop, there is a projection stone mentioning what the Nomai did with the statues.",
         "thumbnail": "GD_STATUE_WORKSHOP"
     },
     {
@@ -111,22 +111,22 @@
     },
     {
         "locationModID": "SLF__OPC_SUNKEN_MODULE_X1",
-        "description": "",
+        "description": "Within the sunken module, a text wheel mentions that the Orbital Probe Cannon has fired millions of times.",
         "thumbnail": "OPC_SUNKEN_MODULE"
     },
     {
         "locationModID": "SLF__OPC_SUNKEN_MODULE_X2",
-        "description": "",
+        "description": "Within the sunken module, a text wheel mentions that the probe has located an anomaly.",
         "thumbnail": "OPC_SUNKEN_MODULE"
     },
     {
         "locationModID": "SLF__OPC_SUNKEN_MODULE_X3",
-        "description": "",
+        "description": "Within the sunken module, a projection stone mentions how the Ash Twin Project is ready to receive data from the Orbital Probe Cannon.",
         "thumbnail": "OPC_SUNKEN_MODULE"
     },
     {
         "locationModID": "SLF__OPC_EYE_COORDINATES_X1",
-        "description": "",
+        "description": "Within the sunken module, a text wheel explains the meaning of some strange symbols.",
         // Since coordinates are randomized, showing the coordinates picture is probably not a great idea
         "thumbnail": "OPC_SUNKEN_MODULE"
     },

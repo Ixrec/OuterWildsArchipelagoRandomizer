@@ -11,13 +11,13 @@
     },
     {
         "locationModID": "FROZEN_SHUTTLE",
-        "description": "",
-        "thumbnail": ""
+        "description": "On the Interloper, there is a Nomai shuttle on the dark side of it. Some text near or in the shuttle might explain what it is.",
+        "thumbnail": "COMET_SHUTTLE"
     },
     {
         "locationModID": "IL_CORE",
-        "description": "",
-        "thumbnail": ""
+        "description": "Within the depths of the Interloper, there must be a Nomai log recalling the events of the expedition there.",
+        "thumbnail": "COMET_INTERIOR"
     },
     {
         "locationModID": "SOLANUM_SHUTTLE",
