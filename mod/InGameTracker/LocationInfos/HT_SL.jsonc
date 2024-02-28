@@ -161,27 +161,27 @@
     },
     {
         "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X1",
-        "description": "",
+        "description": "The Ash Twin Project is contained within Ash Twin.",
         "thumbnail": "TT_TIME_LOOP_DEVICE"
     },
     {
         "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X2",
-        "description": "",
+        "description": "Within the ATP, a text wheel displays which statues are communicating with it.",
         "thumbnail": "TT_TIME_LOOP_DEVICE"
     },
     {
         "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X3",
-        "description": "",
+        "description": "The sixth text cluster in the ATP mentions how the ATP needs a supernova.",
         "thumbnail": "TT_TIME_LOOP_DEVICE"
     },
     {
         "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X4",
-        "description": "",
+        "description": "The seventh text cluster in the ATP mentions that the Sun Station failed.",
         "thumbnail": "TT_TIME_LOOP_DEVICE"
     },
     {
         "locationModID": "SLF__TT_TIME_LOOP_DEVICE_X5",
-        "description": "",
+        "description": "Within the ATP, a text wheel warns people that they can access the Advanced Warp Core while the ATP is active.",
         "thumbnail": "TT_TIME_LOOP_DEVICE"
     }
 ]
