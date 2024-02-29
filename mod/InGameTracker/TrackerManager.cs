@@ -25,6 +25,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         private static List<InventoryItemEntry> _ItemEntries = new()
         {
             // Progression items you normally start with in vanilla
+            new InventoryItemEntry(Item.Spacesuit, "Spacesuit"),
             new InventoryItemEntry(Item.LaunchCodes, "Launch Codes"),
             new InventoryItemEntry(Item.Translator, "Translator"),
             new InventoryItemEntry(Item.Signalscope, "Signalscope"),

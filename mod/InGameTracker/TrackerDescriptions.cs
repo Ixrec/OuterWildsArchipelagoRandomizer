@@ -99,6 +99,10 @@ namespace ArchipelagoRandomizer.InGameTracker
                         infos.Add("These are the coordinates of the Eye of the Universe.");
                         infos.Add("They will show in the bottom left corner when you're ready to input them.");
                         break;
+                    case Item.Spacesuit:
+                        infos.Add("The spacesuit that enables breathing in outer space, displays various useful information on its HUD, and most importantly, lets you fly around with a jetpack.");
+                        infos.Add("Unless you turned on the shuffle_spacesuit option when generating this world, you would've had this item from the start.");
+                        break;
                     case Item.LaunchCodes:
                         infos.Add("Codes from Hornfels that permit you to pilot your ship.");
                         break;
