@@ -6,9 +6,9 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Alpha (as of January 2024).
+Public Alpha (as of March 2024).
 
-Several people have played this with no issues or minor issues. However, there is no tracker, no DLC integration, and many other desirable features have yet to be started. See [Roadmap](#roadmap).
+Several people have played this with no issues or minor issues. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
 ## Contact
 
@@ -26,15 +26,20 @@ Randomizers in the Archipelago sense—which are sometimes called "Metroidvania-
 In Outer Wilds progression is usually blocked by player knowledge rather than items, so to make a good randomizer we have to:
 
 - Take away some of your starting equipment: the Translator, the Signalscope, the Scout, and the Ghost Matter Wavelength upgrade for your camera all become items that must be found.
-- Turn some of that player knowledge into items: Nomai Warp Codes replace "teleporter knowledge" (the teleporters won't work without the codes), Silent Running Mode replaces "anglerfish knowledge" (they have much better hearing now), and similarly for Tornado Aerodynamic Adjustments, Electrical Insulation, Imaging Rule, Entanglement Rule, Shrine Door Codes, Warp Core Installation Manual and finally Coordinates.
-- On top of the items the vanilla game does have: the Launch Codes, Signalscope frequencies, and Signalscope signals.
+- Turn some of that player knowledge into items. For example, "teleporter knowledge" is replaced by a Nomai Warp Codes item, and the warp pads simply won't work without it. There's also Silent Running Mode, Tornado Aerodynamic Adjustments, Entanglement Rule, Coordinates, and so on.
+- Tweak the few items the vanilla game does have: the Launch Codes, Signalscope frequencies, and Signalscope signals.
+
+There are also many non-blocking but still useful items, such as the ship's Autopilot, some Oxygen/Fuel Capacity Upgrades, several Oxygen/Fuel Refills and Marshmallows, and so on.
 
 In randomizer terms: "items" are placed at randomly selected "locations" (while ensuring the game can still be completed). Most of the locations in this randomizer are:
 
-- scanning the sources of each Signalscope frequency and signal
-- revealing Ship Log facts, usually by:
-	- translating important Nomai text
-	- reaching an important place such as the Ash Twin Project
+- Notes, tape recorders and fuel tanks left by other Hearthians
+- Translating pieces of Nomai text
+- Reaching important in-game locations
+- Scanning each Signalscope signal source
+- Revealing facts in the Ship Log (which is usually also one of the above)
+
+The Ship Log has also been enhanced to show lists and descriptions of every item and location (or in randomizer terms: an "in-game tracker").
 
 ## Installation
 
@@ -50,8 +55,6 @@ In randomizer terms: "items" are placed at randomly selected "locations" (while 
 - Go to your Archipelago installation folder. Typically that will be `C:\ProgramData\Archipelago`.
 - Put the `outer_wilds.apworld` file in `Archipelago\lib\worlds\`.
 - Put the `Outer.Wilds.yaml` file in `Archipelago\Players`. You may leave the `.yaml` unchanged to play on default settings, or use your favorite text editor to read and change the settings in it.
-
-- (**Recommended: Universal Tracker**) Since there's no dedicated tracker yet, I highly recommend setting up Faris' Universal Tracker. See the pinned messages in its Discord thread for details: https://discord.com/channels/731205301247803413/1170094879142051912
 
 #### I've never used Archipelago before. How do I generate a multiworld?
 
@@ -88,30 +91,16 @@ To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Relea
 
 ## Roadmap
 
-### 0.2.x Goals/Priorities
+After 0.2.0 is fully released...
 
-- ~~Add more "itemless" locations, likely on the notes and tape recorders left by other astronauts.~~
+### 0.2.1+ Patch Goals
 
-- Create some `useful`, `filler` and `trap` items, instead of just "Nothing"s. Ideas include:
-	- ~~Oxygen, jetpack fuel, jetpack boost, health, etc refills (`filler`) and max upgrades (`useful`)~~
-	- ~~Ship features like autopilot and the landing camera~~
-	- ~~`trap`s for ship damage, fuel leaks, brief forced meditations or ship shutdowns, playing End Times~~
-
-- ~~A "logsanity" setting (all ship log entries are AP locations). This mod's code currently relies on having fixed locations and logic, but many of the features we want will involve changing locations and logic based on the randomizer settings. Of those features, logsanity is the only one with no difficult game design decisions, so I'd like to implement it first as a stepping stone to e.g. DLC integration, random spawn, in-game tracker, etc.~~
-
-### 0.2.x Stretch Goals
-
-I will probably try to *investigate* these during 0.2.0 development, but I dunno if they'll make it in.
-
-- Additional randomizations that wouldn't affect logic:
+Before moving on to the big features for 0.3.0, I'd like to do at least one more of these smaller features:
 	- random planet orbits
-	- ~~random Eye coordinates (this one is the most likely because I've done so much of the groundwork for it already)~~
 	- random Dark Bramble layout
 	- random ghost matter patches
 
-~~- Change signalscope logic so each frequency item is required to scan signals in that frequency, as many players seem to expect.~~
-
-### 0.3.x Goals/Priorities
+### 0.3.0 Goals/Priorities
 
 - Echoes of the Eye DLC integration
 	- Possibly randomize the flashlight
@@ -119,30 +108,30 @@ I will probably try to *investigate* these during 0.2.0 development, but I dunno
 - Random player & ship spawn, with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items
 	- Random warp pad destinations should go well with this
 
-### Other Ideas
+### (Non-Programmer) Help Wanted
 
-- A dedicated tracker. Will probably be added to the in-game ship log, and contributed by GameWyrm, hence this does not have a target release yet.
+These are features I won't do myself, but if someone else would like these enough that they'd be willing to do the non-programming work for them (playtesting, drafting logic, listing/naming/describing locations, etc), and it turns out they are actually fun to play, I'll happily do the (small) programming part to finish them off.
 
-- Reducing or removing your starting oxygen, fuel, boost, etc? (would make some of these upgrades progression)
-
-- Support `goal: random` by putting the goal somewhere in game, and having clearer feedback at the end if you haven't met the goal yet
-
-- Flavor Text and Hints:
-	- Edit various NPC conversations to account for you not starting off with many of your vanilla starting tools
-	- Edit various Nomai text to account for the Nomai codes progression items
-	- Edit the other astronauts' dialogue to offer hints about valuable item locations on their respective planets
-
-- "rumorsanity" (all the ship log rumors too), "textsanity" (every note, casette tape, Nomai text line, dialogue line, etc) settings?
-
+- Further reducing your starting oxygen, fuel, boost, etc so some of their upgrades become progression items
+- "rumorsanity" setting (adds all the ship log "rumors", separately from the "facts")
+- "textsanity" setting (every note, casette tape, Nomai text line, dialogue line, etc?)
 - More base game progression items: Gravity crystals? The ability to move Nomai orbs?
 
-- More trap items/features, in particular try Anglerfish Trap again
+### Other Ideas (which may not happen)
+
+- In-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets
+
+- Flavor Text: Edit various NPC conversations and Nomai texts to account for all the randomizer changes
+
+- More trap items/features. Try Anglerfish Trap again? HUD corruption trap? All surfaces have ice physics trap?
+
+- Turn the map screen into a `useful` item, or a trap that disables it?
 
 - "Log Hunt", where the goal is getting N ship logs? Similarly: a Relic Hunt like Outer Relics, or literally by interfacing with Outer Relics?
 
-- A generic API for other OW mods to declare their randomizable stuff???
+- A generic API for other OW mods to declare their randomizable stuff
 
-- Test compatibility with more OW mods
+- Test compatibility with more OW mods, especially the co-op mod Quantum Space Buddies
 
 ## Mod Compatibility
 
@@ -194,7 +183,7 @@ In addition to the prerequisites from [Installation](#installation):
 
 - Axxroy, Groot, Hopop, qwint, Rever, Scipio, Snow, and others in the "Archipelago" Discord server for feedback, discussion and encouragement
 - GameWyrm, JohnCorby, Trifid, viovayo, and others from the "Outer Wilds Modding" Discord server for help learning how to mod Unity games in general and Outer Wilds in particular
-- GameWyrm for contributing this mod's in-game console
+- GameWyrm for contributing this mod's in-game console and tracker
 - Nicopopxd for creating the Outer Wilds "Manual" for Archipelago
 - Flitter for talking me into trying out Archipelago randomizers in the first place
 - All the Archipelago contributors who made that great multi-randomizer system
