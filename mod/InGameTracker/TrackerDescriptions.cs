@@ -84,7 +84,8 @@ namespace ArchipelagoRandomizer.InGameTracker
 
                         infos.Add("Signals found: ");
 
-                        var signals = SignalsAndFrequencies.frequencyToSignals[ItemNames.itemToFrequency[Item.FrequencyQF]];
+                        Item apItem = (Item)itemEntry.ApItem; // C# doesn't understand the null check we already did above
+                        var signals = SignalsAndFrequencies.frequencyToSignals[ItemNames.itemToFrequency[apItem]];
                         foreach (var signal in signals)
                         {
                             var item = ItemNames.signalToItem[signal];
