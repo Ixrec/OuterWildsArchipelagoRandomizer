@@ -164,10 +164,9 @@ namespace ArchipelagoRandomizer.InGameTracker
                     else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                    else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
+                    else APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
                 }
             }
-
         }
 
         /// <summary>
@@ -199,6 +198,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <param name="checkedLocations"></param>
         public void CheckLocations(ReadOnlyCollection<long> checkedLocations)
         {
+            APRandomizer.OWMLModConsole.WriteLine($"CheckLocations() called with {checkedLocations.Count} locations to check");
             foreach (long location in checkedLocations)
             {
                 TrackerLocationData loc = GetLocationByID(location);
@@ -232,7 +232,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     tracker.OWLocations[loc.name].hasBeenChecked = true;
                     tracker.OWLocations[loc.name].hintText = "";
                 }
-                else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+                else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
             }
         }
 
@@ -278,13 +278,37 @@ namespace ArchipelagoRandomizer.InGameTracker
             string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
             string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
             TrackerLocationData loc = GetLocationByID(hint.LocationId);
-            if (tracker.HGTLocations.ContainsKey(loc.name) && !tracker.HGTLocations[loc.name].hasBeenChecked) tracker.HGTLocations[loc.name].hintText = hintDescription;
-            else if (tracker.THLocations.ContainsKey(loc.name) && !tracker.THLocations[loc.name].hasBeenChecked) tracker.THLocations[loc.name].hintText = hintDescription;
-            else if (tracker.BHLocations.ContainsKey(loc.name) && !tracker.BHLocations[loc.name].hasBeenChecked) tracker.BHLocations[loc.name].hintText = hintDescription;
-            else if (tracker.GDLocations.ContainsKey(loc.name) && !tracker.GDLocations[loc.name].hasBeenChecked) tracker.GDLocations[loc.name].hintText = hintDescription;
-            else if (tracker.DBLocations.ContainsKey(loc.name) && !tracker.DBLocations[loc.name].hasBeenChecked) tracker.DBLocations[loc.name].hintText = hintDescription;
-            else if (tracker.OWLocations.ContainsKey(loc.name) && !tracker.OWLocations[loc.name].hasBeenChecked) tracker.OWLocations[loc.name].hintText = hintDescription;
-            else APRandomizer.OWMLModConsole.WriteLine($"Unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+            if (tracker.HGTLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.HGTLocations[loc.name].hasBeenChecked)
+                    tracker.HGTLocations[loc.name].hintText = hintDescription;
+            }
+            else if (tracker.THLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.THLocations[loc.name].hasBeenChecked)
+                    tracker.THLocations[loc.name].hintText = hintDescription;
+            }
+            else if (tracker.BHLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.BHLocations[loc.name].hasBeenChecked)
+                    tracker.BHLocations[loc.name].hintText = hintDescription;
+            }
+            else if (tracker.GDLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.GDLocations[loc.name].hasBeenChecked)
+                    tracker.GDLocations[loc.name].hintText = hintDescription;
+            }
+            else if (tracker.DBLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.DBLocations[loc.name].hasBeenChecked)
+                    tracker.DBLocations[loc.name].hintText = hintDescription;
+            }
+            else if (tracker.OWLocations.ContainsKey(loc.name))
+            {
+                if (!tracker.OWLocations[loc.name].hasBeenChecked)
+                    tracker.OWLocations[loc.name].hintText = hintDescription;
+            }
+            else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
         }
 
         // AND condition
