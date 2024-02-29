@@ -126,7 +126,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 s.Items.ItemReceived += logic.RecheckAccessibility;
                 s.Locations.CheckedLocationsUpdated += logic.CheckLocations;
                 logic.CheckLocations(s.Locations.AllLocationsChecked);
-                ReadHints(s.DataStorage.GetHints());
                 s.DataStorage.TrackHints(ReadHints);
                 APRandomizer.OWMLModConsole.WriteLine("Session opened!", OWML.Common.MessageType.Debug);
             };
