@@ -84,6 +84,8 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public void InitializeAccessibility()
         {
+            bool logsanity = false;
+            if (APRandomizer.SlotData.ContainsKey("logsanity")) logsanity = (long)APRandomizer.SlotData["logsanity"] > 0;
             CanAccessRegion = new();
             tracker.HGTLocations = new();
             tracker.THLocations = new();
@@ -95,6 +97,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 string prefix;
                 string name = loc.name;
+                // skip logsanity locations if logsanity is off
+                if (!logsanity && name.Contains("Ship Log")) continue;
                 prefix = name.Substring(0, 2);
                 TrackerChecklistData data = new(false, false, "");
                 if (HGTPrefixes.Contains(prefix)) tracker.HGTLocations.Add(name, data);
