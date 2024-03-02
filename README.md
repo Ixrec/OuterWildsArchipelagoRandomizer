@@ -96,9 +96,10 @@ After 0.2.0 is fully released...
 ### 0.2.1+ Patch Goals
 
 Before moving on to the big features for 0.3.0, I'd like to do at least one more of these smaller features:
-	- random planet orbits
-	- random Dark Bramble layout
-	- random ghost matter patches
+
+- random planet orbits
+- random Dark Bramble layout
+- random ghost matter patches
 
 ### 0.3.0 Goals/Priorities
 
