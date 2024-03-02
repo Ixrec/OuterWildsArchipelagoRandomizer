@@ -80,7 +80,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             var slotData = APRandomizer.SlotData;
             apTags = $"Logsanity: {((long)slotData["logsanity"] != 0 ? "On" : "Off")}\nDeathlink: {((long)slotData["death_link"] != 0 ? "On" : "Off")}";
-            APRandomizer.OWMLModConsole.WriteLine("Location Checklist Mode Created", OWML.Common.MessageType.Success);
+            APRandomizer.OWMLWriteLine("Location Checklist Mode Created", OWML.Common.MessageType.Success);
         }
 
         // Runs when the mode is opened in the ship computer
@@ -281,7 +281,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 checklist = Tracker.logic.GetLocationChecklist(category);
                 Tracker.GenerateLocationChecklist(category);
             }
-            else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
+            else APRandomizer.OWMLWriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
         }
 
         private string GetTrackerInfoFilename(TrackerCategory category)
@@ -314,7 +314,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     filename = "DW";
                     break;
                 default:
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLWriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
                     break;
             }
             return filename;

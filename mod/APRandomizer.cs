@@ -46,7 +46,6 @@ namespace ArchipelagoRandomizer
         public static ArchipelagoSession APSession;
         public static Dictionary<string, object> SlotData;
 
-        public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
         public static TrackerManager Tracker;
 
@@ -61,6 +60,23 @@ namespace ArchipelagoRandomizer
         /// </summary>
         public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
+        // Wrap OWML log writes in a try/catch to reduce the damage caused by the mysterious
+        // "IOException: Sharing violation on path C:\...\OWML\Logs\OWML.Log.....txt" exceptions.
+        public static void OWMLWriteLine(string line, MessageType? mtype = null)
+        {
+            try
+            {
+                if (mtype != null)
+                    Instance.ModHelper.Console.WriteLine(line, (MessageType)mtype);
+                else
+                    Instance.ModHelper.Console.WriteLine(line);
+            }
+            catch (IOException)
+            {
+                // if we can't even log, not much we can do with this exception besides swallow it to prevent unrelated breakage
+            }
+        }
+
         // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
         private static Task pendingSaveFileWrite = null;
         private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
@@ -68,25 +84,25 @@ namespace ArchipelagoRandomizer
         {
             if (pendingSaveFileWrite != null)
             {
-                OWMLModConsole.WriteLine($"WriteToSaveFile() doing nothing because a write is already pending", MessageType.Debug);
+                OWMLWriteLine($"WriteToSaveFile() doing nothing because a write is already pending", MessageType.Debug);
                 return;
             }
 
             if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
             {
-                OWMLModConsole.WriteLine($"WriteToSaveFile() actually writing immediately", MessageType.Debug);
+                OWMLWriteLine($"WriteToSaveFile() actually writing immediately", MessageType.Debug);
                 ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                 lastWriteTime = DateTimeOffset.UtcNow;
             }
             else
             {
-                OWMLModConsole.WriteLine("WriteToSaveFile() scheduling a pending write in 1 second", MessageType.Debug);
+                OWMLWriteLine("WriteToSaveFile() scheduling a pending write in 1 second", MessageType.Debug);
 
                 pendingSaveFileWrite = Task.Run(async () =>
                 {
                     await Task.Delay(1000);
 
-                    OWMLModConsole.WriteLine($"WriteToSaveFile() executing a pending write after 1 second", MessageType.Debug);
+                    OWMLWriteLine($"WriteToSaveFile() executing a pending write after 1 second", MessageType.Debug);
                     ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                     lastWriteTime = DateTimeOffset.UtcNow;
 
@@ -100,7 +116,7 @@ namespace ArchipelagoRandomizer
             var saveDataFolder = Path.Combine(ModHelper.Manifest.ModFolderPath, "SaveData");
             if (!Directory.Exists(saveDataFolder))
             {
-                OWMLModConsole.WriteLine($"Creating SaveData folder: {saveDataFolder}");
+                OWMLWriteLine($"Creating SaveData folder: {saveDataFolder}");
                 Directory.CreateDirectory(saveDataFolder);
             }
 
@@ -108,25 +124,25 @@ namespace ArchipelagoRandomizer
             {
                 if (StandaloneProfileManager.SharedInstance._currentProfile == null)
                 {
-                    OWMLModConsole.WriteLine($"No profile loaded", OWML.Common.MessageType.Error);
+                    OWMLWriteLine($"No profile loaded", OWML.Common.MessageType.Error);
                     return;
                 }
                 var profileName = StandaloneProfileManager.SharedInstance._currentProfile.profileName;
 
-                OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP APRandomizer save file.");
+                OWMLWriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP APRandomizer save file.");
 
                 SaveFileName = $"SaveData/{profileName}.json";
                 SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
                 if (SaveData == null)
                 {
-                    OWMLModConsole.WriteLine($"No save file found for this profile.");
+                    OWMLWriteLine($"No save file found for this profile.");
                     // Hiding the vanilla resume button here doesn't stick. We have to wait for TitleScreenManager_SetUpMainMenu_Postfix to do it.
                     ChangeConnInfoButton?.SetActive(false);
                     ResumeRandomExpeditionButton?.SetActive(false);
                 }
                 else
                 {
-                    OWMLModConsole.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
+                    OWMLWriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
                         $"and acquired one or more of {SaveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {SaveData.itemsAcquired.Count} total types.");
 
                     foreach (var kv in SaveData.itemsAcquired)
@@ -155,7 +171,7 @@ namespace ArchipelagoRandomizer
             // Logging this feels pretty spammy when we're not on the main menu.
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen) return;
 
-            OWMLModConsole.WriteLine($"OWMenuInputModule_SelectOnNextUpdate called with {selectable?.name}", MessageType.Debug);
+            OWMLWriteLine($"OWMenuInputModule_SelectOnNextUpdate called with {selectable?.name}", MessageType.Debug);
 
             // the non-vanilla object names here are auto-generated by MenuFramework in SetupMainMenu() based on the user-facing text we provide
             var pathToMainMenuButtons = "TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup";
@@ -176,7 +192,7 @@ namespace ArchipelagoRandomizer
                 var modButton = gameObject.GetComponent<Button>();
                 if (modButton != null)
                 {
-                    OWMLModConsole.WriteLine($"OWMenuInputModule_SelectOnNextUpdate changing selectable from {selectable.name} to {gameObject.name}", MessageType.Debug);
+                    OWMLWriteLine($"OWMenuInputModule_SelectOnNextUpdate changing selectable from {selectable.name} to {gameObject.name}", MessageType.Debug);
                     __instance._nextSelectableQueue.Remove(selectable);
                     __instance._nextSelectableQueue.Add(modButton);
                 }
@@ -185,7 +201,7 @@ namespace ArchipelagoRandomizer
 
         private static LoginResult ConnectToAPServer(APConnectionData cdata)
         {
-            OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}", MessageType.Info);
+            OWMLWriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}", MessageType.Info);
             if (APSession != null)
             {
                 APSession.Items.ItemReceived -= APSession_ItemReceived;
@@ -198,7 +214,7 @@ namespace ArchipelagoRandomizer
                 return result;
 
             SlotData = ((LoginSuccessful)result).SlotData;
-            OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
+            OWMLWriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
             if (SlotData.ContainsKey("apworld_version"))
             {
@@ -221,7 +237,7 @@ namespace ArchipelagoRandomizer
             var totalItemsReceived = APSession.Items.AllItemsReceived.Count;
             if (totalItemsReceived > totalItemsAcquired)
             {
-                OWMLModConsole.WriteLine($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
+                OWMLWriteLine($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
                 bool saveDataChanged = false;
                 foreach (var networkItem in APSession.Items.AllItemsReceived)
                     saveDataChanged = SyncItemCountWithAPServer(networkItem.Item);
@@ -247,13 +263,13 @@ namespace ArchipelagoRandomizer
 
         private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
         {
-            OWMLModConsole.WriteLine($"APSession.Items.ItemReceived handler called", MessageType.Debug);
+            OWMLWriteLine($"APSession.Items.ItemReceived handler called", MessageType.Debug);
 
             bool saveDataChanged = false;
             while (receivedItemsHelper.PeekItem().Item != 0)
             {
                 var itemId = receivedItemsHelper.PeekItem().Item;
-                OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}", MessageType.Debug);
+                OWMLWriteLine($"ItemReceived handler received item id {itemId}", MessageType.Debug);
                 saveDataChanged = SyncItemCountWithAPServer(itemId);
                 receivedItemsHelper.DequeueItem();
             }
@@ -270,7 +286,7 @@ namespace ArchipelagoRandomizer
         {
             if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"SyncItemCountWithAPServer received itemId {itemId} which is not in our archipelagoIdToItem map", MessageType.Error);
+                APRandomizer.OWMLWriteLine($"SyncItemCountWithAPServer received itemId {itemId} which is not in our archipelagoIdToItem map", MessageType.Error);
                 return false;
             }
 
@@ -282,12 +298,12 @@ namespace ArchipelagoRandomizer
             {
                 // APSession does client-side caching, so AllItemsReceived having fewer of an item than our save data usually just means the
                 // client-side cache is out of date and will be brought up to date shortly with ItemReceived events. Thus, we ignore this case.
-                APRandomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Ignoring since SaveData already has {savedCount} of it.", MessageType.Debug);
+                APRandomizer.OWMLWriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Ignoring since SaveData already has {savedCount} of it.", MessageType.Debug);
                 return false;
             }
             else
             {
-                APRandomizer.OWMLModConsole.WriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.", MessageType.Debug);
+                APRandomizer.OWMLWriteLine($"Received {itemCountSoFar}-th instance of {itemId} ({item}) from AP server. Updating player inventory since SaveData has only {savedCount} of it.", MessageType.Debug);
 
                 // We apply the item as a new item in the tracker
                 TrackerManager.MarkItemAsNew(item);
@@ -317,7 +333,7 @@ namespace ArchipelagoRandomizer
             // and why this project's .csproj has a rule to copy these files out of the submodule.
             ItemNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "items.jsonc"));
             LocationNames.LoadArchipelagoIds(Path.Combine(ModHelper.Manifest.ModFolderPath, "locations.jsonc"));
-            APRandomizer.OWMLModConsole.WriteLine($"loaded Archipelago item and location IDs", MessageType.Debug);
+            APRandomizer.OWMLWriteLine($"loaded Archipelago item and location IDs", MessageType.Debug);
 
             // Set up the console first so it can be safely used even in the various Setup() methods
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
@@ -339,7 +355,7 @@ namespace ArchipelagoRandomizer
 
             ModHelper.Menus.PauseMenu.OnInit += () => StartCoroutine(SetupPauseMenu(menuFramework));
 
-            OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
+            OWMLWriteLine($"Loaded Ixrec's Archipelago Randomizer", OWML.Common.MessageType.Success);
 
             Application.quitting += () => OnSessionClosed(APSession, false);
         }
@@ -387,7 +403,7 @@ namespace ArchipelagoRandomizer
 
             SetupConnInfoButton(changeConnInfoPopup, cdata =>
             {
-                OWMLModConsole.WriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\". Writing to mod save file.");
+                OWMLWriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\". Writing to mod save file.");
                 changeConnInfoPopup.EnableMenu(false);
                 SaveData.apConnectionData = cdata;
                 WriteToSaveFile();
@@ -395,7 +411,7 @@ namespace ArchipelagoRandomizer
 
             SetupConnInfoButton(newConnInfoPopup, cdata =>
             {
-                OWMLModConsole.WriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\".");
+                OWMLWriteLine($"Connection info changed to \"{cdata.hostname}:{cdata.port}\", slot \"{cdata.slotName}\", password \"{cdata.password}\".");
 
                 // we set SaveData before the connection attempt so that even if it fails, the previous
                 // connection info can be used on a second attempt to pre-populate the input fields
@@ -408,7 +424,7 @@ namespace ArchipelagoRandomizer
                 var loginResult = ConnectToAPServer(cdata);
                 if (!loginResult.Successful)
                 {
-                    OWMLModConsole.WriteLine($"ConnectToAPServer failed", MessageType.Error);
+                    OWMLWriteLine($"ConnectToAPServer failed", MessageType.Error);
 
                     var headerText = newConnInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/Text").GetComponent<Text>();
                     var inputField = newConnInfoPopup.gameObject.transform.Find("InputFieldBlock/InputFieldElements/InputField").GetComponent<InputField>();
@@ -451,7 +467,7 @@ namespace ArchipelagoRandomizer
             resumeFailedPopup.OnPopupConfirm += () => StartCoroutine(ResumePopupConfirm());
             IEnumerator ResumePopupConfirm()
             {
-                OWMLModConsole.WriteLine($"resume error retry");
+                OWMLWriteLine($"resume error retry");
                 headerText.text = "Connecting...";
                 // 1 frame is not enough for the text change to become visible, for me 2 frames works
                 yield return new WaitForEndOfFrame();
@@ -460,7 +476,7 @@ namespace ArchipelagoRandomizer
             };
             resumeFailedPopup.OnPopupCancel += () =>
             {
-                OWMLModConsole.WriteLine($"resume error cancel");
+                OWMLWriteLine($"resume error cancel");
             };
 
             void AttemptToConnect()
@@ -469,12 +485,12 @@ namespace ArchipelagoRandomizer
                 if (!loginResult.Successful)
                 {
                     var err = $"Failed to connect to AP server:\n{string.Join("\n", ((LoginFailure)loginResult).Errors)}";
-                    OWMLModConsole.WriteLine(err, MessageType.Error);
+                    OWMLWriteLine(err, MessageType.Error);
                     headerText.text = err;
                 }
                 else
                 {
-                    OWMLModConsole.WriteLine($"Connection succeeded, hiding error popup and loading game.", MessageType.Success);
+                    OWMLWriteLine($"Connection succeeded, hiding error popup and loading game.", MessageType.Success);
                     resumeFailedPopup.EnableMenu(false);
 
                     LoadTheGame(ResumeRandomExpeditionButton);
@@ -535,7 +551,7 @@ namespace ArchipelagoRandomizer
                 }
                 else if (connectionInfoUserInput.Count == 3)
                 {
-                    OWMLModConsole.WriteLine($"user entered connection info: {string.Join(", ", connectionInfoUserInput)}");
+                    OWMLWriteLine($"user entered connection info: {string.Join(", ", connectionInfoUserInput)}");
 
                     APConnectionData cdata = new();
 
@@ -603,7 +619,7 @@ namespace ArchipelagoRandomizer
                 var button = menuFramework.PauseMenu_MakeSimpleButton("QUIT AND RESET\nTO SOLAR SYSTEM");
                 button.onClick.AddListener(() =>
                 {
-                    OWMLModConsole.WriteLine($"reset clicked");
+                    OWMLWriteLine($"reset clicked");
                     PlayerData.SaveEyeCompletion();
                     LoadManager.LoadScene(OWScene.TitleScreen, LoadManager.FadeType.None, 1f, true);
                 });

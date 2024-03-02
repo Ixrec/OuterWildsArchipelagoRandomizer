@@ -26,19 +26,19 @@ internal class DeathLinkManager
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
         {
             setting = (DeathLinkSetting)value;
-            APRandomizer.OWMLModConsole.WriteLine($"DeathLinkManager set to death link mode: {value}");
+            APRandomizer.OWMLWriteLine($"DeathLinkManager set to death link mode: {value}");
         }
         else
-            APRandomizer.OWMLModConsole.WriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLWriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
 
         if (setting != DeathLinkSetting.Off && service == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"creating and enabling DeathLinkService, and attaching OnDeathLinkReceived handler");
+            APRandomizer.OWMLWriteLine($"creating and enabling DeathLinkService, and attaching OnDeathLinkReceived handler");
             service = APRandomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
 
             service.OnDeathLinkReceived += (deathLinkObject) => {
-                APRandomizer.OWMLModConsole.WriteLine($"OnDeathLinkReceived() Timestamp={deathLinkObject.Timestamp}, Source={deathLinkObject.Source}, Cause={deathLinkObject.Cause}");
+                APRandomizer.OWMLWriteLine($"OnDeathLinkReceived() Timestamp={deathLinkObject.Timestamp}, Source={deathLinkObject.Source}, Cause={deathLinkObject.Cause}");
                 DeathLinkManager.manualDeathInProgress = true;
 
                 Locator.GetDeathManager().KillPlayer(DeathType.Default);
@@ -140,31 +140,31 @@ internal class DeathLinkManager
         // if this death was sent to us by another player's death link, do nothing, since that would start an infinite death loop
         if (manualDeathInProgress)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because this is a death we received from another player");
+            APRandomizer.OWMLWriteLine($"DeathManager.KillPlayer ignoring {deathType} death because this is a death we received from another player");
             return;
         }
 
         if (setting == DeathLinkSetting.Off)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is off");
+            APRandomizer.OWMLWriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is off");
             return;
         }
 
         if (service == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Unable to send {deathType} death to AP server because death link service is null", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLWriteLine($"Unable to send {deathType} death to AP server because death link service is null", OWML.Common.MessageType.Error);
             return;
         }
 
         if (setting == DeathLinkSetting.Default) {
             if (deathType == DeathType.Meditation || deathType == DeathType.Supernova || deathType == DeathType.TimeLoop || deathType == DeathType.BigBang)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is only set to Default");
+                APRandomizer.OWMLWriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is only set to Default");
                 return;
             }
         }
 
-        APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
+        APRandomizer.OWMLWriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
         var messagesForDeathType = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
         var deathLinkMessage = APRandomizer.SaveData.apConnectionData.slotName + messagesForDeathType[prng.Next(0, messagesForDeathType.Count)];
         APRandomizer.InGameAPConsole.AddText($"Because death link is set to {setting}, sending this {deathType} death to other players with the message: \"{deathLinkMessage}\"");

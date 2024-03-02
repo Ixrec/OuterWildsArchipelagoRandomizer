@@ -65,14 +65,14 @@ internal class LoadingSpinner
             100.0f
         );
 
-        APRandomizer.OWMLModConsole.WriteLine($"SpinnerUI.Instantiate patch successfully edited loading spinner", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"SpinnerUI.Instantiate patch successfully edited loading spinner", OWML.Common.MessageType.Debug);
     }
 
     // Keeps the spinner visible indefinitely once shown. Useful for testing.
     /*[HarmonyPrefix, HarmonyPatch(typeof(SpinnerUI), nameof(SpinnerUI.Hide))]
     public static bool SpinnerUI_Hide_Prefix()
     {
-        APRandomizer.OWMLModConsole.WriteLine($"skipping SpinnerUI.Hide() call");
+        APRandomizer.OWMLWriteLine($"skipping SpinnerUI.Hide() call");
         return false;
     }*/
 }

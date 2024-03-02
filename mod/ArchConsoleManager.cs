@@ -153,7 +153,7 @@ namespace ArchipelagoRandomizer
             float progress = session.Locations.AllLocationsChecked.Count;
             float maxLocations = session.Locations.AllLocations.Count;
             float progressPercent = progress / maxLocations;
-            APRandomizer.OWMLModConsole.WriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Debug);
+            APRandomizer.OWMLWriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Debug);
             progressText.text = $"{progress}/{maxLocations}";
             progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
@@ -215,7 +215,7 @@ namespace ArchipelagoRandomizer
         {
             if (gameplayConsoleText == null)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"UpdateText() returning early because somehow gameplayConsoleText is null", OWML.Common.MessageType.Warning);
+                APRandomizer.OWMLWriteLine($"UpdateText() returning early because somehow gameplayConsoleText is null", OWML.Common.MessageType.Warning);
                 return;
             }
 
@@ -260,7 +260,7 @@ namespace ArchipelagoRandomizer
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            APRandomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}", OWML.Common.MessageType.Debug);
+            APRandomizer.OWMLWriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}", OWML.Common.MessageType.Debug);
 
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;
@@ -293,7 +293,7 @@ namespace ArchipelagoRandomizer
                 var tokens = text.Substring("!debug ".Length).Split(',');
                 Item item = ItemNames.itemNamesReversed[tokens[0]];
                 uint count = uint.Parse(tokens[1]);
-                APRandomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
+                APRandomizer.OWMLWriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
                 LocationTriggers.ApplyItemToPlayer(item, count);
                 consoleText.text = "";
                 return;

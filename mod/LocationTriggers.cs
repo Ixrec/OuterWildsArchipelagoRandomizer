@@ -121,27 +121,27 @@ internal class LocationTriggers
         if (!locationChecked.ContainsKey(location))
         {
             if (LocationNames.IsLogsanityLocation(location) && !(APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1))
-                APRandomizer.OWMLModConsole.WriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
+                APRandomizer.OWMLWriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
             else
-                APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLWriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
         if (locationChecked[location])
         {
-            APRandomizer.OWMLModConsole.WriteLine($"'{location}' has already been checked. Doing nothing.");
+            APRandomizer.OWMLWriteLine($"'{location}' has already been checked. Doing nothing.");
             return;
         }
         else
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
+            APRandomizer.OWMLWriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
             locationChecked[location] = true;
             APRandomizer.Instance.WriteToSaveFile();
 
             if (LocationNames.locationToArchipelagoId.ContainsKey(location))
             {
                 var locationId = LocationNames.locationToArchipelagoId[location];
-                APRandomizer.OWMLModConsole.WriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
+                APRandomizer.OWMLWriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
 
                 // we want to time out relatively quickly if the server happens to be down
                 var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
@@ -150,7 +150,7 @@ internal class LocationTriggers
             }
             else
             {
-                APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
+                APRandomizer.OWMLWriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
             }
         }
     }
@@ -206,7 +206,7 @@ internal class LocationTriggers
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
             default:
-                APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLWriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
         }
     }
@@ -216,7 +216,7 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"ShipLogManager.RevealFact {factId}", OWML.Common.MessageType.Debug);
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
@@ -238,7 +238,7 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
-        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}", OWML.Common.MessageType.Debug);
 
         // If it ever comes up, avoid using "Feldspar_Journal" or "Gabbro_1" here.
         // Those "conversations" seem to spontaneously complete themselves every so often no matter what the player's doing.
@@ -268,7 +268,7 @@ internal class LocationTriggers
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-        APRandomizer.OWMLModConsole.WriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}", OWML.Common.MessageType.Debug);
 
         switch (textAssetName)
         {
@@ -282,7 +282,7 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
-        APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint.OnPressInteract: {parentName}/{__instance?.name}", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"PlayerRecoveryPoint.OnPressInteract: {parentName}/{__instance?.name}", OWML.Common.MessageType.Debug);
 
         // the ship's medkit has name=PlayerRecoveryPoint and parentName=Systems_Supplies
         if (__instance?.name != "Prefab_HEA_FuelTank") return;
@@ -303,7 +303,7 @@ internal class LocationTriggers
     [HarmonyPrefix, HarmonyPatch(typeof(DialogueConditionTrigger), nameof(DialogueConditionTrigger.OnEntry))]
     public static void DialogueConditionManager_OnEntry(DialogueConditionTrigger __instance, GameObject hitObj)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}", OWML.Common.MessageType.Debug);
 
         switch (__instance._conditionID)
         {

@@ -129,7 +129,7 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.ForgetFrequency))]
     public static bool PlayerData_ForgetFrequency_Prefix(SignalFrequency frequency)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
+        APRandomizer.OWMLWriteLine($"preventing PlayerData.ForgetFrequency({frequency})");
         return false; // skip vanilla implementation, never forget a frequency
     }
 
@@ -190,7 +190,7 @@ internal class SignalsAndFrequencies
             if (LocationNames.frequencyToLocation.TryGetValue(frequency, out var frequencyLocation))
                 if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
                 {
-                    APRandomizer.OWMLModConsole.WriteLine($"AudioSignal_IdentifySignal_Prefix checking corresponding frequency location: {frequencyLocation}");
+                    APRandomizer.OWMLWriteLine($"AudioSignal_IdentifySignal_Prefix checking corresponding frequency location: {frequencyLocation}");
                     LocationTriggers.CheckLocation(frequencyLocation);
                 }
 
@@ -244,7 +244,7 @@ internal class SignalsAndFrequencies
         {
             if (mightDisplayUnidentifiedSignalMessage)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"AudioSignalDetectionTrigger_Update_Prefix forcing detection of {__instance._signal.GetName()} despite player not wearing the helmet");
+                APRandomizer.OWMLWriteLine($"AudioSignalDetectionTrigger_Update_Prefix forcing detection of {__instance._signal.GetName()} despite player not wearing the helmet");
 
                 // copy-pasted and tweaked from vanilla implementation
                 __instance._isDetecting = true;
@@ -265,13 +265,13 @@ internal class SignalsAndFrequencies
     [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnEnterSignalDetectionTrigger))]
     public static void Signalscope_OnEnterSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
+        APRandomizer.OWMLWriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
         nearbyUnscannedSignal = signal;
     }
     [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnExitSignalDetectionTrigger))]
     public static void Signalscope_OnExitSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnExitSignalDetectionTrigger {signal.GetName()}");
+        APRandomizer.OWMLWriteLine($"Signalscope_OnExitSignalDetectionTrigger {signal.GetName()}");
         nearbyUnscannedSignal = null;
     }
 
