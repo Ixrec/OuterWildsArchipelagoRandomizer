@@ -39,8 +39,11 @@ internal class ShipDamage
     despite being impossible to reliably reproduce when I'm actively trying to cause it.
     In lieu of any less drastic solution, I'm preventing the trap from ever touching the Electrical component.
     */
+    /* A 0.2.0 player reported a similar crash and native stack, but this time directly damaging the landing camera,
+     without going through the electrical component first. So we need to deny both of them. */
     private static string[] componentDenylist = [
-        "MainElectricalComponent"
+        "MainElectricalComponent",
+        "LandingCameraComponent",
     ];
 
     // Randomly choose 2 hulls and 2 components to damage.
