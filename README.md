@@ -80,7 +80,7 @@ For a more complex multiworld, you'd put one `.yaml` file in the `\Players` fold
 <details>
 <summary>Click here to show instructions</summary>
 
-To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Releases page has all the mod `.zip`s for past releases (and the current `.zip`, which is what the Mod Manager normally downloads for you). If I've put a "prerelease" version somewhere, it's probably just a `.zip` uploaded to Discord.
+To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Releases page has all the mod `.zip`s for past releases and prereleases (and the current `.zip`, which is what the Mod Manager normally downloads for you).
 
 - In the Mod Manager, click the 3 dots icon, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
 - Open the `Mods/` subfolder.
