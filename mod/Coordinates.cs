@@ -168,7 +168,7 @@ public static class Coordinates
             if (hasCoordinates)
             {
                 if (shipLogCoordsSprite == null)
-                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogCoordsSprite is still null", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) skipping shipLogCoordsSprite since it's null (which should mean this world didn't randomize coordinates)");
                 else
                 {
                     ptmLibraryEntry.altSprite = shipLogCoordsSprite;
@@ -178,7 +178,7 @@ public static class Coordinates
             else
             {
                 if (shipLogBlankSprite == null)
-                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogBlankSprite is still null", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) skipping shipLogBlankSprite since it's null (which should mean this world didn't randomize coordinates)");
                 else
                 {
                     ptmLibraryEntry.altSprite = shipLogBlankSprite;
@@ -207,9 +207,12 @@ public static class Coordinates
     {
         // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
         if (promptCoordsSprite != null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_Awake_Prefix updating _eyeCoordinatesSprite");
             __instance._eyeCoordinatesSprite = promptCoordsSprite;
+        }
         else
-            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_Awake_Prefix called but promptCoordsSprite is still null", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_Awake_Prefix doing nothing since promptCoordsSprite is still null (which should mean this world didn't randomize coordinates)");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]

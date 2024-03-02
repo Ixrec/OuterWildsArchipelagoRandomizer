@@ -253,7 +253,7 @@ namespace ArchipelagoRandomizer
             while (receivedItemsHelper.PeekItem().Item != 0)
             {
                 var itemId = receivedItemsHelper.PeekItem().Item;
-                OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}");
+                OWMLModConsole.WriteLine($"ItemReceived handler received item id {itemId}", MessageType.Debug);
                 saveDataChanged = SyncItemCountWithAPServer(itemId);
                 receivedItemsHelper.DequeueItem();
             }
