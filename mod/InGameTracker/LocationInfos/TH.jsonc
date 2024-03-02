@@ -11,7 +11,7 @@
     },
     {
         "locationModID": "TH_HAL",
-        "description": "Your best friend Hal want to discuss the Translator Tool with you. They're the one at the museum with the orange bandana.",
+        "description": "Your best friend Hal wants to discuss the Translator Tool with you. They're the one at the museum with the orange bandana.",
         "thumbnail": "TH_VILLAGE"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
         "locationModID": "FREQ_HIDE_SEEK",
-        "description": "Tephra and Galena are so eager for you to play Hide and Seek with them, that they don't even bother to check if you even have your Signalscope to play with them!",
+        "description": "Tephra and Galena are so eager for you to play Hide and Seek with them, that they don't even bother to check if you have your Signalscope to play with them!",
         "thumbnail": "TH_VILLAGE"
     },
     {
@@ -76,22 +76,22 @@
     },
     {
         "locationModID": "AR_ESL_TR",
-        "description": "Another Traveller has visited the Eye Signal Locator on the Attlerock before you. They left their musings on a tape recorder.",
+        "description": "Another Traveler has visited the Eye Signal Locator on the Attlerock before you. They left their musings on a tape recorder.",
         "thumbnail": "TM_EYE_LOCATOR"
     },
     {
         "locationModID": "AR_ICE_TR",
-        "description": "The dark side of the Attlerock has quite a crater! A Traveller's tape recorder gives some information on the source of the impact.",
+        "description": "The dark side of the Attlerock has quite a crater! A Traveler's tape recorder gives some information on the source of the impact.",
         "thumbnail": "TM_NORTH_POLE"
     },
     {
         "locationModID": "AR_ICE_TANK",
-        "description": "An enterprising Traveller takes advantage of any opportuntiy for fuel and looks for it anywhere, even on the dark side of the Attlerock.",
+        "description": "An enterprising Traveler takes advantage of any opportuntiy for fuel and looks for it anywhere, even on the dark side of the Attlerock.",
         "thumbnail": "TM_NORTH_POLE"
     },
     {
         "locationModID": "AR_LL",
-        "description": "Esker has a Lunar Lookout station they use to listen to the other Travellers and spy on the village. They have written their recent discoveries on a sign there.",
+        "description": "Esker has a Lunar Lookout station they use to listen to the other Travelers and spy on the village. They have written their recent discoveries on a sign there.",
         "thumbnail": "TM_NORTH_POLE"
     }
 ]
