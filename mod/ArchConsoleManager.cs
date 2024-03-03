@@ -304,7 +304,7 @@ namespace ArchipelagoRandomizer
             // we want to time out relatively quickly if the server happens to be down
             var sayPacketTask = Task.Run(() => session.Socket.SendPacket(new SayPacket() { Text = text }));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(1)))
-                throw new Exception("OnConsoleEntry() task timed out");
+                APRandomizer.OWMLWriteLine($"OnConsoleEntry({text}) task timed out", OWML.Common.MessageType.Warning);
 
             consoleText.text = "";
         }
