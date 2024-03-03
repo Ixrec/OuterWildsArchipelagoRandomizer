@@ -2,7 +2,6 @@
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
-using ArchipelagoRandomizer.InGameTracker;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -47,7 +46,6 @@ namespace ArchipelagoRandomizer
         public static Dictionary<string, object> SlotData;
 
         public static ArchConsoleManager InGameAPConsole;
-        public static TrackerManager Tracker;
 
         /// <summary>
         /// Runs whenever a new session is created
@@ -283,9 +281,6 @@ namespace ArchipelagoRandomizer
             }
             else
             {
-                // We apply the item as a new item in the tracker
-                TrackerManager.MarkItemAsNew(item);
-
                 APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
                 LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
                 return true;
@@ -315,8 +310,6 @@ namespace ArchipelagoRandomizer
             // Set up the console first so it can be safely used even in the various Setup() methods
             Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
             InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
-
-            Tracker = gameObject.AddComponent<TrackerManager>();
 
             WarpPlatforms.Setup();
             Tornadoes.Setup();
