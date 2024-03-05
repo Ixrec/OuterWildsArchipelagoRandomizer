@@ -153,7 +153,6 @@ namespace ArchipelagoRandomizer
             float progress = session.Locations.AllLocationsChecked.Count;
             float maxLocations = session.Locations.AllLocations.Count;
             float progressPercent = progress / maxLocations;
-            APRandomizer.OWMLWriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Debug);
             progressText.text = $"{progress}/{maxLocations}";
             progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
@@ -259,8 +258,6 @@ namespace ArchipelagoRandomizer
                 return $"<color=#{hexColor}>{messagePart.Text}</color>";
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
-
-            APRandomizer.OWMLWriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}", OWML.Common.MessageType.Debug);
 
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;

@@ -43,8 +43,6 @@ internal class WarpPlatforms
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLWriteLine($"WarpPlatforms.Setup fetching references to warp transmitters", OWML.Common.MessageType.Debug);
-
             var at = Locator.GetAstroObject(AstroObject.Name.TowerTwin); // Ash Twin
             var whs = GameObject.Find("WhiteholeStation_Body");
 
@@ -129,7 +127,7 @@ internal class WarpPlatforms
                 Locator.GetWarpReceiver(__instance.GetFrequency()) :
                 warpTransmitters[__instance.GetFrequency()];
 
-            APRandomizer.OWMLWriteLine($"APRandomizer_WarpPlatformInteract OnPressInteract opening black hole {isTransmitter} / {__instance?.name} {destination?.name} / {__instance?.transform?.parent?.name} {destination?.transform?.parent?.name}");
+            // APRandomizer.OWMLWriteLine($"APRandomizer_WarpPlatformInteract OnPressInteract opening black hole {isTransmitter} / {__instance?.name} {destination?.name} / {__instance?.transform?.parent?.name} {destination?.transform?.parent?.name}");
             __instance.OpenBlackHole(destination, false);
         };
     }

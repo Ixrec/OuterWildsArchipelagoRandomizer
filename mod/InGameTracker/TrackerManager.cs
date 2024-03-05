@@ -95,11 +95,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         private void Awake()
         {
             api = APRandomizer.Instance.ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
-            if (api != null )
-            {
-                APRandomizer.OWMLWriteLine("Custom Ship Log Modes API found!", OWML.Common.MessageType.Success);
-            }
-            else
+            if (api == null)
             {
                 APRandomizer.OWMLWriteLine("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.", OWML.Common.MessageType.Error);
                 return;
@@ -127,13 +123,11 @@ namespace ArchipelagoRandomizer.InGameTracker
                 s.Locations.CheckedLocationsUpdated += logic.CheckLocations;
                 logic.CheckLocations(s.Locations.AllLocationsChecked);
                 s.DataStorage.TrackHints(ReadHints);
-                APRandomizer.OWMLWriteLine("Session opened!", OWML.Common.MessageType.Debug);
             };
             APRandomizer.OnSessionClosed += (s, m) =>
             {
                 if (s != null)
                 {
-                    APRandomizer.OWMLWriteLine("Session closed!", OWML.Common.MessageType.Debug);
                     foreach (InventoryItemEntry entry in ItemEntries.Values)
                     {
                         entry.Hints.Clear();
@@ -149,8 +143,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// </summary>
         public void AddModes()
         {
-            APRandomizer.OWMLWriteLine("Creating Tracker Mode...", OWML.Common.MessageType.Info);
-
             // Retrive hints from server and set up subscription to hint events in the future
             CheckInventory();
             api.AddMode(inventoryMode, () => true, () => "AP Inventory");
@@ -179,7 +171,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         // Reads hints from the AP server
         private void ReadHints(Hint[] hintList)
         {
-            APRandomizer.OWMLWriteLine($"Received {hintList.Length} hints!", OWML.Common.MessageType.Info);
             foreach (Hint hint in hintList)
             {
                 // hints for items that belong to your world
@@ -189,11 +180,10 @@ namespace ArchipelagoRandomizer.InGameTracker
                     if (hint.Found) continue;
 
                     string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
-                    APRandomizer.OWMLWriteLine($"Received a hint for item {itemName}", OWML.Common.MessageType.Success);
                     // We don't need to track hints for items that aren't on the tracker
                     if (!ItemEntries.ContainsKey(itemName))
                     {
-                        APRandomizer.OWMLWriteLine($"...but it's not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                        APRandomizer.OWMLWriteLine($"{itemName} is not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
                         continue;
                     }
                     string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
@@ -305,7 +295,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                         return;
                     }
                     tracker.ItemEntries[frequency].SetNew(true);
-                    APRandomizer.OWMLWriteLine($"Marking frequency {frequency} for {itemID} as new", OWML.Common.MessageType.Success);
                 }
                 else APRandomizer.OWMLWriteLine($"Provided signal {itemID} does not belong to any mapped frequency, cannot mark as new", OWML.Common.MessageType.Warning);
             }
@@ -317,7 +306,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                     return;
                 }
                 tracker.ItemEntries[itemID].SetNew(true);
-                APRandomizer.OWMLWriteLine($"Marking item {itemID} as new", OWML.Common.MessageType.Success);
             }
             else APRandomizer.OWMLWriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
         }

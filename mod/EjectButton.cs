@@ -31,7 +31,6 @@ internal class EjectButton
     [HarmonyPostfix, HarmonyPatch(typeof(ShipEjectionSystem), nameof(ShipEjectionSystem.Start))]
     public static void ShipEjectionSystem_Start_Postfix(ShipEjectionSystem __instance)
     {
-        APRandomizer.OWMLWriteLine($"ShipEjectionSystem.Start fetching reference to eject button SIV", OWML.Common.MessageType.Debug);
         ejectButtonSIV = __instance._interactVolume;
 
         ApplyHasEjectButtonFlag(_hasEjectButton);
@@ -51,7 +50,6 @@ internal class EjectButton
     {
         if (!_hasEjectButton)
         {
-            APRandomizer.OWMLWriteLine($"ShipEjectionSystem_OnLoseFocus_Postfix resetting custom prompt", OWML.Common.MessageType.Debug);
             ejectButtonSIV?.ChangePrompt("Eject Button Cover is Stuck");
         }
     }

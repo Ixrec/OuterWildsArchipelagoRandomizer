@@ -64,8 +64,6 @@ internal class LoadingSpinner
             new Vector2(0.5f, 0.5f),
             100.0f
         );
-
-        APRandomizer.OWMLWriteLine($"SpinnerUI.Instantiate patch successfully edited loading spinner", OWML.Common.MessageType.Debug);
     }
 
     // Keeps the spinner visible indefinitely once shown. Useful for testing.

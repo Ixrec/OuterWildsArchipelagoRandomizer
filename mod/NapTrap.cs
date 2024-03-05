@@ -51,7 +51,7 @@ internal class NapTrap
     {
         if (napTrapInProgress)
         {
-            APRandomizer.OWMLWriteLine($"resuming deferred Nap Trap now that the game has been unpaused");
+            // APRandomizer.OWMLWriteLine($"resuming deferred Nap Trap now that the game has been unpaused");
             ForceNap();
         }
     }
@@ -69,13 +69,13 @@ internal class NapTrap
         // if the game is currently paused, we need to wait until it's unpaused
         if (Locator.GetPauseCommandListener()._pauseMenu.IsOpen())
         {
-            APRandomizer.OWMLWriteLine($"deferring Nap Trap because the game is currently paused");
+            // APRandomizer.OWMLWriteLine($"deferring Nap Trap because the game is currently paused");
             return;
         }
 
         Task.Run(async () => {
             var warningSeconds = 3;
-            APRandomizer.OWMLWriteLine($"Nap Trap accepted, beginning in-game console countdown to forced nap");
+            // APRandomizer.OWMLWriteLine($"Nap Trap accepted, beginning in-game console countdown to forced nap");
 
             APRandomizer.InGameAPConsole.AddText($"An unskippable one-minute nap will begin in");
             while (warningSeconds > 0)
@@ -89,7 +89,7 @@ internal class NapTrap
                 || Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.DreamWorld);
             var fastForwardFactor = 10;
             var inUniverseSecondsAsleep = 60;
-            APRandomizer.OWMLWriteLine($"beginning forced nap for {inUniverseSecondsAsleep} in-universe seconds at {fastForwardFactor}x speed");
+            // APRandomizer.OWMLWriteLine($"beginning forced nap for {inUniverseSecondsAsleep} in-universe seconds at {fastForwardFactor}x speed");
 
             ScreenPrompt thisIsANapTrapPrompt = new("Unskippable One-Minute Nap In Progress", 0);
             Locator.GetPromptManager().AddScreenPrompt(thisIsANapTrapPrompt, PromptPosition.Center, false);
@@ -103,7 +103,7 @@ internal class NapTrap
 
             await Task.Run(async () => {
                 await Task.Delay(inUniverseSecondsAsleep / fastForwardFactor * 1000);
-                APRandomizer.OWMLWriteLine($"ending forced nap");
+                // APRandomizer.OWMLWriteLine($"ending forced nap");
 
                 Locator.GetPromptManager().RemoveScreenPrompt(thisIsANapTrapPrompt);
 

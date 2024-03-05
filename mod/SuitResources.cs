@@ -150,8 +150,6 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.Start))]
     public static void HUDCanvas_Start(HUDCanvas __instance)
     {
-        APRandomizer.OWMLWriteLine($"HUDCanvas_Start fetching HUD references and adding fuel/oxygen percent labels", OWML.Common.MessageType.Debug);
-
         var gaugeStuff = GameObject.Find("PlayerHUD/HelmetOnUI/UICanvas/GaugeGroup/");
         var gaugeAnchor = gaugeStuff.transform.Find("Gauge");
 
@@ -286,6 +284,7 @@ internal class SuitResources
         {
             _boostDurationUpgrades = (_boostDurationUpgrades + 1) % 3;
             APRandomizer.OWMLWriteLine($"_boostDurationUpgrades={_boostDurationUpgrades}");
+
             ApplyMaxBoost();
         }
     }*/

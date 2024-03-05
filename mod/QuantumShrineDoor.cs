@@ -28,8 +28,6 @@ internal class QuantumShrineDoor
     [HarmonyPrefix, HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]
     public static void QuantumShrine_Start_Prefix(QuantumShrine __instance)
     {
-        APRandomizer.OWMLWriteLine($"QuantumShrine.Start deleting door orb and adding door prompt", OWML.Common.MessageType.Debug);
-
         var qs = Locator.GetQuantumMoon().transform.Find("Sector_QuantumMoon/QuantumShrine").GetComponent<QuantumShrine>();
 
         // deactivate the orb you'd use to open the door in the vanilla game
@@ -65,7 +63,6 @@ internal class QuantumShrineDoor
                 return;
             }
 
-            APRandomizer.OWMLWriteLine($"APRandomizer_ShrineDoorInteract OnPressInteract {(gatewayComponent._open ? "closing" : "opening")} gatewayComponent");
             // Open/CloseGate()'s implementation never uses its slot argument,
             // but _openSlot/_closeSlot are what it would normally be set to.
             if (gatewayComponent._open)

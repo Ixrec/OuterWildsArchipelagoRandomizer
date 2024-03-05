@@ -58,7 +58,6 @@ namespace ArchipelagoRandomizer.InGameTracker
                 List<TrackerLocationData> locations = JsonConvert.DeserializeObject<List<TrackerLocationData>>(File.ReadAllText(path));
                 // index the locations for faster searching
                 TrackerLocations = locations.ToDictionary(x => x.name, x => x);
-                APRandomizer.OWMLWriteLine($"{TrackerLocations.Count} locations parsed!", OWML.Common.MessageType.Success);
             }
             else
             {
@@ -68,7 +67,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             if ( File.Exists(path))
             {
                 List<TrackerConnectionData> connections = JsonConvert.DeserializeObject<List<TrackerConnectionData>>(File.ReadAllText(path));
-                APRandomizer.OWMLWriteLine($"{connections.Count} connections parsed!", OWML.Common.MessageType.Success);
                 foreach (TrackerConnectionData connection in connections)
                 {
                     if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new(connection.from));
@@ -198,7 +196,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <param name="checkedLocations"></param>
         public void CheckLocations(ReadOnlyCollection<long> checkedLocations)
         {
-            APRandomizer.OWMLWriteLine($"CheckLocations() called with {checkedLocations.Count} locations to check");
             foreach (long location in checkedLocations)
             {
                 TrackerLocationData loc = GetLocationByID(location);
