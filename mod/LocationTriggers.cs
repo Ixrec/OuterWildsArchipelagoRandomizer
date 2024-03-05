@@ -184,7 +184,7 @@ internal class LocationTriggers
             case Item.TornadoAdjustment: Tornadoes.hasTornadoKnowledge = (count > 0); break;
             case Item.SilentRunning: Anglerfish.hasAnglerfishKnowledge = (count > 0); break;
             case Item.ElectricalInsulation: Jellyfish.hasJellyfishKnowledge = (count > 0); break;
-            case Item.Coordinates: Coordinates.hasCoordinates = (count > 0); break;
+            case Item.Coordinates: break;// Coordinates.hasCoordinates = (count > 0); break;
             case Item.Autopilot: AutopilotManager.hasAutopilot = (count > 0); break;
             case Item.LandingCamera: LandingCamera.hasLandingCamera = (count > 0); break;
             case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;

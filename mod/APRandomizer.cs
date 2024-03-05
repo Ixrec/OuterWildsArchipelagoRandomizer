@@ -212,8 +212,8 @@ namespace ArchipelagoRandomizer
                 DeathLinkManager.Enable((long)SlotData["death_link"]);
             if (SlotData.ContainsKey("goal"))
                 Victory.SetGoal((long)SlotData["goal"]);
-            if (SlotData.ContainsKey("eotu_coordinates"))
-                Coordinates.SetCorrectCoordinatesFromSlotData(SlotData["eotu_coordinates"]);
+            //if (SlotData.ContainsKey("eotu_coordinates"))
+                //Coordinates.SetCorrectCoordinatesFromSlotData(SlotData["eotu_coordinates"]);
 
             // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
             // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
