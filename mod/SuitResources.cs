@@ -150,7 +150,7 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.Start))]
     public static void HUDCanvas_Start(HUDCanvas __instance)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"HUDCanvas_Start fetching HUD references and adding fuel/oxygen percent labels", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"HUDCanvas_Start fetching HUD references and adding fuel/oxygen percent labels", OWML.Common.MessageType.Debug);
 
         var gaugeStuff = GameObject.Find("PlayerHUD/HelmetOnUI/UICanvas/GaugeGroup/");
         var gaugeAnchor = gaugeStuff.transform.Find("Gauge");
@@ -273,19 +273,19 @@ internal class SuitResources
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
         {
             _oxygenCapacityUpgrades = (_oxygenCapacityUpgrades + 1) % 3;
-            APRandomizer.OWMLModConsole.WriteLine($"_oxygenCapacityUpgrades={_oxygenCapacityUpgrades}");
+            APRandomizer.OWMLWriteLine($"_oxygenCapacityUpgrades={_oxygenCapacityUpgrades}");
             ApplyMaxOxygen();
         }
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.right2))
         {
             _fuelCapacityUpgrades = (_fuelCapacityUpgrades + 1) % 3;
-            APRandomizer.OWMLModConsole.WriteLine($"_fuelCapacityUpgrades={_fuelCapacityUpgrades}");
+            APRandomizer.OWMLWriteLine($"_fuelCapacityUpgrades={_fuelCapacityUpgrades}");
             ApplyMaxFuel();
         }
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
         {
             _boostDurationUpgrades = (_boostDurationUpgrades + 1) % 3;
-            APRandomizer.OWMLModConsole.WriteLine($"_boostDurationUpgrades={_boostDurationUpgrades}");
+            APRandomizer.OWMLWriteLine($"_boostDurationUpgrades={_boostDurationUpgrades}");
             ApplyMaxBoost();
         }
     }*/

@@ -39,7 +39,7 @@ internal class SignalscopeManager
     {
         if (mode == ToolMode.SignalScope && !hasSignalscope)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"blocked attempt to equip Signalscope");
+            APRandomizer.OWMLWriteLine($"blocked attempt to equip Signalscope");
 
             if (!Locator.GetPlayerSuit().IsWearingSuit() && !OWInput.IsInputMode(InputMode.ShipCockpit))
             {

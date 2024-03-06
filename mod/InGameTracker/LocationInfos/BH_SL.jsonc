@@ -36,7 +36,7 @@
     },
     {
         "locationModID": "SLF__BH_QUANTUM_SHARD_X1",
-        "description": "There's a quantum region on Brittle Hollow, and text on top of the quantum shard mentions why this might might.",
+        "description": "There's a quantum region on Brittle Hollow, and text on top of the quantum shard mentions why this might be.",
         "thumbnail": "BH_QUANTUM_SHARD"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
         "locationModID": "SLF__BH_WARP_RECEIVER_X1",
-        "description": "On the Northern Glacier, there are a few Nomai structures with text in the proximity.",
+        "description": "There are a few Nomai structures with text on the Northern Glacier.",
         "thumbnail": "BH_WARP_RECEIVER"
     },
     {
@@ -76,12 +76,12 @@
     },
     {
         "locationModID": "SLF__BH_OLD_SETTLEMENT_X2",
-        "description": "Within the old settlement, some Nomai explained their purpose for coming to this Solar System with some text on a wall in the middle of the settlement. They were following an eye-shaped signal.",
+        "description": "On a wall in the middle of the old settlement, some Nomai explained their purpose for coming to this Solar System. They were following an eye-shaped signal.",
         "thumbnail": "BH_OLD_SETTLEMENT"
     },
     {
         "locationModID": "SLF__BH_OLD_SETTLEMENT_X3",
-        "description": "Within the old settlement, some Nomai explained their purpose for coming to this Solar System with some text on a wall in the middle of the settlement. The signal was older than the universe itself.",
+        "description": "On a wall in the middle of the old settlement, some Nomai explained their purpose for coming to this Solar System. The signal was older than the universe itself.",
         "thumbnail": "BH_OLD_SETTLEMENT"
     },
     {
@@ -91,17 +91,17 @@
     },
     {
         "locationModID": "SLF__BH_MURAL_3_X1",
-        "description": "At the lowest point of the Old Settlement, the Nomai built three murals explaining what happened to their Vessel. Look closely at the one on the right.",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one on the right.",
         "thumbnail": "BH_MURAL_3"
     },
     {
         "locationModID": "SLF__BH_MURAL_2_X1",
-        "description": "At the lowest point of the Old Settlement, the Nomai built three murals explaining what happened to their Vessel. Look closely at the one in the middle.",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one in the middle.",
         "thumbnail": "BH_MURAL_2"
     },
     {
         "locationModID": "SLF__BH_MURAL_1_X1",
-        "description": "At the lowest point of the Old Settlement, the Nomai built three murals explaining what happened to their Vessel. Look closely at the one on the left.",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one on the left.",
         "thumbnail": "BH_MURAL_1"
     },
     {

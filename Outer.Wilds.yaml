@@ -67,3 +67,9 @@ Outer Wilds:
     # Adds 176 locations for all the (non-DLC, non-rumor, non-missable) ship log facts in the game.
     false: 50
     true: 0
+
+  shuffle_spacesuit:
+    # Puts the spacesuit into the Archipelago item pool, forcing you to play suitless until it's found.
+    # This is a HIGHLY EXPERIMENTAL setting. Expect logic bugs. Feedback encouraged.
+    false: 50
+    true: 0

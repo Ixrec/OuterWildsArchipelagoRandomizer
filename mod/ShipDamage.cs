@@ -39,8 +39,11 @@ internal class ShipDamage
     despite being impossible to reliably reproduce when I'm actively trying to cause it.
     In lieu of any less drastic solution, I'm preventing the trap from ever touching the Electrical component.
     */
+    /* A 0.2.0 player reported a similar crash and native stack, but this time directly damaging the landing camera,
+     without going through the electrical component first. So we need to deny both of them. */
     private static string[] componentDenylist = [
-        "MainElectricalComponent"
+        "MainElectricalComponent",
+        "LandingCameraComponent",
     ];
 
     // Randomly choose 2 hulls and 2 components to damage.
@@ -111,7 +114,7 @@ internal class ShipDamage
                         var otherThrusterIndex = components.FindIndex(c => c.name.Contains("ThrusterBankComponent"));
                         if (otherThrusterIndex >= 0 && components.Count > 1)
                         {
-                            APRandomizer.OWMLModConsole.WriteLine($"this trap already disabled one thruster bank, so excluding the other thruster bank");
+                            APRandomizer.OWMLWriteLine($"this trap already disabled one thruster bank, so excluding the other thruster bank");
                             components.RemoveAt(otherThrusterIndex);
                         }
                     }
@@ -123,11 +126,11 @@ internal class ShipDamage
                 }
             }
 
-            APRandomizer.OWMLModConsole.WriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
+            APRandomizer.OWMLWriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
 
             if (!PlayerState.IsInsideShip())
             {
-                APRandomizer.OWMLModConsole.WriteLine($"generating notification about ship damage because player is outside the ship");
+                APRandomizer.OWMLWriteLine($"generating notification about ship damage because player is outside the ship");
                 var text = "SPACESHIP DAMAGED";
 
                 var sensitiveDamagedComponents = damagedComponentNames.Intersect(new HashSet<string> { "ReactorComponent", "FuelTankComponent" });

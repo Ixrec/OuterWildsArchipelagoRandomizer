@@ -137,7 +137,7 @@ internal class VelocityMatcher
 
         if (!_hasVelocityMatcher)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Autopilot_StartMatchVelocity_Prefix blocking attempt to use the Match Velocity feature", OWML.Common.MessageType.Debug);
+            APRandomizer.OWMLWriteLine($"Autopilot_StartMatchVelocity_Prefix blocking attempt to use the Match Velocity feature", OWML.Common.MessageType.Debug);
 
             velocityMatcherNotAvailableCenterPrompt.SetVisibility(true);
 

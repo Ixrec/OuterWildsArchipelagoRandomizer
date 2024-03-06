@@ -101,7 +101,7 @@
     },
     {
         "locationModID": "SLF__CT_SUNLESS_CITY_X2",
-        "description": "Within the Sunless City, the Nomai have been discussing the construction of a Sun Station, and debating whether it should be built by the garden.",
+        "description": "Within the Sunless City, in the garden, the Nomai have been discussing the construction of a Sun Station, and debating whether it should be built.",
         "thumbnail": "CT_SUNLESS_CITY"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
         "locationModID": "SLF__CT_ANGLERFISH_FOSSIL_X2",
-        "description": "Above the Stepping Stone Cave by the Sunless City, there is an anglerfish fossil that the Nomai children used to play in. They wrote the rules for a game on the ground nearby. One of their new rules involves one, who plays as the anglerfish, donning a blindfold.",
+        "description": "Above the Stepping Stone Cave by the Sunless City, there is an anglerfish fossil that the Nomai children used to play in. They wrote the rules for a game on the ground nearby. A new rule involves the one who plays as the anglerfish donning a blindfold.",
         "thumbnail": "CT_ANGLERFISH_FOSSIL"
     },
     {

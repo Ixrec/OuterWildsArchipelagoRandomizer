@@ -71,7 +71,7 @@
     },
     {
         "locationModID": "SLF__DB_VESSEL_X2",
-        "description": "The Vessel has a dead Warp Core that fits perfectly within a receptacle in the center of the cockpit.",
+        "description": "The Vessel has a dead Warp Core that fits perfectly within a receptacle in the center of the bridge.",
         "thumbnail": "DB_VESSEL"
     },
     {
@@ -81,17 +81,17 @@
     },
     {
         "locationModID": "SLF__DB_VESSEL_X4",
-        "description": "A text wall on a catwalk above the cockpit of the Vessel mentions that the Nomai tried to call for help.",
+        "description": "A text wall on a catwalk above the bridge of the Vessel mentions that the Nomai tried to call for help.",
         "thumbnail": "DB_VESSEL"
     },
     {
         "locationModID": "SLF__DB_VESSEL_X5",
-        "description": "A text wall on a catwalk above the cockpit of the Vessel receives a message from other Nomai clans.",
+        "description": "A text wall on a catwalk above the bridge of the Vessel receives a message from other Nomai clans.",
         "thumbnail": "DB_VESSEL"
     },
     {
         "locationModID": "SLF__DB_VESSEL_X6",
-        "description": "A Nomai Audio Log can be found below deck of the Vessel's cockpit.",
+        "description": "A Nomai Audio Log can be found below deck of the Vessel's bridge.",
         "thumbnail": "DB_VESSEL"
     }
 ]

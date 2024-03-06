@@ -46,12 +46,12 @@ public static class Coordinates
     {
         if (coordsSlotData is string coordsString && coordsString == "vanilla")
         {
-            APRandomizer.OWMLModConsole.WriteLine($"slot_data['eotu_coordinates'] was 'vanilla'. Leaving vanilla coordinates unchanged");
+            APRandomizer.OWMLWriteLine($"slot_data['eotu_coordinates'] was 'vanilla'. Leaving vanilla coordinates unchanged");
         }
         else if (coordsSlotData is JArray coords)
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
-            APRandomizer.OWMLModConsole.WriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
+            APRandomizer.OWMLWriteLine($"Set coordinates to the values found in slot_data['eotu_coordinates']: " +
                 $"{string.Join(", ", correctCoordinates.Select(coord => string.Join("|", coord)))}" +
                 $"\nand generating appropriate sprites.");
 
@@ -82,7 +82,7 @@ public static class Coordinates
         }
         else
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLWriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
         }
     }
 
@@ -103,7 +103,7 @@ public static class Coordinates
         var hologram = __instance._holograms[activeIndex];
         if (hologram.name == "Hologram_EyeCoordinates")
         {
-            APRandomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix for {hologram.name} " +
+            APRandomizer.OWMLWriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix for {hologram.name} " +
                 "marking GD_COORDINATES checked and editing hologram to show this multiworld's coordinates");
 
             LocationTriggers.CheckLocation(Location.GD_COORDINATES);
@@ -121,14 +121,14 @@ public static class Coordinates
     {
         logManager = __instance;
 
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates", OWML.Common.MessageType.Debug);
+        APRandomizer.OWMLWriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates", OWML.Common.MessageType.Debug);
 
         ApplyHasCoordinatesFlag(_hasCoordinates);
     }
 
     public static void ApplyHasCoordinatesFlag(bool hasCoordinates)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
+        APRandomizer.OWMLWriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) updating PTM hologram model and ship log entry sprite for EotU coordinates");
 
         if (hologramMeshGO != null)
         {
@@ -168,7 +168,7 @@ public static class Coordinates
             if (hasCoordinates)
             {
                 if (shipLogCoordsSprite == null)
-                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogCoordsSprite is still null", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLWriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) skipping shipLogCoordsSprite since it's null (which should mean this world didn't randomize coordinates)");
                 else
                 {
                     ptmLibraryEntry.altSprite = shipLogCoordsSprite;
@@ -178,7 +178,7 @@ public static class Coordinates
             else
             {
                 if (shipLogBlankSprite == null)
-                    APRandomizer.OWMLModConsole.WriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) called but shipLogBlankSprite is still null", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLWriteLine($"ApplyHasCoordinatesFlag({hasCoordinates}) skipping shipLogBlankSprite since it's null (which should mean this world didn't randomize coordinates)");
                 else
                 {
                     ptmLibraryEntry.altSprite = shipLogBlankSprite;
@@ -207,9 +207,12 @@ public static class Coordinates
     {
         // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
         if (promptCoordsSprite != null)
+        {
+            APRandomizer.OWMLWriteLine($"KeyInfoPromptController_Awake_Prefix updating _eyeCoordinatesSprite");
             __instance._eyeCoordinatesSprite = promptCoordsSprite;
+        }
         else
-            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_Awake_Prefix called but promptCoordsSprite is still null", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLWriteLine($"KeyInfoPromptController_Awake_Prefix doing nothing since promptCoordsSprite is still null (which should mean this world didn't randomize coordinates)");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
@@ -243,7 +246,7 @@ public static class Coordinates
             // allow "backwards" inputs, since they're the same shape
             var inputIsCorrect = inputCoordinate.SequenceEqual(correctCoordinate) || inputCoordinate.Reverse().SequenceEqual(correctCoordinate);
 
-            APRandomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
+            APRandomizer.OWMLWriteLine($"NomaiCoordinateInterface_CheckEyeCoordinates_Prefix for coordinate {i} compared " +
                 $" [{nodes.Count}]{string.Join("|", nodes)} vs [{correctCoordinate.Count}]{string.Join("|", correctCoordinate)}, " +
                 $"inputIsCorrect={inputIsCorrect}", OWML.Common.MessageType.Debug);
 
