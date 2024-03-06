@@ -16,8 +16,6 @@ internal class GhostMatter
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLWriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers", OWML.Common.MessageType.Debug);
-
             var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
             var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
 
@@ -95,7 +93,6 @@ internal class GhostMatter
         HazardVolume.HazardType hazardType = hazardVolume.GetHazardType();
         if (__instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
         {
-            APRandomizer.OWMLWriteLine($"HazardDetector_OnVolumeAdded_Prefix blocking the scout's darkMatterEntryEffect");
             __instance._darkMatterEntryEffect = null;
         }
     }
@@ -112,7 +109,6 @@ internal class GhostMatter
         // moves through ghost matter.
         if (detector.GetName() == Detector.Name.Probe)
         {
-            APRandomizer.OWMLWriteLine($"DarkMatterVolume_OnEffectVolumeEnter_Prefix blocking the scout's ghost matter particleTrail");
             return false;
         }
         return true;

@@ -121,7 +121,9 @@ internal class LocationTriggers
         if (!locationChecked.ContainsKey(location))
         {
             if (LocationNames.IsLogsanityLocation(location) && !(APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1))
-                APRandomizer.OWMLWriteLine($"'{location}' is a logsanity location, and this world does not have logsanity enabled. Doing nothing.");
+            {
+                // location is a logsanity location, and this world does not have logsanity enabled. Doing nothing.
+            }
             else
                 APRandomizer.OWMLWriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
@@ -129,19 +131,16 @@ internal class LocationTriggers
 
         if (locationChecked[location])
         {
-            APRandomizer.OWMLWriteLine($"'{location}' has already been checked. Doing nothing.");
             return;
         }
         else
         {
-            APRandomizer.OWMLWriteLine($"Marking '{location}' as checked in mod save file", OWML.Common.MessageType.Info);
             locationChecked[location] = true;
             APRandomizer.Instance.WriteToSaveFile();
 
             if (LocationNames.locationToArchipelagoId.ContainsKey(location))
             {
                 var locationId = LocationNames.locationToArchipelagoId[location];
-                APRandomizer.OWMLWriteLine($"Telling AP server that location ID {locationId} ({location}) was just checked", OWML.Common.MessageType.Info);
 
                 // we want to time out relatively quickly if the server happens to be down
                 var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
@@ -216,7 +215,6 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
-        APRandomizer.OWMLWriteLine($"ShipLogManager.RevealFact {factId}", OWML.Common.MessageType.Debug);
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
@@ -238,7 +236,6 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
-        APRandomizer.OWMLWriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}", OWML.Common.MessageType.Debug);
 
         // If it ever comes up, avoid using "Feldspar_Journal" or "Gabbro_1" here.
         // Those "conversations" seem to spontaneously complete themselves every so often no matter what the player's doing.
@@ -259,8 +256,6 @@ internal class LocationTriggers
         }
     }
 
-    // In addition to the handful of locations triggered by Nomai text lines, I want the released mod to be logging these ids
-    // so that players who want a "textsanity" option can help assemble the list of locations and rules for it.
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
     public static void NomaiText_SetAsTranslated_Prefix(NomaiText __instance, int id)
     {
@@ -268,7 +263,6 @@ internal class LocationTriggers
         if (__instance._dictNomaiTextData[id].IsTranslated) return;
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-        APRandomizer.OWMLWriteLine($"NomaiText.SetAsTranslated: {textAssetName} line {id}", OWML.Common.MessageType.Debug);
 
         switch (textAssetName)
         {
@@ -282,7 +276,6 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
-        APRandomizer.OWMLWriteLine($"PlayerRecoveryPoint.OnPressInteract: {parentName}/{__instance?.name}", OWML.Common.MessageType.Debug);
 
         // the ship's medkit has name=PlayerRecoveryPoint and parentName=Systems_Supplies
         if (__instance?.name != "Prefab_HEA_FuelTank") return;
@@ -303,8 +296,6 @@ internal class LocationTriggers
     [HarmonyPrefix, HarmonyPatch(typeof(DialogueConditionTrigger), nameof(DialogueConditionTrigger.OnEntry))]
     public static void DialogueConditionManager_OnEntry(DialogueConditionTrigger __instance, GameObject hitObj)
     {
-        APRandomizer.OWMLWriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}", OWML.Common.MessageType.Debug);
-
         switch (__instance._conditionID)
         {
             case "FoundGabbroShip": CheckLocation(Location.GD_SHIP); break;

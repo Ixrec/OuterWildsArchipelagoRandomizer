@@ -153,7 +153,6 @@ namespace ArchipelagoRandomizer
             float progress = session.Locations.AllLocationsChecked.Count;
             float maxLocations = session.Locations.AllLocations.Count;
             float progressPercent = progress / maxLocations;
-            APRandomizer.OWMLWriteLine($"Percent Complete: {progressPercent}%", OWML.Common.MessageType.Debug);
             progressText.text = $"{progress}/{maxLocations}";
             progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
@@ -260,8 +259,6 @@ namespace ArchipelagoRandomizer
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            APRandomizer.OWMLWriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}", OWML.Common.MessageType.Debug);
-
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;
             var slot = APRandomizer.APSession.ConnectionInfo.Slot;
@@ -296,6 +293,34 @@ namespace ArchipelagoRandomizer
                 APRandomizer.OWMLWriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
                 LocationTriggers.ApplyItemToPlayer(item, count);
                 consoleText.text = "";
+                return;
+            }
+            if (text.StartsWith("!dcheck "))
+            {
+                var token = text.Substring("!dcheck ".Length);
+                uint count = uint.Parse(token);
+                APRandomizer.OWMLWriteLine($"Received debug command '{text}'.");
+
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        while (count > 0)
+                        {
+                            var cl = APRandomizer.Tracker.logic.GetLocationChecklist(InGameTracker.TrackerCategory.All);
+                            var uncheckedLocationName = cl.First(kv => !kv.Value.hasBeenChecked).Key;
+                            var uncheckedLocation = LocationNames.NameToLocation(uncheckedLocationName);
+                            LocationTriggers.CheckLocation(uncheckedLocation);
+
+                            count--;
+                            await Task.Delay(1000);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        APRandomizer.OWMLWriteLine($"dcheck exception: {e.Message}\n{e.StackTrace}");
+                    }
+                });
                 return;
             }
 

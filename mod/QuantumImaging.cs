@@ -19,8 +19,6 @@ internal class QuantumImaging
 
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLWriteLine($"QuantumImaging.Setup fetching references to relevant quantum objects", OWML.Common.MessageType.Debug);
-
             // For this class, we care about any quantum object that can move around,
             // and that the player can "lock" in place by taking a photo of it.
 

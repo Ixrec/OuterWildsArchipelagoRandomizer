@@ -36,7 +36,6 @@ internal class Spacesuit
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize_Postfix(ShipPromptController __instance)
     {
-        APRandomizer.OWMLWriteLine($"ShipPromptController_LateInitialize_Postfix applying hasSpacesuit flag", OWML.Common.MessageType.Debug);
         ApplyHasSpacesuitFlag(_hasSpacesuit);
     }
 }

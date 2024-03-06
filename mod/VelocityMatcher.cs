@@ -137,8 +137,6 @@ internal class VelocityMatcher
 
         if (!_hasVelocityMatcher)
         {
-            APRandomizer.OWMLWriteLine($"Autopilot_StartMatchVelocity_Prefix blocking attempt to use the Match Velocity feature", OWML.Common.MessageType.Debug);
-
             velocityMatcherNotAvailableCenterPrompt.SetVisibility(true);
 
             // unfortunately the prompt manager has no delay features, so this is the only simple solution

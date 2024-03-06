@@ -80,7 +80,6 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             var slotData = APRandomizer.SlotData;
             apTags = $"Logsanity: {((long)slotData["logsanity"] != 0 ? "On" : "Off")}\nDeathlink: {((long)slotData["death_link"] != 0 ? "On" : "Off")}";
-            APRandomizer.OWMLWriteLine("Location Checklist Mode Created", OWML.Common.MessageType.Success);
         }
 
         // Runs when the mode is opened in the ship computer

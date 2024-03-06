@@ -114,7 +114,7 @@ internal class ShipDamage
                         var otherThrusterIndex = components.FindIndex(c => c.name.Contains("ThrusterBankComponent"));
                         if (otherThrusterIndex >= 0 && components.Count > 1)
                         {
-                            APRandomizer.OWMLWriteLine($"this trap already disabled one thruster bank, so excluding the other thruster bank");
+                            // APRandomizer.OWMLWriteLine($"this trap already disabled one thruster bank, so excluding the other thruster bank");
                             components.RemoveAt(otherThrusterIndex);
                         }
                     }
@@ -126,11 +126,10 @@ internal class ShipDamage
                 }
             }
 
-            APRandomizer.OWMLWriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
+            // APRandomizer.OWMLWriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
 
             if (!PlayerState.IsInsideShip())
             {
-                APRandomizer.OWMLWriteLine($"generating notification about ship damage because player is outside the ship");
                 var text = "SPACESHIP DAMAGED";
 
                 var sensitiveDamagedComponents = damagedComponentNames.Intersect(new HashSet<string> { "ReactorComponent", "FuelTankComponent" });
