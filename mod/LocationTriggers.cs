@@ -244,7 +244,7 @@ internal class LocationTriggers
             case "Hal_Museum": case "Hal_Outside": CheckLocation(Location.TH_HAL); break;
             case "GhostMatterPlaque": CheckLocation(Location.TH_GM); break;
             case "Hornfels": CheckLocation(Location.TH_HORNFELS); break;
-            case "Hornfels_CampfireNote": CheckLocation(Location.TH_CAMPFIRE_NOTE); break;
+            case "Hornfels_CampfireNote": case "Hornfels_CampfireNote_Vanilla": CheckLocation(Location.TH_CAMPFIRE_NOTE); break;
             case "Chert_QuantumSignalNotes": CheckLocation(Location.TH_GROVE_PLAQUE); break;
             case "Riebeck_AttlerockRecording": CheckLocation(Location.AR_ESL_TR); break;
             case "Chert_MoonCraterNotes": CheckLocation(Location.AR_ICE_TR); break;
