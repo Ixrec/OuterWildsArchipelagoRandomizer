@@ -246,7 +246,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             {
                 ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
             }
-            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Full name: " + data.name);
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("<color=grey>Full name: " + data.name + "</color>");
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetLocationLogicString(data));
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
         }
@@ -438,8 +438,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                 selectorMaterial.SetFloat("_PercentAccessible", accessiblePercentage);
                 selectorMaterial.SetFloat("_PercentComplete", checkedPercentage);
                 bodyName.text = CategoryToName(category);
-                locationsChecked.text = $"Locations Checked: {checkedLocs}/{allLocs}";
-                locationsAccessible.text = $"Locations Accessible: {(int)(accessLocs - checkedLocs)}/{allLocs - checkedLocs}";
+                locationsChecked.text = $"{checkedLocs} Checked / {allLocs} Total";
+                locationsAccessible.text = $"{(int)(accessLocs - checkedLocs)} Accessible / {allLocs - checkedLocs} Remaining";
                 string exploreText;
                 if (checkedLocs >= allLocs) exploreText = $"<color={completed}>There's no more to explore here.\nGood job!</color>";
                 else if (checkedLocs < accessLocs) exploreText = $"<color={so5}>There's more to explore here.</color>";
