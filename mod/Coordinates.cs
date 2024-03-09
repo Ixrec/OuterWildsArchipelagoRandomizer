@@ -21,7 +21,6 @@ public static class Coordinates
             if (_hasCoordinates != value)
             {
                 _hasCoordinates = value;
-                ApplyHasCoordinatesFlagToShipLog(value);
             }
         }
     }
@@ -104,12 +103,7 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
     public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
     {
-        ApplyHasCoordinatesFlagToShipLog(_hasCoordinates);
-    }
-
-    public static void ApplyHasCoordinatesFlagToShipLog(bool hasCoordinates)
-    {
-        APRandomizer.OWMLWriteLine($"ApplyHasCoordinatesFlagToShipLog({hasCoordinates}) updating ship log entry sprite for EotU coordinates");
+        APRandomizer.OWMLWriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
 
         if (logManager != null)
         {
@@ -126,7 +120,7 @@ public static class Coordinates
             var ptmLibraryIndex = libraryEntryData.IndexOf(entry => entry.id == "OPC_SUNKEN_MODULE");
             var ptmLibraryEntry = libraryEntryData[ptmLibraryIndex];
 
-            if (hasCoordinates)
+            if (_hasCoordinates)
             {
                 // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
                 var s = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
