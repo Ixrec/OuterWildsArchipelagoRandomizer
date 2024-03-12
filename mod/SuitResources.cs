@@ -39,7 +39,7 @@ internal class SuitResources
             }
         }
     }
-
+    /*
     // properties for `useful` upgrade items
 
     private static uint _fuelCapacityUpgrades = 0;
@@ -81,11 +81,11 @@ internal class SuitResources
             }
         }
     }
-
+    */
     // private state, constants and reference-fetching setup patches to enable the real item implementations
 
     private static PlayerResources playerResources = null;
-    private static JetpackThrusterModel jetpackThrusterModel = null;
+    /*private static JetpackThrusterModel jetpackThrusterModel = null;
 
     // values copied from PlayerResources and JetpackThrusterModel
     private static float vanillaMaxFuel = 100f;
@@ -108,7 +108,7 @@ internal class SuitResources
 
         ApplyMaxBoost();
     }
-
+    */
     // implementing the `filler` refill items
 
     private static void RefillFuel()
@@ -137,7 +137,7 @@ internal class SuitResources
             NotificationManager.SharedInstance.PostNotification(nd, false);
         }
     }
-
+/*
     // implementing the `useful` upgrade items
 
     private static Text fuelPercent = null;
@@ -263,7 +263,7 @@ internal class SuitResources
 
         __instance._boostValueDisplay.text = (__instance._chargeFraction * boostSecondsMultiplier).ToString("P1");
     }
-
+*/
     // may be useful for testing even lower, logic-relevant oxygen/fuel/boost limits
     /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Prefix()
