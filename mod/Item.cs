@@ -8,8 +8,9 @@ namespace ArchipelagoRandomizer;
 public enum Item
 {
     LaunchCodes,
-    Spaceship,
+    Spaceship, // no longer in use; keeping for backwards compatibility with existing mod save files
 
+    Spacesuit,
     Translator,
     Signalscope,
     Scout,
@@ -46,14 +47,36 @@ public enum Item
     SignalTephra,
 
     Nothing,
+
+    Autopilot,
+    LandingCamera,
+    EjectButton,
+    VelocityMatcher,
+    SurfaceIntegrityScanner,
+
+    // The following items are non-unique, i.e. the player can and likely will receive more than 1 of each.
+    // The tracker currently relies on this item order to tell whether to display an X or a number.
+    OxygenCapacityUpgrade,
+    FuelCapacityUpgrade,
+    BoostDurationUpgrade,
+
+    OxygenRefill,
+    FuelRefill,
+    Marshmallow,
+    PerfectMarshmallow,
+    BurntMarshmallow,
+
+    ShipDamageTrap,
+    AudioTrap,
+    NapTrap,
 };
 
 public static class ItemNames
 {
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
-        { Item.Spaceship, "Spaceship" },
 
+        { Item.Spacesuit, "Spacesuit" },
         { Item.Translator, "Translator" },
         { Item.Signalscope, "Signalscope" },
         { Item.Scout, "Scout" },
@@ -90,6 +113,25 @@ public static class ItemNames
         { Item.SignalTephra, "Tephra's Radio Signal" },
 
         { Item.Nothing, "Nothing" },
+
+        { Item.Autopilot, "Autopilot" },
+        { Item.LandingCamera, "Landing Camera" },
+        { Item.EjectButton, "Eject Button" },
+        { Item.VelocityMatcher, "Velocity Matcher" },
+        { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+        { Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade" },
+        { Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade" },
+        { Item.BoostDurationUpgrade, "Boost Duration Upgrade" },
+
+        { Item.OxygenRefill, "Oxygen Refill" },
+        { Item.FuelRefill, "Jetpack Fuel Refill" },
+        { Item.Marshmallow, "Marshmallow" },
+        { Item.PerfectMarshmallow, "Perfect Marshmallow" },
+        { Item.BurntMarshmallow, "Burnt Marshmallow" },
+
+        { Item.ShipDamageTrap, "Ship Damage Trap" },
+        { Item.AudioTrap, "Audio Trap" },
+        { Item.NapTrap, "Nap Trap" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
