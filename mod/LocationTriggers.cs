@@ -148,11 +148,22 @@ internal class LocationTriggers
 
     public static void ApplyItemToPlayer(Item item, uint count)
     {
+        if (ItemNames.itemToFrequency.ContainsKey(item))
+        {
+            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
+            return;
+        }
+        else if (ItemNames.itemToSignal.ContainsKey(item))
+        {
+            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
+            return;
+        }
+
         switch (item)
         {
             case Item.LaunchCodes: break; // Not necessary until launch codes can be shuffled, and it's surprisingly subtle to set them without crashing.
-            case Item.Spaceship: break; // Nothing to do for now. Making the ship an item is just planning ahead for random player/ship spawn.
 
+            case Item.Spacesuit: break;//Spacesuit.hasSpacesuit = (count > 0); break;
             case Item.Translator: Translator.hasTranslator = (count > 0); break;
             case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
             case Item.Scout: Scout.hasScout = (count > 0); break;
@@ -166,12 +177,29 @@ internal class LocationTriggers
             case Item.SilentRunning: Anglerfish.hasAnglerfishKnowledge = (count > 0); break;
             case Item.ElectricalInsulation: Jellyfish.hasJellyfishKnowledge = (count > 0); break;
             case Item.Coordinates: Coordinates.hasCoordinates = (count > 0); break;
-            default: break;
+            case Item.Autopilot: break;//AutopilotManager.hasAutopilot = (count > 0); break;
+            case Item.LandingCamera: break;//LandingCamera.hasLandingCamera = (count > 0); break;
+            case Item.EjectButton: break;//EjectButton.hasEjectButton = (count > 0); break;
+            case Item.VelocityMatcher: break;//VelocityMatcher.hasVelocityMatcher = (count > 0); break;
+            case Item.SurfaceIntegrityScanner: break;//SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
+            case Item.OxygenCapacityUpgrade: break;//SuitResources.oxygenCapacityUpgrades = count; break;
+            case Item.FuelCapacityUpgrade: break;//SuitResources.fuelCapacityUpgrades = count; break;
+            case Item.BoostDurationUpgrade: break;//SuitResources.boostDurationUpgrades = count; break;
+            case Item.OxygenRefill: SuitResources.oxygenRefills = count; break;
+            case Item.FuelRefill: SuitResources.fuelRefills = count; break;
+            case Item.Marshmallow: Marshmallows.normalMarshmallows = count; break;
+            case Item.PerfectMarshmallow: Marshmallows.perfectMarshmallows = count; break;
+            case Item.BurntMarshmallow: Marshmallows.burntMarshmallows = count; break;
+            case Item.ShipDamageTrap: break;//ShipDamage.shipDamageTraps = count; break;
+            case Item.AudioTrap: break;//AudioTrap.audioTraps = count; break;
+            case Item.NapTrap: break;//NapTrap.napTraps = count; break;
+
+            // for backwards-compatibility
+            case Item.Spaceship: break; case Item.Nothing: break;
+            default:
+                Randomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
+                break;
         }
-        if (ItemNames.itemToFrequency.ContainsKey(item))
-            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
-        else if (ItemNames.itemToSignal.ContainsKey(item))
-            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
     }
 
 
