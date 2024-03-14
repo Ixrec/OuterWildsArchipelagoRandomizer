@@ -21,26 +21,11 @@ public static class Coordinates
             if (_hasCoordinates != value)
             {
                 _hasCoordinates = value;
-                ApplyHasCoordinatesFlag(value);
             }
         }
     }
 
     private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = CoordinateDrawing.vanillaEOTUCoordinates;
-
-    // thestrangepie and I have both experienced a rare, unreproducible native crash leaving no OWML logs when acquiring the Coordinates item.
-    // When I experienced it, the native stack pointed to the Texture2D constructor. Since I was unable to reproduce it (even with mod code that
-    // spammed Texture2D constructions), my only guess for how to mitigate this is to construct the Texture2Ds we need as early as possible
-    // instead of waiting for them to become needed in game.
-    private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
-    // some ship log views will stretch their sprites into a square, so we need to draw squares (600 x 600) to avoid distortion
-    private static Texture2D shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
-    private static Texture2D shipLogBlankTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
-
-    // Although I have no evidence implicating the Sprite constructors, we might as well create those eagerly and avoid wasteful recreations later.
-    private static Sprite promptCoordsSprite = null;
-    private static Sprite shipLogCoordsSprite = null;
-    private static Sprite shipLogBlankSprite = null;
 
     public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
     {
@@ -51,39 +36,12 @@ public static class Coordinates
         else if (coordsSlotData is JArray coords)
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
-
-            // These need to be regenerated whenever we switch profiles and change the correct coordinates
-            shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
-                shipLogCoordsTexture,
-                correctCoordinates,
-                UnityEngine.Color.black,
-                doKerning: false
-            );
-            promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
-                promptCoordsTexture,
-                correctCoordinates,
-                UnityEngine.Color.clear,
-                doKerning: true
-            );
-
-            // This only needs to be generated once, since it doesn't depend on the coordinates
-            if (shipLogBlankSprite == null)
-            {
-                var tex = shipLogBlankTexture;
-                foreach (var x in Enumerable.Range(0, tex.width))
-                    foreach (var y in Enumerable.Range(0, tex.height))
-                        tex.SetPixel(x, y, UnityEngine.Color.black);
-                tex.Apply();
-                shipLogBlankSprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-            }
         }
         else
         {
             APRandomizer.OWMLWriteLine($"Leaving vanilla coordinates unchanged because slot_data['eotu_coordinates'] was invalid: {coordsSlotData}", OWML.Common.MessageType.Error);
         }
     }
-
-    private static GameObject hologramMeshGO = null;
 
     /* The hologram names in the Control Module and Probe Tracking Module are:
      * Hologram_HourglassOrders
@@ -102,26 +60,8 @@ public static class Coordinates
         {
             LocationTriggers.CheckLocation(Location.GD_COORDINATES);
 
-            hologramMeshGO = hologram.GetComponentInChildren<MeshRenderer>().gameObject;
+            var hologramMeshGO = hologram.GetComponentInChildren<MeshRenderer>().gameObject;
 
-            ApplyHasCoordinatesFlag(_hasCoordinates);
-        }
-    }
-
-    private static ShipLogManager logManager = null;
-
-    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Awake))]
-    public static void ShipLogManager_Awake_Prefix(ShipLogManager __instance)
-    {
-        logManager = __instance;
-
-        ApplyHasCoordinatesFlag(_hasCoordinates);
-    }
-
-    public static void ApplyHasCoordinatesFlag(bool hasCoordinates)
-    {
-        if (hologramMeshGO != null)
-        {
             hologramMeshGO.DestroyAllComponentsImmediate<MeshFilter>();
             var filter = hologramMeshGO.AddComponent<MeshFilter>();
 
@@ -139,6 +79,31 @@ public static class Coordinates
 
             filter.mesh = mesh;
         }
+    }
+
+    private static ShipLogManager logManager = null;
+
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Awake))]
+    public static void ShipLogManager_Awake_Prefix(ShipLogManager __instance)
+    {
+        logManager = __instance;
+
+        APRandomizer.OWMLWriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates", OWML.Common.MessageType.Debug);
+    }
+
+    // thestrangepie and I have both experienced a rare, unreproducible native crash leaving no OWML logs when acquiring the Coordinates item.
+    // When I experienced it, the native stack pointed to the Texture2D constructor. Since I was unable to reproduce it (even with mod code that
+    // spammed Texture2D constructions), my only guess for how to mitigate this is to construct the Texture2Ds we need as early as possible
+    // instead of waiting for them to become needed in game.
+    // some ship log views will stretch their sprites into a square, so we need to draw squares (600 x 600) to avoid distortion
+    private static Texture2D shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
+    private static Texture2D shipLogBlankTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
+
+    // wait until the player accesses the ship log to update its sprites
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
+    public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
+    {
+        APRandomizer.OWMLWriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
 
         if (logManager != null)
         {
@@ -155,21 +120,27 @@ public static class Coordinates
             var ptmLibraryIndex = libraryEntryData.IndexOf(entry => entry.id == "OPC_SUNKEN_MODULE");
             var ptmLibraryEntry = libraryEntryData[ptmLibraryIndex];
 
-            if (hasCoordinates)
+            if (_hasCoordinates)
             {
-                if (shipLogCoordsSprite != null)
-                {
-                    ptmLibraryEntry.altSprite = shipLogCoordsSprite;
-                    ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
-                }
+                // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
+                var s = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
+
+                ptmLibraryEntry.altSprite = s;
+                ptmGeneratedEntry?.SetAltSprite(s);
             }
             else
             {
-                if (shipLogBlankSprite != null)
-                {
-                    ptmLibraryEntry.altSprite = shipLogBlankSprite;
-                    ptmGeneratedEntry?.SetAltSprite(shipLogBlankSprite);
-                }
+                // just show a black square if you don't have the coordinates yet
+                var size = 600;
+                var tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
+                foreach (var x in Enumerable.Range(0, size))
+                    foreach (var y in Enumerable.Range(0, size))
+                        tex.SetPixel(x, y, UnityEngine.Color.black);
+                tex.Apply();
+
+                var s = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
+                ptmLibraryEntry.altSprite = s;
+                ptmGeneratedEntry?.SetAltSprite(s);
             }
 
             // Because libraryEntryData is an array, not a list, we have to assign our edited object into the array afterward
@@ -188,12 +159,34 @@ public static class Coordinates
         return false; // skip vanilla implementation
     }
 
+    // wait to draw and set the prompt Sprite until the first time the game wants to display it
+
+    // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
+    private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
+    private static Sprite promptCoordsSprite = null;
+
     [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
     public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
     {
-        // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
-        if (promptCoordsSprite != null)
-            __instance._eyeCoordinatesSprite = promptCoordsSprite;
+        // be sure to reset our sprite when the game reloads so we remember to redraw it when needed
+        promptCoordsSprite = null;
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.SetEyeCoordinatesVisibility))]
+    public static void KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix(KeyInfoPromptController __instance, bool visible)
+    {
+        if (visible && promptCoordsSprite == null)
+        {
+            APRandomizer.OWMLWriteLine($"KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix drawing and setting prompt coordinates sprite");
+            promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
+                promptCoordsTexture,
+                correctCoordinates,
+                UnityEngine.Color.clear,
+                doKerning: true
+            );
+            // No point changing _eyeCoordinatesSprite this late because it's only used in Awake() to construct _eyeCoordinatesPrompt
+            __instance._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]

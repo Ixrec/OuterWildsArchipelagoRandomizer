@@ -57,7 +57,7 @@
     {
         "locationModID": "TH_CAMPFIRE_NOTE",
         "description": "There is a radio tower north of the village that has a small forest and campfire near it. At that campfire, you can find a note.",
-        "thumbnail": "TH_VILLAGE"
+        "thumbnail": "TH_RADIO_TOWER"
     },
     {
         "locationModID": "TH_GROVE_PLAQUE",
