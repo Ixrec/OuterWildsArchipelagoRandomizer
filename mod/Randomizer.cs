@@ -68,6 +68,8 @@ namespace ArchipelagoRandomizer
                 OWMLModConsole.WriteLine("WriteToSaveFile() executing a pending write after 1 second");
                 ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
                 lastWriteTime = DateTimeOffset.UtcNow;
+
+                pendingSaveFileWrite = null;
             });
         }
 
