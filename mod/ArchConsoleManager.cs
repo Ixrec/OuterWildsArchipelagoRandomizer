@@ -143,6 +143,10 @@ namespace ArchipelagoRandomizer
         public void AddText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
             if (!skipHistory) consoleHistory.Add(text);
+
+            // If the consoles haven't been created yet, then adding to history is all we want to do for now.
+            if (pauseConsoleText == null) return;
+
             string consoleText = pauseConsoleText.text;
             if (consoleText == "")
             {
