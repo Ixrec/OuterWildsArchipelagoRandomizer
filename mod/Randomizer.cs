@@ -179,7 +179,7 @@ namespace ArchipelagoRandomizer
             if (loginSuccess.SlotData.ContainsKey("apworld_version"))
             {
                 var apworld_version = (string)loginSuccess.SlotData["apworld_version"];
-                var mod_version = "0.1.4";
+                var mod_version = "0.1.5";
                 if (apworld_version != mod_version)
                     InGameAPConsole.AddText($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                         $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
