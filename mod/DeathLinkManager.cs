@@ -136,12 +136,22 @@ internal class DeathLinkManager
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(DeathManager), nameof(DeathManager.KillPlayer))]
-    public static void DeathManager_KillPlayer_Prefix(DeathType deathType)
+    public static void DeathManager_KillPlayer_Prefix(DeathManager __instance, DeathType deathType)
     {
         // if this death was sent to us by another player's death link, do nothing, since that would start an infinite death loop
         if (manualDeathInProgress)
         {
             Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because this is a death we received from another player");
+            return;
+        }
+        if (__instance._isDead)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DeathManager._isDead is already true");
+            return;
+        }
+        if (__instance._isDying)
+        {
+            Randomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DeathManager._isDying is already true");
             return;
         }
 
