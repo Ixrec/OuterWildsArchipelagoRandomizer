@@ -16,7 +16,6 @@ internal class SignalscopeManager
             if (_hasSignalscope != value)
             {
                 _hasSignalscope = value;
-                ApplyHasSignalscopeFlag(_hasSignalscope);
             }
         }
     }
@@ -27,15 +26,13 @@ internal class SignalscopeManager
     // So this "duplicate" prompt is for when the player presses Y and I know there won't be an existing prompt about it.
     static ScreenPrompt signalscopeNotAvailablePrompt = new ScreenPrompt("Signalscope Not Available", 0);
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.LateInitialize))]
     public static void ToolModeUI_LateInitialize_Postfix()
     {
         Locator.GetPromptManager().AddScreenPrompt(signalscopeNotAvailablePrompt, PromptPosition.Center, false);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.SignalScope && !hasSignalscope)
@@ -60,39 +57,43 @@ internal class SignalscopeManager
         return true;
     }
 
-    // These are the Signalscope prompts which do exist in the vanilla game for me to edit.
+    // These are the two Signalscope prompts which do exist in the vanilla game for me to edit,
+    // along with two replacements for them created by us.
+    // Turns out the safe way to remove a button from a UI prompt is to switch between two prompts.
 
     static ScreenPrompt equipSignalscopePrompt = null;
-    static ScreenPrompt centerEquipSignalScopePrompt = null; // only shown in specific places, e.g. hide & seek
+    static ScreenPrompt cannotEquipSignalscopePrompt = null;
+    // only shown in specific places, e.g. hide & seek
+    static ScreenPrompt centerEquipSignalScopePrompt = null;
+    static ScreenPrompt centerCannotEquipSignalScopePrompt = null;
 
-    [HarmonyPostfix]
-    [HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
     public static void ToolModeUI_Start_Postfix(ToolModeUI __instance)
     {
         equipSignalscopePrompt = __instance._signalscopePrompt;
         centerEquipSignalScopePrompt = __instance._centerSignalscopePrompt;
 
-        ApplyHasSignalscopeFlag(hasSignalscope);
+        cannotEquipSignalscopePrompt = new ScreenPrompt("Signalscope Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(cannotEquipSignalscopePrompt, PromptPosition.UpperRight, false);
+        centerCannotEquipSignalScopePrompt = new ScreenPrompt("Signalscope Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(centerCannotEquipSignalScopePrompt, PromptPosition.Center, false);
     }
 
-    public static void ApplyHasSignalscopeFlag(bool hasSignalscope)
+    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    public static void ToolModeUI_Update_Postfix(ToolModeUI __instance)
     {
-        if (equipSignalscopePrompt is null || centerEquipSignalScopePrompt is null) return;
-
-        if (hasSignalscope)
+        cannotEquipSignalscopePrompt.SetVisibility(false);
+        if (equipSignalscopePrompt.IsVisible() && !_hasSignalscope)
         {
-            equipSignalscopePrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.signalscope.CommandType };
-            centerEquipSignalScopePrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.signalscope.CommandType };
-            // copy-pasted from the body of ToolModeUI.Start()
-            equipSignalscopePrompt.SetText(UITextLibrary.GetString(UITextType.SignalscopePrompt) + "   <CMD>");
-            centerEquipSignalScopePrompt.SetText(UITextLibrary.GetString(UITextType.SignalscopePrompt) + "   <CMD>");
+            equipSignalscopePrompt.SetVisibility(false);
+            cannotEquipSignalscopePrompt.SetVisibility(true);
         }
-        else
+
+        centerCannotEquipSignalScopePrompt.SetVisibility(false);
+        if (centerEquipSignalScopePrompt.IsVisible() && !_hasSignalscope)
         {
-            equipSignalscopePrompt._commandIdList = new();
-            centerEquipSignalScopePrompt._commandIdList = new();
-            equipSignalscopePrompt.SetText("Signalscope Not Available");
-            centerEquipSignalScopePrompt.SetText("Signalscope Not Available");
+            centerEquipSignalScopePrompt.SetVisibility(false);
+            centerCannotEquipSignalScopePrompt.SetVisibility(true);
         }
     }
 }
