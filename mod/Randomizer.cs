@@ -179,6 +179,7 @@ namespace ArchipelagoRandomizer
             if (loginSuccess.SlotData.ContainsKey("apworld_version"))
             {
                 var apworld_version = (string)loginSuccess.SlotData["apworld_version"];
+                // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
                 var mod_version = "0.1.5";
                 if (apworld_version != mod_version)
                     InGameAPConsole.AddText($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
