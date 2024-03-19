@@ -152,12 +152,12 @@ internal class LocationTriggers
     {
         if (ItemNames.itemToFrequency.ContainsKey(item))
         {
-            SignalscopeManager.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
+            SignalsAndFrequencies.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
             return;
         }
         else if (ItemNames.itemToSignal.ContainsKey(item))
         {
-            SignalscopeManager.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
+            SignalsAndFrequencies.SetSignalUsable(ItemNames.itemToSignal[item], count > 0);
             return;
         }
 
