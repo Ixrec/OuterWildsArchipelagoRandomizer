@@ -44,6 +44,7 @@ public enum Location
     AR_ICE_TR,
     AR_ICE_TANK,
     AR_LL,
+    AR_ESKER_TANK,
     BH_BANJO,
     BH_OBSERVATORY,
     BH_OS_MURAL,
@@ -532,6 +533,7 @@ public static class LocationNames
         { Location.AR_ICE_TR, "AR: Chert's Ice Crater Recorder" },
         { Location.AR_ICE_TANK, "AR: Ice Crater Fuel Tank" },
         { Location.AR_LL, "AR: Esker's Lunar Lookout Plaque" },
+        { Location.AR_ESKER_TANK, "AR: Esker's House Fuel Tank" },
 
         { Location.BH_OBSERVATORY, "BH: Southern Observatory (Tornado Text Wall)" },
         { Location.BH_OS_MURAL, "BH: Old Settlement Murals" },

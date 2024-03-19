@@ -263,20 +263,30 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
+        //Randomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint_OnPressInteract __instance?.name={__instance?.name}, parentName={parentName}");
 
-        // the ship's medkit has name=PlayerRecoveryPoint and parentName=Systems_Supplies
-        if (__instance?.name != "Prefab_HEA_FuelTank") return;
+        // The only non-tank recovery point I know of is the ship's medkit, which has instanceName=PlayerRecoveryPoint and parentName=Systems_Supplies.
+        // This has to be StartsWith() instead of == because Esker's tank is "Prefab_HEA_FuelTank (1)"
+        var instanceName = __instance?.name ?? "";
+        var isFuelTank = instanceName.StartsWith("Prefab_HEA_FuelTank");
+        if (!isFuelTank) return;
 
         switch (parentName)
         {
             case "Interactables_SouthPole": CheckLocation(Location.ET_QML_TANK); break;
             case "Interactables_Lakebed": CheckLocation(Location.ET_CHERT_TANK); break;
-            case "Interactables_THM": CheckLocation(Location.AR_ICE_TANK); break;
             case "FuelStash": CheckLocation(Location.BH_NG_TANK); break;
             case "Interactables_Crossroads": CheckLocation(Location.BH_RIEBECK_TANK); break;
             case "Interactables_BrambleIsland": CheckLocation(Location.GD_BI_TANK); break;
             case "Interactables_GabbroIsland": CheckLocation(Location.GD_GABBRO_TANK); break;
             case "Interactables_PioneerDimension": CheckLocation(Location.DB_FELDSPAR_TANK); break;
+            // Attlerock (THM = Timber Hearth Moon) has two fuel tanks, so we need additional checks to tell which is which
+            case "Interactables_THM":
+                if (instanceName == "Prefab_HEA_FuelTank")
+                    CheckLocation(Location.AR_ICE_TANK);
+                else if (instanceName == "Prefab_HEA_FuelTank (1)")
+                    CheckLocation(Location.AR_ESKER_TANK);
+                break;
         }
     }
 
