@@ -116,10 +116,10 @@ internal class LocationTriggers
 
     public static void CheckLocation(Location location)
     {
-        var locationChecked = Randomizer.SaveData.locationsChecked;
+        var locationChecked = APRandomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            Randomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
@@ -130,20 +130,20 @@ internal class LocationTriggers
         else
         {
             locationChecked[location] = true;
-            Randomizer.Instance.WriteToSaveFile();
+            APRandomizer.Instance.WriteToSaveFile();
 
             if (LocationNames.locationToArchipelagoId.ContainsKey(location))
             {
                 var locationId = LocationNames.locationToArchipelagoId[location];
 
                 // we want to time out relatively quickly if the server happens to be down
-                var checkLocationTask = Task.Run(() => Randomizer.APSession.Locations.CompleteLocationChecks(locationId));
+                var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
                 if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
-                    Randomizer.OWMLModConsole.WriteLine($"CompleteLocationChecks({locationId}) task timed out", OWML.Common.MessageType.Warning);
+                    APRandomizer.OWMLModConsole.WriteLine($"CompleteLocationChecks({locationId}) task timed out", OWML.Common.MessageType.Warning);
             }
             else
             {
-                Randomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
+                APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
             }
         }
     }
@@ -199,7 +199,7 @@ internal class LocationTriggers
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
             default:
-                Randomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
         }
     }
@@ -263,7 +263,7 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
-        //Randomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint_OnPressInteract __instance?.name={__instance?.name}, parentName={parentName}");
+        //APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint_OnPressInteract __instance?.name={__instance?.name}, parentName={parentName}");
 
         // The only non-tank recovery point I know of is the ship's medkit, which has instanceName=PlayerRecoveryPoint and parentName=Systems_Supplies.
         // This has to be StartsWith() instead of == because Esker's tank is "Prefab_HEA_FuelTank (1)"

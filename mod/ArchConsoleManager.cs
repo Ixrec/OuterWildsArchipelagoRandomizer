@@ -54,7 +54,7 @@ namespace ArchipelagoRandomizer
         private void Update()
         {
             // Show the correct version of the console depending on if the game is paused or not
-            if (isPaused != Randomizer.Instance.ModHelper.Menus.PauseMenu.IsOpen)
+            if (isPaused != APRandomizer.Instance.ModHelper.Menus.PauseMenu.IsOpen)
             {
                 isPaused = !isPaused;
                 if (isPaused)
@@ -93,7 +93,7 @@ namespace ArchipelagoRandomizer
             // Create objects and establish references
             gameplayConsoleEntries = new Queue<string>();
             gameplayConsoleTimers = new List<float>();
-            console = GameObject.Instantiate(Randomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
+            console = GameObject.Instantiate(APRandomizer.Assets.LoadAsset<GameObject>("ArchRandoCanvas"));
             pauseConsoleVisuals = console.transform.Find("PauseConsole").gameObject;
             pauseConsole = console.transform.Find("PauseConsole/Scroll View/Viewport/PauseConsoleText").gameObject;
             gameplayConsole = console.transform.Find("GameplayConsole/GameplayConsoleText").gameObject;
@@ -201,7 +201,7 @@ namespace ArchipelagoRandomizer
 
         /// <summary>
         /// Adds a new text entry to the in-game consoles.
-        /// Identical to Randomizer.InGameAPConsole.AddText(text), but implemented for convenience.
+        /// Identical to APRandomizer.InGameAPConsole.AddText(text), but implemented for convenience.
         /// </summary>
         /// <param name="text">The text to add to the consoles</param>
         /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
@@ -209,16 +209,16 @@ namespace ArchipelagoRandomizer
         /// <param name="skipHistory">Whether to not save this text between loops</param>
         public static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
         {
-            Randomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
+            APRandomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
         }
 
         /// <summary>
         /// Updates the gameplay console.
-        /// Identical to Randomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
+        /// Identical to APRandomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
         /// </summary>
         public static void UpdateConsoleText()
         {
-            Randomizer.InGameAPConsole.UpdateText();
+            APRandomizer.InGameAPConsole.UpdateText();
         }
 
         public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
@@ -233,11 +233,11 @@ namespace ArchipelagoRandomizer
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            Randomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
+            APRandomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
 
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;
-            var slot = Randomizer.APSession.ConnectionInfo.Slot;
+            var slot = APRandomizer.APSession.ConnectionInfo.Slot;
             if (FilterPlayer)
             {
                 switch (message)
@@ -264,7 +264,7 @@ namespace ArchipelagoRandomizer
             if (text == "") return;
 
             // we want to time out relatively quickly if the server happens to be down
-            var sayPacketTask = Task.Run(() => Randomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+            var sayPacketTask = Task.Run(() => APRandomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(1)))
                 throw new Exception("OnConsoleEntry() task timed out");
 

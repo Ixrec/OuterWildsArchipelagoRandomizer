@@ -99,7 +99,7 @@ public static class Coordinates
     {
         var activeIndex = __instance.GetSlotIndex(slot);
         var hologram = __instance._holograms[activeIndex];
-        Randomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix {__instance.name} {activeIndex} {hologram.name}");
+        APRandomizer.OWMLModConsole.WriteLine($"OrbitalCannonHologramProjector_OnSlotActivated_Prefix {__instance.name} {activeIndex} {hologram.name}");
         if (hologram.name == "Hologram_EyeCoordinates")
         {
             LocationTriggers.CheckLocation(Location.GD_COORDINATES);

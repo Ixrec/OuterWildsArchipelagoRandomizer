@@ -119,7 +119,7 @@ internal class SignalsAndFrequencies
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
         var location = LocationNames.signalToLocation[signalName];
-        var isKnown = Randomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
+        var isKnown = APRandomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
 
         __result = isKnown; // override return value
         return false; // skip vanilla implementation
@@ -169,7 +169,7 @@ internal class SignalsAndFrequencies
         if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location location))
             return true;
 
-        if (Randomizer.SaveData.locationsChecked[location])
+        if (APRandomizer.SaveData.locationsChecked[location])
             return false; // skip vanilla implementation
 
         return true;
@@ -187,10 +187,10 @@ internal class SignalsAndFrequencies
         // doesn't work and we have to do a frequency check here instead of relying on IdentifyFrequency.
         if (signalToFrequency.TryGetValue(signal, out var frequency))
             if (LocationNames.frequencyToLocation.TryGetValue(frequency, out var frequencyLocation))
-                if (!Randomizer.SaveData.locationsChecked[frequencyLocation])
+                if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
                     LocationTriggers.CheckLocation(frequencyLocation);
 
-        if (Randomizer.SaveData.locationsChecked[signalLocation])
+        if (APRandomizer.SaveData.locationsChecked[signalLocation])
             return false; // skip vanilla implementation
 
         return true;
@@ -224,7 +224,7 @@ internal class SignalsAndFrequencies
 
         // If the player has already scanned this signal, then don't display "Unidentified Signal Nearby"
         var location = LocationNames.signalToLocation[signalName];
-        if (Randomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage)
+        if (APRandomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage)
             return false; // skip vanilla implementation
 
         // copy-pasted and tweaked from vanilla implementation
@@ -259,13 +259,13 @@ internal class SignalsAndFrequencies
     [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnEnterSignalDetectionTrigger))]
     public static void Signalscope_OnEnterSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
     {
-        // Randomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
+        // APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
         nearbyUnscannedSignal = signal;
     }
     [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnExitSignalDetectionTrigger))]
     public static void Signalscope_OnExitSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
     {
-        // Randomizer.OWMLModConsole.WriteLine($"Signalscope_OnExitSignalDetectionTrigger {signal.GetName()}");
+        // APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnExitSignalDetectionTrigger {signal.GetName()}");
         nearbyUnscannedSignal = null;
     }
 

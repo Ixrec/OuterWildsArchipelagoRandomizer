@@ -26,7 +26,7 @@ internal class WarpCoreManual
             var type = (__instance._heldItem as WarpCoreItem).GetWarpCoreType();
             if (type == WarpCoreType.Vessel || type == WarpCoreType.VesselBroken)
             {
-                Randomizer.OWMLModConsole.WriteLine($"blocking attempt to insert Vessel/ATP warp core into a socket");
+                APRandomizer.OWMLModConsole.WriteLine($"blocking attempt to insert Vessel/ATP warp core into a socket");
                 return false;
             }
         }
@@ -41,7 +41,7 @@ internal class WarpCoreManual
             var type = (socket.GetSocketedItem() as WarpCoreItem).GetWarpCoreType();
             if (type == WarpCoreType.Vessel || type == WarpCoreType.VesselBroken)
             {
-                Randomizer.OWMLModConsole.WriteLine($"blocking attempt to remove Vessel/ATP warp core from its socket");
+                APRandomizer.OWMLModConsole.WriteLine($"blocking attempt to remove Vessel/ATP warp core from its socket");
                 return false;
             }
         }
