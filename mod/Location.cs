@@ -99,7 +99,6 @@ public enum Location
     // TODO
 
     // Logsanity Locations (SLF = Ship Log Fact)
-    /*
     SLF__S_SUNSTATION_X1,
     SLF__S_SUNSTATION_X2,
     SLF__S_SUNSTATION_X3,
@@ -280,7 +279,6 @@ public enum Location
     SLF__QM_SIXTH_LOCATION_X4,
     SLF__QM_SIXTH_LOCATION_X2,
     SLF__QM_SIXTH_LOCATION_X6,
-    */
 
     /* DLC & Logsanity Locations
     SLF__TH_RADIO_TOWER_X1,
@@ -496,8 +494,7 @@ public static class LocationNames
     public static bool IsDLCLocation(Location location) =>
         false;
     public static bool IsLogsanityLocation(Location location) =>
-        false;
-        //location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
+        location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
     public static bool IsDLCLogsanityLocation(Location location) =>
         false;
 
@@ -602,7 +599,6 @@ public static class LocationNames
         { Location.TH_TEPHRA_SIGNAL, "TH: Scan Tephra's Radio Signal" },
 
         // Logsanity locations
-        /*
         { Location.SLF__S_SUNSTATION_X1, "Ship Log: Sun Station 1 - Purpose" },
         { Location.SLF__S_SUNSTATION_X2, "Ship Log: Sun Station 2 - Test Result" },
         { Location.SLF__S_SUNSTATION_X3, "Ship Log: Sun Station 3 - Comet" },
@@ -782,7 +778,6 @@ public static class LocationNames
         { Location.SLF__QM_SIXTH_LOCATION_X4, "QM Ship Log: Sixth Location 4 - Source" },
         { Location.SLF__QM_SIXTH_LOCATION_X2, "QM Ship Log: Sixth Location 5 - Conscious Observer" },
         { Location.SLF__QM_SIXTH_LOCATION_X6, "QM Ship Log: Sixth Location 6 - Status" },
-        */
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
