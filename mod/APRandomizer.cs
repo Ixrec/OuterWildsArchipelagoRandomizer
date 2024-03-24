@@ -41,6 +41,7 @@ namespace ArchipelagoRandomizer
         public static AssetBundle Assets;
         private static string SaveFileName;
         public static ArchipelagoSession APSession;
+        public static Dictionary<string, object> SlotData;
 
         public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
         public static ArchConsoleManager InGameAPConsole;
@@ -171,12 +172,11 @@ namespace ArchipelagoRandomizer
             if (!result.Successful)
                 return result;
 
-            var loginSuccess = (LoginSuccessful)result;
-            OWMLModConsole.WriteLine($"AP login succeeded, slot data is: {JsonConvert.SerializeObject(loginSuccess.SlotData)}");
+            SlotData = ((LoginSuccessful)result).SlotData;
 
-            if (loginSuccess.SlotData.ContainsKey("apworld_version"))
+            if (SlotData.ContainsKey("apworld_version"))
             {
-                var apworld_version = (string)loginSuccess.SlotData["apworld_version"];
+                var apworld_version = (string)SlotData["apworld_version"];
                 // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
                 var mod_version = "0.1.6";
                 if (apworld_version != mod_version)
@@ -184,11 +184,11 @@ namespace ArchipelagoRandomizer
                         $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
             }
 
-            if (loginSuccess.SlotData.ContainsKey("death_link"))
-                DeathLinkManager.Enable((long)loginSuccess.SlotData["death_link"]);
+            if (SlotData.ContainsKey("death_link"))
+                DeathLinkManager.Enable((long)SlotData["death_link"]);
 
-            if (loginSuccess.SlotData.ContainsKey("goal"))
-                Victory.SetGoal((long)loginSuccess.SlotData["goal"]);
+            if (SlotData.ContainsKey("goal"))
+                Victory.SetGoal((long)SlotData["goal"]);
 
             // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
             // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
