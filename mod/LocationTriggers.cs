@@ -119,7 +119,12 @@ internal class LocationTriggers
         var locationChecked = APRandomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+            if (LocationNames.IsLogsanityLocation(location) && !(APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1))
+            {
+                // location is a logsanity location, and this world does not have logsanity enabled. Doing nothing.
+            }
+            else
+                APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
             return;
         }
 
@@ -212,6 +217,14 @@ internal class LocationTriggers
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
+
+        if (APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1)
+        {
+            // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
+            // we can simply parse the fact id instead of writing another hardcoded map.
+            if (Enum.TryParse<Location>($"SLF__{factId}", out var location))
+                CheckLocation(location);
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnLaunchCodes))]
