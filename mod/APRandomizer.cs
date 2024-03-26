@@ -212,12 +212,18 @@ namespace ArchipelagoRandomizer
         private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
         {
             bool saveDataChanged = false;
+
+            var receivedItems = new HashSet<long>();
             while (receivedItemsHelper.PeekItem().Item != 0)
             {
                 var itemId = receivedItemsHelper.PeekItem().Item;
-                saveDataChanged = SyncItemCountWithAPServer(itemId);
+                receivedItems.Add(itemId);
                 receivedItemsHelper.DequeueItem();
             }
+
+            OWMLModConsole.WriteLine($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
+            foreach (var itemId in receivedItems)
+                saveDataChanged = SyncItemCountWithAPServer(itemId);
 
             if (saveDataChanged)
                 APRandomizer.Instance.WriteToSaveFile();

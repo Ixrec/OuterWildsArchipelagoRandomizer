@@ -19,10 +19,9 @@ internal class SuitResources
         set
         {
             if (value > _fuelRefills)
-            {
-                _fuelRefills = value;
                 RefillFuel();
-            }
+
+            _fuelRefills = value;
         }
     }
     private static uint _oxygenRefills = 0;
@@ -33,10 +32,9 @@ internal class SuitResources
         set
         {
             if (value > _oxygenRefills)
-            {
-                _oxygenRefills = value;
                 RefillOxygen();
-            }
+
+            _oxygenRefills = value;
         }
     }
 

@@ -15,19 +15,16 @@ internal class Marshmallows
         get => _normalMarshmallows;
         set
         {
-            if (value > _normalMarshmallows)
+            if (value > _normalMarshmallows && playerResources != null)
             {
-                _normalMarshmallows = value;
+                playerResources._currentHealth = (float)Math.Min(playerResources._currentHealth + 50, PlayerResources._maxHealth);
 
-                if (playerResources != null)
-                {
-                    playerResources._currentHealth = (float)Math.Min(playerResources._currentHealth + 50, PlayerResources._maxHealth);
-
-                    Locator.GetPlayerAudioController().PlayMarshmallowEat();
-                    var nd = new NotificationData(NotificationTarget.Player, "MARSHMALLOW CONSUMED. 50% HEALTH RESTORED.", 3f, false);
-                    NotificationManager.SharedInstance.PostNotification(nd, false);
-                }
+                Locator.GetPlayerAudioController().PlayMarshmallowEat();
+                var nd = new NotificationData(NotificationTarget.Player, "MARSHMALLOW CONSUMED. 50% HEALTH RESTORED.", 3f, false);
+                NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+
+            _normalMarshmallows = value;
         }
     }
     public static uint perfectMarshmallows
@@ -35,19 +32,16 @@ internal class Marshmallows
         get => _perfectMarshmallows;
         set
         {
-            if (value > _perfectMarshmallows)
+            if (value > _perfectMarshmallows && playerResources != null)
             {
-                _perfectMarshmallows = value;
+                playerResources._currentHealth = PlayerResources._maxHealth;
 
-                if (playerResources != null)
-                {
-                    playerResources._currentHealth = PlayerResources._maxHealth;
-
-                    Locator.GetPlayerAudioController().PlayMarshmallowEat();
-                    var nd = new NotificationData(NotificationTarget.Player, "PERFECT MARSHMALLOW CONSUMED. HEALTH FULLY RESTORED.", 3f, false);
-                    NotificationManager.SharedInstance.PostNotification(nd, false);
-                }
+                Locator.GetPlayerAudioController().PlayMarshmallowEat();
+                var nd = new NotificationData(NotificationTarget.Player, "PERFECT MARSHMALLOW CONSUMED. HEALTH FULLY RESTORED.", 3f, false);
+                NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+
+            _perfectMarshmallows = value;
         }
     }
     public static uint burntMarshmallows
@@ -55,17 +49,14 @@ internal class Marshmallows
         get => _burntMarshmallows;
         set
         {
-            if (value > _burntMarshmallows)
+            if (value > _burntMarshmallows && playerResources != null)
             {
-                _burntMarshmallows = value;
-
-                if (playerResources != null)
-                {
-                    Locator.GetPlayerAudioController().PlayMarshmallowEatBurnt();
-                    var nd = new NotificationData(NotificationTarget.Player, "BURNT MARSHMALLOW CONSUMED. HEALTH UNCHANGED.", 3f, false);
-                    NotificationManager.SharedInstance.PostNotification(nd, false);
-                }
+                Locator.GetPlayerAudioController().PlayMarshmallowEatBurnt();
+                var nd = new NotificationData(NotificationTarget.Player, "BURNT MARSHMALLOW CONSUMED. HEALTH UNCHANGED.", 3f, false);
+                NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+
+            _burntMarshmallows = value;
         }
     }
 
