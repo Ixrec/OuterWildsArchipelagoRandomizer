@@ -18,8 +18,6 @@ internal class Victory
 
     public static void SetGoal(long goal)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"SetGoal() called with: {goal}");
-
         if (Enum.IsDefined(typeof(GoalSetting), goal))
             goalSetting = (GoalSetting)goal;
         else

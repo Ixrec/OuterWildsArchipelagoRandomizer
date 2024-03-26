@@ -128,28 +128,23 @@ internal class LocationTriggers
             return;
         }
 
-        if (locationChecked[location])
+        if (locationChecked[location]) return;
+
+        locationChecked[location] = true;
+        APRandomizer.Instance.WriteToSaveFile();
+
+        if (LocationNames.locationToArchipelagoId.ContainsKey(location))
         {
-            return;
+            var locationId = LocationNames.locationToArchipelagoId[location];
+
+            // we want to time out relatively quickly if the server happens to be down
+            var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
+            if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
+                APRandomizer.OWMLModConsole.WriteLine($"CompleteLocationChecks({locationId}) task timed out", OWML.Common.MessageType.Warning);
         }
         else
         {
-            locationChecked[location] = true;
-            APRandomizer.Instance.WriteToSaveFile();
-
-            if (LocationNames.locationToArchipelagoId.ContainsKey(location))
-            {
-                var locationId = LocationNames.locationToArchipelagoId[location];
-
-                // we want to time out relatively quickly if the server happens to be down
-                var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
-                if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
-                    APRandomizer.OWMLModConsole.WriteLine($"CompleteLocationChecks({locationId}) task timed out", OWML.Common.MessageType.Warning);
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
-            }
+            APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
         }
     }
 
@@ -214,6 +209,7 @@ internal class LocationTriggers
     public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
     {
         var factId = id;
+        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager.RevealFact {factId}");
 
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
@@ -236,6 +232,7 @@ internal class LocationTriggers
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
+        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
 
         // If it ever comes up, avoid using "Feldspar_Journal" or "Gabbro_1" here.
         // Those "conversations" seem to spontaneously complete themselves every so often no matter what the player's doing.
@@ -276,7 +273,7 @@ internal class LocationTriggers
     public static void PlayerRecoveryPoint_OnPressInteract(PlayerRecoveryPoint __instance)
     {
         var parentName = __instance?.gameObject?.transform?.parent?.name;
-        //APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint_OnPressInteract __instance?.name={__instance?.name}, parentName={parentName}");
+        APRandomizer.OWMLModConsole.WriteLine($"PlayerRecoveryPoint_OnPressInteract __instance?.name={__instance?.name}, parentName={parentName}");
 
         // The only non-tank recovery point I know of is the ship's medkit, which has instanceName=PlayerRecoveryPoint and parentName=Systems_Supplies.
         // This has to be StartsWith() instead of == because Esker's tank is "Prefab_HEA_FuelTank (1)"
@@ -306,6 +303,7 @@ internal class LocationTriggers
     [HarmonyPrefix, HarmonyPatch(typeof(DialogueConditionTrigger), nameof(DialogueConditionTrigger.OnEntry))]
     public static void DialogueConditionManager_OnEntry(DialogueConditionTrigger __instance, UnityEngine.GameObject hitObj)
     {
+        APRandomizer.OWMLModConsole.WriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}");
         switch (__instance._conditionID)
         {
             case "FoundGabbroShip": CheckLocation(Location.GD_SHIP); break;

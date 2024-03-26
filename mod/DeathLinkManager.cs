@@ -24,16 +24,12 @@ internal class DeathLinkManager
     public static void Enable(long value)
     {
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
-        {
             setting = (DeathLinkSetting)value;
-            APRandomizer.OWMLModConsole.WriteLine($"DeathLinkManager set to death link mode: {value}");
-        }
         else
             APRandomizer.OWMLModConsole.WriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
 
         if (setting != DeathLinkSetting.Off && service == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"creating and enabling DeathLinkService, and attaching OnDeathLinkReceived handler");
             service = APRandomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
 

@@ -28,8 +28,6 @@ internal class QuantumShrineDoor
     [HarmonyPrefix, HarmonyPatch(typeof(QuantumShrine), nameof(QuantumShrine.Start))]
     public static void QuantumShrine_Start_Prefix(QuantumShrine __instance)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"QuantumShrine.Start deleting door orb and adding door prompt");
-
         var qs = Locator.GetQuantumMoon().transform.Find("Sector_QuantumMoon/QuantumShrine").GetComponent<QuantumShrine>();
 
         // deactivate the orb you'd use to open the door in the vanilla game

@@ -233,7 +233,7 @@ namespace ArchipelagoRandomizer
             });
             var inGameConsoleMessage = string.Join("", colorizedParts);
 
-            APRandomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
+            //APRandomizer.OWMLModConsole.WriteLine($"AddAPMessage() sending this formatted string to the in-game console:\n{inGameConsoleMessage}");
 
             // Determine if we should filter out the message
             bool irrelevantToPlayer = true;

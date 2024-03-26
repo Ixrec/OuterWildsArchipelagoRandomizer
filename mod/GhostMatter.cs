@@ -16,8 +16,6 @@ internal class GhostMatter
         {
             if (loadScene != OWScene.SolarSystem) return;
 
-            APRandomizer.OWMLModConsole.WriteLine($"GhostMatter.Setup fetching references to ghost matter particle renderers");
-
             var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
             var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
 
@@ -94,10 +92,7 @@ internal class GhostMatter
         HazardVolume hazardVolume = eVolume as HazardVolume;
         HazardVolume.HazardType hazardType = hazardVolume.GetHazardType();
         if (__instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"HazardDetector_OnVolumeAdded_Prefix blocking the scout's darkMatterEntryEffect");
             __instance._darkMatterEntryEffect = null;
-        }
     }
 
     // This patch prevents the scout from leaving a green trail as it passes through ghost matter.
@@ -111,10 +106,8 @@ internal class GhostMatter
         // which is what it uses to emit the trail of WillOWisp particles as an object
         // moves through ghost matter.
         if (detector.GetName() == Detector.Name.Probe)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"DarkMatterVolume_OnEffectVolumeEnter_Prefix blocking the scout's ghost matter particleTrail");
             return false;
-        }
+
         return true;
     }
 }
