@@ -139,8 +139,12 @@ internal class LocationTriggers
 
             // we want to time out relatively quickly if the server happens to be down
             var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
-            if (!checkLocationTask.Wait(TimeSpan.FromSeconds(1)))
-                APRandomizer.OWMLModConsole.WriteLine($"CompleteLocationChecks({locationId}) task timed out", OWML.Common.MessageType.Warning);
+            if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2)))
+            {
+                var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
+                APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
+                APRandomizer.InGameAPConsole.AddText($"<color='orange'>{msg}</color>");
+            }
         }
         else
         {
