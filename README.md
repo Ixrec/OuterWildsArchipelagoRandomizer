@@ -75,18 +75,23 @@ For a more complex multiworld, you'd put one `.yaml` file in the `\Players` fold
 - Now click the big green Run Game button. Note that you must launch Outer Wilds through the Mod Manager in order for the mods to be applied; launching from Steam won't work.
 - Once you're at the main menu of Outer Wilds itself, click "New Random Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml` (or used multiple `.yaml`s), your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
 
-#### What if I want to run an older version of this mod (so I can finish a longer async), or run a prerelease version for testing?
+#### What if I want to run a pre-release version for testing, or downgrade to an older version of this mod (so I can finish a longer async)?
 
 <details>
 <summary>Click here to show instructions</summary>
 
-To do this, you need a `Ixrec.ArchipelagoRandomizer.zip` file. This repo's Releases page has all the mod `.zip`s for past releases and prereleases (and the current `.zip`, which is what the Mod Manager normally downloads for you).
+To use a pre-release version:
 
-- In the Mod Manager, click the 3 dots icon, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
+- In the Mod Manager, go to the "Get Mods" section (**not** "Installed Mods")
+- Search for "Archipelago Randomizer", click the 3 dots icon next to this mod, and select the "Use Prerelease ..." option
+
+To downgrade to an older version, you'll need to install a `Ixrec.ArchipelagoRandomizer.zip` manually. This repo's Releases page has all the mod `.zip`s for past releases (and the current release `.zip`, which is what the Mod Manager normally downloads for you).
+
+- In the Mod Manager, go to the "Installed Mods" section if you aren't already there
+- Click the 3 dots icon next to this mod, and select "Show OWML Folder". It should open something like `%AppData%\OuterWildsModManager\OWML`.
 - Open the `Mods/` subfolder.
 - In here, unzip the `Ixrec.ArchipelagoRandomizer.zip` file, and overwrite any previous version you might have.
-- The Mod Manager should immediately detect and display it this mod. If it doesn't, click the Refresh button in the top left.
-- If the Mod Manager complains about missing dependencies, install them by clicking on the "fix issues" button (the hammer and wrench icon) in the Mod Manager's "Actions" column.
+- The Mod Manager should immediately detect and display the version number of the `.zip` you unzipped. If it doesn't, click the Refresh button in the top left.
 </details>
 
 ## Roadmap
