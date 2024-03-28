@@ -14,10 +14,7 @@ internal class Translator
         set
         {
             if (_hasTranslator != value)
-            {
                 _hasTranslator = value;
-                ApplyHasTranslatorFlag(_hasTranslator);
-            }
         }
     }
 
@@ -30,13 +27,15 @@ internal class Translator
     }
 
     static ScreenPrompt translatePrompt = null;
+    static ScreenPrompt cannotTranslatePrompt = null;
 
     [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Start))]
     public static void ToolModeUI_Start_Postfix(ToolModeUI __instance)
     {
         translatePrompt = __instance._centerTranslatePrompt;
 
-        ApplyHasTranslatorFlag(hasTranslator);
+        cannotTranslatePrompt = new ScreenPrompt("Translator Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(cannotTranslatePrompt, PromptPosition.Center, false);
     }
 
     // Because of the auto-equip translator setting, the enabling/disabling of the translate
@@ -44,32 +43,33 @@ internal class Translator
     [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Postfix(ToolModeUI __instance)
     {
+        cannotTranslatePrompt.SetVisibility(false);
+
+        // If the vanilla translate prompt is already being displayed, then this is like every other file
+        // that needs to change a UI prompt: just swap to the other prompt if we don't have the item yet.
+        if (translatePrompt.IsVisible())
+        {
+            if (!_hasTranslator)
+            {
+                translatePrompt.SetVisibility(false);
+                cannotTranslatePrompt.SetVisibility(true);
+            }
+            return;
+        }
+
+        // But if the vanilla game would've auto-equipped the translator, then we need to prevent that
+        // to show our "Translator Not Available" prompt instead.
         // This is mostly a copy-paste of the body of ToolModeSwapper.IsTranslatorEquipPromptAllowed(),
         // but with our hasTranslator flag inserted in the right place.
         if (
             __instance._toolSwapper.IsNomaiTextInFocus() &&
-            __instance._toolSwapper._currentToolMode != ToolMode.Translator && 
+            __instance._toolSwapper._currentToolMode != ToolMode.Translator &&
             (!hasTranslator || !__instance._toolSwapper.GetAutoEquipTranslator() || __instance._toolSwapper._waitForLoseNomaiTextFocus) &&
             OWInput.IsInputMode(InputMode.Character)
-        ) {
-            translatePrompt.SetVisibility(true);
-        }
-    }
-
-    public static void ApplyHasTranslatorFlag(bool hasTranslator)
-    {
-        if (translatePrompt == null) return;
-
-        if (hasTranslator)
+        )
         {
-            translatePrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.interact.CommandType };
-            // copy-pasted from the body of ToolModeUI.Start()
-            translatePrompt.SetText("<CMD>   " + UITextLibrary.GetString(UITextType.TranslatorPrompt));
-        }
-        else
-        {
-            translatePrompt._commandIdList = new();
-            translatePrompt.SetText("Translator Not Available");
+            translatePrompt.SetVisibility(_hasTranslator);
+            cannotTranslatePrompt.SetVisibility(!_hasTranslator);
         }
     }
 }
