@@ -33,6 +33,8 @@ namespace ArchipelagoRandomizer
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
 
+        public List<string> WakeupConsoleMessages = new();
+
         // Console can only handle ~65000 vertices
         // As there's 4 vertices per character, we can only support a quarter of this
         private const int maxCharacters = 16000;
@@ -121,6 +123,11 @@ namespace ArchipelagoRandomizer
             filterButton.onClick.AddListener(OnClickFilterButton);
             consoleText = console.GetComponentInChildren<InputField>();
             pauseConsoleVisuals.SetActive(false);
+
+            // These are messages we really want the player to see, so show in both consoles (sadly we can't make a ding noise this early)
+            foreach (string entry in WakeupConsoleMessages)
+                AddText(entry);
+            WakeupConsoleMessages.Clear();
 
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
