@@ -43,6 +43,7 @@ internal class Scout
     }
 
     static ScreenPrompt launchScoutPrompt = null;
+    static ScreenPrompt cannotLaunchScoutPrompt = null;
 
     // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
     [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.LateInitialize))]
@@ -50,13 +51,31 @@ internal class Scout
     {
         launchScoutPrompt = __instance._launchPrompt;
 
+        cannotLaunchScoutPrompt = new ScreenPrompt("Scout Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(cannotLaunchScoutPrompt, PromptPosition.UpperRight, false);
+
         ApplyHasScoutFlag(hasScout);
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.Update))]
+    public static void ProbePromptController_Update_Postfix(ProbePromptController __instance)
+    {
+        cannotLaunchScoutPrompt.SetVisibility(false);
+        if (launchScoutPrompt.IsVisible() && !_hasScout)
+        {
+            launchScoutPrompt.SetVisibility(false);
+            cannotLaunchScoutPrompt.SetVisibility(true);
+        }
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptController), nameof(ProbePromptController.OnProbeLauncherUnequipped))]
+    public static void ProbePromptController_OnProbeLauncherUnequipped_Postfix(ProbePromptController __instance)
+    {
+        cannotLaunchScoutPrompt.SetVisibility(false);
     }
 
     public static void ApplyHasScoutFlag(bool hasScout)
     {
-        if (launchScoutPrompt == null) return;
-
         // I usually try to fetch references like this only once during startup, but there are so many ways the
         // Scout models can get invalidated or revalidated later on that we have to fetch them here on the fly.
         GameObject scoutInsideShip = null;
@@ -69,23 +88,13 @@ internal class Scout
         }
         GameObject scoutInPlayerLauncher = getScoutInPlayerLauncher();
 
+        scoutInShipLauncher?.SetActive(hasScout);
+        scoutInPlayerLauncher?.SetActive(hasScout);
+
         if (hasScout)
-        {
-            launchScoutPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.toolActionPrimary.CommandType };
-            // copy-pasted from the body of ProbePromptController.Awake()
-            launchScoutPrompt.SetText(UITextLibrary.GetString(UITextType.ProbeLaunchPrompt) + "   <CMD>");
             scoutInsideShip?.SetActive(!Locator.GetPlayerSuit()?.IsWearingSuit() ?? false);
-            scoutInShipLauncher?.SetActive(true);
-            scoutInPlayerLauncher?.SetActive(true);
-        }
         else
-        {
-            launchScoutPrompt._commandIdList = new();
-            launchScoutPrompt.SetText("Scout Not Available");
             scoutInsideShip?.SetActive(false);
-            scoutInShipLauncher?.SetActive(false);
-            scoutInPlayerLauncher?.SetActive(false);
-        }
     }
 
     private static GameObject getScoutInPlayerLauncher()
