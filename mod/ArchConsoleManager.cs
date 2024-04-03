@@ -281,14 +281,18 @@ namespace ArchipelagoRandomizer
 
             if (text == "") return;
 
-            // we want to time out relatively quickly if the server happens to be down
-            var sayPacketTask = Task.Run(() => APRandomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
-            if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2)))
+            // we want to time out relatively quickly if the server happens to be down, but don't
+            // block whatever we (and the vanilla game) were doing on waiting for the AP server response
+            var _ = Task.Run(() =>
             {
-                var msg = $"AP server timed out when we tried to send the message '{text}'. Did the connection go down?";
-                APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
-                AddText($"<color='orange'>{msg}</color>");
-            }
+                var sayPacketTask = Task.Run(() => APRandomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+                if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2)))
+                {
+                    var msg = $"AP server timed out when we tried to send the message '{text}'. Did the connection go down?";
+                    APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
+                    AddText($"<color='orange'>{msg}</color>");
+                }
+            });
 
             consoleText.text = "";
         }
