@@ -1,0 +1,152 @@
+[
+    {
+        "locationModID": "SLF__S_SUNSTATION_X1",
+        "description": "The Sun Station contains a scroll wall explaining its purpose.",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X2",
+        "description": "A projection stone in the Sun Station reports the results of the station.",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X3",
+        "description": "A projection stone in the Sun Station mentions that comet has recently appeared.",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__S_SUNSTATION_X4",
+        "description": "A text wheel in the Sun Station indicates the length of time until the sun reaches the end of its natural lifecycle.",
+        "thumbnail": "S_SUNSTATION"
+    },
+    {
+        "locationModID": "SLF__WHS_X1",
+        "description": "The White Hole station contains a text wall mentioning that it is a warp tower.",
+        "thumbnail": "WHITE_HOLE_STATION"
+    },
+    {
+        "locationModID": "SLF__WHS_X2",
+        "description": "A projection stone that was in the White Hole Station mentioned some odd temporal fluncuations from warping.",
+        "thumbnail": "WHITE_HOLE_STATION"
+    },
+    {
+        "locationModID": "SLF__WHS_X3",
+        "description": "A projection stone that was in the White Hole Station mentioned that those who warped arrived at their destination a miniscule amount of time before they left.",
+        "thumbnail": "WHITE_HOLE_STATION"
+    },
+    {
+        "locationModID": "SLF__WHS_X4",
+        "description": "A text wall within the station mentions that the tower is only active during a very short period (for those without override codes, of course).",
+        "thumbnail": "WHITE_HOLE_STATION"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X1",
+        "description": "On the Interloper, there is a Nomai shuttle on the dark side of it. Some text near or in the shuttle might explain what it is.",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X2",
+        "description": "A Nomai Audio Log within the Frozen Shuttle mentions the expedition to the comet, and the strange energy readings they detected.",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X3",
+        "description": "A Nomai Audio Log outside the Frozen Shuttle's landing site explains that one Nomai stayed behind to keep the shuttle warm, while others went on an expedition into the comet.",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_SHUTTLE_X4",
+        "description": "A Nomai Audio Log within the Frozen Shuttle mentions that the Nomai who stayed with the shuttle has lost contact with her friends.",
+        "thumbnail": "COMET_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X1",
+        "description": "An expedition was lead to the Interloper. What became of the crew members who went inside it?",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X2",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that it is filled with strange exotic matter.",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X3",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that the matter within could blanket the Solar System instantly if it were released.",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__COMET_INTERIOR_X4",
+        "description": "A Nomai Audio Log within the core of the Interloper explains that one Nomai stayed behind to study the core, while another left in a vain attempt to warn the other Nomai.",
+        "thumbnail": "COMET_INTERIOR"
+    },
+    {
+        "locationModID": "SLF__QUANTUM_MOON_X1",
+        "description": "With the Rule of Quantum Imaging, you can land on the Quantum Moon.",
+        "thumbnail": "QUANTUM_MOON"
+    },
+    {
+        "locationModID": "SLF__QUANTUM_MOON_X2",
+        "description": "There is a corpse on the Quantum Moon's South Pole.",
+        "thumbnail": "QUANTUM_MOON"
+    },
+    {
+        "locationModID": "SLF__QM_SHUTTLE_X1",
+        "description": "A Nomai Audio Log on the Quantum Moon Shuttle mentions that a Nomai named Solanum landed it there.",
+        "thumbnail": "QM_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__QM_SHUTTLE_X2",
+        "description": "The Nomai Audio Log on the Quantum Moon Shuttle mentions that it landed on the South Pole.",
+        "thumbnail": "QM_SHUTTLE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X1",
+        "description": "There is a shrine on the Quantum Moon with text on its wall that only appears when the lights are on.",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X2",
+        "description": "The text in the shrine mentions the Rule of Quantum Imaging.",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X3",
+        "description": "The text in the shrine mentions the Rule of Quantum Entanglement.",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SHRINE_X4",
+        "description": "The text in the shrine mentions the Rule of the Sixth Location.",
+        "thumbnail": "QM_SHRINE"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X1",
+        "description": "Life signs can be detected on the Sixth Location. Maybe she wants to talk?",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X2",
+        "description": "Identify the Quantum Moon to learn about it.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X3",
+        "description": "Identify the Eye to see that the Quantum Moon reflects the Eye.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X4",
+        "description": "Explain the Quantum Moon to learn about the Eye's macroscopic properties.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X5",
+        "description": "Explain the Eye to muse on what would happen should a concious observer enter it.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X6",
+        "description": "Combine blue symbols to reveal the lone Nomai's uncertainty.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    }
+]

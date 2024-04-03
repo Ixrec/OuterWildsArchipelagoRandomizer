@@ -1,0 +1,37 @@
+[
+    {
+        "locationModID": "DB_HARMONICA",
+        "description": "Feldspar's harmonica echoes far within the emptiness. You should scan their playing.",
+        "thumbnail": "DB_FELDSPAR"
+    },
+    {
+        "locationModID": "DB_JELLY",
+        "description": "Are jellyfish edible? Read the note inside to find out.",
+        "thumbnail": "DB_FROZEN_JELLYFISH"
+    },
+    {
+        "locationModID": "DB_JELLY_TR",
+        "description": "By the Frozen Jellyfish, Feldspar has left a tape recorder.",
+        "thumbnail": "DB_FROZEN_JELLYFISH"
+    },
+    {
+        "locationModID": "DB_GRAVE",
+        "description": "Where did the inhabitants of Escape Pod 3 wind up? Perhaps they left a log.",
+        "thumbnail": "DB_NOMAI_GRAVE"
+    },
+    {
+        "locationModID": "DB_VESSEL",
+        "description": "The Nomai had to have come from somewhere. Locate their Vessel and enter it.",
+        "thumbnail": "DB_VESSEL"
+    },
+    {
+        "locationModID": "DB_EP3_SIGNAL",
+        "description": "A Nomai Escape Pod in Dark Bramble has a Distress Beacon that is emitting a strong signal.",
+        "thumbnail": "DB_ESCAPE_POD"
+    },
+    {
+        "locationModID": "DB_FELDSPAR_TANK",
+        "description": "Despite their very limited resources, Feldspar is perfectly fine with you taking some of their fuel.",
+        "thumbnail": "DB_FELDSPAR"
+    }
+]

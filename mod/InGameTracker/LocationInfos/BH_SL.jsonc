@@ -1,0 +1,218 @@
+[
+    {
+        "locationModID": "SLF__BH_RIEBECK_X1",
+        "description": "Riebeck, despite their timidness, has found it within themself to brave the depths of Brittle Hollow. They'd certainly love some company to calm their nerves.",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "SLF__BH_RIEBECK_X2",
+        "description": "You should ask Riebeck what they're doing on Brittle Hollow. They love discussing their hobby.",
+        "thumbnail": "BH_RIEBECK"
+    },
+    {
+        "locationModID": "SLF__BH_GRAVITY_CANNON_X1",
+        "description": "There is a Gravity Cannon on Brittle Hollow with controls. The left control launches it.",
+        "thumbnail": "BH_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__BH_GRAVITY_CANNON_X2",
+        "description": "There is a Gravity Cannon on Brittle Hollow with controls. The right control recalls its shuttle.",
+        "thumbnail": "BH_GRAVITY_CANNON"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X1",
+        "description": "A scroll wall on the top floor of the Tower of Quantum Knowledge reveals how to reach the Sixth Location.",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X2",
+        "description": "A scroll on the Tower of Quantum Knowledge's second floor mentions that Nomai went on pilgrimages to the Quantum Moon.",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_RESEARCH_TOWER_X3",
+        "description": "A scroll on the Tower of Quantum Knowledge's second floor mentions that the two seperated Nomai groups united with a common goal.",
+        "thumbnail": "BH_QUANTUM_RESEARCH_TOWER"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X1",
+        "description": "There's a quantum region on Brittle Hollow, and text on top of the quantum shard mentions why this might be.",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X2",
+        "description": "Text on top of the quantum shard theorizes that it might be related to the Quantum Moon.",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_QUANTUM_SHARD_X3",
+        "description": "Text on top of the quantum shard mentions that its signal sounds the same as the Quantum Moon's.",
+        "thumbnail": "BH_QUANTUM_SHARD"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_RECEIVER_X1",
+        "description": "There are a few Nomai structures with text on the Northern Glacier.",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_RECEIVER_X2",
+        "description": "Text at the Northern Glacier mentions a White Hole Station.",
+        "thumbnail": "BH_WARP_RECEIVER"
+    },
+    {
+        "locationModID": "SLF__BH_ESCAPE_POD_X1",
+        "description": "There is an Escape Pod on Brittle Hollow. There must be some text within it or around it.",
+        "thumbnail": "BH_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__BH_ESCAPE_POD_X2",
+        "description": "The status report within the Escape Pod mentions a Vessel.",
+        "thumbnail": "BH_ESCAPE_POD"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X1",
+        "description": "Under the Escape Pod is an ancient Nomai temporary settlement. There is text on the wall near the entrance mentioning the dangers of wandering around.",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X2",
+        "description": "On a wall in the middle of the old settlement, some Nomai explained their purpose for coming to this Solar System. They were following an eye-shaped signal.",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X3",
+        "description": "On a wall in the middle of the old settlement, some Nomai explained their purpose for coming to this Solar System. The signal was older than the universe itself.",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_OLD_SETTLEMENT_X4",
+        "description": "There is a path leading from the old settlement, with text explaining that the Nomai were abandoning it for a more permanent home.",
+        "thumbnail": "BH_OLD_SETTLEMENT"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_3_X1",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one on the right.",
+        "thumbnail": "BH_MURAL_3"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_2_X1",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one in the middle.",
+        "thumbnail": "BH_MURAL_2"
+    },
+    {
+        "locationModID": "SLF__BH_MURAL_1_X1",
+        "description": "At the lowest point of the Old Settlement, the Nomai drew three murals explaining what happened to their Vessel. Look closely at the one on the left.",
+        "thumbnail": "BH_MURAL_1"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X1",
+        "description": "It sure would be exciting to visit the Hanging City.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X2",
+        "description": "There is a strange structure within the Hanging City Meltwater District that can be manipulated by moving a switch.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X3",
+        "description": "Within the Hanging City Meltwater District, the Nomai discussed how they might acquire a Warp Core on a scroll wall.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_HANGING_CITY_X4",
+        "description": "The Hanging City has an impressive Eye Shrine that mentions a strange signal on its most prominent wall.",
+        "thumbnail": "BH_HANGING_CITY"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X1",
+        "description": "A scroll wall in the Black Hole Forge mentions that the warp cores constructed within are going to Ash Twin.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        // 2 is skipped internally
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X3",
+        "description": "A projection stone within the Black Hole Forge mentions where an Advanced Warp Core is supposed to be installed.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X4",
+        "description": "A scroll on a shelf in the Black Hole Forge mentions that a warp platform is not the target for the receiver's alignment.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X5",
+        "description": "A scroll on a shelf in the Black Hole Forge mentions that a warp receiver must be on or near the aligned body to work.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_BLACK_HOLE_FORGE_X6",
+        "description": "A scroll on a shelf in the Black Hole Forge mentions that the Hourglass Twins are close enough to be considered one body for alignment.",
+        "thumbnail": "BH_BLACK_HOLE_FORGE"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X1",
+        "description": "There is an angle diagram within the Black Hole Forge.",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X2",
+        "description": "An angle diagram within the Black Hole Forge mentions that there is a five degree window for warp towers to function.",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X3",
+        "description": "An angle diagram within the Black Hole Forge mentions that the window provides several seconds to use the warp.",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_WARP_ALIGNMENT_MAP_X4",
+        "description": "An angle diagram within the Black Hole Forge mentions that anyone near a warp platform should be careful during the window.",
+        "thumbnail": "BH_WARP_ALIGNMENT_MAP"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X1",
+        "description": "A scroll wall on the second floor of the observatory mentions that the Nomai attempts to locate the Eye's signal have failed.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X2",
+        "description": "A scroll wall on the second floor of the observatory mentions that the Eye must be within the Solar System.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X3",
+        "description": "A scroll wall on the second floor of the observatory mentions that the Nomai considered building a probe to find the Eye.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_OBSERVATORY_X4",
+        "description": "A scroll wall on the second floor of the observatory mentions that a probe would be very unlikely to find the Eye.",
+        "thumbnail": "BH_OBSERVATORY"
+    },
+    {
+        "locationModID": "SLF__BH_TORNADO_SIMULATION_X1",
+        "description": "A scroll wall within the observatory mentions how tornadoes are typically clockwise.",
+        "thumbnail": "BH_TORNADO_SIMULATION"
+    },
+    {
+        "locationModID": "SLF__BH_TORNADO_SIMULATION_X2",
+        "description": "A scroll wall within the observatory mentions how something could fall beneath the current in Giant's Deep.",
+        "thumbnail": "BH_TORNADO_SIMULATION"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X1",
+        "description": "There is a testing site within one of Hollow's Lantern's volcanos. A projection stone describes the site's purpose.",
+        "thumbnail": "VM_VOLCANO"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X2",
+        "description": "A projection stone within the site mentions that the Nomai need ore that can briefly withstand a supernova.",
+        "thumbnail": "VM_VOLCANO"
+    },
+    {
+        "locationModID": "SLF__VM_VOLCANO_X3",
+        "description": "A projection stone within the site mentions that even a small crack in whatever they're building would be catastrophic.",
+        "thumbnail": "VM_VOLCANO"
+    }
+]
