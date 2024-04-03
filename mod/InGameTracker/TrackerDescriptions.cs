@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             Wrapper.DescriptionFieldClear();
             if (!APRandomizer.Tracker.ItemEntries.ContainsKey(itemID))
             {
-                APRandomizer.OWMLWriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error);
                 return;
             }
             InventoryItemEntry itemEntry = APRandomizer.Tracker.ItemEntries[itemID];
@@ -26,7 +26,7 @@ namespace ArchipelagoRandomizer.InGameTracker
         }
         private static List<string> GetErrorDescription(string itemID)
         {
-            APRandomizer.OWMLWriteLine($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"ItemID {itemID} was requested on the tracker inventory, but no text for it could be found.", OWML.Common.MessageType.Error);
             return [
                 $"Hmm, looks like an incorrect item ID was requested: {itemID}",
                 "Please let Ixrec or Gamewyrm on the Archipelago or Outer Wilds Modding Discord know if you see this.",

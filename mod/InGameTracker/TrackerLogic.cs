@@ -61,7 +61,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             else
             {
-                APRandomizer.OWMLWriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
             }
             path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/connections.jsonc";
             if ( File.Exists(path))
@@ -162,7 +162,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
                     else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                    else APRandomizer.OWMLWriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
+                    else APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     tracker.OWLocations[loc.name].hasBeenChecked = true;
                     tracker.OWLocations[loc.name].hintText = "";
                 }
-                else APRandomizer.OWMLWriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+                else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
             }
         }
 
@@ -305,7 +305,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 if (!tracker.OWLocations[loc.name].hasBeenChecked)
                     tracker.OWLocations[loc.name].hintText = hintDescription;
             }
-            else APRandomizer.OWMLWriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+            else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
         }
 
         // AND condition
@@ -495,7 +495,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             catch (Exception e)
             {
-                APRandomizer.OWMLWriteLine(e.Message, OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine(e.Message, OWML.Common.MessageType.Error);
                 loc = new();
             }
             return loc;
@@ -514,7 +514,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             else
             {
-                APRandomizer.OWMLWriteLine($"Unable to find location {info} by name!", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info} by name!", OWML.Common.MessageType.Error);
                 return null;
             }
         }

@@ -74,7 +74,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 var ia = APRandomizer.SaveData.itemsAcquired;
                 return ia.ContainsKey(result) ? ia[result] > 0 : false;
             }
-            APRandomizer.OWMLWriteLine($"Could not find item with ID {ID} for determining quantity, returning false.", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"Could not find item with ID {ID} for determining quantity, returning false.", OWML.Common.MessageType.Error);
             return false;
         }
 

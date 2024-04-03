@@ -280,7 +280,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 checklist = Tracker.logic.GetLocationChecklist(category);
                 Tracker.GenerateLocationChecklist(category);
             }
-            else APRandomizer.OWMLWriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
+            else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
         }
 
         private string GetTrackerInfoFilename(TrackerCategory category)
@@ -313,7 +313,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     filename = "DW";
                     break;
                 default:
-                    APRandomizer.OWMLWriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
                     break;
             }
             return filename;

@@ -97,7 +97,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             api = APRandomizer.Instance.ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
             if (api == null)
             {
-                APRandomizer.OWMLWriteLine("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.", OWML.Common.MessageType.Error);
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                         entry.Hints.Clear();
                     }
                 }
-                else APRandomizer.OWMLWriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
+                else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
             };
             logic.ParseLocations();
         }
@@ -183,7 +183,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     // We don't need to track hints for items that aren't on the tracker
                     if (!ItemEntries.ContainsKey(itemName))
                     {
-                        APRandomizer.OWMLWriteLine($"{itemName} is not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
+                        APRandomizer.OWMLModConsole.WriteLine($"{itemName} is not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
                         continue;
                     }
                     string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
@@ -231,7 +231,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    APRandomizer.OWMLWriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLModConsole.WriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
                 }
 
             }
@@ -255,7 +255,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    APRandomizer.OWMLWriteLine($"Unable to find the texture requested at {path}.", OWML.Common.MessageType.Error);
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find the texture requested at {path}.", OWML.Common.MessageType.Error);
                     return null;
                 }
                 Texture2D tex = new(512, 512, TextureFormat.RGBA32, false);
@@ -268,7 +268,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             }
             catch(Exception e)
             {
-                APRandomizer.OWMLWriteLine("Unable to load provided texture: " + e.Message, OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine("Unable to load provided texture: " + e.Message, OWML.Common.MessageType.Error);
                 return null;
             }
         }
@@ -291,23 +291,23 @@ namespace ArchipelagoRandomizer.InGameTracker
                 {
                     if (!tracker.ItemEntries.ContainsKey(frequency))
                     {
-                        APRandomizer.OWMLWriteLine($"Invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
+                        APRandomizer.OWMLModConsole.WriteLine($"Invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
                         return;
                     }
                     tracker.ItemEntries[frequency].SetNew(true);
                 }
-                else APRandomizer.OWMLWriteLine($"Provided signal {itemID} does not belong to any mapped frequency, cannot mark as new", OWML.Common.MessageType.Warning);
+                else APRandomizer.OWMLModConsole.WriteLine($"Provided signal {itemID} does not belong to any mapped frequency, cannot mark as new", OWML.Common.MessageType.Warning);
             }
             else if (tracker.ItemEntries.ContainsKey(itemID))
             {
                 if (!tracker.ItemEntries.ContainsKey(itemID))
                 {
-                    APRandomizer.OWMLWriteLine($"Invalid item {itemID} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
+                    APRandomizer.OWMLModConsole.WriteLine($"Invalid item {itemID} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
                     return;
                 }
                 tracker.ItemEntries[itemID].SetNew(true);
             }
-            else APRandomizer.OWMLWriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
+            else APRandomizer.OWMLModConsole.WriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
         }
 
         /// <summary>
@@ -355,12 +355,12 @@ namespace ArchipelagoRandomizer.InGameTracker
                 {
                     if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
                     {
-                        APRandomizer.OWMLWriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
                         continue;
                     }
                     if (!checklistDatas.ContainsKey(logic.GetLocationByName(info).name))
                     {
-                        APRandomizer.OWMLWriteLine($"Unable to find the location {logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
                         continue;
                     }
                     TrackerChecklistData data = checklistDatas[logic.GetLocationByName(info).name];
@@ -379,7 +379,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 }
                 else
                 {
-                    APRandomizer.OWMLWriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
                 }
             }
         }
