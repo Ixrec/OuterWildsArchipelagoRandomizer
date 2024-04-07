@@ -89,7 +89,7 @@ To downgrade to an older version, you'll need to install a `Ixrec.ArchipelagoRan
 
 - In the Mod Manager, click the 3 dots icon at the top of the window, and select the "Install From" option
 - In this popup, make sure the "Install From" mode on top is set to "URL"
-- Go to [this repo's Releases page](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases) and copy the link address to one of the `Ixrec.ArchipelagoRandomizer.zip` files from a previous release. For example, the 0.1.0 .zip link would be "https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases/download/release/Ixrec.ArchipelagoRandomizer.zip".
+- Go to [this repo's Releases page](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases) and copy the link address to one of the `Ixrec.ArchipelagoRandomizer.zip` files from a previous release. For example, the 0.1.1 .zip link would be "https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases/download/v0.1.1/Ixrec.ArchipelagoRandomizer.zip".
 - Back in the Mod Manager popup, paste this link into the "URL" entry below, and click Install.
 
 Either way, the Mod Manager should immediately display the version number of the mod version you installed. Be careful not to click the Fix Issues button until you want to go back to the latest stable mod version.
