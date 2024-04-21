@@ -1,4 +1,5 @@
-﻿using Archipelago.MultiClient.Net.MessageLog.Messages;
+﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using System;
 using System.Collections;
@@ -32,6 +33,9 @@ namespace ArchipelagoRandomizer
         private Button filterButton;
         private bool isPaused;
         private List<float> gameplayConsoleTimers;
+        private Material progressMat;
+        private Text progressText;
+        private ArchipelagoSession session;
 
         public List<string> WakeupConsoleMessages = new();
 
@@ -51,6 +55,12 @@ namespace ArchipelagoRandomizer
         {
             GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
             GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
+
+            APRandomizer.OnSessionOpened += (s) =>
+            {
+                s.Locations.CheckedLocationsUpdated += UpdateProgress;
+                session = s;
+            };
         }
 
         private void Update()
@@ -109,6 +119,8 @@ namespace ArchipelagoRandomizer
             overflowWarning.SetActive(false);
             pauseConsoleText = pauseConsole.GetComponent<Text>();
             gameplayConsoleText = gameplayConsole.GetComponent<Text>();
+            progressText = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/Progress").GetComponent<Text>();
+            progressMat = pauseConsoleVisuals.transform.Find("Buttons/Buttons Container/ProgressWheel/WheelBG/WheelProgress").GetComponent<Image>().material;
 
             pauseConsoleText.text = string.Empty;
             gameplayConsoleText.text = string.Empty;
@@ -129,6 +141,8 @@ namespace ArchipelagoRandomizer
                 AddText(entry);
             WakeupConsoleMessages.Clear();
 
+            UpdateProgress();
+
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
         }
@@ -138,6 +152,15 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
+        }
+
+        private void UpdateProgress(IReadOnlyCollection<long> checkedLocations = null)
+        {
+            float progress = session.Locations.AllLocationsChecked.Count;
+            float maxLocations = session.Locations.AllLocations.Count;
+            float progressPercent = progress / maxLocations;
+            progressText.text = $"{progress}/{maxLocations}";
+            progressMat.SetFloat("_PercentAccessible", progressPercent);
         }
 
         /// <summary>
