@@ -71,7 +71,7 @@
     },
     {
         "locationModID": "SLF__DB_VESSEL_X2",
-        "description": "The Vessel has a dead Warp Core that fits perfectly within a receptacle in the center of the bridge.",
+        "description": "The Vessel has a dead Warp Core that fits perfectly within a receptacle in the center of the bridge.\nUnlike the vanilla game, you only need to pick up the dead warp core, so there's no longer a risk of bringing the working warp core all the way over here only to discover you can't put it down in zero-g to get this log fact in the same trip.",
         "thumbnail": "DB_VESSEL"
     },
     {

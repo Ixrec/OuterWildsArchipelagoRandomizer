@@ -317,4 +317,17 @@ internal class LocationTriggers
             case "FoundGabbroShip": CheckLocation(Location.GD_SHIP); break;
         }
     }
+
+    // In vanilla DB_VESSEL_X2 is for putting the dead warp core into the socket, but in rando that often forces
+    // a whole 2nd Vessel trip just for one log fact, so here we change it to just picking up the dead core.
+    [HarmonyPostfix, HarmonyPatch(typeof(OWItem), nameof(OWItem.PickUpItem))]
+    private static void OWItem_PickUpItem_Postfix(OWItem __instance, UnityEngine.Transform holdTranform)
+    {
+        if (
+            __instance.GetItemType() == ItemType.WarpCore &&
+            (__instance as WarpCoreItem).GetWarpCoreType() == WarpCoreType.VesselBroken
+        ) {
+            Locator.GetShipLogManager().RevealFact("DB_VESSEL_X2");
+        }
+    }
 }
