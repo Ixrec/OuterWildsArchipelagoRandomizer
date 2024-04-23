@@ -302,8 +302,6 @@ namespace ArchipelagoRandomizer
 
             SetupSaveData();
 
-            SetupPauseMenu(menuFramework);
-
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago APRandomizer", OWML.Common.MessageType.Success);
 
             Application.quitting += () => OnSessionClosed(APSession, false);
@@ -503,19 +501,17 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        private IEnumerator SetupPauseMenu(IMenuAPI menuFramework)
+        public override void SetupPauseMenu(IPauseMenuManager pauseManager)
         {
-            yield return new WaitForEndOfFrame();
-
             if (LoadManager.GetCurrentScene() == OWScene.EyeOfTheUniverse)
             {
-                var button = menuFramework.PauseMenu_MakeSimpleButton("QUIT AND RESET\nTO SOLAR SYSTEM");
-                button.onClick.AddListener(() =>
+                var quitAndReset = pauseManager.MakeSimpleButton("QUIT AND RESET\nTO SOLAR SYSTEM", 0, false);
+                quitAndReset.OnSubmitAction += () =>
                 {
                     OWMLModConsole.WriteLine($"reset clicked");
                     PlayerData.SaveEyeCompletion();
                     LoadManager.LoadScene(OWScene.TitleScreen, LoadManager.FadeType.None, 1f, true);
-                });
+                };
             }
         }
     }
