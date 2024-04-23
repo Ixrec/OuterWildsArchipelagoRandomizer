@@ -45,6 +45,24 @@ internal class WarpCoreManual
         }
         return true;
     }
+    [HarmonyPrefix, HarmonyPatch(typeof(ItemTool), nameof(ItemTool.UpdateInteract))]
+    private static bool UpdateInteract(ItemTool __instance, FirstPersonManipulator firstPersonManipulator, bool inputBlocked)
+    {
+        if (OWInput.IsNewlyPressed(InputLibrary.interact, InputMode.All) && !hasWarpCoreManual)
+        {
+            var item = firstPersonManipulator.GetFocusedOWItem();
+            if (item is WarpCoreItem)
+            {
+                var type = (item as WarpCoreItem).GetWarpCoreType();
+                if (type == WarpCoreType.Vessel || type == WarpCoreType.VesselBroken)
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"blocking attempt to interact with a Vessel/ATP warp core");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     // ItemTool.UpdateState is the ideal hook for messing with the Insert/Remove Warp Core prompt except that in the Remove case,
     // it has no access to the socketed item we're about to Remove, even through privates. UpdateState()'s caller uses
@@ -63,11 +81,16 @@ internal class WarpCoreManual
     {
         // We only need to edit the prompt if ItemTool was going to say "Insert/Remove Warp Core" and we don't have the codes yet.
         // ItemTool (re)sets all three of its prompts every Update, so we don't need to worry about any other state changes here.
-        if ((newState == ItemTool.PromptState.SOCKET || newState == ItemTool.PromptState.UNSOCKET) && !hasWarpCoreManual)
+        if ((newState == ItemTool.PromptState.SOCKET || newState == ItemTool.PromptState.UNSOCKET ||
+            newState == ItemTool.PromptState.PICK_UP) && !hasWarpCoreManual)
         {
-            OWItem item = (newState == ItemTool.PromptState.SOCKET) ?
-                __instance._heldItem :
-                firstPersonManipulator.GetFocusedItemSocket().GetSocketedItem();
+            OWItem item = null;
+            if (newState == ItemTool.PromptState.SOCKET)
+                item = __instance._heldItem;
+            else if (newState == ItemTool.PromptState.SOCKET)
+                item = firstPersonManipulator.GetFocusedItemSocket().GetSocketedItem();
+            else if (newState == ItemTool.PromptState.PICK_UP)
+                item = firstPersonManipulator.GetFocusedOWItem();
 
             if (item is WarpCoreItem)
             {
