@@ -309,23 +309,6 @@ namespace ArchipelagoRandomizer
             Application.quitting += () => OnSessionClosed(APSession, false);
         }
 
-        // The code below is pretty awful because of how limited and broken the UI APIs available to us are.
-        // For example, I'd like to use a single popup for entering connection info, but there's no way to make a main menu
-        // button launch a popup *and* know which button was clicked later on unless each button has a unique popup.
-        // I'd also like to use a separate popup for connection errors, but there's no way to close a popup and then
-        // launch a second popup without breaking everything, so we have to iteratively edit elements of a single popup.
-        // I also couldn't put a 2nd entry or a 3rd button on a popup in a way that actually works. I won't list everything.
-
-        private static string cinfoHeader1 = "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"";
-        private static string cinfoPlaceholder1 = "Enter hostname:port...";
-        private static string cinfoHeader2 = "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"";
-        private static string cinfoPlaceholder2 = "Enter slot/player name...";
-        private static string cinfoHeader3 = "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password";
-        private static string cinfoPlaceholder3 = "Enter password...";
-
-        private static string cinfoLeftButton = "Confirm";
-        private static string cinfoRightButton = "Cancel";
-
         private static GameObject NewRandomExpeditionGO = null;
         private static SubmitAction NewRandomExpeditionSA = null;
         private static GameObject ChangeConnInfoGO = null;
@@ -335,9 +318,18 @@ namespace ArchipelagoRandomizer
 
         public override void SetupTitleMenu(ITitleMenuManager titleManager)
         {
-            var hostAndPortInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(cinfoHeader1, cinfoPlaceholder1, cinfoLeftButton, cinfoRightButton);
-            var slotInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(cinfoHeader2, cinfoPlaceholder2, cinfoLeftButton, cinfoRightButton);
-            var passwordInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(cinfoHeader3, cinfoPlaceholder3, cinfoLeftButton, cinfoRightButton);
+            var hostAndPortInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
+                "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"",
+                "Enter hostname:port...",
+                "Confirm", "Cancel");
+            var slotInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
+                "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"",
+                "Enter slot/player name...",
+                "Confirm", "Cancel");
+            var passwordInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
+                "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password",
+                "Enter password...",
+                "Confirm", "Cancel");
 
             NewRandomExpeditionSA = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("NEW RANDOM EXPEDITION", 0, true);
             ChangeConnInfoSA = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("CHANGE CONNECTION INFO", 0, true);
