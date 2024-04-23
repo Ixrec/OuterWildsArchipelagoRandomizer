@@ -298,8 +298,6 @@ namespace ArchipelagoRandomizer
             GhostMatter.Setup();
             Victory.Setup();
 
-            var menuFramework = ModHelper.Interaction.TryGetModApi<IMenuAPI>("_nebula.MenuFramework");
-
             SetupSaveData();
 
             OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago APRandomizer", OWML.Common.MessageType.Success);

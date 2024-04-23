@@ -7,7 +7,6 @@
   "version": "0.1.7",
   "owmlVersion": "2.9.8",
   "dependencies": [
-    "_nebula.MenuFramework",
     "xen.EnableMeditation",
     "dgarro.CustomShipLogModes"
   ],
