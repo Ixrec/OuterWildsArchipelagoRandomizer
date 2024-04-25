@@ -38,6 +38,7 @@ internal class Anglerfish
         if (!hasAnglerfishKnowledge)
             __instance._noiseRadius = Math.Max(__instance._noiseRadius, 200);
 
+        __instance._noiseRadius = 0;
         var newShipNoise = __instance._noiseRadius > 0;
         if (newShipNoise != shipMakingNoise)
         {
@@ -51,6 +52,7 @@ internal class Anglerfish
         if (!hasAnglerfishKnowledge)
             __instance._noiseRadius = Math.Max(__instance._noiseRadius, 200);
 
+        __instance._noiseRadius = 0;
         var newPlayerNoise = __instance._noiseRadius > 0;
         if (newPlayerNoise != playerMakingNoise)
         {
@@ -87,5 +89,11 @@ internal class Anglerfish
                 Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.BrambleDimension)
             )
         );
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(FogWarpVolume), nameof(FogWarpVolume.WarpDetector))]
+    public static void FogWarpVolume_WarpDetector(FogWarpVolume __instance, FogWarpDetector detector, FogWarpVolume linkedWarpVolume)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_WarpDetector {__instance.name} -> {linkedWarpVolume.name} by {detector._name}");
     }
 }

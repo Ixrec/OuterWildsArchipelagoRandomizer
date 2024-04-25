@@ -327,6 +327,7 @@ public class APRandomizer : ModBehaviour
             Jellyfish.OnCompleteSceneLoad(scene, loadScene);
             GhostMatter.OnCompleteSceneLoad(scene, loadScene);
             Victory.OnCompleteSceneLoad(scene, loadScene);
+            DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
         };
 
         SetupSaveData();
