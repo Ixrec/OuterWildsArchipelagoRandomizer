@@ -278,7 +278,14 @@ internal class SignalsAndFrequencies
         if (usableSignals.Contains(__instance.GetName()))
             return true;
 
+        // If this is the "Unidentified Signal Nearby" signal, then we do want it to be shown
         if (__instance.GetName() == nearbyUnscannedSignal?.GetName())
+            return true;
+
+        // During the Eye finale, all signals use SignalName.Default and are activated by the Eye's state
+        // rather than signal detection triggers so they'll never get assigned to nearbyUnscannedSignal.
+        //if (__instance.GetName() == SignalName.Default) also works, but it's safer to just do nothing at the Eye
+        if (LoadManager.s_currentScene == OWScene.EyeOfTheUniverse)
             return true;
 
         // The Hide & Seek signals don't do the whole "Unidentified Signal Nearby" thing,
@@ -292,4 +299,23 @@ internal class SignalsAndFrequencies
 
         return false; // skip vanilla implementation
     }
+
+/* these were useful for testing Signalscope issues in the Eye finale
+
+    [HarmonyPostfix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.GetWarpedToTheEye))]
+    public static void PlayerData_GetWarpedToTheEye(ref bool __result) => __result = true;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeStateManager), nameof(EyeStateManager.Start))]
+    public static void EyeStateManager_Start_Postfix(EyeStateManager __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"EyeStateManager_Start_Postfix {__instance._initialState} {__instance._state}");
+        APRandomizer.OWMLModConsole.WriteLine($"EyeStateManager_Start_Postfix calling SetState(EyeState.ForestIsDark)");
+        __instance.SetState(EyeState.ForestOfGalaxies);
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(EyeStateManager), nameof(EyeStateManager.SetState))]
+    public static void EyeStateManager_SetState(EyeStateManager __instance, EyeState state)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"EyeStateManager_SetState {state}");
+    }
+*/
 }
