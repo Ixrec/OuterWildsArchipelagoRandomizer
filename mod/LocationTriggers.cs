@@ -187,22 +187,22 @@ internal class LocationTriggers
             case Item.SilentRunning: Anglerfish.hasAnglerfishKnowledge = (count > 0); break;
             case Item.ElectricalInsulation: Jellyfish.hasJellyfishKnowledge = (count > 0); break;
             case Item.Coordinates: Coordinates.hasCoordinates = (count > 0); break;
-            case Item.Autopilot: break;//AutopilotManager.hasAutopilot = (count > 0); break;
-            case Item.LandingCamera: break;//LandingCamera.hasLandingCamera = (count > 0); break;
-            case Item.EjectButton: break;//EjectButton.hasEjectButton = (count > 0); break;
-            case Item.VelocityMatcher: break;//VelocityMatcher.hasVelocityMatcher = (count > 0); break;
-            case Item.SurfaceIntegrityScanner: break;//SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
-            case Item.OxygenCapacityUpgrade: break;//SuitResources.oxygenCapacityUpgrades = count; break;
-            case Item.FuelCapacityUpgrade: break;//SuitResources.fuelCapacityUpgrades = count; break;
-            case Item.BoostDurationUpgrade: break;//SuitResources.boostDurationUpgrades = count; break;
+            case Item.Autopilot: AutopilotManager.hasAutopilot = (count > 0); break;
+            case Item.LandingCamera: LandingCamera.hasLandingCamera = (count > 0); break;
+            case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;
+            case Item.VelocityMatcher: VelocityMatcher.hasVelocityMatcher = (count > 0); break;
+            case Item.SurfaceIntegrityScanner: SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
+            case Item.OxygenCapacityUpgrade: SuitResources.oxygenCapacityUpgrades = count; break;
+            case Item.FuelCapacityUpgrade: SuitResources.fuelCapacityUpgrades = count; break;
+            case Item.BoostDurationUpgrade: SuitResources.boostDurationUpgrades = count; break;
             case Item.OxygenRefill: SuitResources.oxygenRefills = count; break;
             case Item.FuelRefill: SuitResources.fuelRefills = count; break;
             case Item.Marshmallow: Marshmallows.normalMarshmallows = count; break;
             case Item.PerfectMarshmallow: Marshmallows.perfectMarshmallows = count; break;
             case Item.BurntMarshmallow: Marshmallows.burntMarshmallows = count; break;
-            case Item.ShipDamageTrap: break;//ShipDamage.shipDamageTraps = count; break;
-            case Item.AudioTrap: break;//AudioTrap.audioTraps = count; break;
-            case Item.NapTrap: break;//NapTrap.napTraps = count; break;
+            case Item.ShipDamageTrap: ShipDamage.shipDamageTraps = count; break;
+            case Item.AudioTrap: AudioTrap.audioTraps = count; break;
+            case Item.NapTrap: NapTrap.napTraps = count; break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
