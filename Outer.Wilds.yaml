@@ -9,7 +9,7 @@ Outer Wilds:
   # In addition to the "Everything" and "Everywhere" name groups that all AP games come with,
   # the following name groups are provided by Outer Wilds:
 
-  # item name groups: "progression", "filler", "Frequencies", "Signals",
+  # item name groups: "progression", "useful", "filler", "trap", "Frequencies", "Signals",
   # "Tools", and dozens of single-item aliases
   # location name groups: "Frequencies", "Signals", "Ship Logs", "Ember Twin", "Ash Twin", "Hourglass Twins",
   # "Timber Hearth", "Attlerock", "Brittle Hollow", "Giant's Deep", "Dark Bramble", "Quantum Moon"
@@ -32,6 +32,29 @@ Outer Wilds:
     # Song of Six: Reach the Eye after meeting Solanum
     song_of_five: 50
     song_of_six: 0
+
+  trap_chance:
+    # The probability for each filler item (including unique filler) to be replaced with a trap item.
+    # The exact number of trap items will still be somewhat random, so you can't know
+    # if you've seen the 'last trap' in your world without checking the spoiler log.
+    # If you don't want any traps, set this to 0.
+    #
+    # You can define additional values between the minimum and maximum values.
+    # Minimum value is 0
+    # Maximum value is 100
+    15: 50
+    random: 0
+    random-low: 0
+    random-high: 0
+
+  trap_type_weights:
+    # When a filler item is replaced with a trap, these weights determine the
+    # odds for each trap type to be selected.
+    # If you don't want a specific trap type, set its weight to 0.
+    # Setting all weights to 0 is the same as setting trap_chance to 0.
+    Audio Trap: 1
+    Nap Trap: 2
+    Ship Damage Trap: 2
 
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
