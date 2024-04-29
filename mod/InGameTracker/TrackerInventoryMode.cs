@@ -15,7 +15,6 @@ namespace ArchipelagoRandomizer.InGameTracker
         public GameObject RootObject;
         public TrackerManager Tracker;
 
-        private int selectedIndex;
         private Image Icon => Wrapper.GetPhoto();
         private Text QuestionMark => Wrapper.GetQuestionMark();
 
@@ -32,10 +31,9 @@ namespace ArchipelagoRandomizer.InGameTracker
             Wrapper.SetItems(Tracker.InventoryItems);
             Wrapper.SetSelectedIndex(0);
             Wrapper.UpdateList();
-            selectedIndex = 0;
             RootObject.name = "ArchipelagoInventoryMode";
 
-            SelectItem(0);
+            SelectItem(Wrapper.GetSelectedIndex());
         }
 
         // Runs when the mode is closed
@@ -68,12 +66,7 @@ namespace ArchipelagoRandomizer.InGameTracker
 
             if (changeIndex != 0)
             {
-                selectedIndex += changeIndex;
-
-                if (selectedIndex < 0) selectedIndex = Tracker.InventoryItems.Count - 1;
-                if (selectedIndex >= Tracker.InventoryItems.Count) selectedIndex = 0;
-
-                SelectItem(selectedIndex);
+                SelectItem(Wrapper.GetSelectedIndex());
             }
         }
 
