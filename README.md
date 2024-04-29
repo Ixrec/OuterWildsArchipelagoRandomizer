@@ -188,9 +188,10 @@ In addition to the prerequisites from [Installation](#installation):
 
 ## Credits
 
-- Axxroy, Groot, Hopop, qwint, Rever, Scipio, Snow, and others in the "Archipelago" Discord server for feedback, discussion and encouragement
-- GameWyrm, JohnCorby, Trifid, viovayo, and others from the "Outer Wilds Modding" Discord server for help learning how to mod Unity games in general and Outer Wilds in particular
-- GameWyrm for contributing this mod's in-game console and tracker
+- GameWyrm for contributing this mod's in-game console, in-game tracker, and the banner art
+- Smaller direct code/content contributors, including: thestrangepie (suitless logic), hopop201 (location names/descriptions), dgarroDC (bug fix)
+- Amada, Axxroy, DCBomB, Groot, Hopop, Onemario, qwint, Rever, Scipio, Snow, and others in the "Archipelago" Discord server for feedback, discussion and encouragement
+- clubby789, dgarroDC, GameWyrm, glitchewski, JohnCorby, nebula, Trifid, viovayo, xen and others from the "Outer Wilds Modding" Discord server for help learning how to mod Unity games in general and Outer Wilds in particular, and creating the other OW mods that this randomizer relies on or is often played with
 - Nicopopxd for creating the Outer Wilds "Manual" for Archipelago
 - Flitter for talking me into trying out Archipelago randomizers in the first place
 - All the Archipelago contributors who made that great multi-randomizer system
