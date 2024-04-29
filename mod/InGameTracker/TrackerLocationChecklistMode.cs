@@ -21,8 +21,6 @@ namespace ArchipelagoRandomizer.InGameTracker
 
         public bool IsInChecklist = false;
 
-        private int checklistSelectedIndex;
-        private int selectionSelectedIndex;
         private GameObject shipLogPanRoot;
         Dictionary<string, TrackerChecklistData> checklist;
 
@@ -122,11 +120,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                 changeIndex = ChecklistWrapper.UpdateList();
                 if (changeIndex != 0)
                 {
-                    checklistSelectedIndex += changeIndex;
-
-                    if (checklistSelectedIndex < 0) checklistSelectedIndex = Tracker.CurrentLocations.Count - 1;
-                    if (checklistSelectedIndex >= Tracker.CurrentLocations.Count) checklistSelectedIndex = 0;
-                    SelectChecklistItem(checklistSelectedIndex);
+                    SelectChecklistItem(ChecklistWrapper.GetSelectedIndex());
                 }
                 if (OWInput.IsNewlyPressed(InputLibrary.cancel))
                 {
@@ -140,15 +134,11 @@ namespace ArchipelagoRandomizer.InGameTracker
 
                 if (changeIndex != 0)
                 {
-                    selectionSelectedIndex += changeIndex;
-
-                    if (selectionSelectedIndex < 0) selectionSelectedIndex = optionsList.Count - 1;
-                    if (selectionSelectedIndex >= optionsList.Count) selectionSelectedIndex = 0;
-                    SelectSelectionItem(selectionSelectedIndex);
+                    SelectSelectionItem(SelectionWrapper.GetSelectedIndex());
                 }
                 if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm))
                 {
-                    OpenChecklistPage(selectionSelectedIndex);
+                    OpenChecklistPage(SelectionWrapper.GetSelectedIndex());
                 }
             }
         }
@@ -225,7 +215,6 @@ namespace ArchipelagoRandomizer.InGameTracker
             ChecklistWrapper.SetItems(Tracker.CurrentLocations);
             ChecklistWrapper.SetSelectedIndex(0);
             ChecklistWrapper.UpdateList();
-            checklistSelectedIndex = 0;
             ChecklistRootObject.name = "ArchipelagoChecklistMode";
 
             IsInChecklist = true;
@@ -384,9 +373,8 @@ namespace ArchipelagoRandomizer.InGameTracker
             SelectionWrapper.SetSelectedIndex(0);
             SelectionWrapper.UpdateList();
             SelectionRootObject.name = "ArchipelagoSelectorMode";
-            selectionSelectedIndex = 0;
             IsInChecklist = false;
-            SelectSelectionItem(0);
+            SelectSelectionItem(SelectionWrapper.GetSelectedIndex());
         }
 
         private void SelectSelectionItem(int index)
