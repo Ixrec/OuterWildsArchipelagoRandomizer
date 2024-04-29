@@ -23,23 +23,31 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 ### What This Mod Changes
 
 Randomizers in the Archipelago sense—which are sometimes called "Metroidvania-style" or "progression-based" randomizers—rely on the base game having several progression-blocking items you must find in order to complete the game.
-In Outer Wilds progression is usually blocked by player knowledge rather than items, so to make a good randomizer we have to:
+In Outer Wilds progression is usually blocked by player knowledge rather than items, so to make a good randomizer we take away some of your starting equipment, and turn much of that player knowledge into items. Here are several examples:
 
-- Take away some of your starting equipment: the Translator, the Signalscope, the Scout, and the Ghost Matter Wavelength upgrade for your camera all become items that must be found.
-- Turn some of that player knowledge into items. For example, "teleporter knowledge" is replaced by a Nomai Warp Codes item, and the warp pads simply won't work without it. There's also Silent Running Mode, Tornado Aerodynamic Adjustments, Entanglement Rule, Coordinates, and so on.
-- Tweak the few items the vanilla game does have: the Launch Codes, Signalscope frequencies, and Signalscope signals.
+- Translator
+- Scout
+- Signalscope
+  - each Signalscope frequency (besides OW Ventures) is an item that blocks scanning signals on that frequency
+  - each Signalscope signal is also an item that blocks detecting that signal at long distance (most of these are "filler" items, but the signals inside Dark Bramble are required to make progress in there)
+- Ghost Matter Wavelength (an upgrade for your camera, which can no longer see ghost matter by default)
+- Nomai Warp Codes (replaces "the player knowing how warp pads work" with a button prompt)
+- Silent Running Mode (the fish have better hearing without this)
+- Tornado Aerodynamic Adjustments
+- Coordinates
+- and several more
 
 There are also many non-blocking but still useful items, such as the ship's Autopilot, some Oxygen/Fuel Capacity Upgrades, several Oxygen/Fuel Refills and Marshmallows, and so on.
 
 In randomizer terms: "items" are placed at randomly selected "locations" (while ensuring the game can still be completed). Most of the locations in this randomizer are:
 
 - Notes, tape recorders and fuel tanks left by other Hearthians
-- Translating pieces of Nomai text
-- Reaching important in-game locations
+- Translating pieces of Nomai text (e.g. the High Energy Lab experiment)
+- Reaching important in-game places (e.g. the core of Giant's Deep)
 - Scanning each Signalscope signal source
 - Revealing facts in the Ship Log (which is usually also one of the above)
 
-The Ship Log has also been enhanced to show lists and descriptions of every item and location (or in randomizer terms: an "in-game tracker").
+The Ship Log has also been enhanced with lists of every item and location, which of those locations are reachable (in randomizer terms: an "in-game tracker"), and descriptions of each item and each location. Since the vanilla game doesn't have "items" and "locations" per se, the tracker is the easiest way to find out what you're meant to be doing.
 
 ## Installation
 
@@ -97,62 +105,62 @@ Either way, the Mod Manager should immediately display the version number of the
 
 ## Roadmap
 
-After 0.2.0 is fully released...
+0.1.0 was the minimal first release to prove whether this is any fun: Just enough progression items to make a viable Archipelago-style randomizer, and only 50-something base game locations.
+
+The 0.1.x releases fleshed out/will flesh out the Archipelago items and locations: useful, filler and trap items, more base game locations, and a logsanity option for even more locations. They also included an in-game tracker for the ship log with in-game descriptions of every item and location (this is much more important for OW than most randomizers since the vanilla game mostly doesn't have "items").
 
 ### 0.2.1+ Patch Goals
 
-Before moving on to the big features for 0.3.0, I'd like to do at least one more of these smaller features:
+The 0.2.x releases will focus on other kinds of randomization besides items and locations.
 
-- random planet orbits
+- random Eye coordinates
 - random Dark Bramble layout
+- random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)
+	- random warp pad destinations should go well with this
+- random planet orbits
 - random ghost matter patches
+- random in-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets
 
 ### 0.3.0 Goals/Priorities
+
+The 0.3.x releases will focus on additional content beyond the base game.
 
 - Echoes of the Eye DLC integration
 	- Possibly randomize the flashlight
 
-- Random player & ship spawn, with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items
-	- Random warp pad destinations should go well with this
+- Story/Content mod support???
+
+- Outer Relics integration???
 
 ### (Non-Programmer) Help Wanted
 
-These are features I won't do myself, but if someone else would like these enough that they'd be willing to do the non-programming work for them (playtesting, drafting logic, listing/naming/describing locations, etc), and it turns out they are actually fun to play, I'll happily do the (small) programming part to finish them off.
+These are feature ideas I won't do myself, but if someone else would like these enough that they'd be willing to do the non-programming work for them (playtesting, drafting logic, listing/naming/describing locations, etc), and it turns out they are actually fun to play, I'll happily do the (small) programming part to finish them off.
 
 - Further reducing your starting oxygen, fuel, boost, etc so some of their upgrades become progression items
 - "rumorsanity" setting (adds all the ship log "rumors", separately from the "facts")
 - "textsanity" setting (every note, casette tape, Nomai text line, dialogue line, etc?)
 - More base game progression items: Gravity crystals? The ability to move Nomai orbs?
 
-### Other Ideas (which may not happen)
-
-- In-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets
-
-- Flavor Text: Edit various NPC conversations and Nomai texts to account for all the randomizer changes
-
-- More trap items/features. Try Anglerfish Trap again? HUD corruption trap? All surfaces have ice physics trap?
-
-- Turn the map screen into a `useful` item, or a trap that disables it?
-
-- "Log Hunt", where the goal is getting N ship logs? Similarly: a Relic Hunt like Outer Relics, or literally by interfacing with Outer Relics?
-
-- A generic API for other OW mods to declare their randomizable stuff
-
-- Test compatibility with more OW mods, especially the co-op mod Quantum Space Buddies
-
 ## Mod Compatibility
 
-Outer Wilds mods that have been tested with this Archipelago Randomizer mod include:
+Outer Wilds mods whose content has been fully integrated into this randomizer:
 
-- Clock: Just works
-- Cheat and Debug Menu: Just works
-- Suit Log: Just works
-- Unity Explorer: Just works
-- Light Bramble (thanks Rever for testing this): Just works, although it makes the "Silent Running Mode" item pointless.
-- NomaiVR (thanks Snout for testing this): Awkward but can be made to work. You have to play a little bit with just the AP mod until you get the "Resume Random Expedition" option, then restart with the VR mod, and also turn off gesture tutorials, but then it works.
+- None (yet)
+
+Outer Wilds mods that are known to work without issue:
+
+- Clock
+- Cheat and Debug Menu
+- Suit Log
+- Unity Explorer
+- Light Bramble (thanks Rever for testing this), although it makes the "Silent Running Mode" item pointless
+
+Outer Wilds mods that have been tried, but are known to have issues (this information may be outdated, as all of the involved mods have changed since we wrote this):
+
+- NomaiVR (thanks Snout for testing this): You have to play a little bit with just the AP mod until you get the "Resume Random Expedition" option, then restart with the VR mod, and also turn off gesture tutorials, but then it works.
 - Quantum Space Buddies: Awkward but can *probably* be made to work. I believe you would have to use one of the "... Random Expedition" main menu buttons to connect to your AP server, immediately quit back to the main menu, then use either of QSB's main menu buttons to load the game with multiplayer. Please tell us if you can test this properly.
 
-Story/content mods will (at best) work in a technical sense, but it wouldn't make sense to enable one of those alongside this randomizer, because this randomizer only knows how to randomize the vanilla game's content.
+Story/content mods will (at best) work in a technical sense, but it wouldn't make sense to enable one of those alongside this randomizer, because this randomizer only knows how to randomize the vanilla game's content (for now).
 
 ## Running From Source
 
