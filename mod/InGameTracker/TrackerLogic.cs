@@ -341,16 +341,16 @@ namespace ArchipelagoRandomizer.InGameTracker
         /// <returns></returns>
         public string GetLocationLogicString(TrackerLocationData data)
         {
-            string logicString = "Location Logic: ";
+            string logicString = "<color=grey>Location Logic: ";
             foreach (TrackerRequirement req in data.requires)
             {
                 if (!string.IsNullOrEmpty(req.item))
                 {
-                    if (!logicString.EndsWith(": ")) logicString += " AND ";
+                    if (!logicString.EndsWith(": ")) logicString += " <color=lime>AND</color> ";
                     logicString += $"(item: {req.item})";
                 }
             }
-
+            logicString += "</color>";
             return logicString;
         }
 
@@ -362,21 +362,21 @@ namespace ArchipelagoRandomizer.InGameTracker
         public string GetRegionLogicString(string region)
         {
             TrackerRegionData data = TrackerRegions[region];
-            string logicString = "Regional Logic: ";
+            string logicString = "<color=grey>Regional Logic: ";
             if (data.fromConnections != null && data.fromConnections.Count > 0)
             {
                 foreach (TrackerConnectionData connection in data.fromConnections)
                 {
-                    if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " OR ";
+                    if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " <color=orange>OR</color> ";
                     logicString += $"(Can Access: {connection.from} ";
                     if (connection.requires != null && connection.requires.Count > 0)
                     {
-                        logicString += "AND (";
+                        logicString += "<color=lime>AND</color> (";
                         foreach (TrackerRequirement req in connection.requires)
                         {
                             if (!string.IsNullOrEmpty(req.item))
                             {
-                                if (!logicString.EndsWith("(")) logicString += " AND ";
+                                if (!logicString.EndsWith("(")) logicString += "<color=lime>AND</color> ";
                                 logicString += $"Item: {req.item}";
                             }
                             if (req.anyOf != null && req.anyOf.Count > 0)
@@ -384,7 +384,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                                 logicString = "(";
                                 foreach (var con in req.anyOf)
                                 {
-                                    if (!logicString.EndsWith("(")) logicString += " OR ";
+                                    if (!logicString.EndsWith("(")) logicString += " <color=orange>OR</color> ";
                                     logicString += $"Item: {con.item}";
                                     // not going to bother with nested any ofs for now, not sure if those will ever have a reason to be used.
                                 }
@@ -396,6 +396,7 @@ namespace ArchipelagoRandomizer.InGameTracker
                     logicString += ")";
                 }
             }
+            logicString += "</color>";
             return logicString;
         }
 
