@@ -16,7 +16,6 @@ internal class LandingCamera
             if (_hasLandingCamera != value)
             {
                 _hasLandingCamera = value;
-                ApplyHasLandingCameraFlag(_hasLandingCamera);
                 if (_hasLandingCamera)
                 {
                     var nd = new NotificationData(NotificationTarget.All, "SPACESHIP LANDING CAMERA HAS BEEN REPAIRED", 10);
@@ -27,39 +26,41 @@ internal class LandingCamera
     }
 
     static ScreenPrompt landingCameraLiftoffPrompt = null; // "(X) Liftoff / Landing Camera" when the ship is on the ground
-    static ScreenPrompt landingCameraLandingPrompt = null; // "(X) Landing Mode" when flying toward a planet
+    static ScreenPrompt noLandingCameraLiftoffPrompt = null;
 
-    // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
+    static ScreenPrompt landingCameraLandingPrompt = null; // "(X) Landing Mode" when flying toward a planet
+    static ScreenPrompt noLandingCameraLandingPrompt = null;
+
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize(ShipPromptController __instance)
     {
         landingCameraLandingPrompt = __instance._landingModePrompt;
         landingCameraLiftoffPrompt = __instance._liftoffCamera;
 
+        noLandingCameraLandingPrompt = new ScreenPrompt("Landing Camera Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(noLandingCameraLandingPrompt, PromptPosition.UpperLeft, false);
+        noLandingCameraLiftoffPrompt = new ScreenPrompt("Landing Camera Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(noLandingCameraLiftoffPrompt, PromptPosition.UpperLeft, false);
+
         // Turns out the landing camera is part of the landing gear model, not a small object we can deactivate independently,
         // so there's no GameObject reference we can fetch here and deactivate.
-
-        ApplyHasLandingCameraFlag(_hasLandingCamera);
     }
 
-    public static void ApplyHasLandingCameraFlag(bool hasLandingCamera)
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
+    public static void ShipPromptController_Update(ShipPromptController __instance)
     {
-        if (landingCameraLandingPrompt == null) return;
-
-        if (hasLandingCamera)
+        noLandingCameraLandingPrompt.SetVisibility(false);
+        if (landingCameraLandingPrompt.IsVisible() && !_hasLandingCamera)
         {
-            landingCameraLandingPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.landingCamera.CommandType };
-            landingCameraLiftoffPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.landingCamera.CommandType };
-            // copy-pasted from the body of ShipPromptController.Awake()
-            landingCameraLandingPrompt.SetText("<CMD>   " + UITextLibrary.GetString(UITextType.ShipLandingPrompt));
-            landingCameraLiftoffPrompt.SetText("<CMD>   " + UITextLibrary.GetString(UITextType.ShipLiftoffLandingPrompt));
+            landingCameraLandingPrompt.SetVisibility(false);
+            noLandingCameraLandingPrompt.SetVisibility(true);
         }
-        else
+
+        noLandingCameraLiftoffPrompt.SetVisibility(false);
+        if (landingCameraLiftoffPrompt.IsVisible() && !_hasLandingCamera)
         {
-            landingCameraLandingPrompt._commandIdList = new();
-            landingCameraLiftoffPrompt._commandIdList = new();
-            landingCameraLandingPrompt.SetText("Landing Camera Not Available");
-            landingCameraLiftoffPrompt.SetText("Landing Camera Not Available");
+            landingCameraLiftoffPrompt.SetVisibility(false);
+            noLandingCameraLiftoffPrompt.SetVisibility(true);
         }
     }
 

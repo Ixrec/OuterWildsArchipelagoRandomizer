@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -17,7 +18,6 @@ internal class VelocityMatcher
             if (_hasVelocityMatcher != value)
             {
                 _hasVelocityMatcher = value;
-                ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
                 if (_hasVelocityMatcher)
                 {
                     var nd = new NotificationData(NotificationTarget.All, "MATCH VELOCITY FEATURE ADDED TO SUIT AND SHIP", 10);
@@ -28,73 +28,68 @@ internal class VelocityMatcher
     }
 
     private static ScreenPrompt ShipMVPrompt = null;
-    private static ScreenPrompt JetpackMVPrompt = null;
-    private static ScreenPrompt LockOnMVPrompt = null;
+    private static ScreenPrompt ShipCannotMVPrompt = null;
 
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize_Postfix(ShipPromptController __instance)
     {
         ShipMVPrompt = __instance._matchVelocityPrompt;
-        ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
+
+        ShipCannotMVPrompt = new ScreenPrompt("Velocity Matcher Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(ShipCannotMVPrompt, PromptPosition.UpperLeft, false);
     }
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
+    public static void ShipPromptController_Update_Postfix(ShipPromptController __instance)
+    {
+        ShipCannotMVPrompt.SetVisibility(false);
+        if (ShipMVPrompt.IsVisible() && !_hasVelocityMatcher)
+        {
+            ShipMVPrompt.SetVisibility(false);
+            ShipCannotMVPrompt.SetVisibility(true);
+        }
+    }
+
+    private static ScreenPrompt JetpackMVPrompt = null;
+    private static ScreenPrompt JetpackCannotMVPrompt = null;
+
     [HarmonyPostfix, HarmonyPatch(typeof(JetpackPromptController), nameof(JetpackPromptController.LateInitialize))]
     public static void JetpackPromptController_LateInitialize_Postfix(JetpackPromptController __instance)
     {
         JetpackMVPrompt = __instance._matchVelocityPrompt;
-        ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
+
+        JetpackCannotMVPrompt = new ScreenPrompt("Velocity Matcher Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(JetpackCannotMVPrompt, PromptPosition.UpperRight, false);
     }
+    [HarmonyPostfix, HarmonyPatch(typeof(JetpackPromptController), nameof(JetpackPromptController.Update))]
+    public static void JetpackPromptController_Update_Postfix(JetpackPromptController __instance)
+    {
+        JetpackCannotMVPrompt.SetVisibility(false);
+        if (JetpackMVPrompt.IsVisible() && !_hasVelocityMatcher)
+        {
+            JetpackMVPrompt.SetVisibility(false);
+            JetpackCannotMVPrompt.SetVisibility(true);
+        }
+    }
+
+    private static ScreenPrompt LockOnMVPrompt = null;
+    private static ScreenPrompt LockOnCannotMVPrompt = null;
+
     [HarmonyPostfix, HarmonyPatch(typeof(LockOnReticule), nameof(LockOnReticule.Init))]
     public static void LockOnReticule_Init_Postfix(LockOnReticule __instance)
     {
         LockOnMVPrompt = __instance._matchVelocityPrompt;
-        ApplyHasVelocityMatcherFlag(_hasVelocityMatcher);
+
+        LockOnCannotMVPrompt = new ScreenPrompt("Velocity Matcher Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(LockOnCannotMVPrompt, __instance._promptListBlock, TextAnchor.MiddleLeft, -1, false);
     }
-
-    public static void ApplyHasVelocityMatcherFlag(bool hasVelocityMatcher)
+    [HarmonyPostfix, HarmonyPatch(typeof(LockOnReticule), nameof(LockOnReticule.UpdateScreenPrompts))]
+    public static void LockOnReticule_UpdateScreenPrompts_Postfix(LockOnReticule __instance)
     {
-        if (ShipMVPrompt != null)
+        LockOnCannotMVPrompt.SetVisibility(false);
+        if (LockOnMVPrompt.IsVisible() && !_hasVelocityMatcher)
         {
-            if (hasVelocityMatcher)
-            {
-                ShipMVPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.matchVelocity.CommandType };
-                // copy-pasted from the body of ShipPromptController.Awake()
-                ShipMVPrompt.SetText("<CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt) + "   " + UITextLibrary.GetString(UITextType.MatchVelocityPrompt));
-            }
-            else
-            {
-                ShipMVPrompt._commandIdList = new();
-                ShipMVPrompt.SetText("Velocity Matcher Not Available");
-            }
-        }
-
-        if (JetpackMVPrompt != null)
-        {
-            if (hasVelocityMatcher)
-            {
-                JetpackMVPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.matchVelocity.CommandType };
-                // copy-pasted from the body of JetpackPromptController.Awake()
-                JetpackMVPrompt.SetText(UITextLibrary.GetString(UITextType.MatchVelocityPrompt) + " <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt) + "  ");
-            }
-            else
-            {
-                JetpackMVPrompt._commandIdList = new();
-                JetpackMVPrompt.SetText("Velocity Matcher Not Available");
-            }
-        }
-
-        if (LockOnMVPrompt != null)
-        {
-            if (hasVelocityMatcher)
-            {
-                LockOnMVPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.matchVelocity.CommandType };
-                // copy-pasted from the body of LockOnReticule.Init()
-                LockOnMVPrompt.SetText("<CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt) + "   " + UITextLibrary.GetString(UITextType.MatchVelocityPrompt));
-            }
-            else
-            {
-                LockOnMVPrompt._commandIdList = new();
-                LockOnMVPrompt.SetText("Velocity Matcher Not Available");
-            }
+            LockOnMVPrompt.SetVisibility(false);
+            LockOnCannotMVPrompt.SetVisibility(true);
         }
     }
 
@@ -130,7 +125,7 @@ internal class VelocityMatcher
     public static bool Autopilot_StartMatchVelocity_Prefix(Autopilot __instance)
     {
         if (__instance._isShipAutopilot && __instance._isFlyingToDestination)
-            // This is the "(Up) Autopilot" feature entering its thir and final stage,
+            // This is the "(Up) Autopilot" feature entering its third and final stage,
             // not the "(A) (Hold) Match Velocity feature we want to block here.
             // So we immediately return control to the base game code.
             return true;

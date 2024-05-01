@@ -16,7 +16,7 @@ internal class AutopilotManager
             if (_hasAutopilot != value)
             {
                 _hasAutopilot = value;
-                ApplyHasAutopilotFlag(_hasAutopilot);
+
                 if (_hasAutopilot)
                 {
                     var nd = new NotificationData(NotificationTarget.All, "SPACESHIP AUTOPILOT HAS BEEN REPAIRED", 10);
@@ -27,33 +27,28 @@ internal class AutopilotManager
     }
 
     static ScreenPrompt autopilotPrompt = null;
+    static ScreenPrompt noAutopilotPrompt = null;
 
-    // doing this earlier in Awake causes other methods to throw exceptions when the prompt unexpectedly has 0 buttons instead of 1
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.LateInitialize))]
     public static void ShipPromptController_LateInitialize(ShipPromptController __instance)
     {
         autopilotPrompt = __instance._autopilotPrompt;
 
+        noAutopilotPrompt = new ScreenPrompt("Autopilot Not Available", 0);
+        Locator.GetPromptManager().AddScreenPrompt(noAutopilotPrompt, PromptPosition.UpperLeft, false);
+
         // Turns out the autopilot is part of the overall cockpit model, not a small object we can deactivate independently,
         // so there's no GameObject reference we can fetch here and deactivate.
-
-        ApplyHasAutopilotFlag(_hasAutopilot);
     }
 
-    public static void ApplyHasAutopilotFlag(bool hasAutopilot)
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
+    public static void ShipPromptController_Update(ShipPromptController __instance)
     {
-        if (autopilotPrompt == null) return;
-
-        if (hasAutopilot)
+        noAutopilotPrompt.SetVisibility(false);
+        if (autopilotPrompt.IsVisible() && !_hasAutopilot)
         {
-            autopilotPrompt._commandIdList = new List<InputConsts.InputCommandType> { InputLibrary.autopilot.CommandType };
-            // copy-pasted from the body of ShipPromptController.Awake()
-            autopilotPrompt.SetText("<CMD>   " + UITextLibrary.GetString(UITextType.ShipAutopilotPrompt));
-        }
-        else
-        {
-            autopilotPrompt._commandIdList = new();
-            autopilotPrompt.SetText("Autopilot Not Available");
+            autopilotPrompt.SetVisibility(false);
+            noAutopilotPrompt.SetVisibility(true);
         }
     }
 
