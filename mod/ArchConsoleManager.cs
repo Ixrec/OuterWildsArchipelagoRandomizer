@@ -76,8 +76,8 @@ namespace ArchipelagoRandomizer
                 // On most aspect ratios, "MEDITATE UNTIL NEXT LOOP" is the only pause menu button that clips into this console,
                 // and it's much wider than all the other buttons, and the console would have to be painfully narrow to avoid this,
                 // so shortening this button to only one word is the least bad way of reducing clipping.
-                var pauseMenuMedidateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
-                if (pauseMenuMedidateButtonText) pauseMenuMedidateButtonText.GetComponent<Text>().text = "MEDITATE";
+                var pauseMenuMeditateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
+                if (pauseMenuMeditateButtonText) pauseMenuMeditateButtonText.GetComponent<Text>().text = "MEDITATE";
             };
         }
 
