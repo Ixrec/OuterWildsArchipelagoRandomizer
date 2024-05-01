@@ -70,6 +70,11 @@
         "thumbnail": "TM_ESKER"
     },
     {
+        "locationModID": "AR_ESKER_TANK",
+        "description": "The Attlerock outpost was originally used for Travellers to refuel before they'd travel to further reaches of the Outer Wilds. While such a stop is no longer needed, how about you try restocking there for nostalgia's sake?",
+        "thumbnail": "TM_ESKER"
+    },
+    {
         "locationModID": "AR_ESL",
         "description": "The Nomai's first attempt to locate the Eye of the Universe can be found on the Attlerock. They've written about their findings on a wall.",
         "thumbnail": "TM_EYE_LOCATOR"
