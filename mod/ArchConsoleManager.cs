@@ -73,12 +73,18 @@ namespace ArchipelagoRandomizer
                 isPaused = true;
                 ShowConsoles(isPaused);
 
-                // On most aspect ratios, "MEDITATE UNTIL NEXT LOOP" is the only pause menu button that clips into this console,
-                // and it's much wider than all the other buttons, and the console would have to be painfully narrow to avoid this,
-                // so shortening this button to only one word is the least bad way of reducing clipping.
-                var pauseMenuMeditateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
-                if (pauseMenuMeditateButtonText) pauseMenuMeditateButtonText.GetComponent<Text>().text = "MEDITATE";
+                StartCoroutine(ShortenMeditateButtonText());
             };
+        }
+        IEnumerator ShortenMeditateButtonText()
+        {
+            yield return new WaitForEndOfFrame();
+
+            // On most aspect ratios, "MEDITATE UNTIL NEXT LOOP" is the only pause menu button that clips into this console,
+            // and it's much wider than all the other buttons, and the console would have to be painfully narrow to avoid this,
+            // so shortening this button to only one word is the least bad way of reducing clipping.
+            var pauseMenuMeditateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
+            if (pauseMenuMeditateButtonText) pauseMenuMeditateButtonText.GetComponent<Text>().text = "MEDITATE";
         }
 
         private void Update()
