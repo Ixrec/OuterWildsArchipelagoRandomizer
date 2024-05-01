@@ -13,9 +13,9 @@ internal class NapTrap
         get => _napTraps;
         set
         {
+            _napTraps = value;
             if (value > _napTraps)
             {
-                _napTraps = value;
                 if (napTrapInProgress)
                 {
                     APRandomizer.InGameAPConsole.AddText($"Ignoring Nap Trap because another Nap Trap is still in progress");

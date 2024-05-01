@@ -15,11 +15,9 @@ internal class ShipDamage
         get => _shipDamageTraps;
         set
         {
+            _shipDamageTraps = value;
             if (value > _shipDamageTraps)
-            {
-                _shipDamageTraps = value;
                 DamageShip();
-            }
         }
     }
 
