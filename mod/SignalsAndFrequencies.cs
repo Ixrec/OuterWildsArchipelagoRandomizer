@@ -89,7 +89,6 @@ internal class SignalsAndFrequencies
     // Aside from LearnFrequency/Signal() which we still want writing to the player's save file,
     // these 4 methods are all the direct reads and writes of .knownFrequencies/Signals
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsFrequency))]
-
     public static bool PlayerData_KnowsFrequency_Prefix(SignalFrequency frequency, ref bool __result)
     {
         if (!ItemNames.frequencyToItem.ContainsKey(frequency))
@@ -298,6 +297,20 @@ internal class SignalsAndFrequencies
         __instance._degreesFromScope = 180f;
 
         return false; // skip vanilla implementation
+    }
+
+    // If you get the Signalscope item, then talk to Tephra before getting the Hide & Seek Frequency item, the
+    // game will automatically switch you to that frequency after the conversation ends, bypassing the item.
+    // So we need yet another patch to block that automatic frequency switch.
+    [HarmonyPrefix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.SelectFrequency))]
+    public static bool Signalscope_SelectFrequency_Prefix(SignalFrequency frequency)
+    {
+        if (frequency == SignalFrequency.HideAndSeek && !PlayerData.KnowsFrequency(frequency))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Signalscope_SelectFrequency_Prefix blocking automatic switch to {frequency}");
+            return false;
+        }
+        return true;
     }
 
 /* these were useful for testing Signalscope issues in the Eye finale
