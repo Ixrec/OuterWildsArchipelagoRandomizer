@@ -2,7 +2,7 @@
 description: Outer Wilds Example
 game: Outer Wilds
 requires:
-  version: 0.4.4
+  version: 0.4.6
 Outer Wilds:
   # generic Archipelago settings
 
@@ -23,6 +23,7 @@ Outer Wilds:
   exclude_locations: []
   priority_locations: []
   item_links: []
+  start_inventory_from_pool: {}
 
   # settings specific to Outer Wilds
 
