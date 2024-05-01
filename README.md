@@ -6,9 +6,9 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Alpha (as of March 2024).
+Public Beta (as of May 2024).
 
-Several people have played this with no issues or minor issues. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
+Many people have played this, usually with no issues. Nearly every bug that's been reported has either been fixed, or was found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
 ## Contact
 
