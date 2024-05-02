@@ -39,7 +39,6 @@ namespace ArchipelagoRandomizer
         // text that will display on the console when the game is paused
         private string bufferedText = "";
         private bool unreadConsole = false;
-        private bool replacedPauseText = false;
 
         public List<string> WakeupConsoleMessages = new();
 
@@ -77,11 +76,11 @@ namespace ArchipelagoRandomizer
                 isPaused = true;
                 ShowConsoles(isPaused);
 
-                if (!replacedPauseText)
-                {
-                    StartCoroutine(ReplaceMeditationText());
-                    replacedPauseText = true;
-                }
+                // On most aspect ratios, "MEDITATE UNTIL NEXT LOOP" is the only pause menu button that clips into this console,
+                // and it's much wider than all the other buttons, and the console would have to be painfully narrow to avoid this,
+                // so shortening this button to only one word is the least bad way of reducing clipping.
+                var pauseMenuMedidateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
+                if (pauseMenuMedidateButtonText) pauseMenuMedidateButtonText.GetComponent<Text>().text = "MEDITATE";
             };
         }
 
@@ -155,9 +154,6 @@ namespace ArchipelagoRandomizer
 
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
-
-            // Might as well let the Meditate text know it hasn't been replaced here since this happens at the start of the loop
-            replacedPauseText = false;
         }
 
         // Shows the appropriate consoles when the game is paused or not
@@ -396,19 +392,6 @@ namespace ArchipelagoRandomizer
             AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
 
 
-        }
-
-        /// <summary>
-        /// On most aspect ratios, "MEDITATE UNTIL NEXT LOOP" is the only pause menu button that clips into this console,
-        /// and it's much wider than all the other buttons, and the console would have to be painfully narrow to avoid this,
-        /// so shortening this button to only one word is the least bad way of reducing clipping.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator ReplaceMeditationText()
-        {
-            yield return new WaitForEndOfFrame();
-            var pauseMenuMedidateButtonText = GameObject.Find("PauseMenu/PauseMenuCanvas/PauseMenuBlock/PauseMenuItems/PauseMenuItemsLayout/Button-EndCurrentLoop/HorizontalLayoutGroup/Text");
-            if (pauseMenuMedidateButtonText) pauseMenuMedidateButtonText.GetComponent<Text>().text = "MEDITATE";
         }
     }
 }
