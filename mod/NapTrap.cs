@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -14,14 +14,7 @@ internal class NapTrap
         set
         {
             if (value > _napTraps)
-            {
-                if (napTrapInProgress)
-                {
-                    APRandomizer.InGameAPConsole.AddText($"Ignoring Nap Trap because another Nap Trap is still in progress");
-                    return;
-                }
                 ForceNap();
-            }
             _napTraps = value;
         }
     }
@@ -45,76 +38,98 @@ internal class NapTrap
             || Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.DreamWorld);
     }
 
-    // when the game is unpaused, if there's a nap trap that's been waiting to execute, start executing it
-    [HarmonyPostfix, HarmonyPatch(typeof(PauseMenuManager), nameof(PauseMenuManager.OnDeactivatePauseMenu))]
-    public static void PauseMenuManager_OnDeactivatePauseMenu(PauseMenuManager __instance)
-    {
-        if (napTrapInProgress)
-        {
-            // APRandomizer.OWMLWriteLine($"resuming deferred Nap Trap now that the game has been unpaused");
-            ForceNap();
-        }
-    }
-
-    private static bool napTrapInProgress = false;
+    private static NapTrapComponent napTrapComponent = null;
+    private static ScreenPrompt thisIsANapTrapPrompt = null;
 
     private static void ForceNap()
     {
-        // We're still on the main menu, being told how many Nap Traps were received in previous sessions,
-        // so do nothing, not even scheduling future trap execution.
-        if (Locator.GetPauseCommandListener() == null) return;
-
-        napTrapInProgress = true;
-
-        // if the game is currently paused, we need to wait until it's unpaused
-        if (Locator.GetPauseCommandListener()._pauseMenu.IsOpen())
+        if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
         {
-            // APRandomizer.OWMLWriteLine($"deferring Nap Trap because the game is currently paused");
+            APRandomizer.OWMLModConsole.WriteLine($"Ignoring Nap Trap because we're still in {LoadManager.GetCurrentScene()}");
             return;
         }
 
-        Task.Run(async () => {
-            var warningSeconds = 3;
-            // APRandomizer.OWMLWriteLine($"Nap Trap accepted, beginning in-game console countdown to forced nap");
+        if (napTrapComponent != null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Ignoring Nap Trap because another Nap Trap is still in progress");
+            return;
+        }
 
-            APRandomizer.InGameAPConsole.AddText($"An unskippable one-minute nap will begin in");
-            while (warningSeconds > 0)
-            {
-                APRandomizer.InGameAPConsole.AddText($"{warningSeconds}...");
-                warningSeconds--;
-                await Task.Delay(1000);
-            }
-
-            var useGreenFireSounds = Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.InvisiblePlanet)
-                || Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.DreamWorld);
-            var fastForwardFactor = 10;
-            var inUniverseSecondsAsleep = 60;
-            // APRandomizer.OWMLWriteLine($"beginning forced nap for {inUniverseSecondsAsleep} in-universe seconds at {fastForwardFactor}x speed");
-
-            ScreenPrompt thisIsANapTrapPrompt = new("Unskippable One-Minute Nap In Progress", 0);
+        if (thisIsANapTrapPrompt == null)
+        {
+            thisIsANapTrapPrompt = new("Unskippable One-Minute Nap In Progress", 0);
             Locator.GetPromptManager().AddScreenPrompt(thisIsANapTrapPrompt, PromptPosition.Center, false);
-            thisIsANapTrapPrompt.SetVisibility(true);
+        }
 
-            OWInput.ChangeInputMode(InputMode.None);
-            Locator.GetPlayerCamera().GetComponent<PlayerCameraEffectController>().CloseEyes(3f);
-            Locator.GetPlayerAudioController().OnStartSleepingAtCampfire(useGreenFireSounds);
-            OWTime.SetTimeScale(fastForwardFactor);
-            sleepTimerUI.OnStartFastForward();
+        APRandomizer.InGameAPConsole.AddText($"An unskippable one-minute nap will begin in");
 
-            await Task.Run(async () => {
-                await Task.Delay(inUniverseSecondsAsleep / fastForwardFactor * 1000);
-                // APRandomizer.OWMLWriteLine($"ending forced nap");
+        napTrapComponent = Locator.GetPlayerTransform().gameObject.AddComponent<NapTrapComponent>();
+        napTrapComponent.startTime = TimeLoop.GetSecondsElapsed();
+    }
 
-                Locator.GetPromptManager().RemoveScreenPrompt(thisIsANapTrapPrompt);
+    class NapTrapComponent : MonoBehaviour
+    {
+        private float countdownSeconds = 3;
+        private float napSeconds = 60;
 
-                OWInput.RestorePreviousInputs();
+        public float startTime;
+
+        private int countdownLogsPrinted = 0;
+        private bool isNapping = false;
+
+        private void Update()
+        {
+            thisIsANapTrapPrompt.SetVisibility(false);
+
+            var secondsSinceTrapActivated = TimeLoop.GetSecondsElapsed() - startTime;
+
+            if (secondsSinceTrapActivated < countdownSeconds)
+            {
+                // if the trap has not finished the countdown yet, make sure we've printed any countdown messages that are due
+                if (countdownLogsPrinted == 0)
+                {
+                    APRandomizer.InGameAPConsole.AddText($"{countdownSeconds}...");
+                    countdownLogsPrinted++;
+                }
+                else if (countdownLogsPrinted < countdownSeconds && secondsSinceTrapActivated >= countdownLogsPrinted)
+                {
+                    APRandomizer.InGameAPConsole.AddText($"{countdownSeconds - Mathf.Floor(secondsSinceTrapActivated)}...");
+                    countdownLogsPrinted++;
+                }
+            }
+            else if (secondsSinceTrapActivated < (countdownSeconds + napSeconds))
+            {
+                // if we've entered the napping phase of the nap trap, and aren't already napping, then put the player to sleep
+                if (!isNapping)
+                {
+                    isNapping = true;
+
+                    var useGreenFireSounds = Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.InvisiblePlanet)
+                        || Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.DreamWorld);
+                    var fastForwardFactor = 10;
+
+                    APRandomizer.OWMLModConsole.WriteLine($"beginning forced nap for {napSeconds} in-universe seconds at {fastForwardFactor}x speed");
+
+                    Locator.GetPlayerCamera().GetComponent<PlayerCameraEffectController>().CloseEyes(3f);
+                    Locator.GetPlayerAudioController().OnStartSleepingAtCampfire(useGreenFireSounds);
+                    OWTime.SetTimeScale(fastForwardFactor);
+                    sleepTimerUI.OnStartFastForward();
+                }
+
+                // This text should be visible whenever we're in the napping phase and the game has not been paused
+                if (!OWInput.IsInputMode(InputMode.Menu))
+                    thisIsANapTrapPrompt.SetVisibility(true);
+            }
+            else
+            {
+                // if the trap has fully run its course, "wake up" the player and destroy this component
                 Locator.GetPlayerCamera().GetComponent<PlayerCameraEffectController>().OpenEyes(1f, false);
                 Locator.GetPlayerAudioController().OnStopSleepingAtCampfire(false, false); // no gasping sound
                 OWTime.SetTimeScale(1);
                 sleepTimerUI.OnEndFastForward();
 
-                napTrapInProgress = false;
-            });
-        });
+                gameObject.DestroyAllComponents<NapTrapComponent>();
+            }
+        }
     }
 }
