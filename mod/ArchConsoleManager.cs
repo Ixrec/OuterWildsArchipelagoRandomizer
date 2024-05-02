@@ -36,10 +36,10 @@ namespace ArchipelagoRandomizer
         private Material progressMat;
         private Text progressText;
         private ArchipelagoSession session;
-        // text that will display on the console when the game is paused
-        private string bufferedText = "";
-        private bool unreadConsole = false;
-        private bool replacedPauseText = false;
+        // separate from pauseConsoleText.text so we can avoid updating the Text object until the game's paused
+        private string pauseConsoleContent = "";
+        private bool pauseConsoleNeedsUpdate = false;
+        private bool meditateTextHasBeenShortened = false;
 
         public List<string> WakeupConsoleMessages = new();
 
@@ -77,10 +77,10 @@ namespace ArchipelagoRandomizer
                 isPaused = true;
                 ShowConsoles(isPaused);
 
-                if (!replacedPauseText)
+                if (!meditateTextHasBeenShortened)
                 {
                     StartCoroutine(ShortenMeditateButtonText());
-                    replacedPauseText = true;
+                    meditateTextHasBeenShortened = true;
                 }
             };
         }
@@ -143,7 +143,7 @@ namespace ArchipelagoRandomizer
             pauseConsoleText.text = string.Empty;
             gameplayConsoleText.text = string.Empty;
 
-            bufferedText = string.Empty;
+            pauseConsoleContent = string.Empty;
 
             // Copy text over from previous loops
             foreach (string entry in consoleHistory)
@@ -167,7 +167,7 @@ namespace ArchipelagoRandomizer
                 StartCoroutine(LoopGreeting());
 
             // Might as well let the Meditate text know it hasn't been replaced here since this happens at the start of the loop
-            replacedPauseText = false;
+            meditateTextHasBeenShortened = false;
         }
 
         // Shows the appropriate consoles when the game is paused or not
@@ -175,10 +175,10 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
-            if (showPauseConsole && unreadConsole)
+            if (showPauseConsole && pauseConsoleNeedsUpdate)
             {
-                pauseConsoleText.text = bufferedText;
-                unreadConsole = false;
+                pauseConsoleText.text = pauseConsoleContent;
+                pauseConsoleNeedsUpdate = false;
             }
         }
 
@@ -205,29 +205,29 @@ namespace ArchipelagoRandomizer
             // If the consoles haven't been created yet, then adding to history is all we want to do for now.
             if (pauseConsoleText == null) return;
 
-            if (bufferedText == "")
+            if (pauseConsoleContent == "")
             {
-                bufferedText = text;
+                pauseConsoleContent = text;
             }
             else
             {
-                bufferedText += "\n" + text;
+                pauseConsoleContent += "\n" + text;
             }
             // Overflow fix
-            while (bufferedText.Length > maxCharacters)
+            while (pauseConsoleContent.Length > maxCharacters)
             {
-                string str = bufferedText.Split('\n')[0] + "\n";
-                bufferedText = bufferedText.Replace(str, "");
+                string str = pauseConsoleContent.Split('\n')[0] + "\n";
+                pauseConsoleContent = pauseConsoleContent.Replace(str, "");
                 overflowWarning.SetActive(true);
             }
             // Only bother updating the pause console text if the game is paused, hopefully reducing Layout calls
             if (isPaused)
             {
-                pauseConsoleText.text = bufferedText;
+                pauseConsoleText.text = pauseConsoleContent;
             }
             else
             {
-                unreadConsole = true;
+                pauseConsoleNeedsUpdate = true;
             }
 
             // We don't need to bother editing the Gameplay Console if this is on
