@@ -18,9 +18,9 @@ internal class SuitResources
         get => _fuelRefills;
         set
         {
-            _fuelRefills = value;
             if (value > _fuelRefills)
                 RefillFuel();
+            _fuelRefills = value;
         }
     }
     private static uint _oxygenRefills = 0;
@@ -30,9 +30,9 @@ internal class SuitResources
         get => _oxygenRefills;
         set
         {
-            _oxygenRefills = value;
             if (value > _oxygenRefills)
                 RefillOxygen();
+            _oxygenRefills = value;
         }
     }
 
@@ -45,8 +45,7 @@ internal class SuitResources
         set
         {
             _fuelCapacityUpgrades = value;
-            if (value > _fuelCapacityUpgrades)
-                ApplyMaxFuel();
+            ApplyMaxFuel();
         }
     }
     private static uint _oxygenCapacityUpgrades = 0;
@@ -56,8 +55,7 @@ internal class SuitResources
         set
         {
             _oxygenCapacityUpgrades = value;
-            if (value > _oxygenCapacityUpgrades)
-                ApplyMaxOxygen();
+            ApplyMaxOxygen();
         }
     }
     private static uint _boostDurationUpgrades = 0;
@@ -67,8 +65,7 @@ internal class SuitResources
         set
         {
             _boostDurationUpgrades = value;
-            if (value > _boostDurationUpgrades)
-                ApplyMaxBoost();
+            ApplyMaxBoost();
         }
     }
 

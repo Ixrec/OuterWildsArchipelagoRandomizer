@@ -15,7 +15,6 @@ internal class Marshmallows
         get => _normalMarshmallows;
         set
         {
-            _normalMarshmallows = value;
             if (value > _normalMarshmallows && playerResources != null)
             {
                 playerResources._currentHealth = (float)Math.Min(playerResources._currentHealth + 50, PlayerResources._maxHealth);
@@ -24,6 +23,7 @@ internal class Marshmallows
                 var nd = new NotificationData(NotificationTarget.Player, "MARSHMALLOW CONSUMED. 50% HEALTH RESTORED.", 3f, false);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+            _normalMarshmallows = value;
         }
     }
     public static uint perfectMarshmallows
@@ -31,7 +31,6 @@ internal class Marshmallows
         get => _perfectMarshmallows;
         set
         {
-            _perfectMarshmallows = value;
             if (value > _perfectMarshmallows && playerResources != null)
             {
                 playerResources._currentHealth = PlayerResources._maxHealth;
@@ -40,6 +39,7 @@ internal class Marshmallows
                 var nd = new NotificationData(NotificationTarget.Player, "PERFECT MARSHMALLOW CONSUMED. HEALTH FULLY RESTORED.", 3f, false);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+            _perfectMarshmallows = value;
         }
     }
     public static uint burntMarshmallows
@@ -47,13 +47,13 @@ internal class Marshmallows
         get => _burntMarshmallows;
         set
         {
-            _burntMarshmallows = value;
             if (value > _burntMarshmallows && playerResources != null)
             {
                 Locator.GetPlayerAudioController().PlayMarshmallowEatBurnt();
                 var nd = new NotificationData(NotificationTarget.Player, "BURNT MARSHMALLOW CONSUMED. HEALTH UNCHANGED.", 3f, false);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
             }
+            _burntMarshmallows = value;
         }
     }
 

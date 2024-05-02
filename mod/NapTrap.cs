@@ -13,7 +13,6 @@ internal class NapTrap
         get => _napTraps;
         set
         {
-            _napTraps = value;
             if (value > _napTraps)
             {
                 if (napTrapInProgress)
@@ -23,6 +22,7 @@ internal class NapTrap
                 }
                 ForceNap();
             }
+            _napTraps = value;
         }
     }
 

@@ -13,9 +13,9 @@ internal class AudioTrap
         get => _audioTraps;
         set
         {
-            _audioTraps = value;
             if (value > _audioTraps)
                 PlayDisruptiveAudio();
+            _audioTraps = value;
         }
     }
 
