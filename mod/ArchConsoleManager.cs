@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using System;
@@ -36,6 +36,9 @@ namespace ArchipelagoRandomizer
         private Material progressMat;
         private Text progressText;
         private ArchipelagoSession session;
+        // text that will display on the console when the game is paused
+        private string bufferedText = "";
+        private bool unreadConsole = false;
 
         public List<string> WakeupConsoleMessages = new();
 
@@ -135,6 +138,8 @@ namespace ArchipelagoRandomizer
             pauseConsoleText.text = string.Empty;
             gameplayConsoleText.text = string.Empty;
 
+            bufferedText = string.Empty;
+
             // Copy text over from previous loops
             foreach (string entry in consoleHistory)
             {
@@ -162,6 +167,11 @@ namespace ArchipelagoRandomizer
         {
             pauseConsoleVisuals.SetActive(showPauseConsole);
             gameplayConsole.SetActive(!showPauseConsole);
+            if (showPauseConsole && unreadConsole)
+            {
+                pauseConsoleText.text = bufferedText;
+                unreadConsole = false;
+            }
         }
 
         private void UpdateProgress(IReadOnlyCollection<long> checkedLocations = null)
@@ -187,23 +197,30 @@ namespace ArchipelagoRandomizer
             // If the consoles haven't been created yet, then adding to history is all we want to do for now.
             if (pauseConsoleText == null) return;
 
-            string consoleText = pauseConsoleText.text;
-            if (consoleText == "")
+            if (bufferedText == "")
             {
-                consoleText = text;
+                bufferedText = text;
             }
             else
-            {                
-                consoleText += "\n" + text;
+            {
+                bufferedText += "\n" + text;
             }
             // Overflow fix
-            while (consoleText.Length > maxCharacters)
+            while (bufferedText.Length > maxCharacters)
             {
-                string str = consoleText.Split('\n')[0] + "\n";
-                consoleText = consoleText.Replace(str, "");
+                string str = bufferedText.Split('\n')[0] + "\n";
+                bufferedText = bufferedText.Replace(str, "");
                 overflowWarning.SetActive(true);
             }
-            pauseConsoleText.text = consoleText;
+            // Only bother updating the pause console text if the game is paused, hopefully reducing Layout calls
+            if (isPaused)
+            {
+                pauseConsoleText.text = bufferedText;
+            }
+            else
+            {
+                unreadConsole = true;
+            }
 
             // We don't need to bother editing the Gameplay Console if this is on
             if (!skipGameplayConsole)
@@ -233,7 +250,7 @@ namespace ArchipelagoRandomizer
         public void UpdateText()
         {
             gameplayConsoleText.text = string.Empty;
-            foreach ( string entry in gameplayConsoleEntries)
+            foreach (string entry in gameplayConsoleEntries)
             {
                 gameplayConsoleText.text += entry;
             }
@@ -380,6 +397,5 @@ namespace ArchipelagoRandomizer
             yield return new WaitForEndOfFrame();
             AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
         }
-
     }
 }
