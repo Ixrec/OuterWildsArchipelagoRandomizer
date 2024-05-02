@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using System;
@@ -195,7 +195,6 @@ namespace ArchipelagoRandomizer
             // If the consoles haven't been created yet, then adding to history is all we want to do for now.
             if (pauseConsoleText == null) return;
 
-            // bufferedText = pauseConsoleText.text;
             if (bufferedText == "")
             {
                 bufferedText = text;
