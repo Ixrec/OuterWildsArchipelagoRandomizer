@@ -39,6 +39,7 @@ namespace ArchipelagoRandomizer
         // text that will display on the console when the game is paused
         private string bufferedText = "";
         private bool unreadConsole = false;
+        private bool replacedPauseText = false;
 
         public List<string> WakeupConsoleMessages = new();
 
@@ -76,7 +77,11 @@ namespace ArchipelagoRandomizer
                 isPaused = true;
                 ShowConsoles(isPaused);
 
-                StartCoroutine(ShortenMeditateButtonText());
+                if (!replacedPauseText)
+                {
+                    StartCoroutine(ShortenMeditateButtonText());
+                    replacedPauseText = true;
+                }
             };
         }
         IEnumerator ShortenMeditateButtonText()
@@ -160,6 +165,9 @@ namespace ArchipelagoRandomizer
 
             if (loadScene == OWScene.SolarSystem)
                 StartCoroutine(LoopGreeting());
+
+            // Might as well let the Meditate text know it hasn't been replaced here since this happens at the start of the loop
+            replacedPauseText = false;
         }
 
         // Shows the appropriate consoles when the game is paused or not
