@@ -291,12 +291,15 @@ namespace ArchipelagoRandomizer
 
             Tracker = gameObject.AddComponent<TrackerManager>();
 
-            WarpPlatforms.Setup();
-            Tornadoes.Setup();
-            QuantumImaging.Setup();
-            Jellyfish.Setup();
-            GhostMatter.Setup();
-            Victory.Setup();
+            LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
+            {
+                WarpPlatforms.OnCompleteSceneLoad(scene, loadScene);
+                Tornadoes.OnCompleteSceneLoad(scene, loadScene);
+                QuantumImaging.OnCompleteSceneLoad(scene, loadScene);
+                Jellyfish.OnCompleteSceneLoad(scene, loadScene);
+                GhostMatter.OnCompleteSceneLoad(scene, loadScene);
+                Victory.OnCompleteSceneLoad(scene, loadScene);
+            };
 
             SetupSaveData();
 

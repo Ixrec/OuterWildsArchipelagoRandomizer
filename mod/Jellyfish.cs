@@ -8,14 +8,11 @@ internal class Jellyfish
 {
     static HashSet<InsulatingVolume> jellyfishInsulatingVolumes = new();
 
-    public static void Setup()
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
     {
-        LoadManager.OnCompleteSceneLoad += (_scene, _loadScene) =>
-        {
-            // we don't want to retain these references beyond a scene transition / loop reset, or else
-            // they become invalid and lead to NullReferenceExceptions when we try using them later
-            jellyfishInsulatingVolumes.Clear();
-        };
+        // we don't want to retain these references beyond a scene transition / loop reset, or else
+        // they become invalid and lead to NullReferenceExceptions when we try using them later
+        jellyfishInsulatingVolumes.Clear();
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(JellyfishController), nameof(JellyfishController.OnSectorOccupantsUpdated))]

@@ -27,23 +27,20 @@ internal class Tornadoes
 
     static TornadoFluidVolume counterClockwiseGiantsDeepTornadoFluidVolume = null;
 
-    public static void Setup()
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
-        LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
-        {
-            if (loadScene != OWScene.SolarSystem) return;
+        if (loadScene != OWScene.SolarSystem) return;
 
-            var gd = Locator.GetAstroObject(AstroObject.Name.GiantsDeep);
-            var st = gd.transform.Find("Sector_GD/Sector_GDInterior/Tornadoes_GDInterior/SouthernTornadoes");
-            var tfvs = st.GetComponentsInChildren<TornadoFluidVolume>();
-            foreach (var tfv in tfvs)
-                if (tfv._verticalSpeed < 0)
-                {
-                    counterClockwiseGiantsDeepTornadoFluidVolume = tfv;
-                    ApplyHasKnowledgeFlag();
-                    break;
-                }
-        };
+        var gd = Locator.GetAstroObject(AstroObject.Name.GiantsDeep);
+        var st = gd.transform.Find("Sector_GD/Sector_GDInterior/Tornadoes_GDInterior/SouthernTornadoes");
+        var tfvs = st.GetComponentsInChildren<TornadoFluidVolume>();
+        foreach (var tfv in tfvs)
+            if (tfv._verticalSpeed < 0)
+            {
+                counterClockwiseGiantsDeepTornadoFluidVolume = tfv;
+                ApplyHasKnowledgeFlag();
+                break;
+            }
     }
 
     private static void ApplyHasKnowledgeFlag()

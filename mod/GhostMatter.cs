@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer;
 
@@ -10,17 +11,14 @@ internal class GhostMatter
 {
     static List<ParticleSystemRenderer> ghostMatterParticleRenderers = new();
 
-    public static void Setup()
+    public static void OnCompleteSceneLoad(OWScene scene, OWScene loadScene)
     {
-        LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
-        {
-            if (loadScene != OWScene.SolarSystem) return;
+        if (loadScene != OWScene.SolarSystem) return;
 
-            var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
-            var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
+        var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
+        var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
 
-            ghostMatterParticleRenderers = wisp_psrs.ToList();
-        };
+        ghostMatterParticleRenderers = wisp_psrs.ToList();
     }
 
     private static bool _hasGhostMatterKnowledge = false;

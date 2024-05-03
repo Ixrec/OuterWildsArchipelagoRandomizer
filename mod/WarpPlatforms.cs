@@ -37,45 +37,42 @@ internal class WarpPlatforms
 
     static Dictionary<NomaiWarpPlatform.Frequency, NomaiWarpPlatform> warpTransmitters = new();
 
-    public static void Setup()
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
-        LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
-        {
-            if (loadScene != OWScene.SolarSystem) return;
+        if (loadScene != OWScene.SolarSystem) return;
 
-            var at = Locator.GetAstroObject(AstroObject.Name.TowerTwin); // Ash Twin
-            var whs = GameObject.Find("WhiteholeStation_Body");
+        var at = Locator.GetAstroObject(AstroObject.Name.TowerTwin); // Ash Twin
+        var whs = GameObject.Find("WhiteholeStation_Body");
 
-            warpTransmitters.Clear();
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.GiantsDeep,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_GD").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.BrittleHollowForge,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_BH").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.BrittleHollowPolar,
-                whs.transform.GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.TimberHearth,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_TH").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.HourglassTwin,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_CT").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.TimeLoop,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_TT").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-            warpTransmitters.Add(
-                NomaiWarpPlatform.Frequency.SunStation,
-                at.transform.Find("Sector_TowerTwin/Sector_Tower_SS").GetComponentInChildren<NomaiWarpTransmitter>()
-            );
-        };
+        warpTransmitters.Clear();
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.GiantsDeep,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_GD").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.BrittleHollowForge,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_BH").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.BrittleHollowPolar,
+            whs.transform.GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.TimberHearth,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_TH").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.HourglassTwin,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_CT").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.TimeLoop,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_TT").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
+        warpTransmitters.Add(
+            NomaiWarpPlatform.Frequency.SunStation,
+            at.transform.Find("Sector_TowerTwin/Sector_Tower_SS").GetComponentInChildren<NomaiWarpTransmitter>()
+        );
     }
 
     static List<InteractReceiver> interactReceivers = new();

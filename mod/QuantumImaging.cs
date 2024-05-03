@@ -9,26 +9,23 @@ internal class QuantumImaging
 {
     static List<QuantumObject> relevantQuantumObjects = new();
 
-    public static void Setup()
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
-        LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
-        {
-            // we don't want to retain these references beyond a scene transition / loop reset, or else
-            // they become invalid and lead to NullReferenceExceptions when we try using them later
-            relevantQuantumObjects.Clear();
+        // we don't want to retain these references beyond a scene transition / loop reset, or else
+        // they become invalid and lead to NullReferenceExceptions when we try using them later
+        relevantQuantumObjects.Clear();
 
-            if (loadScene != OWScene.SolarSystem) return;
+        if (loadScene != OWScene.SolarSystem) return;
 
-            // For this class, we care about any quantum object that can move around,
-            // and that the player can "lock" in place by taking a photo of it.
+        // For this class, we care about any quantum object that can move around,
+        // and that the player can "lock" in place by taking a photo of it.
 
-            // I believe all of these fall into two categories:
-            // - SocketedQuantumObjects, with a fixed set of "socket" simpleLocations they rotate between
-            // - The Quantum Moon, which can't use sockets because it orbits around each planet
+        // I believe all of these fall into two categories:
+        // - SocketedQuantumObjects, with a fixed set of "socket" simpleLocations they rotate between
+        // - The Quantum Moon, which can't use sockets because it orbits around each planet
 
-            relevantQuantumObjects.AddRange(GameObject.FindObjectsOfType<SocketedQuantumObject>());
-            relevantQuantumObjects.Add(Locator.GetQuantumMoon());
-        };
+        relevantQuantumObjects.AddRange(GameObject.FindObjectsOfType<SocketedQuantumObject>());
+        relevantQuantumObjects.Add(Locator.GetQuantumMoon());
     }
 
     private static bool _hasImagingKnowledge = false;
