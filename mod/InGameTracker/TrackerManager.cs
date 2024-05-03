@@ -50,14 +50,14 @@ namespace ArchipelagoRandomizer.InGameTracker
             new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
 
             // Non-progression ship and equipment upgrades
-            //new InventoryItemEntry(Item.Autopilot, "Autopilot"),
-            //new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
-            //new InventoryItemEntry(Item.EjectButton, "Eject Button"),
-            //new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
-            //new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
-            //new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Suit Upgrade: Oxygen Capacity"),
-            //new InventoryItemEntry(Item.FuelCapacityUpgrade, "Suit Upgrade: Fuel Capacity"),
-            //new InventoryItemEntry(Item.BoostDurationUpgrade, "Suit Upgrade: Boost Duration"),
+            new InventoryItemEntry(Item.Autopilot, "Autopilot"),
+            new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
+            new InventoryItemEntry(Item.EjectButton, "Eject Button"),
+            new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
+            new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
+            new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Suit Upgrade: Oxygen Capacity"),
+            new InventoryItemEntry(Item.FuelCapacityUpgrade, "Suit Upgrade: Fuel Capacity"),
+            new InventoryItemEntry(Item.BoostDurationUpgrade, "Suit Upgrade: Boost Duration"),
 
             // Filler items
             new InventoryItemEntry(Item.OxygenRefill, "Oxygen Refill"),
@@ -65,9 +65,9 @@ namespace ArchipelagoRandomizer.InGameTracker
             new InventoryItemEntry(Item.Marshmallow, "Marshmallow"), // includes Perfect and Burnt
 
             // Trap items
-            //new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
-            //new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
-            //new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
+            new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
+            new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
+            new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
         };
         
         // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
