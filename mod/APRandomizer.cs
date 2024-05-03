@@ -299,6 +299,7 @@ namespace ArchipelagoRandomizer
                 Jellyfish.OnCompleteSceneLoad(scene, loadScene);
                 GhostMatter.OnCompleteSceneLoad(scene, loadScene);
                 Victory.OnCompleteSceneLoad(scene, loadScene);
+                Colors.OnCompleteSceneLoad(scene, loadScene);
             };
 
             SetupSaveData();
