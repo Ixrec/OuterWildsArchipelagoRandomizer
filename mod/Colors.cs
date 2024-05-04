@@ -11,6 +11,9 @@ internal class Colors
         if (loadScene == OWScene.SolarSystem || loadScene == OWScene.EyeOfTheUniverse)
         {
             RandomizeFlashlightColor();
+            // Ship_Body/Module_LandingGear/LandingGear_Front/Lights_LandingGear_Front/
+            // SpotLight_HEA_Headlights
+            // SpotLight_HEA_Landinglight
         }
     }
 
