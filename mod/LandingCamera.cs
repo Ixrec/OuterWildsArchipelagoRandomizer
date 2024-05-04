@@ -47,7 +47,7 @@ internal class LandingCamera
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
-    public static void ShipPromptController_Update(ShipPromptController __instance)
+    public static void ShipPromptController_Update_Postfix(ShipPromptController __instance)
     {
         noLandingCameraLandingPrompt.SetVisibility(false);
         if (landingCameraLandingPrompt.IsVisible() && !_hasLandingCamera)
@@ -62,6 +62,13 @@ internal class LandingCamera
             landingCameraLiftoffPrompt.SetVisibility(false);
             noLandingCameraLiftoffPrompt.SetVisibility(true);
         }
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.HideAllPrompts))]
+    public static void ShipPromptController_HideAllPrompts(ShipPromptController __instance)
+    {
+        noLandingCameraLandingPrompt.SetVisibility(false);
+        noLandingCameraLiftoffPrompt.SetVisibility(false);
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(ShipCockpitController), nameof(ShipCockpitController.EnterLandingView))]

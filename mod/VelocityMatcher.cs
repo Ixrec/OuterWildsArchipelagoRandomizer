@@ -49,6 +49,12 @@ internal class VelocityMatcher
         }
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.HideAllPrompts))]
+    public static void ShipPromptController_HideAllPrompts(ShipPromptController __instance)
+    {
+        ShipCannotMVPrompt.SetVisibility(false);
+    }
+
     private static ScreenPrompt JetpackMVPrompt = null;
     private static ScreenPrompt JetpackCannotMVPrompt = null;
 

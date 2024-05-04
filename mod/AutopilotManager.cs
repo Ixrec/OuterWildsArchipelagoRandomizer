@@ -42,7 +42,7 @@ internal class AutopilotManager
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
-    public static void ShipPromptController_Update(ShipPromptController __instance)
+    public static void ShipPromptController_Update_Postfix(ShipPromptController __instance)
     {
         noAutopilotPrompt.SetVisibility(false);
         if (autopilotPrompt.IsVisible() && !_hasAutopilot)
@@ -50,6 +50,12 @@ internal class AutopilotManager
             autopilotPrompt.SetVisibility(false);
             noAutopilotPrompt.SetVisibility(true);
         }
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.HideAllPrompts))]
+    public static void ShipPromptController_HideAllPrompts(ShipPromptController __instance)
+    {
+        noAutopilotPrompt.SetVisibility(false);
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(Autopilot), nameof(Autopilot.FlyToDestination))]
