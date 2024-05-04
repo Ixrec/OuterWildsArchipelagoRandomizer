@@ -239,6 +239,12 @@ internal class LocationTriggers
     [HarmonyPrefix, HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.EndConversation))]
     public static void CharacterDialogueTree_EndConversation_Prefix(CharacterDialogueTree __instance)
     {
+        // EndConversation() is often called "spuriously" by the base game, and by other mods,
+        // because it's expected to check InConversation() before doing anything.
+        // This turned out to be critical for New Horizons compatibility, since one of its vanilla fixes calls EndConversation().
+        if (!__instance.InConversation())
+            return;
+
         var dialogueTreeName = __instance._xmlCharacterDialogueAsset.name;
         APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree.EndConversation {dialogueTreeName}");
 
