@@ -245,6 +245,14 @@ namespace ArchipelagoRandomizer
 
         private static bool SyncItemCountWithAPServer(long itemId)
         {
+            if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId))
+            {
+                InGameAPConsole.WakeupConsoleMessages.Add(
+                    $"<color=red>Warning</color>: This mod does not recognize the item id {itemId}, which the Archipelago server just sent us. " +
+                    $"Check if your mod version matches the .apworld version used to generate this multiworld.");
+                return false;
+            }
+
             var item = ItemNames.archipelagoIdToItem[itemId];
             var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
 
@@ -442,6 +450,7 @@ namespace ArchipelagoRandomizer
             }
             catch (Exception ex)
             {
+                OWMLModConsole.WriteLine($"ConnectToAPServer() threw an exception:\n\n{ex.Message}\n{ex.StackTrace}");
                 exceptionMessage = ex.Message;
             }
 

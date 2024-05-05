@@ -141,7 +141,7 @@ namespace ArchipelagoRandomizer.InGameTracker
             Dictionary<Item, uint> ia = new();
             foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
             {
-                Item item = ItemNames.archipelagoIdToItem[itemID.Item];
+                ItemNames.archipelagoIdToItem.TryGetValue(itemID.Item, out Item item);
                 if (ia.ContainsKey(item)) ia[item] += 1;
                 else ia.Add(item, 1);
             }

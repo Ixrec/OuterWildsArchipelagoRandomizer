@@ -179,7 +179,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                     // We don't care about hints for items that have already been found
                     if (hint.Found) continue;
 
-                    string itemName = ItemNames.archipelagoIdToItem[hint.ItemId].ToString();
+                    ItemNames.archipelagoIdToItem.TryGetValue(hint.ItemId, out Item item);
+                    string itemName = item.ToString();
                     // We don't need to track hints for items that aren't on the tracker
                     if (!ItemEntries.ContainsKey(itemName))
                     {
