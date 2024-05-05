@@ -207,7 +207,8 @@ namespace ArchipelagoRandomizer.InGameTracker
                         break;
                     case Item.NapTrap:
                         infos.Add("Did you know over 27% of Timber Hearthians suffer from narcolepsy?");
-                        infos.Add("The primary symptoms are sporadic 'sleep attacks' which last about one minute. Patients report feeling a sleep attack about three seconds before loss of vision and motor control.");
+                        infos.Add("The primary symptoms are sporadic 'sleep attacks' which last about one minute. Patients report feeling a sleep attack about three seconds before loss of vision.");
+                        infos.Add("It is strongly advised not to attempt 'sleepwalking' during these attacks, unless there was something even more dangerous nearby when you fell asleep.");
                         break;
                     default:
                         return GetErrorDescription(itemID);
