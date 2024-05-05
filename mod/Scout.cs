@@ -110,4 +110,35 @@ internal class Scout
     // including the scout model, even if we don't have the item yet
     // have not figured out where the code is to stagger these visual activations
     // re-disabling it in PlayerSpacesuit.RemoveSuit does not work
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptReceiver), nameof(ProbePromptReceiver.Awake))]
+    public static void ProbePromptReceiver_Awake_Postfix(ProbePromptReceiver __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptReceiver_Awake_Postfix");
+        __instance._noCommandIconPrompt.SetText("Scout Not Available");
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptReceiver), nameof(ProbePromptReceiver.GainFocus))]
+    public static void ProbePromptReceiver_GainFocus_Postfix(ProbePromptReceiver __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptReceiver_GainFocus_Postfix");
+        __instance._noCommandIconPrompt.SetVisibility(false);
+        if (__instance._screenPrompt.IsVisible() && !_hasScout)
+        {
+            __instance._screenPrompt.SetVisibility(false);
+            __instance._noCommandIconPrompt.SetVisibility(true);
+        }
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbePromptReceiver), nameof(ProbePromptReceiver.UpdatePromptVisibility))]
+    public static void ProbePromptReceiver_UpdatePromptVisibility_Postfix(ProbePromptReceiver __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"ProbePromptReceiver_UpdatePromptVisibility_Postfix");
+        __instance._noCommandIconPrompt.SetVisibility(false);
+        if (__instance._screenPrompt.IsVisible() && !_hasScout)
+        {
+            __instance._screenPrompt.SetVisibility(false);
+            __instance._noCommandIconPrompt.SetVisibility(true);
+        }
+    }
 }
