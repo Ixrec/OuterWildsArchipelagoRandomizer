@@ -292,14 +292,12 @@ public class Logic
     public string GetLocationLogicString(TrackerLocationData data)
     {
         string logicString = "<color=grey>Location Logic: ";
-        foreach (TrackerRequirement req in data.requires)
-        {
-            if (!string.IsNullOrEmpty(req.item))
-            {
-                if (!logicString.EndsWith(": ")) logicString += " <color=lime>AND</color> ";
-                logicString += $"(item: {req.item})";
-            }
-        }
+
+        logicString += string.Join(
+            " <color=lime>AND</color> ",
+            GetLogicRequirementsStrings(data.requires)
+        );
+
         logicString += "</color>";
         return logicString;
     }
@@ -312,42 +310,61 @@ public class Logic
     public string GetRegionLogicString(string region)
     {
         TrackerRegionData data = TrackerRegions[region];
-        string logicString = "<color=grey>Regional Logic: ";
+        List<string> connectionLogicStrings = new();
         if (data.fromConnections != null && data.fromConnections.Count > 0)
         {
             foreach (TrackerConnectionData connection in data.fromConnections)
             {
-                if (!logicString.EndsWith("(") && !logicString.EndsWith(": ")) logicString += " <color=orange>OR</color> ";
-                logicString += $"(Can Access: {connection.from} ";
+                var connectionLogicString = $"(Can Access: {connection.from})";
                 if (connection.requires != null && connection.requires.Count > 0)
                 {
-                    logicString += "<color=lime>AND</color> (";
-                    foreach (TrackerRequirement req in connection.requires)
-                    {
-                        if (!string.IsNullOrEmpty(req.item))
-                        {
-                            if (!logicString.EndsWith("(")) logicString += "<color=lime>AND</color> ";
-                            logicString += $"Item: {req.item}";
-                        }
-                        if (req.anyOf != null && req.anyOf.Count > 0)
-                        {
-                            logicString = "(";
-                            foreach (var con in req.anyOf)
-                            {
-                                if (!logicString.EndsWith("(")) logicString += " <color=orange>OR</color> ";
-                                logicString += $"Item: {con.item}";
-                                // not going to bother with nested any ofs for now, not sure if those will ever have a reason to be used.
-                            }
-                            logicString += ")";
-                        }
+                    connectionLogicString += " <color=lime>AND</color> ";
+                    connectionLogicString += string.Join(
+                        " <color=lime>AND</color> ",
+                        GetLogicRequirementsStrings(connection.requires)
+                    );
+
+                    // if we have multiple connections to OR together *and* this connection has multiple parts being ANDed,
+                    // then we need an extra set of parentheses around this connection.
+                    if (data.fromConnections.Count > 1) {
+                        connectionLogicString = $"({connectionLogicString})";
                     }
-                    logicString += ")";
                 }
-                logicString += ")";
+                connectionLogicStrings.Add(connectionLogicString);
             }
         }
+
+        string logicString = "<color=grey>Regional Logic: ";
+        logicString += string.Join(
+            " <color=orange>OR</color> ",
+            connectionLogicStrings
+        );
         logicString += "</color>";
         return logicString;
+    }
+
+    private List<string> GetLogicRequirementsStrings(List<TrackerRequirement> requirements)
+    {
+        List<string> reqStrings = new();
+        foreach (var req in requirements)
+        {
+            if (!string.IsNullOrEmpty(req.item))
+            {
+                reqStrings.Add($"(Item: {req.item})");
+            }
+            else if (req.anyOf != null && req.anyOf.Count > 0)
+            {
+                string reqStr = string.Join(
+                    " <color=orange>OR</color> ",
+                    GetLogicRequirementsStrings(req.anyOf)
+                );
+                if (req.anyOf.Count > 1) {
+                    reqStr = "(" + reqStr + ")";
+                }
+                reqStrings.Add(reqStr);
+            }
+        }
+        return reqStrings;
     }
 
     /// <summary>
