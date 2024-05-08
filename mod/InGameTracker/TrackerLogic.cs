@@ -10,6 +10,15 @@ using Archipelago.MultiClient.Net;
 
 namespace ArchipelagoRandomizer.InGameTracker
 {
+    public class TrackerRegionData(string name)
+    {
+        public List<TrackerConnectionData> fromConnections = new();
+        public List<TrackerConnectionData> toConnections = new();
+
+        public List<List<TrackerRequirement>> requirements = new();
+        public string name = name;
+    }
+
     /// <summary>
     /// Helper class for managing tracker accessibility displays
     /// </summary>
