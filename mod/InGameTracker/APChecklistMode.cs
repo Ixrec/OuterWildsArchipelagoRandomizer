@@ -179,7 +179,7 @@ public class APChecklistMode : ShipLogMode
         PopulateInfos(category);
         SelectionWrapper.Close();
         ChecklistWrapper.Open();
-        ChecklistWrapper.SetName(CategoryToName(category));
+        ChecklistWrapper.SetName(CategoryToLongName(category));
         ChecklistWrapper.SetItems(Tracker.CurrentLocations);
         ChecklistWrapper.SetSelectedIndex(0);
         ChecklistWrapper.UpdateList();
@@ -419,5 +419,16 @@ public class APChecklistMode : ShipLogMode
             case TrackerCategory.OuterWilds: return "The Outer Wilds";
         }
         return "NULL";
+    }
+
+    private string CategoryToLongName(TrackerCategory category)
+    {
+        switch (category)
+        {
+            case TrackerCategory.TimberHearth: return "Timber Hearth & Attlerock";
+            case TrackerCategory.BrittleHollow: return "Brittle Hollow & Hollow's Lantern";
+            case TrackerCategory.GiantsDeep: return "Giant's Deep & Orbital Probe Cannon";
+            default: return CategoryToName(category);
+        }
     }
 }
