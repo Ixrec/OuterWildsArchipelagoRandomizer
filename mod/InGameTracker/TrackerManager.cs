@@ -14,7 +14,7 @@ namespace ArchipelagoRandomizer.InGameTracker;
 
 public class TrackerManager : MonoBehaviour
 {
-    public TrackerLogic logic;
+    public Logic logic;
 
     // Tuples: name, green arrow, green exclamation point, orange asterisk
     public List<Tuple<string, bool, bool, bool>> InventoryItems;
@@ -87,9 +87,9 @@ public class TrackerManager : MonoBehaviour
     public Dictionary<string, TrackerChecklistData> OWLocations;
 
     private ICustomShipLogModesAPI api;
-    private TrackerInventoryMode inventoryMode;
+    private APInventoryMode inventoryMode;
     //private TrackerSelectionMode selectionMode;
-    private TrackerLocationChecklistMode checklistMode;
+    private APChecklistMode checklistMode;
     private ArchipelagoSession session;
 
     private void Awake()
@@ -101,8 +101,8 @@ public class TrackerManager : MonoBehaviour
             return;
         }
 
-        inventoryMode = gameObject.AddComponent<TrackerInventoryMode>();
-        checklistMode = gameObject.AddComponent <TrackerLocationChecklistMode>();
+        inventoryMode = gameObject.AddComponent<APInventoryMode>();
+        checklistMode = gameObject.AddComponent <APChecklistMode>();
 
         LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {

@@ -6,7 +6,7 @@ namespace ArchipelagoRandomizer.InGameTracker;
 /// <summary>
 /// Class containing descriptions for the various items, put on its own for clarity
 /// </summary>
-public class TrackerDescriptions
+public class APInventoryDescriptions
 {
     public static void DisplayItemText(string itemID, ItemListWrapper Wrapper)
     {

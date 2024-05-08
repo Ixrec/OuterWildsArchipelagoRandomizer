@@ -9,7 +9,7 @@ namespace ArchipelagoRandomizer.InGameTracker;
 /// <summary>
 /// The inventory screen. All the functions here are required, even if empty.
 /// </summary>
-public class TrackerInventoryMode : ShipLogMode
+public class APInventoryMode : ShipLogMode
 {
     public ItemListWrapper Wrapper;
     public GameObject RootObject;
@@ -110,7 +110,7 @@ public class TrackerInventoryMode : ShipLogMode
             QuestionMark.gameObject.SetActive(true);
         }
 
-        TrackerDescriptions.DisplayItemText(itemID, Wrapper);
+        APInventoryDescriptions.DisplayItemText(itemID, Wrapper);
     }
 
     

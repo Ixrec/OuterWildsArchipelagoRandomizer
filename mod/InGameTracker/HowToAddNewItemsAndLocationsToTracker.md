@@ -24,7 +24,7 @@ and if you place it at the fourth slot of the dictionary, it'll appear in the fo
 
 ## Making a Description
 
-To add a description for the item, open the `TrackerDescription.cs` class and edit the `DisplayItemText` method.
+To add a description for the item, open the `APInventoryDescriptions.cs` class and edit the `DisplayItemText` method.
 There is a lengthy switch function at the beginning of the method.
 Add your own `case Item.NewItem`, with a usage of `infos.Add("Line of description");` in the case call.
 For each entry you want to add, you'll want to use a separate `infos.Add()` call.

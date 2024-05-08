@@ -22,7 +22,7 @@ public class TrackerRegionData(string name)
 /// <summary>
 /// Helper class for managing tracker accessibility displays
 /// </summary>
-public class TrackerLogic
+public class Logic
 {
     /// <summary>
     /// List of items the player has obtained prior to receiving a new item
