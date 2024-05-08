@@ -164,54 +164,22 @@ public class APChecklistMode : ShipLogMode
     #region checklist
     private void OpenChecklistPage(int index)
     {
-        string pageName;
+        TrackerCategory category;
         switch (index)
         {
-            case 1:
-                {
-                    PopulateInfos(TrackerCategory.HourglassTwins);
-                    pageName = "Hourglass Twins";
-                    break;
-                }
-            case 2:
-                {
-                    PopulateInfos(TrackerCategory.TimberHearth);
-                    pageName = "Timber Hearth";
-                    break;
-                }
-            case 3:
-                {
-                    PopulateInfos(TrackerCategory.BrittleHollow);
-                    pageName = "Brittle Hollow";
-                    break;
-                }
-            case 4:
-                {
-                    PopulateInfos(TrackerCategory.GiantsDeep);
-                    pageName = "Giant's Deep";
-                    break;
-                }
-            case 5:
-                {
-                    PopulateInfos(TrackerCategory.DarkBramble);
-                    pageName = "Dark Bramble";
-                    break;
-                }
-            case 6:
-                {
-                    PopulateInfos(TrackerCategory.OuterWilds);
-                    pageName = "The Outer Wilds";
-                    break;
-                }
-            default:
-                {
-                    // We don't need to care about switching to the checklist if an invalid entry is selected
-                    return;
-                }
+            case 1: category = TrackerCategory.HourglassTwins; break;
+            case 2: category = TrackerCategory.TimberHearth; break;
+            case 3: category = TrackerCategory.BrittleHollow; break;
+            case 4: category = TrackerCategory.GiantsDeep; break;
+            case 5: category = TrackerCategory.DarkBramble; break;
+            case 6: category = TrackerCategory.OuterWilds; break;
+            // We don't need to care about switching to the checklist if an invalid entry is selected
+            default: return;
         }
+        PopulateInfos(category);
         SelectionWrapper.Close();
         ChecklistWrapper.Open();
-        ChecklistWrapper.SetName(pageName);
+        ChecklistWrapper.SetName(CategoryToName(category));
         ChecklistWrapper.SetItems(Tracker.CurrentLocations);
         ChecklistWrapper.SetSelectedIndex(0);
         ChecklistWrapper.UpdateList();
