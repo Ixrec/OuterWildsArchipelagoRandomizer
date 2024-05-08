@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -195,9 +196,68 @@ public class TrackerManager : MonoBehaviour
             // hints for items placed in your world
             if (hint.FindingPlayer == session.ConnectionInfo.Slot)
             {
-                logic.ApplyHint(hint, session);
+                ApplyHint(hint, session);
             }
         }
+    }
+
+    /// <summary>
+    /// Reads a hint and applies it to the checklist
+    /// </summary>
+    /// <param name="hint"></param>
+    private void ApplyHint(Hint hint, ArchipelagoSession session)
+    {
+        string playerName;
+        if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
+        {
+            playerName = "your";
+        }
+        else
+        {
+            playerName = session.Players.GetPlayerName(hint.ReceivingPlayer) + "'s";
+        }
+        string itemColor;
+        switch (hint.ItemFlags)
+        {
+            case Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement: itemColor = "#B883B4"; break;
+            case Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude: itemColor = "#524798"; break;
+            case Archipelago.MultiClient.Net.Enums.ItemFlags.Trap: itemColor = "#DA6F62"; break;
+            default: itemColor = "#01CACA"; break;
+        }
+        string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
+        string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
+        TrackerLocationData loc = logic.GetLocationByID(hint.LocationId);
+        if (HGTLocations.ContainsKey(loc.name))
+        {
+            if (!HGTLocations[loc.name].hasBeenChecked)
+                HGTLocations[loc.name].hintText = hintDescription;
+        }
+        else if (THLocations.ContainsKey(loc.name))
+        {
+            if (!THLocations[loc.name].hasBeenChecked)
+                THLocations[loc.name].hintText = hintDescription;
+        }
+        else if (BHLocations.ContainsKey(loc.name))
+        {
+            if (!BHLocations[loc.name].hasBeenChecked)
+                BHLocations[loc.name].hintText = hintDescription;
+        }
+        else if (GDLocations.ContainsKey(loc.name))
+        {
+            if (!GDLocations[loc.name].hasBeenChecked)
+                GDLocations[loc.name].hintText = hintDescription;
+        }
+        else if (DBLocations.ContainsKey(loc.name))
+        {
+            if (!DBLocations[loc.name].hasBeenChecked)
+                DBLocations[loc.name].hintText = hintDescription;
+        }
+        else if (OWLocations.ContainsKey(loc.name))
+        {
+            if (!OWLocations[loc.name].hasBeenChecked)
+                OWLocations[loc.name].hintText = hintDescription;
+        }
+        else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
     }
 
     #region Inventory

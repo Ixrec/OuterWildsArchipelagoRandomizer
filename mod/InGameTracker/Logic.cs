@@ -257,65 +257,6 @@ public class Logic
         if (!CanAccessRegion[data.region]) return false;
         return true;
     }
-    
-    /// <summary>
-    /// Reads a hint and applies it to the checklist
-    /// </summary>
-    /// <param name="hint"></param>
-    public void ApplyHint(Hint hint, ArchipelagoSession session)
-    {
-        string playerName;
-        if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
-        {
-            playerName = "your";
-        }
-        else
-        {
-            playerName = session.Players.GetPlayerName(hint.ReceivingPlayer) + "'s";
-        }
-        string itemColor;
-        switch (hint.ItemFlags)
-        {
-            case Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement: itemColor = "#B883B4"; break;
-            case Archipelago.MultiClient.Net.Enums.ItemFlags.NeverExclude: itemColor = "#524798"; break;
-            case Archipelago.MultiClient.Net.Enums.ItemFlags.Trap: itemColor = "#DA6F62"; break;
-            default: itemColor = "#01CACA"; break;
-        }
-        string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
-        string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
-        TrackerLocationData loc = GetLocationByID(hint.LocationId);
-        if (tracker.HGTLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.HGTLocations[loc.name].hasBeenChecked)
-                tracker.HGTLocations[loc.name].hintText = hintDescription;
-        }
-        else if (tracker.THLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.THLocations[loc.name].hasBeenChecked)
-                tracker.THLocations[loc.name].hintText = hintDescription;
-        }
-        else if (tracker.BHLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.BHLocations[loc.name].hasBeenChecked)
-                tracker.BHLocations[loc.name].hintText = hintDescription;
-        }
-        else if (tracker.GDLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.GDLocations[loc.name].hasBeenChecked)
-                tracker.GDLocations[loc.name].hintText = hintDescription;
-        }
-        else if (tracker.DBLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.DBLocations[loc.name].hasBeenChecked)
-                tracker.DBLocations[loc.name].hintText = hintDescription;
-        }
-        else if (tracker.OWLocations.ContainsKey(loc.name))
-        {
-            if (!tracker.OWLocations[loc.name].hasBeenChecked)
-                tracker.OWLocations[loc.name].hintText = hintDescription;
-        }
-        else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
-    }
 
     // AND condition
     private bool CanAccess(List<TrackerRequirement> requirementsList, Dictionary<Item, uint> itemsAcquired)
