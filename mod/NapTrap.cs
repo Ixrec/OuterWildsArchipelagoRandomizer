@@ -41,6 +41,16 @@ internal class NapTrap
     private static NapTrapComponent napTrapComponent = null;
     private static ScreenPrompt thisIsANapTrapPrompt = null;
 
+    // useful for testing
+    /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    public static void ToolModeUI_Update_Prefix()
+    {
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
+        {
+            ForceNap();
+        }
+    }*/
+
     private static void ForceNap()
     {
         if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
