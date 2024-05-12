@@ -21,6 +21,11 @@ internal class DeathLinkManager
 
     private static bool manualDeathInProgress = false;
 
+    // When "dying" on the pause menu, or when time is frozen by e.g. the ship log, you can end up in states that
+    // at first appear to be a softlock. AFAICT none of them really are softlocks, but they still feel like bugs,
+    // so we want to "buffer deaths" until whatever paused in-game is done.
+    private static bool dieAfterUnpause = false;
+
     public static void Enable(long value)
     {
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
@@ -32,17 +37,51 @@ internal class DeathLinkManager
         {
             service = APRandomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
-
-            service.OnDeathLinkReceived += (deathLinkObject) => {
-                APRandomizer.OWMLModConsole.WriteLine($"OnDeathLinkReceived() Timestamp={deathLinkObject.Timestamp}, Source={deathLinkObject.Source}, Cause={deathLinkObject.Cause}");
-                DeathLinkManager.manualDeathInProgress = true;
-
-                Locator.GetDeathManager().KillPlayer(DeathType.Default);
-                APRandomizer.InGameAPConsole.AddText(deathLinkObject.Cause);
-
-                DeathLinkManager.manualDeathInProgress = false;
-            };
+            service.OnDeathLinkReceived += OnDeathLinkReceived;
         }
+    }
+
+    // useful for testing
+    /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    public static void ToolModeUI_Update_Prefix()
+    {
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
+        {
+            OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
+        }
+    }*/
+
+    private static void OnDeathLinkReceived(DeathLink deathLinkObject)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"OnDeathLinkReceived() Timestamp={deathLinkObject.Timestamp}, Source={deathLinkObject.Source}, Cause={deathLinkObject.Cause}");
+
+        APRandomizer.InGameAPConsole.AddText(deathLinkObject.Cause);
+
+        if (OWTime.IsPaused())
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"buffering death because OWTime is currently paused");
+            dieAfterUnpause = true;
+        }
+        else
+            ActuallyKillThePlayer();
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(OWTime), nameof(OWTime.Unpause))]
+    private static void OWTime_Unpause_Postfix()
+    {
+        if (dieAfterUnpause)
+        {
+            dieAfterUnpause = false;
+            APRandomizer.OWMLModConsole.WriteLine($"applying buffered death now that OWTime has unpaused");
+            ActuallyKillThePlayer();
+        }
+    }
+
+    private static void ActuallyKillThePlayer()
+    {
+        DeathLinkManager.manualDeathInProgress = true;
+        Locator.GetDeathManager().KillPlayer(DeathType.Default);
+        DeathLinkManager.manualDeathInProgress = false;
     }
 
     private static Random prng = new Random();
