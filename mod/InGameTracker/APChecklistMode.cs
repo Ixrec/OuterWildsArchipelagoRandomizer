@@ -220,7 +220,10 @@ public class APChecklistMode : ShipLogMode
 
     public List<(TrackerInfo, ShipLogDisplayItem)> PopulateChecklistState(TrackerCategory category, Dictionary<string, TrackerChecklistData> locationNameToChecklistData)
     {
-        var checklistState = new List<(TrackerInfo, ShipLogDisplayItem)>();
+        // we'll be "sorting" (well, partitioning?) the locations into these three groups
+        List<(TrackerInfo, ShipLogDisplayItem)> checkedState = new();
+        List<(TrackerInfo, ShipLogDisplayItem)> accessibleState = new();
+        List<(TrackerInfo, ShipLogDisplayItem)> inaccessibleState = new();
 
         string filepath = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/InGameTracker/LocationInfos/" + GetTrackerInfoFilename(category);
         if (File.Exists(filepath + ".jsonc"))
@@ -263,13 +266,13 @@ public class APChecklistMode : ShipLogMode
                     // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
                     name = Regex.Replace(name, ".*:.{1}", "");
 
-                    string colorTag;
-                    if (locationChecked) colorTag = "white";
-                    else if (data.isAccessible) colorTag = "lime";
-                    else colorTag = "red";
-
-                    ShipLogDisplayItem displayItem = new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText));
-                    checklistState.Add((info, displayItem));
+                    var hasHint = !string.IsNullOrEmpty(data.hintText);
+                    if (locationChecked)
+                        checkedState.Add((info, new($"<color=white>[X] {name}</color>", false, false, hasHint)));
+                    else if (data.isAccessible)
+                        accessibleState.Add((info, new($"<color=lime>[ ] {name}</color>", false, false, hasHint)));
+                    else
+                        inaccessibleState.Add((info, new($"<color=red>[ ] {name}</color>", false, false, hasHint)));
                 }
                 else
                 {
@@ -279,7 +282,8 @@ public class APChecklistMode : ShipLogMode
         }
         else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
 
-        return checklistState;
+        // here we define the sort/partition order we want the user to see
+        return accessibleState.Concat(inaccessibleState).Concat(checkedState).ToList();
     }
 
     private string GetTrackerInfoFilename(TrackerCategory category)
