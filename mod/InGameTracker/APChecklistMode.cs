@@ -11,12 +11,14 @@ using System.Text.RegularExpressions;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
+using ShipLogDisplayItem = Tuple<string, bool, bool, bool>;
+
 public class APChecklistMode : ShipLogMode
 {
     /// <summary>
     /// List of all locations and associated info for the currently selected category in the tracker
     /// </summary>
-    public Dictionary<string, TrackerInfo> Infos;
+    private List<(TrackerInfo, ShipLogDisplayItem)> ChecklistState;
 
     public ItemListWrapper ChecklistWrapper;
     public ItemListWrapper SelectionWrapper;
@@ -28,7 +30,7 @@ public class APChecklistMode : ShipLogMode
     public bool IsInChecklist = false;
 
     private GameObject shipLogPanRoot;
-    Dictionary<string, TrackerChecklistData> checklist;
+    Dictionary<string, TrackerChecklistData> LocationNameToChecklistData;
 
     private Material selectorMaterial;
     private Dictionary<string, GameObject> icons;
@@ -63,7 +65,7 @@ public class APChecklistMode : ShipLogMode
         "The Outer Wilds"
         // When DLC support is added, add Stranger and Dreamworld conditionally
     };
-    private List<Tuple<string, bool, bool, bool>> optionsList;
+    private List<ShipLogDisplayItem> optionsList;
 
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
@@ -182,12 +184,13 @@ public class APChecklistMode : ShipLogMode
             // We don't need to care about switching to the checklist if an invalid entry is selected
             default: return;
         }
-        var (currentLocations, infos) = PopulateInfos(category);
-        Infos = infos;
+
+        LocationNameToChecklistData = Tracker.logic.GetLocationChecklist(category);
+        ChecklistState = PopulateChecklistState(category, LocationNameToChecklistData);
         SelectionWrapper.Close();
         ChecklistWrapper.Open();
         ChecklistWrapper.SetName(CategoryToLongName(category));
-        ChecklistWrapper.SetItems(currentLocations);
+        ChecklistWrapper.SetItems(ChecklistState.Select(trackerAndDisplayInfo => trackerAndDisplayInfo.Item2).ToList());
         ChecklistWrapper.SetSelectedIndex(0);
         ChecklistWrapper.UpdateList();
         ChecklistRootObject.name = "ArchipelagoChecklistMode";
@@ -198,9 +201,9 @@ public class APChecklistMode : ShipLogMode
 
     private void SelectChecklistItem(int index)
     {
-        TrackerInfo info = Infos.ElementAt(index).Value;
+        TrackerInfo info = ChecklistState.ElementAt(index).Item1;
         TrackerLocationData data = Tracker.logic.GetLocationByName(info);
-        TrackerChecklistData locData = checklist[data.name];
+        TrackerChecklistData locData = LocationNameToChecklistData[data.name];
         ChecklistWrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
         ChecklistWrapper.GetPhoto().gameObject.SetActive(true);
         ChecklistWrapper.GetQuestionMark().gameObject.SetActive(false);
@@ -215,81 +218,68 @@ public class APChecklistMode : ShipLogMode
         ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
     }
 
-    public (List<Tuple<string, bool, bool, bool>>, Dictionary<string, TrackerInfo>) PopulateInfos(TrackerCategory category)
+    public List<(TrackerInfo, ShipLogDisplayItem)> PopulateChecklistState(TrackerCategory category, Dictionary<string, TrackerChecklistData> locationNameToChecklistData)
     {
-        var infos = new Dictionary<string, TrackerInfo>();
-        var currentLocations = new List<Tuple<string, bool, bool, bool>>();
+        var checklistState = new List<(TrackerInfo, ShipLogDisplayItem)>();
 
         string filepath = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/InGameTracker/LocationInfos/" + GetTrackerInfoFilename(category);
         if (File.Exists(filepath + ".jsonc"))
         {
+            HashSet<TrackerInfo> trackerInfosInCategory = new();
+
             List<TrackerInfo> trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + ".jsonc"));
             foreach (TrackerInfo info in trackerInfos)
+                trackerInfosInCategory.Add(info);
+
+            if (APRandomizer.SlotData.ContainsKey("logsanity") &&
+                (long)APRandomizer.SlotData["logsanity"] != 0 &&
+                File.Exists(filepath + "_SL.jsonc"))
             {
-                infos.Add(info.locationModID, info);
+                trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
+                foreach (TrackerInfo info in trackerInfos)
+                    trackerInfosInCategory.Add(info);
             }
 
-            if (APRandomizer.SlotData.ContainsKey("logsanity"))
+            // generate the ShipLogDisplayItem for each TrackerInfo, and add each pair to checklistState
+            foreach (TrackerInfo info in trackerInfosInCategory)
             {
-                if ((long)APRandomizer.SlotData["logsanity"] != 0)
+                // TODO add hints and confirmation of checked locations
+                if (Enum.TryParse<Location>(info.locationModID, out Location loc))
                 {
-                    if (File.Exists(filepath + "_SL.jsonc"))
+                    if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
                     {
-                        trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
-                        foreach (TrackerInfo info in trackerInfos)
-                        {
-                            infos.Add(info.locationModID, info);
-                        }
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
+                        continue;
                     }
+                    if (!locationNameToChecklistData.ContainsKey(Tracker.logic.GetLocationByName(info).name))
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {Tracker.logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
+                        continue;
+                    }
+                    TrackerChecklistData data = locationNameToChecklistData[Tracker.logic.GetLocationByName(info).name];
+                    long id = LocationNames.locationToArchipelagoId[loc];
+                    bool locationChecked = data.hasBeenChecked;
+                    string name = Tracker.logic.GetLocationByID(id).name;
+                    // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
+                    name = Regex.Replace(name, ".*:.{1}", "");
+
+                    string colorTag;
+                    if (locationChecked) colorTag = "white";
+                    else if (data.isAccessible) colorTag = "lime";
+                    else colorTag = "red";
+
+                    ShipLogDisplayItem displayItem = new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText));
+                    checklistState.Add((info, displayItem));
+                }
+                else
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
                 }
             }
-            checklist = Tracker.logic.GetLocationChecklist(category);
-            currentLocations = GenerateLocationChecklist(infos, category);
         }
         else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
 
-        return (currentLocations, infos);
-    }
-
-    public List<Tuple<string, bool, bool, bool>> GenerateLocationChecklist(Dictionary<string, TrackerInfo> infos, TrackerCategory category)
-    {
-        var currentLocations = new List<Tuple<string, bool, bool, bool>>();
-        Dictionary<string, TrackerChecklistData> checklistDatas = Tracker.logic.GetLocationChecklist(category);
-        foreach (TrackerInfo info in infos.Values)
-        {
-            // TODO add hints and confirmation of checked locations
-            if (Enum.TryParse<Location>(info.locationModID, out Location loc))
-            {
-                if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
-                    continue;
-                }
-                if (!checklistDatas.ContainsKey(Tracker.logic.GetLocationByName(info).name))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {Tracker.logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
-                    continue;
-                }
-                TrackerChecklistData data = checklistDatas[Tracker.logic.GetLocationByName(info).name];
-                long id = LocationNames.locationToArchipelagoId[loc];
-                bool locationChecked = data.hasBeenChecked;
-                string name = Tracker.logic.GetLocationByID(id).name;
-                // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
-                name = Regex.Replace(name, ".*:.{1}", "");
-
-                string colorTag;
-                if (locationChecked) colorTag = "white";
-                else if (data.isAccessible) colorTag = "lime";
-                else colorTag = "red";
-
-                currentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
-            }
-        }
-        return currentLocations;
+        return checklistState;
     }
 
     private string GetTrackerInfoFilename(TrackerCategory category)
