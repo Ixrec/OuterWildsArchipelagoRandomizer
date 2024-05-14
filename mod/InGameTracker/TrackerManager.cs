@@ -19,7 +19,6 @@ public class TrackerManager : MonoBehaviour
 
     // Tuples: name, green arrow, green exclamation point, orange asterisk
     public List<Tuple<string, bool, bool, bool>> InventoryItems;
-    public List<Tuple<string, bool, bool, bool>> CurrentLocations;
 
     // This dictionary is the list of items in the Inventory Mode
     // They'll also display in this order, with the second string as the visible name
@@ -73,11 +72,6 @@ public class TrackerManager : MonoBehaviour
     
     // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
     public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
-
-    /// <summary>
-    /// List of all locations and associated info for the currently selected category in the tracker
-    /// </summary>
-    public Dictionary<string, TrackerInfo> Infos;
 
     // Location checklist data for each area
     public Dictionary<string, TrackerChecklistData> HGTLocations;
@@ -401,48 +395,6 @@ public class TrackerManager : MonoBehaviour
         }
         frequency = "";
         return false;
-    }
-    #endregion
-
-    #region Tracker
-    public void GenerateLocationChecklist(TrackerCategory category)
-    {
-        CurrentLocations = new();
-        Dictionary<string, TrackerChecklistData> checklistDatas = logic.GetLocationChecklist(category);
-        foreach (TrackerInfo info in Infos.Values)
-        {
-            // TODO add hints and confirmation of checked locations
-            if (Enum.TryParse<Location>(info.locationModID, out Location loc))
-            {
-                if (!LocationNames.locationToArchipelagoId.ContainsKey(loc))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
-                    continue;
-                }
-                if (!checklistDatas.ContainsKey(logic.GetLocationByName(info).name))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
-                    continue;
-                }
-                TrackerChecklistData data = checklistDatas[logic.GetLocationByName(info).name];
-                long id = LocationNames.locationToArchipelagoId[loc];
-                bool locationChecked = data.hasBeenChecked;
-                string name = logic.GetLocationByID(id).name;
-                // Shortens the display name by removing "Ship Log", the region prefix, and the colon from the name
-                name = Regex.Replace(name, ".*:.{1}", "");
-
-                string colorTag;
-                if (locationChecked) colorTag = "white";
-                else if (data.isAccessible) colorTag = "lime";
-                else colorTag = "red";
-
-                CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
-            }
-        }
     }
     #endregion
 }
