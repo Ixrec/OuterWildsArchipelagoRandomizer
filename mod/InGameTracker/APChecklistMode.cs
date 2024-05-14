@@ -13,8 +13,6 @@ namespace ArchipelagoRandomizer.InGameTracker;
 
 public class APChecklistMode : ShipLogMode
 {
-    public List<Tuple<string, bool, bool, bool>> CurrentLocations;
-
     /// <summary>
     /// List of all locations and associated info for the currently selected category in the tracker
     /// </summary>
@@ -184,11 +182,12 @@ public class APChecklistMode : ShipLogMode
             // We don't need to care about switching to the checklist if an invalid entry is selected
             default: return;
         }
-        PopulateInfos(category);
+        var (currentLocations, infos) = PopulateInfos(category);
+        Infos = infos;
         SelectionWrapper.Close();
         ChecklistWrapper.Open();
         ChecklistWrapper.SetName(CategoryToLongName(category));
-        ChecklistWrapper.SetItems(CurrentLocations);
+        ChecklistWrapper.SetItems(currentLocations);
         ChecklistWrapper.SetSelectedIndex(0);
         ChecklistWrapper.UpdateList();
         ChecklistRootObject.name = "ArchipelagoChecklistMode";
@@ -216,16 +215,18 @@ public class APChecklistMode : ShipLogMode
         ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
     }
 
-    public void PopulateInfos(TrackerCategory category)
+    public (List<Tuple<string, bool, bool, bool>>, Dictionary<string, TrackerInfo>) PopulateInfos(TrackerCategory category)
     {
-        Infos = new Dictionary<string, TrackerInfo>();
+        var infos = new Dictionary<string, TrackerInfo>();
+        var currentLocations = new List<Tuple<string, bool, bool, bool>>();
+
         string filepath = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/InGameTracker/LocationInfos/" + GetTrackerInfoFilename(category);
         if (File.Exists(filepath + ".jsonc"))
         {
             List<TrackerInfo> trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + ".jsonc"));
             foreach (TrackerInfo info in trackerInfos)
             {
-                Infos.Add(info.locationModID, info);
+                infos.Add(info.locationModID, info);
             }
 
             if (APRandomizer.SlotData.ContainsKey("logsanity"))
@@ -237,22 +238,24 @@ public class APChecklistMode : ShipLogMode
                         trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
                         foreach (TrackerInfo info in trackerInfos)
                         {
-                            Infos.Add(info.locationModID, info);
+                            infos.Add(info.locationModID, info);
                         }
                     }
                 }
             }
             checklist = Tracker.logic.GetLocationChecklist(category);
-            GenerateLocationChecklist(category);
+            currentLocations = GenerateLocationChecklist(infos, category);
         }
         else APRandomizer.OWMLModConsole.WriteLine($"Unable to locate file at {filepath + ".jsonc"}!", OWML.Common.MessageType.Error);
+
+        return (currentLocations, infos);
     }
 
-    public void GenerateLocationChecklist(TrackerCategory category)
+    public List<Tuple<string, bool, bool, bool>> GenerateLocationChecklist(Dictionary<string, TrackerInfo> infos, TrackerCategory category)
     {
-        CurrentLocations = new();
+        var currentLocations = new List<Tuple<string, bool, bool, bool>>();
         Dictionary<string, TrackerChecklistData> checklistDatas = Tracker.logic.GetLocationChecklist(category);
-        foreach (TrackerInfo info in Infos.Values)
+        foreach (TrackerInfo info in infos.Values)
         {
             // TODO add hints and confirmation of checked locations
             if (Enum.TryParse<Location>(info.locationModID, out Location loc))
@@ -279,13 +282,14 @@ public class APChecklistMode : ShipLogMode
                 else if (data.isAccessible) colorTag = "lime";
                 else colorTag = "red";
 
-                CurrentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
+                currentLocations.Add(new($"<color={colorTag}>[{(locationChecked ? "X" : " ")}] {name}</color>", false, false, !string.IsNullOrEmpty(data.hintText)));
             }
             else
             {
                 APRandomizer.OWMLModConsole.WriteLine($"Unable to find location {info.locationModID} for the checklist! Skipping.", OWML.Common.MessageType.Warning);
             }
         }
+        return currentLocations;
     }
 
     private string GetTrackerInfoFilename(TrackerCategory category)
