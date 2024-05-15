@@ -210,6 +210,10 @@ internal class LocationTriggers
                 APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
         }
+
+        if (PlayerData._currentGameSave != null)
+            if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
+                PlayerData.SetPersistentCondition(condition, true);
     }
 
 

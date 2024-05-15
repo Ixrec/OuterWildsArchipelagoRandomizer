@@ -168,6 +168,33 @@ public static class ItemNames
     };
     public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 
+    // The OW autosplitter can be driven by persistent condition changes, so these enable autosplitting with the randomizer.
+    // For now, we define a condition for every progression item.
+    public static Dictionary<Item, string> itemToPersistentCondition = new Dictionary<Item, string>
+    {
+        { Item.LaunchCodes,          "HAS_AP_ITEM_LAUNCH_CODES" },
+        { Item.Spacesuit,            "HAS_AP_ITEM_SPACESUIT" },
+        { Item.Translator,           "HAS_AP_ITEM_TRANSLATOR" },
+        { Item.Signalscope,          "HAS_AP_ITEM_SIGNALSCOPE" },
+        { Item.Scout,                "HAS_AP_ITEM_SCOUT" },
+        { Item.CameraGM,             "HAS_AP_ITEM_GHOST_MATTER_WAVELENGTH" },
+        { Item.CameraQuantum,        "HAS_AP_ITEM_IMAGING_RULE" },
+        { Item.WarpPlatformCodes,    "HAS_AP_ITEM_NOMAI_WARP_CODES" },
+        { Item.WarpCoreManual,       "HAS_AP_ITEM_WARP_CORE_INSTALLATION_MANUAL" },
+        { Item.EntanglementRule,     "HAS_AP_ITEM_ENTANGLEMENT_RULE" },
+        { Item.ShrineDoorCodes,      "HAS_AP_ITEM_SHRINE_DOOR_CODES" },
+        { Item.TornadoAdjustment,    "HAS_AP_ITEM_TORNADO_AERODYNAMIC_ADJUSTMENTS" },
+        { Item.SilentRunning,        "HAS_AP_ITEM_SILENT_RUNNING_MODE" },
+        { Item.ElectricalInsulation, "HAS_AP_ITEM_ELECTRICAL_INSULATION" },
+        { Item.Coordinates,          "HAS_AP_ITEM_COORDINATES" },
+        { Item.FrequencyDB,          "HAS_AP_ITEM_DISTRESS_BEACON_FREQUENCY" },
+        { Item.FrequencyQF,          "HAS_AP_ITEM_QUANTUM_FLUCTUATIONS_FREQUENCY" },
+        { Item.FrequencyHS,          "HAS_AP_ITEM_HIDE_AND_SEEK_FREQUENCY" },
+        { Item.SignalFeldspar,       "HAS_AP_ITEM_FELDSPARS_SIGNAL" },
+        { Item.SignalQM,             "HAS_AP_ITEM_QUANTUM_MOON_SIGNAL" },
+        { Item.SignalEP3,            "HAS_AP_ITEM_ESCAPE_POD_3_SIGNAL" },
+    };
+
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
     public static Dictionary<long, Item> archipelagoIdToItem = null;
     public static Dictionary<Item, long> itemToArchipelagoId = null;
