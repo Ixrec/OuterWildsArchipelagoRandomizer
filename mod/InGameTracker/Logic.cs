@@ -38,7 +38,8 @@ public class Logic
     /// </summary>
     public Dictionary<string, TrackerRegionData> TrackerRegions;
 
-    public Dictionary<string, bool> CanAccessRegion;
+    private Dictionary<Item, uint> ItemsCollected;
+    private Dictionary<string, bool> CanAccessRegion;
 
     private TrackerManager tracker;
 
@@ -147,15 +148,15 @@ public class Logic
     public void DetermineAllAccessibility()
     {
         // Build region logic, we always start from the Menu region
-        Dictionary<Item, uint> ia = new();
+        ItemsCollected = new Dictionary<Item, uint>();
         foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
         {
             ItemNames.archipelagoIdToItem.TryGetValue(itemID.Item, out Item item);
-            if (ia.ContainsKey(item)) ia[item] += 1;
-            else ia.Add(item, 1);
+            if (ItemsCollected.ContainsKey(item)) ItemsCollected[item] += 1;
+            else ItemsCollected.Add(item, 1);
         }
         CanAccessRegion = new();
-        BuildRegionLogic("Menu", ia);
+        BuildRegionLogic("Menu");
 
         // Determine locaiton logic
         Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
@@ -165,12 +166,12 @@ public class Logic
             // we can skip accessibility calculation if the location has been checked or ever been accessible
             if (!checklistEntry.hasBeenChecked && !checklistEntry.isAccessible)
             {
-                if (tracker.HGTLocations.ContainsKey(data.Key)) tracker.HGTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
-                else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key], ia));
+                if (tracker.HGTLocations.ContainsKey(data.Key)) tracker.HGTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
                 else APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
             }
         }
@@ -180,8 +181,7 @@ public class Logic
     /// Determines which regions you can access
     /// </summary>
     /// <param name="regionName"></param>
-    /// <param name="itemsAccessible"></param>
-    public void BuildRegionLogic(string regionName, Dictionary<Item, uint> itemsAccessible)
+    public void BuildRegionLogic(string regionName)
     {
         if (!CanAccessRegion.ContainsKey(regionName)) CanAccessRegion.Add(regionName, true);
         TrackerRegionData region = TrackerRegions[regionName];
@@ -191,10 +191,10 @@ public class Logic
             if (!CanAccessRegion.ContainsKey(to)) CanAccessRegion.Add(to, false);
             // We don't need to calculate this connection if the target region is already accessible
             if (CanAccessRegion[to]) continue;
-            if (CanAccess(connection.requires, itemsAccessible))
+            if (CanAccessAll(connection.requires))
             {
                 CanAccessRegion[to] = true;
-                BuildRegionLogic(to, itemsAccessible);
+                BuildRegionLogic(to);
             }
         }
     }
@@ -247,10 +247,10 @@ public class Logic
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public bool IsAccessible(TrackerLocationData data, Dictionary<Item, uint> itemsAccessible)
+    public bool IsAccessible(TrackerLocationData data)
     {
         // Location logic
-        if (!CanAccess(data.requires, itemsAccessible)) return false;
+        if (!CanAccessAll(data.requires)) return false;
 
         // Region logic
         if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
@@ -259,29 +259,23 @@ public class Logic
     }
 
     // AND condition
-    private bool CanAccess(List<TrackerRequirement> requirementsList, Dictionary<Item, uint> itemsAcquired)
+    private bool CanAccessAll(List<TrackerRequirement> requirementsList)
     {
-        foreach (TrackerRequirement regionRequirement in requirementsList)
-        {
-            // we don't have the item
-            if (!string.IsNullOrEmpty(regionRequirement.item) && !itemsAcquired.ContainsKey(ItemNames.itemNamesReversed[regionRequirement.item])) return false;
-            // we don't fulfill any of the AnyOf requirements
-            if (regionRequirement.anyOf != null) if (!AnyOfAccess(regionRequirement.anyOf, itemsAcquired)) return false;
-        }
-        return true;
+        return requirementsList.All(requirement => CanAccess(requirement));
     }
-    
     // OR condition
-    private bool AnyOfAccess(List<TrackerRequirement> reqs, Dictionary<Item, uint> itemsAcquired)
+    private bool AnyOfAccess(List<TrackerRequirement> requirementsList)
     {
-        foreach (var req in reqs)
-        {
-            // check sub-anyof and if it succeeds we've got a true condition
-            if (req.anyOf != null) if (AnyOfAccess(req.anyOf, itemsAcquired)) return true;
-            // if we have the item, return true
-            if (req.item != null && itemsAcquired.ContainsKey(ItemNames.itemNamesReversed[req.item])) return true;
-        }
-        return false;
+        return requirementsList.Any(requirement => CanAccess(requirement));
+    }
+
+    private bool CanAccess(TrackerRequirement requirement)
+    {
+        // we don't have the item
+        if (!string.IsNullOrEmpty(requirement.item) && !ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item])) return false;
+        // we don't fulfill any of the AnyOf requirements
+        if (requirement.anyOf != null) if (!AnyOfAccess(requirement.anyOf)) return false;
+        return true;
     }
 
     /// <summary>
@@ -315,7 +309,11 @@ public class Logic
         {
             foreach (TrackerConnectionData connection in data.fromConnections)
             {
-                var connectionLogicString = $"(Can Access: {connection.from})";
+                CanAccessRegion.TryGetValue(connection.from, out bool canAccessRegion);
+
+                string connectionLogicString = canAccessRegion ? "<color=green>" : "<color=maroon>" +
+                    $"(Can Access: {connection.from})</color>";
+
                 if (connection.requires != null && connection.requires.Count > 0)
                 {
                     connectionLogicString += " <color=lime>AND</color> ";
@@ -330,6 +328,7 @@ public class Logic
                         connectionLogicString = $"({connectionLogicString})";
                     }
                 }
+
                 connectionLogicStrings.Add(connectionLogicString);
             }
         }
@@ -350,7 +349,12 @@ public class Logic
         {
             if (!string.IsNullOrEmpty(req.item))
             {
-                reqStrings.Add($"(Item: {req.item})");
+                bool canAccess = CanAccess(req);
+
+                string reqStr = canAccess ? "<color=green>" : "<color=maroon>" +
+                    $"(Item: {req.item})</color>";
+
+                reqStrings.Add(reqStr);
             }
             else if (req.anyOf != null && req.anyOf.Count > 0)
             {
