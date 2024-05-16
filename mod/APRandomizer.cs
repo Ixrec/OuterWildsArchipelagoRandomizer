@@ -172,6 +172,7 @@ public class APRandomizer : ModBehaviour
             return result;
 
         SlotData = ((LoginSuccessful)result).SlotData;
+        OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
         if (SlotData.ContainsKey("apworld_version"))
         {
