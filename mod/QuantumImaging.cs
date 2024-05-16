@@ -58,12 +58,26 @@ internal class QuantumImaging
         foreach (var qo in relevantQuantumObjects)
         {
             var distance = Vector3.Distance(qo.transform.position, __instance.transform.position);
+
             if (
                 qo != null &&
                 qo.gameObject != null && // no idea why CompareTag() NREs inside Unity code without this
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
                 (distance < qo._maxSnapshotLockRange)
             ) {
+                var player = Locator.GetPlayerBody();
+                var isOccluded = Physics.Raycast(
+                    player.transform.position,
+                    camera.GetOWCamera().transform.forward,
+                    distance * 0.9f, // arbitrary constant to avoid the quantum object "occluding itself"
+                    OWLayerMask.physicalMask
+                );
+                if (isOccluded)
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"allowing ProbeCamera.TakeSnapshot because '{qo.name}' is occluded by something matching OWLayerMask.physicalMask");
+                    return true;
+                }
+
                 APRandomizer.OWMLModConsole.WriteLine($"ProbeCamera.TakeSnapshot blocked because '{qo.name}' is visible " +
                     $"and is {distance} distance units away (within the object's 'max snapshot lock range' of {qo._maxSnapshotLockRange})");
                 NotificationManager.SharedInstance.PostNotification(new NotificationData(
