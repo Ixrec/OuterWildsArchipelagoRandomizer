@@ -214,8 +214,9 @@ public class APChecklistMode : ShipLogMode
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
         }
         ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("<color=#8DCEFF>Full name: " + data.name + "</color>");
-        ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetLocationLogicString(data));
-        ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(Tracker.logic.GetRegionLogicString(data.region));
+
+        foreach (var text in Tracker.logic.GetLogicDisplayStrings(data))
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(text);
     }
 
     public List<(TrackerInfo, ShipLogDisplayItem)> PopulateChecklistState(TrackerCategory category, Dictionary<string, TrackerChecklistData> locationNameToChecklistData)

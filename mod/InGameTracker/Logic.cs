@@ -6,7 +6,6 @@ using System.IO;
 using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
-using Archipelago.MultiClient.Net;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -278,32 +277,66 @@ public class Logic
         return true;
     }
 
-    /// <summary>
-    /// Returns the logic of a location as a string
-    /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public string GetLocationLogicString(TrackerLocationData data)
+    public List<string> GetLogicDisplayStrings(TrackerLocationData data)
     {
-        string logicString = "<color=grey>Location Logic: ";
+        // When recursing "up" through the regions needed to reach a certain location, these are
+        // the base cases where we want to stop and not explain any further, because:
+        // 1) most (all?) cycles involve these regions, and it's nice to not have to deal with cycles
+        // 2) it's just too verbose to explain things that indirectly affect nearly every location
+        // like "Launch Codes get you to Space" or "Warp Codes get you to any other planet"
+        string[] regionLogicDenylist = [
+            "Menu",
+            "Space",
+            "Hourglass Twins",
+            "Timber Hearth Village", // leaving out "Timber Hearth" for now
+            "Brittle Hollow",
+            "Giant's Deep",
+            // Dark Bramble and Quantum Moon are not in this list, because:
+            // - their connections from Space have item requirements
+            // - they don't have warp platforms
+        ];
 
-        logicString += string.Join(
-            " <color=lime>AND</color> ",
+        HashSet<string> unexplainedRegions = new HashSet<string> { data.region };
+        Dictionary<string, string> regionNameToLogicDisplayString = new();
+
+        while (unexplainedRegions.Count > 0)
+        {
+            var regionName = unexplainedRegions.First();
+            unexplainedRegions.Remove(regionName);
+            if (regionLogicDenylist.Contains(regionName)) continue;
+            TrackerRegionData regionData = TrackerRegions[regionName];
+
+            regionNameToLogicDisplayString[regionName] = GetRegionLogicString(regionData);
+
+            foreach (TrackerConnectionData connection in regionData.fromConnections)
+            {
+                var otherRegionName = connection.from;
+                if (!regionNameToLogicDisplayString.ContainsKey(otherRegionName))
+                    unexplainedRegions.Add(otherRegionName);
+            }
+        }
+
+        var logicDisplayStrings = new List<string> { GetLocationLogicString(data) };
+        logicDisplayStrings.AddRange(regionNameToLogicDisplayString.Values);
+        return logicDisplayStrings;
+    }
+
+    private string GetLocationLogicString(TrackerLocationData data)
+    {
+        var locationLogic = new List<string> {
+            (CanAccessRegion[data.region] ? "<color=green>" : "<color=maroon>") + $"(Can Access: {data.region})</color>"
+        };
+        locationLogic.AddRange(
             GetLogicRequirementsStrings(data.requires)
         );
 
-        logicString += "</color>";
-        return logicString;
+        return "<color=grey>Location Logic: " +
+            string.Join(" <color=lime>AND</color> ", locationLogic) +
+            "</color>";
     }
 
-    /// <summary>
-    /// Returns the logic of a region as a string
-    /// </summary>
-    /// <param name="data"></param>
-    /// <returns></returns>
-    public string GetRegionLogicString(string region)
+    private string GetRegionLogicString(TrackerRegionData data)
     {
-        TrackerRegionData data = TrackerRegions[region];
         List<string> connectionLogicStrings = new();
         if (data.fromConnections != null && data.fromConnections.Count > 0)
         {
@@ -311,7 +344,7 @@ public class Logic
             {
                 CanAccessRegion.TryGetValue(connection.from, out bool canAccessRegion);
 
-                string connectionLogicString = canAccessRegion ? "<color=green>" : "<color=maroon>" +
+                string connectionLogicString = (canAccessRegion ? "<color=green>" : "<color=maroon>") +
                     $"(Can Access: {connection.from})</color>";
 
                 if (connection.requires != null && connection.requires.Count > 0)
@@ -333,7 +366,7 @@ public class Logic
             }
         }
 
-        string logicString = "<color=grey>Regional Logic: ";
+        string logicString = $"<color=grey>\"{data.name}\" Region Logic: ";
         logicString += string.Join(
             " <color=orange>OR</color> ",
             connectionLogicStrings
@@ -351,7 +384,7 @@ public class Logic
             {
                 bool canAccess = CanAccess(req);
 
-                string reqStr = canAccess ? "<color=green>" : "<color=maroon>" +
+                string reqStr = (canAccess ? "<color=green>" : "<color=maroon>") +
                     $"(Item: {req.item})</color>";
 
                 reqStrings.Add(reqStr);
