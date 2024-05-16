@@ -106,25 +106,16 @@ public static class Coordinates
 
         if (logManager != null)
         {
-            // Sadly to edit the ship log reliably we have to edit two different data structures,
-            // one of which is generated from the other during wakeup. Otherwise we end up with
-            // issues like the edits applying only on wakeup or only after wakeup.
-
             ShipLogEntry ptmGeneratedEntry = null;
             var generatedEntryList = logManager.GetEntryList();
             if (generatedEntryList != null)
                 ptmGeneratedEntry = generatedEntryList.Find(entry => entry.GetID() == "OPC_SUNKEN_MODULE");
-
-            var libraryEntryData = logManager._shipLogLibrary.entryData;
-            var ptmLibraryIndex = libraryEntryData.IndexOf(entry => entry.id == "OPC_SUNKEN_MODULE");
-            var ptmLibraryEntry = libraryEntryData[ptmLibraryIndex];
 
             if (_hasCoordinates)
             {
                 // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
                 var s = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
 
-                ptmLibraryEntry.altSprite = s;
                 ptmGeneratedEntry?.SetAltSprite(s);
             }
             else
@@ -138,12 +129,8 @@ public static class Coordinates
                 tex.Apply();
 
                 var s = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
-                ptmLibraryEntry.altSprite = s;
                 ptmGeneratedEntry?.SetAltSprite(s);
             }
-
-            // Because libraryEntryData is an array, not a list, we have to assign our edited object into the array afterward
-            libraryEntryData[ptmLibraryIndex] = ptmLibraryEntry;
         }
     }
 
