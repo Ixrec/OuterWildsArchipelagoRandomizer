@@ -24,7 +24,7 @@ public static class Coordinates
         }
     }
 
-    private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = CoordinateDrawing.vanillaEOTUCoordinates;
+    private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = null;
 
     public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
     {
@@ -53,6 +53,8 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
     public static void OrbitalCannonHologramProjector_OnSlotActivated_Prefix(OrbitalCannonHologramProjector __instance, NomaiInterfaceSlot slot)
     {
+        if (correctCoordinates == null) return;
+
         var activeIndex = __instance.GetSlotIndex(slot);
         var hologram = __instance._holograms[activeIndex];
         if (hologram.name == "Hologram_EyeCoordinates")
@@ -102,6 +104,8 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
     public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
     {
+        if (correctCoordinates == null) return;
+
         APRandomizer.OWMLModConsole.WriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
 
         if (logManager != null)
@@ -183,7 +187,7 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.SetEyeCoordinatesVisibility))]
     public static void KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix(KeyInfoPromptController __instance, bool visible)
     {
-        if (visible && promptCoordsSprite == null)
+        if (visible && promptCoordsSprite == null && correctCoordinates != null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix drawing and setting prompt coordinates sprite");
             promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
@@ -200,6 +204,8 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
     public static bool NomaiCoordinateInterface_CheckEyeCoordinates_Prefix(NomaiCoordinateInterface __instance, ref bool __result)
     {
+        if (correctCoordinates == null) return true; // let vanilla implementation handle it
+
         CoordinateDrawing.CoordinatePoint NodeToCoordPoint(int node)
         {
             switch (node)
