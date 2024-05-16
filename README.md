@@ -154,10 +154,11 @@ Outer Wilds mods that are known to work without issue:
 - Suit Log
 - Unity Explorer
 - Light Bramble (thanks Rever for testing this), although it makes the "Silent Running Mode" item pointless
+- Time Saver (thanks Jade for testing this)
 
-Outer Wilds mods that have been tried, but are known to have issues (this information may be outdated, as all of the involved mods have changed since we wrote this):
+Outer Wilds mods that have been tried, but are known to have issues (this information might not be kept up to date, as I don't/can't test these myself):
 
-- NomaiVR (thanks Snout for testing this): You have to play a little bit with just the AP mod until you get the "Resume Random Expedition" option, then restart with the VR mod, and also turn off gesture tutorials, but then it works.
+- NomaiVR (thanks Snout for testing this): Mostly works. Trying to grab the Translator or Signalscope *before donning the suit* will softlock, but this is fine once you're in the suit. The in-game console does not work reliably, so using the AP Text Client instead is recommended.
 - Quantum Space Buddies: Awkward but can *probably* be made to work. I believe you would have to use one of the "... Random Expedition" main menu buttons to connect to your AP server, immediately quit back to the main menu, then use either of QSB's main menu buttons to load the game with multiplayer. Please tell us if you can test this properly.
 
 Story/content mods will (at best) work in a technical sense, but it wouldn't make sense to enable one of those alongside this randomizer, because this randomizer only knows how to randomize the vanilla game's content (for now).
