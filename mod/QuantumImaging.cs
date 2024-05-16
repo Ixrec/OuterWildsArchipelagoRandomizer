@@ -25,6 +25,7 @@ internal class QuantumImaging
         // - The Quantum Moon, which can't use sockets because it orbits around each planet
 
         relevantQuantumObjects.AddRange(GameObject.FindObjectsOfType<SocketedQuantumObject>());
+        relevantQuantumObjects.RemoveAll(qo => qo.CompareTag("Ship")); // why is our spaceship a quantum object? I have no idea
         relevantQuantumObjects.Add(Locator.GetQuantumMoon());
     }
 
@@ -60,7 +61,6 @@ internal class QuantumImaging
             if (
                 qo != null &&
                 qo.gameObject != null && // no idea why CompareTag() NREs inside Unity code without this
-                !qo.CompareTag("Ship") &&
                 qo.CheckVisibilityFromProbe(__instance.GetOWCamera()) &&
                 (distance < qo._maxSnapshotLockRange)
             ) {
