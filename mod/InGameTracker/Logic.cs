@@ -296,7 +296,7 @@ public class Logic
             // - they don't have warp platforms
         ];
 
-        HashSet<string> unexplainedRegions = new HashSet<string> { data.region };
+        List<string> unexplainedRegions = new List<string> { data.region };
         Dictionary<string, string> regionNameToLogicDisplayString = new();
 
         while (unexplainedRegions.Count > 0)
