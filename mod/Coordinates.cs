@@ -134,15 +134,37 @@ public static class Coordinates
         }
     }
 
+    private static ScreenPrompt coordinatesNotAvailablePrompt = null;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.OnEntry))]
+    public static void EyeCoordinatePromptTrigger_OnEntry_Postfix(EyeCoordinatePromptTrigger __instance)
+    {
+        if (coordinatesNotAvailablePrompt == null)
+        {
+            coordinatesNotAvailablePrompt = new ScreenPrompt("Coordinates Not Available", 0);
+            Locator.GetPromptManager().AddScreenPrompt(coordinatesNotAvailablePrompt, PromptPosition.LowerLeft, false);
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
     public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
     {
+        coordinatesNotAvailablePrompt.SetVisibility(
+            !_hasCoordinates &&
+            OWInput.IsInputMode(InputMode.Character)
+        );
         __instance._promptController.SetEyeCoordinatesVisibility(
             _hasCoordinates &&
             OWInput.IsInputMode(InputMode.Character) // the vanilla implementation doesn't have this check, but I think it should,
                                                      // and it's more annoying for this mod because of the in-game pause console
         );
         return false; // skip vanilla implementation
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.OnExit))]
+    public static void EyeCoordinatePromptTrigger_OnExit_Postfix(EyeCoordinatePromptTrigger __instance)
+    {
+        coordinatesNotAvailablePrompt.SetVisibility(false);
     }
 
     // wait to draw and set the prompt Sprite until the first time the game wants to display it
