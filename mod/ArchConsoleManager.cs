@@ -336,6 +336,33 @@ public class ArchConsoleManager : MonoBehaviour
             consoleText.text = "";
             return;
         }
+        if (text.StartsWith("!dcheck "))
+        {
+            var token = text.Substring("!dcheck ".Length);
+            uint count = uint.Parse(token);
+            APRandomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'.");
+            Task.Run(async () =>
+            {
+                try
+                {
+                    while (count > 0)
+                    {
+                        var cl = APRandomizer.Tracker.logic.GetLocationChecklist(InGameTracker.TrackerCategory.All);
+                        var uncheckedLocationName = cl.First(kv => !kv.Value.hasBeenChecked).Key;
+                        var uncheckedLocation = LocationNames.NameToLocation(uncheckedLocationName);
+                        LocationTriggers.CheckLocation(uncheckedLocation);
+
+                        count--;
+                        await Task.Delay(1000);
+                    }
+                }
+                catch (Exception e)
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"dcheck exception: {e.Message}\n{e.StackTrace}");
+                }
+            });
+            return;
+        }
 
         if (text == "") return;
 
