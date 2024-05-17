@@ -1,4 +1,46 @@
 {
   "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
-  "enabled": true
+  "enabled": true,
+  "settings": {
+    "AP Console: Mute": false,
+    "AP Console: About Me Filter": false,
+
+    "Separator - Death Link": {
+      "type": "separator"
+    },
+
+    "Death Link Override": {
+      "type": "selector",
+      "value": "No Override",
+      "options": [
+        "No Override",
+        "Off",
+        "Default",
+        "All Deaths"
+      ],
+      "tooltip": "'No Override' means use the death_link option from the .yaml used to generate the multiworld. Any other value will override and ignore the .yaml option."
+    },
+
+    "Separator - Suit Upgrades": {
+      "type": "separator"
+    },
+
+    "Fuel Capacity: Initial % of Vanilla": "50",
+    "Fuel Capacity: % Increase Per Upgrade": "50",
+
+    "Oxygen Capacity: Initial % of Vanilla": "50",
+    "Oxygen Capacity: % Increase Per Upgrade": "50",
+
+    "Boost Duration: Initial % of Vanilla": "50",
+    "Boost Duration: % Increase Per Upgrade": "50",
+
+    "Separator - Crash Testing": {
+      "type": "separator"
+    },
+
+    "[DEBUG] Disable In-Game Console": false,
+    "[DEBUG] Don't Send Locations In-Game": false,
+    "[DEBUG] Don't Receive Items In-Game": false,
+    "[DEBUG] Don't Write To Save File In-Game": false
+  }
 }
