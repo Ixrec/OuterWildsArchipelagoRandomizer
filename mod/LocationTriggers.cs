@@ -213,7 +213,7 @@ internal class LocationTriggers
 
         if (PlayerData._currentGameSave != null)
             if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
-                PlayerData.SetPersistentCondition(condition, true);
+                PlayerData.SetPersistentCondition(condition, (count > 0)); // for now, only unique items have conditions
     }
 
 
