@@ -61,8 +61,8 @@ public class ArchConsoleManager : MonoBehaviour
         ConsoleMuted = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Mute");
         FilterPlayer = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: About Me Filter");
 
-        GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
-        GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
+        GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole?.SetActive(false));
+        GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole?.SetActive(true));
 
         APRandomizer.OnSessionOpened += (s) =>
         {
@@ -123,6 +123,8 @@ public class ArchConsoleManager : MonoBehaviour
     // Creates the two console displays
     private void CreateConsoles(OWScene scene, OWScene loadScene)
     {
+        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         if (loadScene != OWScene.SolarSystem && loadScene != OWScene.EyeOfTheUniverse) return;
         // Create objects and establish references
         gameplayConsoleEntries = new Queue<string>();
@@ -181,9 +183,9 @@ public class ArchConsoleManager : MonoBehaviour
     // Shows the appropriate consoles when the game is paused or not
     private void ShowConsoles(bool showPauseConsole)
     {
-        pauseConsoleVisuals.SetActive(showPauseConsole);
-        gameplayConsole.SetActive(!showPauseConsole);
-        if (showPauseConsole && pauseConsoleNeedsUpdate)
+        pauseConsoleVisuals?.SetActive(showPauseConsole);
+        gameplayConsole?.SetActive(!showPauseConsole);
+        if (showPauseConsole && pauseConsoleNeedsUpdate && pauseConsoleText != null)
         {
             pauseConsoleText.text = pauseConsoleContent;
             pauseConsoleNeedsUpdate = false;
@@ -208,6 +210,8 @@ public class ArchConsoleManager : MonoBehaviour
     /// <param name="skipHistory">Whether to not save this text between loops</param>
     public void AddText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
     {
+        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         if (!skipHistory) consoleHistory.Add(text);
 
         // If the consoles haven't been created yet, then adding to history is all we want to do for now.
@@ -263,7 +267,7 @@ public class ArchConsoleManager : MonoBehaviour
     /// <summary>
     /// Updates the gameplay console
     /// </summary>
-    public void UpdateText()
+    private void UpdateText()
     {
         gameplayConsoleText.text = string.Empty;
         foreach (string entry in gameplayConsoleEntries)
@@ -280,22 +284,15 @@ public class ArchConsoleManager : MonoBehaviour
     /// <param name="skipGameplayConsole">Whether to only show text on the pause console</param>
     /// <param name="soundToPlay">If specified, plays the associated sound. See https://nh.outerwildsmods.com/reference/audio-enum/ for a list of sounds. Sounds do not play while paused.</param>
     /// <param name="skipHistory">Whether to not save this text between loops</param>
-    public static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
+    private static void AddConsoleText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
     {
         APRandomizer.InGameAPConsole.AddText(text, skipGameplayConsole, soundToPlay, skipHistory);
     }
 
-    /// <summary>
-    /// Updates the gameplay console.
-    /// Identical to APRandomizer.InGameAPConsole.UpdateText(), but implemented for convenience.
-    /// </summary>
-    public static void UpdateConsoleText()
-    {
-        APRandomizer.InGameAPConsole.UpdateText();
-    }
-
     public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
     {
+        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         var colorizedParts = message.Parts.Select(messagePart =>
         {
             if (messagePart.IsBackgroundColor) return messagePart.Text;
@@ -332,7 +329,7 @@ public class ArchConsoleManager : MonoBehaviour
     /// Runs whenever the console text is submitted.
     /// </summary>
     /// <param name="text"></param>
-    public void OnConsoleEntry(string text)
+    private void OnConsoleEntry(string text)
     {
         if (text.StartsWith("!debug "))
         {

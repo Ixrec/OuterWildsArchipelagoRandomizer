@@ -59,11 +59,18 @@ public class APRandomizer : ModBehaviour
     /// </summary>
     public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
+    public static bool DisableConsole = false;
+    public static bool DisableInGameLocationSending = false;
+    private static bool DisableInGameItemReceiving = false;
+    private static bool DisableInGameSaveFileWrites = false;
+
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
     private static Task pendingSaveFileWrite = null;
     private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
     public void WriteToSaveFile()
     {
+        if (DisableInGameSaveFileWrites && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         if (pendingSaveFileWrite != null) return;
 
         if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
@@ -100,7 +107,14 @@ public class APRandomizer : ModBehaviour
 
             OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP APRandomizer save file.");
 
-            SaveFileName = $"SaveData/{profileName}.json";
+            var fileName = $"SaveData/{profileName}.json";
+            if (SaveFileName == fileName && DisableInGameSaveFileWrites)
+            {
+                OWMLModConsole.WriteLine($"skipping reload of {profileName} save file because the '[DEBUG] Don't Write To Save File In-Game' is in effect, and we don't want to throw away the pending writes");
+                return;
+            }
+
+            SaveFileName = fileName;
             SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
             if (SaveData == null)
             {
@@ -225,6 +239,8 @@ public class APRandomizer : ModBehaviour
 
     private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
     {
+        if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         bool saveDataChanged = false;
 
         var receivedItems = new HashSet<long>();
@@ -532,6 +548,11 @@ public class APRandomizer : ModBehaviour
     public override void Configure(IModConfig config)
     {
         // Configure() is called early and often, including before we create the Console
+        DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
+        DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");
+        DisableInGameItemReceiving = config.GetSettingsValue<bool>("[DEBUG] Don't Receive Items In-Game");
+        DisableInGameSaveFileWrites = config.GetSettingsValue<bool>("[DEBUG] Don't Write To Save File In-Game");
+
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();
         SuitResources.ModSettingsChanged(config);
