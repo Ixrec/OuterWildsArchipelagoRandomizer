@@ -528,4 +528,10 @@ public class APRandomizer : ModBehaviour
             };
         }
     }
+
+    public override void Configure(IModConfig config)
+    {
+        // Configure() is called early and often, including before we create the Console
+        InGameAPConsole?.ModSettingsChanged(config);
+    }
 }

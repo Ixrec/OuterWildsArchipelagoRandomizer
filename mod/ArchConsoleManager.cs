@@ -1,6 +1,7 @@
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
+using OWML.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +58,9 @@ public class ArchConsoleManager : MonoBehaviour
 
     private void Start()
     {
+        ConsoleMuted = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Mute");
+        FilterPlayer = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: About Me Filter");
+
         GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole.SetActive(false));
         GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole.SetActive(true));
 
@@ -387,26 +391,57 @@ public class ArchConsoleManager : MonoBehaviour
     private void OnClickMuteButton()
     {
         ConsoleMuted = !ConsoleMuted;
-        muteButton.transform.Find("MuteImageOff").gameObject.SetActive(!ConsoleMuted);
-        muteButton.transform.Find("MuteImageOn").gameObject.SetActive(ConsoleMuted);
+        UpdateMuteButton();
+        APRandomizer.Instance.ModHelper.Config.SetSettingsValue("AP Console: Mute", ConsoleMuted);
+
         AddText((
             ConsoleMuted ?
             $"<color={consoleInfoColor}>Notification sounds muted.</color>" :
             $"<color={consoleInfoColor}>Notification sounds will now play.</color>"), true, AudioType.None, true);
     }
 
+    private void UpdateMuteButton()
+    {
+        muteButton.transform.Find("MuteImageOff").gameObject.SetActive(!ConsoleMuted);
+        muteButton.transform.Find("MuteImageOn").gameObject.SetActive(ConsoleMuted);
+    }
+
     private void OnClickFilterButton()
     {
         FilterPlayer = !FilterPlayer;
-        filterButton.transform.Find("FilterAll").gameObject.SetActive(!FilterPlayer);
-        filterButton.transform.Find("FilterPlayer").gameObject.SetActive(FilterPlayer);
+        UpdateFilterButton();
+        APRandomizer.Instance.ModHelper.Config.SetSettingsValue("AP Console: About Me Filter", FilterPlayer);
+
         AddText((
             FilterPlayer ?
             $"<color={consoleInfoColor}>You will now only receive notifications for items you receive or send during gameplay. However, all messages will still be logged to the pause console.</color>" :
             $"<color={consoleInfoColor}>You will now receive all notifications during gameplay.</color>"), true, AudioType.None, true);
     }
 
+    private void UpdateFilterButton()
+    {
+        filterButton.transform.Find("FilterAll").gameObject.SetActive(!FilterPlayer);
+        filterButton.transform.Find("FilterPlayer").gameObject.SetActive(FilterPlayer);
+    }
+
     #endregion
+
+    public void ModSettingsChanged(IModConfig config)
+    {
+        bool newMuteValue = config.GetSettingsValue<bool>("AP Console: Mute");
+        if (newMuteValue != ConsoleMuted) {
+            ConsoleMuted = newMuteValue;
+            if (muteButton != null)
+                UpdateMuteButton();
+        }
+
+        bool newFilterValue = config.GetSettingsValue<bool>("AP Console: About Me Filter");
+        if (newFilterValue != FilterPlayer) {
+            FilterPlayer = newFilterValue;
+            if (filterButton != null)
+                UpdateFilterButton();
+        }
+    }
 
     private string LoopNumber()
     {
