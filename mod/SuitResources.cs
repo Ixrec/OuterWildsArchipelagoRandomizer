@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OWML.Common;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -75,9 +76,53 @@ internal class SuitResources
     private static JetpackThrusterModel jetpackThrusterModel = null;
 
     // values copied from PlayerResources and JetpackThrusterModel
-    private static float vanillaMaxFuel = 100f;
-    private static float vanillaMaxOxygen = 450f; // measured in in-universe seconds
+    private static float vanillaFuelCapacity = 100f;
+    private static float vanillaOxygenCapacity = 450f; // measured in in-universe seconds
     private static float vanillaBoostSeconds = 1f;
+
+    // these are percentages of vanilla values
+    private static int initialFuelCapacity = 50;
+    private static int fuelCapacityPerUpgrade = 50;
+    private static int initialOxygenCapacity = 50;
+    private static int oxygenCapacityPerUpgrade = 50;
+    private static int initialBoostDuration = 50;
+    private static int boostDurationPerUpgrade = 50;
+
+    public static void ModSettingsChanged(IModConfig config)
+    {
+        var initialFuelSettingString = config.GetSettingsValue<string>("Fuel Capacity: Initial % of Vanilla");
+        int.TryParse(initialFuelSettingString, out var initialFuelSettingNumber);
+        var fuelUpgradeSettingString = config.GetSettingsValue<string>("Fuel Capacity: % Increase Per Upgrade");
+        int.TryParse(fuelUpgradeSettingString, out var fuelUpgradeSettingNumber);
+        if (initialFuelCapacity != initialFuelSettingNumber || fuelCapacityPerUpgrade != fuelUpgradeSettingNumber)
+        {
+            initialFuelCapacity = initialFuelSettingNumber;
+            fuelCapacityPerUpgrade = fuelUpgradeSettingNumber;
+            ApplyMaxFuel();
+        }
+
+        var initialOxygenSettingString = config.GetSettingsValue<string>("Oxygen Capacity: Initial % of Vanilla");
+        int.TryParse(initialOxygenSettingString, out var initialOxygenSettingNumber);
+        var oxygenUpgradeSettingString = config.GetSettingsValue<string>("Oxygen Capacity: % Increase Per Upgrade");
+        int.TryParse(oxygenUpgradeSettingString, out var oxygenUpgradeSettingNumber);
+        if (initialOxygenCapacity != initialOxygenSettingNumber || oxygenCapacityPerUpgrade != oxygenUpgradeSettingNumber)
+        {
+            initialOxygenCapacity = initialOxygenSettingNumber;
+            oxygenCapacityPerUpgrade = oxygenUpgradeSettingNumber;
+            ApplyMaxOxygen();
+        }
+
+        var initialBoostSettingString = config.GetSettingsValue<string>("Boost Duration: Initial % of Vanilla");
+        int.TryParse(initialBoostSettingString, out var initialBoostSettingNumber);
+        var boostUpgradeSettingString = config.GetSettingsValue<string>("Boost Duration: % Increase Per Upgrade");
+        int.TryParse(boostUpgradeSettingString, out var boostUpgradeSettingNumber);
+        if (initialBoostDuration != initialBoostSettingNumber || boostDurationPerUpgrade != boostUpgradeSettingNumber)
+        {
+            initialBoostDuration = initialBoostSettingNumber;
+            boostDurationPerUpgrade = boostUpgradeSettingNumber;
+            ApplyMaxBoost();
+        }
+    }
 
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerResources), nameof(PlayerResources.Awake))]
     public static void PlayerResources_Awake(PlayerResources __instance)
@@ -169,8 +214,8 @@ internal class SuitResources
     private static void ApplyMaxOxygen()
     {
         // in this file "multiplier" means: 1 = 100% of the vanilla value, 0.5 = 50%, 2 = 200%, etc
-        double multiplier = 0.5 * (1 + _oxygenCapacityUpgrades);
-        PlayerResources._maxOxygen = (float)(vanillaMaxOxygen * multiplier);
+        double multiplier = (initialOxygenCapacity/100f) + ((oxygenCapacityPerUpgrade/100f) * _oxygenCapacityUpgrades);
+        PlayerResources._maxOxygen = (float)(vanillaOxygenCapacity * multiplier);
 
         if (oxygenPercent != null)
             oxygenPercent.text = multiplier.ToString("P1"); // percentage with 1dp, e.g. turns 1 into "100.0%"
@@ -200,15 +245,15 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateOxygen))]
     public static void HUDCanvas_UpdateOxygen_Postfix(HUDCanvas __instance)
     {
-        double maxOxygenMultiplier = 0.5 * (1 + _oxygenCapacityUpgrades);
+        double oxygenCapacityMultiplier = (initialOxygenCapacity/100f) + ((oxygenCapacityPerUpgrade/100f) * _oxygenCapacityUpgrades);
 
-        oxygenPercent.text = (__instance._oxygenFraction * maxOxygenMultiplier).ToString("P1");
+        oxygenPercent.text = (__instance._oxygenFraction * oxygenCapacityMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxFuel()
     {
-        double multiplier = 0.5 * (1 + _fuelCapacityUpgrades);
-        PlayerResources._maxFuel = (float)(vanillaMaxFuel * multiplier);
+        double multiplier = (initialFuelCapacity/100f) + ((fuelCapacityPerUpgrade/100f) * _fuelCapacityUpgrades);
+        PlayerResources._maxFuel = (float)(vanillaFuelCapacity * multiplier);
 
         if (fuelPercent != null)
             fuelPercent.text = multiplier.ToString("P1"); // percentage with 1dp, e.g. turns 1 into "100.0%"
@@ -228,14 +273,14 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateFuel))]
     public static void HUDCanvas_UpdateFuel_Postfix(HUDCanvas __instance)
     {
-        double maxFuelMultiplier = 0.5 * (1 + _fuelCapacityUpgrades);
+        double fuelCapacityMultiplier = (initialFuelCapacity/100f) + ((fuelCapacityPerUpgrade/100f) * _fuelCapacityUpgrades);
 
-        fuelPercent.text = (__instance._fuelFraction * maxFuelMultiplier).ToString("P1");
+        fuelPercent.text = (__instance._fuelFraction * fuelCapacityMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxBoost()
     {
-        double multiplier = 0.5 * (1 + _boostDurationUpgrades);
+        double multiplier = (initialBoostDuration/100f) + ((boostDurationPerUpgrade/100f) * _boostDurationUpgrades);
         if (jetpackThrusterModel != null)
             jetpackThrusterModel._boostSeconds = (float)(vanillaBoostSeconds * multiplier);
 
@@ -246,9 +291,9 @@ internal class SuitResources
     [HarmonyPostfix, HarmonyPatch(typeof(HUDCanvas), nameof(HUDCanvas.UpdateBoost))]
     public static void HUDCanvas_UpdateBoost_Postfix(HUDCanvas __instance)
     {
-        double boostSecondsMultiplier = 0.5 * (1 + _boostDurationUpgrades);
+        double boostDurationMultiplier = (initialBoostDuration/100f) + ((boostDurationPerUpgrade/100f) * _boostDurationUpgrades);
 
-        __instance._boostValueDisplay.text = (__instance._chargeFraction * boostSecondsMultiplier).ToString("P1");
+        __instance._boostValueDisplay.text = (__instance._chargeFraction * boostDurationMultiplier).ToString("P1");
     }
 
     // may be useful for testing even lower, logic-relevant oxygen/fuel/boost limits

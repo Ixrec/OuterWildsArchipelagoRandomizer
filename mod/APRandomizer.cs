@@ -534,5 +534,6 @@ public class APRandomizer : ModBehaviour
         // Configure() is called early and often, including before we create the Console
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();
+        SuitResources.ModSettingsChanged(config);
     }
 }

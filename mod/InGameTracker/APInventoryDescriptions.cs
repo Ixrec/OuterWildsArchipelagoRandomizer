@@ -175,15 +175,18 @@ public class APInventoryDescriptions
                     break;
                 case Item.OxygenCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
-                    infos.Add("Your tank started with half of that, at 3.5 minutes. Each upgrade adds another 3.5 minutes.");
+                    infos.Add("By default, your tank starts with 50% of that, at 3.5 minutes. Each upgrade adds another 50% or 3.5 minutes.");
+                    infos.Add("These values can be changed in the mod settings (warning: lower values may make the game unbeatable).");
                     break;
                 case Item.FuelCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue jetpack fuel tank holds enough fuel to fire thrusters for 100 seconds.");
-                    infos.Add("Your tank started with half of that, at 50 seconds. Each upgrade adds another 50 seconds.");
+                    infos.Add("By default, your tank starts with 50% of that, at 50 seconds. Each upgrade adds another 50% or 50 seconds.");
+                    infos.Add("These values can be changed in the mod settings (warning: lower values may make the game unbeatable).");
                     break;
                 case Item.BoostDurationUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue jetpack can boost for 1 second before recharging.");
-                    infos.Add("Your jetpack started with half a second of boost. Each upgrade adds another half of a second.");
+                    infos.Add("By default, your jetpack starts with 50% of that, i.e. half a second of boost. Each upgrade adds another 50% or half a second.");
+                    infos.Add("These values can be changed in the mod settings (warning: lower values may make the game unbeatable).");
                     break;
                 case Item.OxygenRefill:
                     infos.Add("Fully refills your suit's oxygen tank.");
