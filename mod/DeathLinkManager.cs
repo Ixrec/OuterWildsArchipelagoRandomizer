@@ -118,9 +118,9 @@ internal class DeathLinkManager
         } },
         { DeathType.Digestion, new List<string>
         {
-            " met the fish.",
             " did some hands on biology.",
-            " touched da fishy."
+            " touched da fishy.",
+            " was eaten by Ernesto."
         } },
         { DeathType.BigBang, new List<string>
         {
