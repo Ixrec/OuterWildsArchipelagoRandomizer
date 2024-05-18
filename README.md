@@ -10,6 +10,8 @@ Public Beta (as of May 2024).
 
 Many people have played this, usually with no issues. Nearly every bug that's been reported has either been fixed, or was found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
+Unfortunately there is a well-known "end-of-loop crash", but it affects only some players, is inconsistent for everyone it does affect, and the evidence we do have implies it's not caused by this mod, so there's currently no solution for it.
+
 ## Contact
 
 For questions, feedback, or discussion related to the randomizer, please visit the "Outer Wilds" thread in [the Archipelago Discord server](https://discord.gg/8Z65BR2), or message me (`ixrec`) directly on Discord.
@@ -107,9 +109,9 @@ Either way, the Mod Manager should immediately display the version number of the
 
 0.1.0 was the minimal first release to prove whether this is any fun: Just enough progression items to make a viable Archipelago-style randomizer, and only 50-something base game locations.
 
-The 0.1.x releases fleshed out/will flesh out the Archipelago items and locations: useful, filler and trap items, more base game locations, and a logsanity option for even more locations. They also included an in-game tracker for the ship log with in-game descriptions of every item and location (this is much more important for OW than most randomizers since the vanilla game mostly doesn't have "items").
+The 0.1.x releases fleshed out the Archipelago items and locations: useful, filler and trap items, more base game locations, and a logsanity option for even more locations. They also included an in-game tracker for the ship log with in-game descriptions of every item and location (this is much more important for OW than most randomizers since the vanilla game mostly doesn't have "items").
 
-### 0.2.1+ Patch Goals
+### 0.2.0+ Patch Goals
 
 The 0.2.x releases will focus on other kinds of randomization besides items and locations.
 
@@ -136,8 +138,8 @@ The 0.3.x releases will focus on additional content beyond the base game.
 
 These are feature ideas I won't do myself, but if someone else would like these enough that they'd be willing to do the non-programming work for them (playtesting, drafting logic, listing/naming/describing locations, etc), and it turns out they are actually fun to play, I'll happily do the (small) programming part to finish them off.
 
-- Further reducing your starting oxygen, fuel, boost, etc so some of their upgrades become progression items
-- "rumorsanity" setting (adds all the ship log "rumors", separately from the "facts")
+- Even lower starting oxygen, fuel, boost, etc so some of their upgrades become progression items, i.e. affect logic. The mod has settings to adjust these values, so you can experiment with this.
+- "rumorsanity" setting to add all the ship log "rumors", separately from the "normal facts". In the Game Logs window, this mod produces a message like `ShipLogManager.RevealFact TH_VILLAGE_X1` every time a ship log fact is revealed, including "rumor facts".
 - "textsanity" setting (every note, casette tape, Nomai text line, dialogue line, etc?)
 - More base game progression items: Gravity crystals? The ability to move Nomai orbs?
 
