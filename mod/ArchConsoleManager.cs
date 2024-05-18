@@ -165,6 +165,10 @@ public class ArchConsoleManager : MonoBehaviour
             AddText(entry);
         WakeupConsoleMessages.Clear();
 
+        string dlMessage = DeathLinkManager.GetDeathLinkWakeupConsoleMessage();
+        if (dlMessage != null)
+            AddText(dlMessage);
+
         UpdateProgress();
 
         if (loadScene == OWScene.SolarSystem)

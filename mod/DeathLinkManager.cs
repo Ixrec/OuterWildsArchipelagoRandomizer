@@ -15,7 +15,10 @@ internal class DeathLinkManager
         AllDeaths = 2,
     }
 
-    private static DeathLinkSetting setting = DeathLinkSetting.Off;
+    private static DeathLinkSetting slotDataSetting = DeathLinkSetting.Off;
+    private static DeathLinkSetting? overrideSetting = null; // a null here represents 'No Override' / use slotDataSetting
+
+    private static DeathLinkSetting effectiveSetting = DeathLinkSetting.Off;
 
     private static DeathLinkService service = null;
 
@@ -26,19 +29,62 @@ internal class DeathLinkManager
     // so we want to "buffer deaths" until whatever paused in-game is done.
     private static bool dieAfterUnpause = false;
 
-    public static void Enable(long value)
+    public static void ApplyOverrideSetting()
+    {
+        switch (APRandomizer.Instance.ModHelper.Config.GetSettingsValue<string>("Death Link Override"))
+        {
+            case "No Override": overrideSetting = null; effectiveSetting = slotDataSetting; break;
+            case "Off": overrideSetting = DeathLinkSetting.Off; effectiveSetting = DeathLinkSetting.Off; break;
+            case "Default": overrideSetting = DeathLinkSetting.Default; effectiveSetting = DeathLinkSetting.Default; break;
+            case "All Deaths": overrideSetting = DeathLinkSetting.AllDeaths; effectiveSetting = DeathLinkSetting.AllDeaths; break;
+        }
+
+        EnableDeathLinkIfNeeded();
+    }
+
+    public static void ApplySlotDataSetting(long value)
     {
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
-            setting = (DeathLinkSetting)value;
+        {
+            slotDataSetting = (DeathLinkSetting)value;
+            if (overrideSetting == null)
+                effectiveSetting = slotDataSetting;
+        }
         else
             APRandomizer.OWMLModConsole.WriteLine($"{value} is not a valid death link setting", OWML.Common.MessageType.Error);
 
-        if (setting != DeathLinkSetting.Off && service == null)
+        EnableDeathLinkIfNeeded();
+    }
+
+    private static void EnableDeathLinkIfNeeded()
+    {
+        if (effectiveSetting != DeathLinkSetting.Off && service == null)
+        {
+            if (APRandomizer.APSession == null)
+                APRandomizer.OnSessionOpened += (_) => EnableDeathLinkImplHelper();
+            else
+                EnableDeathLinkImplHelper();
+        }
+    }
+
+    private static void EnableDeathLinkImplHelper()
+    {
+        if (service == null)
         {
             service = APRandomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
             service.OnDeathLinkReceived += OnDeathLinkReceived;
         }
+    }
+
+    public static string GetDeathLinkWakeupConsoleMessage()
+    {
+        if (overrideSetting != null)
+            return $"Death Link Override is set to: {overrideSetting}. (Ignoring .yaml option value for this multiworld: {slotDataSetting})";
+        else if (slotDataSetting != DeathLinkSetting.Off)
+            return $"Death Link option for this multiworld: {slotDataSetting}";
+
+        return null;
     }
 
     // useful for testing
@@ -189,7 +235,7 @@ internal class DeathLinkManager
             return;
         }
 
-        if (setting == DeathLinkSetting.Off)
+        if (effectiveSetting == DeathLinkSetting.Off)
         {
             APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is off");
             return;
@@ -201,7 +247,7 @@ internal class DeathLinkManager
             return;
         }
 
-        if (setting == DeathLinkSetting.Default) {
+        if (effectiveSetting == DeathLinkSetting.Default) {
             if (deathType == DeathType.Meditation || deathType == DeathType.Supernova || deathType == DeathType.TimeLoop || deathType == DeathType.BigBang)
             {
                 APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is only set to Default");
@@ -212,7 +258,7 @@ internal class DeathLinkManager
         APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
         var messagesForDeathType = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
         var deathLinkMessage = APRandomizer.SaveData.apConnectionData.slotName + messagesForDeathType[prng.Next(0, messagesForDeathType.Count)];
-        APRandomizer.InGameAPConsole.AddText($"Because death link is set to {setting}, sending this {deathType} death to other players with the message: \"{deathLinkMessage}\"");
+        APRandomizer.InGameAPConsole.AddText($"Because death link is set to {effectiveSetting}, sending this {deathType} death to other players with the message: \"{deathLinkMessage}\"");
         service.SendDeathLink(new DeathLink(APRandomizer.SaveData.apConnectionData.slotName, deathLinkMessage));
     }
 }

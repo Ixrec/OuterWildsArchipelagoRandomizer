@@ -185,7 +185,7 @@ public class APRandomizer : ModBehaviour
         }
 
         if (SlotData.ContainsKey("death_link"))
-            DeathLinkManager.Enable((long)SlotData["death_link"]);
+            DeathLinkManager.ApplySlotDataSetting((long)SlotData["death_link"]);
 
         if (SlotData.ContainsKey("goal"))
             Victory.SetGoal((long)SlotData["goal"]);
@@ -533,5 +533,6 @@ public class APRandomizer : ModBehaviour
     {
         // Configure() is called early and often, including before we create the Console
         InGameAPConsole?.ModSettingsChanged(config);
+        DeathLinkManager.ApplyOverrideSetting();
     }
 }
