@@ -138,6 +138,28 @@ public static class Coordinates
         }
     }
 
+    // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
+    private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
+    private static Sprite promptCoordsSprite = null;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Start))]
+
+    public static void EyeCoordinatePromptTrigger_Start_Postfix(EyeCoordinatePromptTrigger __instance)
+    {
+        if (promptCoordsSprite == null && correctCoordinates != null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"EyeCoordinatePromptTrigger_Start_Postfix drawing and setting prompt coordinates sprite");
+            promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
+                promptCoordsTexture,
+                correctCoordinates,
+                UnityEngine.Color.clear,
+                doKerning: true
+            );
+            // No need to change _eyeCoordinatesSprite because it's only used in KeyInfoPromptController.Awake() to construct _eyeCoordinatesPrompt
+            __instance._promptController._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
+        }
+    }
+
     private static ScreenPrompt coordinatesNotAvailablePrompt = null;
 
     [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.OnEntry))]
@@ -169,36 +191,6 @@ public static class Coordinates
     public static void EyeCoordinatePromptTrigger_OnExit_Postfix(EyeCoordinatePromptTrigger __instance)
     {
         coordinatesNotAvailablePrompt.SetVisibility(false);
-    }
-
-    // wait to draw and set the prompt Sprite until the first time the game wants to display it
-
-    // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
-    private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
-    private static Sprite promptCoordsSprite = null;
-
-    [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.Awake))]
-    public static void KeyInfoPromptController_Awake_Prefix(KeyInfoPromptController __instance)
-    {
-        // be sure to reset our sprite when the game reloads so we remember to redraw it when needed
-        promptCoordsSprite = null;
-    }
-
-    [HarmonyPrefix, HarmonyPatch(typeof(KeyInfoPromptController), nameof(KeyInfoPromptController.SetEyeCoordinatesVisibility))]
-    public static void KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix(KeyInfoPromptController __instance, bool visible)
-    {
-        if (visible && promptCoordsSprite == null && correctCoordinates != null)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"KeyInfoPromptController_SetEyeCoordinatesVisibility_Prefix drawing and setting prompt coordinates sprite");
-            promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
-                promptCoordsTexture,
-                correctCoordinates,
-                UnityEngine.Color.clear,
-                doKerning: true
-            );
-            // No point changing _eyeCoordinatesSprite this late because it's only used in Awake() to construct _eyeCoordinatesPrompt
-            __instance._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
-        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
