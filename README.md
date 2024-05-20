@@ -115,7 +115,7 @@ The 0.1.x releases fleshed out the Archipelago items and locations: useful, fill
 
 The 0.2.x releases will focus on other kinds of randomization besides items and locations.
 
-- random Eye coordinates
+- ~~random Eye coordinates~~
 - random Dark Bramble layout
 - random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)
 	- random warp pad destinations should go well with this
