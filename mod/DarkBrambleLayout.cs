@@ -66,7 +66,7 @@ internal class DarkBrambleLayout
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
-        var prng = new System.Random();
+        var prng = new System.Random(1);
 
         var db = new DBLayout();
         db.warps = new();
