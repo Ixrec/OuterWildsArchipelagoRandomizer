@@ -139,6 +139,16 @@ internal class DarkBrambleLayout
         }
     }
 
+    [HarmonyPrefix, HarmonyPatch(typeof(TravelerAudioManager), nameof(TravelerAudioManager.SyncTravelers))]
+    public static void TravelerAudioManager_SyncTravelers_Prefix(TravelerAudioManager __instance)
+    {
+        if (__instance._signals.Any(s => s == null))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix cleaning up references to vanilla AudioSignals we had to destroy, so they don't NRE later");
+            __instance._signals = __instance._signals.Where(s => s != null).ToList();
+        }
+    }
+
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
     {
 
@@ -210,10 +220,6 @@ internal class DarkBrambleLayout
 
         OWAudioSource harmonicaSource = null;
         OWAudioSource pod3Source = null;
-
-        // prevent NREs in TravelerAudioManager by trimming its signal list first
-        //var tam = Locator.GetTravelerAudioManager();
-        //tam._signals = tam._signals.Where(s => s._outerFogWarpVolume == null).ToList();
 
         // actually delete all the vanilla signal on nodes inside DB (the signals on the DB exterior/entrance are untouched)
         var dbInteriorSignals = signals.Where(s => s._outerFogWarpVolume != null);
