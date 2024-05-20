@@ -151,13 +151,10 @@ internal class DarkBrambleLayout
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
     {
-
-        /* 
-         * TESTING
-         */
         var pioneerInteractables = GameObject.Find("DB_PioneerDimension_Body/Sector_PioneerDimension/Interactables_PioneerDimension");
         var vesselInteractables = GameObject.Find("DB_VesselDimension_Body/Sector_VesselDimension/Interactables_VesselDimension");
-        var smallNestInteractables = GameObject.Find("DB_SmallNestDimension_Body/Sector_SmallNestDimension/Interactables_SmallNestDimension");
+        // base game inconsistency: SmallNest's root GO is DB_SmallNest_Body, not DB_SmallNestDimension_Body
+        var smallNestInteractables = GameObject.Find("DB_SmallNest_Body/Sector_SmallNestDimension/Interactables_SmallNestDimension");
         var anglerNestInteractables = GameObject.Find("DB_AnglerNestDimension_Body/Sector_AnglerNestDimension/Interactables_AnglerNestDimension");
         var clusterInteractables = GameObject.Find("DB_ClusterDimension_Body/Sector_ClusterDimension/Interactables_ClusterDimension");
         var exitOnlyInteractables = GameObject.Find("DB_ExitOnlyDimension_Body/Sector_ExitOnlyDimension/Interactables_ExitOnlyDimension");
@@ -167,7 +164,7 @@ internal class DarkBrambleLayout
 
         var pioneerOFWV = pioneerInteractables.transform.Find("OuterWarp_Pioneer").GetComponent<OuterFogWarpVolume>();
         var vesselOFWV = vesselInteractables.transform.Find("OuterWarp_Vessel").GetComponent<OuterFogWarpVolume>();
-        OuterFogWarpVolume smallNestOFWV = null;// smallNestInteractables.transform.Find("OuterWarp_SmallNest").GetComponent<OuterFogWarpVolume>();
+        var smallNestOFWV = smallNestInteractables.transform.Find("OuterWarp_SmallNest").GetComponent<OuterFogWarpVolume>();
         var anglerNestOFWV = anglerNestInteractables.transform.Find("OuterWarp_AnglerNest").GetComponent<OuterFogWarpVolume>();
         var clusterOFWV = clusterInteractables.transform.Find("OuterWarp_Cluster").GetComponent<OuterFogWarpVolume>();
         var exitOnlyOFWV = exitOnlyInteractables.transform.Find("OuterWarp_ExitOnly").GetComponent<OuterFogWarpVolume>();
@@ -199,9 +196,37 @@ internal class DarkBrambleLayout
 
         // actually edit some warps
         entranceIFVW._linkedOuterWarpVolume = clusterOFWV;
-        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
+        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = hubOFWV;
         foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
         escapePodToAnglerNestIFVW._linkedOuterWarpVolume = pioneerOFWV; // does this "incorrectly" still glow red? yes
+        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
+        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV; // native not-even-Unity crash???
+
+/*
+        entranceIFVW._linkedOuterWarpVolume = hubOFWV;
+        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
+        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = anglerNestOFWV;
+        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = clusterOFWV;
+        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
+        foreach (var ifvw in anglerNestToVesselIFVWs) ifvw._linkedOuterWarpVolume = exitOnlyOFWV;
+        foreach (var ifvw in hubToAnglerNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
+        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
+        foreach (var ifvw in anglerNestToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = anglerNestOFWV;
+        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
+*/
+/*
+        space-> Hub
+Hub1->EscapePod
+EscapePod1->AnglerNest
+Hub4->Cluster
+Cluster2->Pioneer
+AnglerNest2->ExitOnly
+Hub2->Vessel
+Cluster1->SmallNest
+AnglerNest1->AnglerNest
+Hub3->Vessel
+         */
+
 
         var ofwvs = GameObject.FindObjectsOfType<OuterFogWarpVolume>();
         APRandomizer.OWMLModConsole.WriteLine($"ofwvs: {ofwvs.Length}\n{string.Join("\n", ofwvs.Select(ofwv => {
