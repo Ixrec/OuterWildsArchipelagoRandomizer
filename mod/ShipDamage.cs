@@ -124,7 +124,7 @@ internal class ShipDamage
                 }
             }
 
-            // APRandomizer.OWMLWriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
+            APRandomizer.OWMLModConsole.WriteLine($"Ship Damage Trap chose to damage hulls: [{string.Join(", ", damagedHullNames)}] and components: [{string.Join(", ", damagedComponentNames)}]");
 
             if (!PlayerState.IsInsideShip())
             {
