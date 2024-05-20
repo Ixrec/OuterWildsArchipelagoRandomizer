@@ -48,6 +48,8 @@ internal class DarkBrambleLayout
         public Dictionary<DBWarp, DBRoom> warps;
     }
 
+    private static int seed = 0;
+
     private static DBLayout GenerateDBLayout()
     {
         /*
@@ -66,7 +68,8 @@ internal class DarkBrambleLayout
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
-        var prng = new System.Random(1);
+        seed++;
+        var prng = new System.Random(seed);
 
         var db = new DBLayout();
         db.warps = new();
@@ -135,17 +138,24 @@ internal class DarkBrambleLayout
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
         {
             var dbl = GenerateDBLayout();
-            APRandomizer.OWMLModConsole.WriteLine($"space -> {dbl.entrance}\n{string.Join("\n", dbl.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
+            APRandomizer.OWMLModConsole.WriteLine($"seed={seed}: space -> {dbl.entrance}\n{string.Join("\n", dbl.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
         }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TravelerAudioManager), nameof(TravelerAudioManager.SyncTravelers))]
     public static void TravelerAudioManager_SyncTravelers_Prefix(TravelerAudioManager __instance)
     {
-        if (__instance._signals.Any(s => s == null))
+        try
         {
-            APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix cleaning up references to vanilla AudioSignals we had to destroy, so they don't NRE later");
-            __instance._signals = __instance._signals.Where(s => s != null).ToList();
+            var signals = __instance._signals;
+            if (signals.Any(s => s == null))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix cleaning up references to vanilla AudioSignals we had to destroy, so they don't NRE later");
+                __instance._signals = signals.Where(s => s != null).ToList();
+            }
+        }
+        catch (Exception e) {
+            APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix failed: {e.Message}\n{e.StackTrace}");
         }
     }
 
@@ -195,15 +205,29 @@ internal class DarkBrambleLayout
                 APRandomizer.OWMLModConsole.WriteLine($"mismatch: {ifvw?.transform?.parent?.name}/{ifvw?.name} -> {ifvw?._linkedOuterWarpVolume?.transform?.parent?.name}/{ifvw?._linkedOuterWarpVolume?.name} -> {ifvw?._linkedOuterWarpVolume?._linkedInnerWarpVolume?.transform?.parent?.name}/{ifvw?._linkedOuterWarpVolume?.name}");
 
         // actually edit some warps
-        entranceIFVW._linkedOuterWarpVolume = clusterOFWV;
-        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = hubOFWV;
-        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
-        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = pioneerOFWV; // does this "incorrectly" still glow red? yes
-        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
-        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV; // native not-even-Unity crash???
-
-/*
+        /*
         entranceIFVW._linkedOuterWarpVolume = hubOFWV;
+        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;// hubOFWV; <- stackless crash???
+        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
+        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = pioneerOFWV;
+        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
+        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
+        */
+
+        /*
+                space-> Hub
+        Hub1->EscapePod
+        EscapePod1->AnglerNest
+        Hub4->Cluster
+        Cluster2->Pioneer
+        AnglerNest2->ExitOnly
+        Hub2->Vessel
+        Cluster1->SmallNest
+        AnglerNest1->AnglerNest
+        Hub3->Vessel
+                    */
+        APRandomizer.OWMLModConsole.WriteLine($"changing warps");
+        /*entranceIFVW._linkedOuterWarpVolume = hubOFWV; // all edits to hub IFVWs ignored???
         foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
         escapePodToAnglerNestIFVW._linkedOuterWarpVolume = anglerNestOFWV;
         foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = clusterOFWV;
@@ -212,23 +236,32 @@ internal class DarkBrambleLayout
         foreach (var ifvw in hubToAnglerNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
         foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
         foreach (var ifvw in anglerNestToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = anglerNestOFWV;
-        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
-*/
-/*
-        space-> Hub
-Hub1->EscapePod
-EscapePod1->AnglerNest
-Hub4->Cluster
-Cluster2->Pioneer
-AnglerNest2->ExitOnly
-Hub2->Vessel
-Cluster1->SmallNest
-AnglerNest1->AnglerNest
-Hub3->Vessel
-         */
+        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;*/
 
+        /*
+        space -> AnglerNest
+        AnglerNest1->Hub
+        Hub4->Cluster
+        Hub1->EscapePod
+        Hub3->Pioneer
+        AnglerNest2->SmallNest
+        Hub2->ExitOnly
+        Cluster2->Vessel
+        Cluster1->Vessel
+        EscapePod1->Vessel
+            */
+        entranceIFVW._linkedOuterWarpVolume = anglerNestOFWV;
+        foreach (var ifvw in anglerNestToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = hubOFWV; // ignored!
+        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = clusterOFWV;
+        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
+        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
+        foreach (var ifvw in anglerNestToVesselIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV; // ignored?
+        foreach (var ifvw in hubToAnglerNestIFVWs) ifvw._linkedOuterWarpVolume = exitOnlyOFWV;
+        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
+        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
+        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = vesselOFWV;
 
-        var ofwvs = GameObject.FindObjectsOfType<OuterFogWarpVolume>();
+        /*var ofwvs = GameObject.FindObjectsOfType<OuterFogWarpVolume>();
         APRandomizer.OWMLModConsole.WriteLine($"ofwvs: {ofwvs.Length}\n{string.Join("\n", ofwvs.Select(ofwv => {
             return $"{ofwv.transform.parent.name}/{ofwv.name} ({ofwv._name}) - {ofwv._linkedInnerWarpVolume.transform.parent.name}/{ofwv._linkedInnerWarpVolume.name}";
         }))}");
@@ -236,12 +269,12 @@ Hub3->Vessel
         var ifwvs = GameObject.FindObjectsOfType<InnerFogWarpVolume>();
         APRandomizer.OWMLModConsole.WriteLine($"ifwvs: {ifwvs.Length}\n{string.Join("\n", ifwvs.Select(ifwv => {
             return $"{ifwv.transform?.parent?.name}/{ifwv.name} - {ifwv._linkedOuterWarpVolume?.transform?.parent?.name}/{ifwv._linkedOuterWarpVolume?.name} ({ifwv._linkedOuterWarpName})";
-        }))}");
+        }))}");*/
 
         var signals = GameObject.FindObjectsOfType<AudioSignal>();
-        APRandomizer.OWMLModConsole.WriteLine($"signals: {signals.Length}\n{string.Join("\n", signals.Select(s => {
+        /*APRandomizer.OWMLModConsole.WriteLine($"signals: {signals.Length}\n{string.Join("\n", signals.Select(s => {
             return $"{s.transform?.parent?.name}/{s.name} - {s._outerFogWarpVolume?.transform?.parent?.name}/{s._outerFogWarpVolume?.name}";
-        }))}");
+        }))}");*/
 
         OWAudioSource harmonicaSource = null;
         OWAudioSource pod3Source = null;
