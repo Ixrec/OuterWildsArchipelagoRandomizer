@@ -143,21 +143,22 @@ public static class Coordinates
     private static Sprite promptCoordsSprite = null;
 
     [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Start))]
-
     public static void EyeCoordinatePromptTrigger_Start_Postfix(EyeCoordinatePromptTrigger __instance)
     {
         if (promptCoordsSprite == null && correctCoordinates != null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"EyeCoordinatePromptTrigger_Start_Postfix drawing and setting prompt coordinates sprite");
+            APRandomizer.OWMLModConsole.WriteLine($"EyeCoordinatePromptTrigger_Start_Postfix drawing prompt coordinates sprite");
             promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
                 promptCoordsTexture,
                 correctCoordinates,
                 UnityEngine.Color.clear,
                 doKerning: true
             );
-            // No need to change _eyeCoordinatesSprite because it's only used in KeyInfoPromptController.Awake() to construct _eyeCoordinatesPrompt
-            __instance._promptController._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
         }
+
+        // No need to change _eyeCoordinatesSprite because it's only used in KIPC.Awake() to
+        // construct _eyeCoordinatesPrompt, and we have to reset this every loop anyway.
+        __instance._promptController._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
     }
 
     private static ScreenPrompt coordinatesNotAvailablePrompt = null;
