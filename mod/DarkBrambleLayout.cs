@@ -206,7 +206,7 @@ internal class DarkBrambleLayout
 
         // actually edit some warps
         /*
-        entranceIFVW._linkedOuterWarpVolume = hubOFWV;
+        entranceIFVW._linkedOuterWarpVolume = clusterOFWV;
         foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;// hubOFWV; <- stackless crash???
         foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
         escapePodToAnglerNestIFVW._linkedOuterWarpVolume = pioneerOFWV;
