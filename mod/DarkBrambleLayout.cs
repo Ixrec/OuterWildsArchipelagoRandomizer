@@ -22,6 +22,8 @@ internal class DarkBrambleLayout
         SmallNest,
     }
 
+    // These are just the warps we want to randomize. They exclude things like the recursive zones, most bramble seeds,
+    // and all of the "outer" warps that either go back a zone or leave DB entirely.
     public enum DBWarp
     {
         Hub1,
@@ -48,7 +50,7 @@ internal class DarkBrambleLayout
         public Dictionary<DBWarp, DBRoom> warps;
     }
 
-    private static int seed = 0;
+    private static int Seed = 0;
 
     private static DBLayout GenerateDBLayout()
     {
@@ -68,8 +70,8 @@ internal class DarkBrambleLayout
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
-        seed++;
-        var prng = new System.Random(seed);
+        Seed++;
+        var prng = new System.Random(Seed);
 
         var db = new DBLayout();
         db.warps = new();
@@ -125,6 +127,8 @@ internal class DarkBrambleLayout
         return db;
     }
 
+    private static DBLayout CurrentDBLayout = null;
+
     // for testing
     [HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Prefix()
@@ -137,8 +141,8 @@ internal class DarkBrambleLayout
         }
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
         {
-            var dbl = GenerateDBLayout();
-            APRandomizer.OWMLModConsole.WriteLine($"seed={seed}: space -> {dbl.entrance}\n{string.Join("\n", dbl.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
+            CurrentDBLayout = GenerateDBLayout();
+            ApplyDBLayout();
         }
     }
 
@@ -159,6 +163,10 @@ internal class DarkBrambleLayout
         }
     }
 
+    private static InnerFogWarpVolume EntranceIFVW;
+    private static Dictionary<DBRoom, OuterFogWarpVolume> RoomToOFWV = new();
+    private static Dictionary<DBWarp, List<InnerFogWarpVolume>> WarpToIFWVs = new();
+
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
     {
         var pioneerInteractables = GameObject.Find("DB_PioneerDimension_Body/Sector_PioneerDimension/Interactables_PioneerDimension");
@@ -170,41 +178,65 @@ internal class DarkBrambleLayout
         var exitOnlyInteractables = GameObject.Find("DB_ExitOnlyDimension_Body/Sector_ExitOnlyDimension/Interactables_ExitOnlyDimension");
         var hubInteractables = GameObject.Find("DB_HubDimension_Body/Sector_HubDimension/Interactables_HubDimension");
         var escapePodInteractables = GameObject.Find("DB_EscapePodDimension_Body/Sector_EscapePodDimension/Interactables_EscapePodDimension");
-        APRandomizer.OWMLModConsole.WriteLine($"{pioneerInteractables} - {vesselInteractables} - {smallNestInteractables} - {anglerNestInteractables} - {clusterInteractables} - {exitOnlyInteractables} - {hubInteractables} - {escapePodInteractables}");
 
-        var pioneerOFWV = pioneerInteractables.transform.Find("OuterWarp_Pioneer").GetComponent<OuterFogWarpVolume>();
-        var vesselOFWV = vesselInteractables.transform.Find("OuterWarp_Vessel").GetComponent<OuterFogWarpVolume>();
-        var smallNestOFWV = smallNestInteractables.transform.Find("OuterWarp_SmallNest").GetComponent<OuterFogWarpVolume>();
-        var anglerNestOFWV = anglerNestInteractables.transform.Find("OuterWarp_AnglerNest").GetComponent<OuterFogWarpVolume>();
-        var clusterOFWV = clusterInteractables.transform.Find("OuterWarp_Cluster").GetComponent<OuterFogWarpVolume>();
-        var exitOnlyOFWV = exitOnlyInteractables.transform.Find("OuterWarp_ExitOnly").GetComponent<OuterFogWarpVolume>();
-        var hubOFWV = hubInteractables.transform.Find("OuterWarp_Hub").GetComponent<OuterFogWarpVolume>();
-        var escapePodOFWV = escapePodInteractables.transform.Find("OuterWarp_EscapePod").GetComponent<OuterFogWarpVolume>();
-        APRandomizer.OWMLModConsole.WriteLine($"{pioneerOFWV} - {vesselOFWV} - {smallNestOFWV} - {anglerNestOFWV} - {clusterOFWV} - {exitOnlyOFWV} - {hubOFWV} - {escapePodOFWV}");
+        EntranceIFVW = GameObject.Find("DarkBramble_Body/Sector_DB/Interactables_DB/EntranceWarp_ToHub").GetComponent<InnerFogWarpVolume>();
 
-        var entranceIFVW = GameObject.Find("DarkBramble_Body/Sector_DB/Interactables_DB/EntranceWarp_ToHub").GetComponent<InnerFogWarpVolume>();
-
-        var clusterIFVWs = clusterInteractables.transform.GetComponentsInChildren<InnerFogWarpVolume>();
-        var clusterToPioneerIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToPioneer");
-        var clusterToExitOnlyIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToExitOnly");
-
-        var escapePodToAnglerNestIFVW = escapePodInteractables.transform.Find("InnerWarp_ToAnglerNest").GetComponent<InnerFogWarpVolume>();
-
-        var anglerNestIFVWs = anglerNestInteractables.transform.GetComponentsInChildren<InnerFogWarpVolume>();
-        var anglerNestToExitOnlyIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToExitOnly");
-        var anglerNestToVesselIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToVessel");
+        RoomToOFWV[DBRoom.Pioneer] = pioneerInteractables.transform.Find("OuterWarp_Pioneer").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.Vessel] = vesselInteractables.transform.Find("OuterWarp_Vessel").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.SmallNest] = smallNestInteractables.transform.Find("OuterWarp_SmallNest").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.AnglerNest] = anglerNestInteractables.transform.Find("OuterWarp_AnglerNest").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.Cluster] = clusterInteractables.transform.Find("OuterWarp_Cluster").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.ExitOnly] = exitOnlyInteractables.transform.Find("OuterWarp_ExitOnly").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.Hub] = hubInteractables.transform.Find("OuterWarp_Hub").GetComponent<OuterFogWarpVolume>();
+        RoomToOFWV[DBRoom.EscapePod] = escapePodInteractables.transform.Find("OuterWarp_EscapePod").GetComponent<OuterFogWarpVolume>();
 
         var hubIFVWs = hubInteractables.transform.GetComponentsInChildren<InnerFogWarpVolume>();
-        var hubToClusterIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToCluster");
-        var hubToAnglerNestIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToAnglerNest");
-        var hubToSmallNestIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToSmallNest");
-        var hubToEscapePodIFVWs = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToEscapePod");
+        WarpToIFWVs[DBWarp.Hub1] = hubIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToCluster").ToList();
+        WarpToIFWVs[DBWarp.Hub2] = hubIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToAnglerNest").ToList();
+        WarpToIFWVs[DBWarp.Hub3] = hubIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToSmallNest").ToList();
+        WarpToIFWVs[DBWarp.Hub4] = hubIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToEscapePod").ToList();
 
-        foreach (var ifvw in GameObject.FindObjectsOfType<InnerFogWarpVolume>())
-            if (ifvw?._linkedOuterWarpVolume?._linkedInnerWarpVolume != ifvw)
-                APRandomizer.OWMLModConsole.WriteLine($"mismatch: {ifvw?.transform?.parent?.name}/{ifvw?.name} -> {ifvw?._linkedOuterWarpVolume?.transform?.parent?.name}/{ifvw?._linkedOuterWarpVolume?.name} -> {ifvw?._linkedOuterWarpVolume?._linkedInnerWarpVolume?.transform?.parent?.name}/{ifvw?._linkedOuterWarpVolume?.name}");
+        var clusterIFVWs = clusterInteractables.transform.GetComponentsInChildren<InnerFogWarpVolume>();
+        WarpToIFWVs[DBWarp.Cluster1] = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToPioneer" || ifvw.name == "SeedWarp_ToPioneer").ToList();
+        WarpToIFWVs[DBWarp.Cluster2] = clusterIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToExitOnly").ToList();
 
-        // actually edit some warps
+        WarpToIFWVs[DBWarp.EscapePod1] = new List<InnerFogWarpVolume> {
+            escapePodInteractables.transform.Find("InnerWarp_ToAnglerNest").GetComponent<InnerFogWarpVolume>()
+        };
+
+        var anglerNestIFVWs = anglerNestInteractables.transform.GetComponentsInChildren<InnerFogWarpVolume>();
+        WarpToIFWVs[DBWarp.AnglerNest1] = anglerNestIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToExitOnly").ToList();
+        WarpToIFWVs[DBWarp.AnglerNest2] = anglerNestIFVWs.Where(ifvw => ifvw.name == "InnerWarp_ToVessel").ToList();
+
+        ApplyDBLayout();
+    }
+
+    private static void ApplyDBLayout()
+    {
+        if (CurrentDBLayout == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() returning early because DB has not been randomized");
+            return;
+        }
+
+        APRandomizer.OWMLModConsole.WriteLine($"applying randomized Dark Bramble layout for seed={Seed}:\n" +
+            $"space -> {CurrentDBLayout.entrance}\n{string.Join("\n", CurrentDBLayout.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
+
+        // Some inner and outer warps are not coupled. For most of these, the outer warps leave DB entirely, or are used for recursion.
+        // The main exception is Pioneer's outer warp trying to go "two zones back" to Hub.
+        // I don't think it's worth figuring out what "two zones back" means in a randomized DB layout,
+        // so I just edit this to also go directly outside.
+        RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
+
+        EntranceIFVW._linkedOuterWarpVolume = RoomToOFWV[CurrentDBLayout.entrance];
+
+        foreach (var (warp, room) in CurrentDBLayout.warps)
+        {
+            foreach (var ifwv in WarpToIFWVs[warp]) ifwv._linkedOuterWarpVolume = RoomToOFWV[room];
+            // also edit the outer warps that go one zone back???
+        }
+
+        // keeping this test since it crashed???
         /*
         entranceIFVW._linkedOuterWarpVolume = clusterOFWV;
         foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;// hubOFWV; <- stackless crash???
@@ -214,62 +246,7 @@ internal class DarkBrambleLayout
         foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
         */
 
-        /*
-                space-> Hub
-        Hub1->EscapePod
-        EscapePod1->AnglerNest
-        Hub4->Cluster
-        Cluster2->Pioneer
-        AnglerNest2->ExitOnly
-        Hub2->Vessel
-        Cluster1->SmallNest
-        AnglerNest1->AnglerNest
-        Hub3->Vessel
-                    */
-        APRandomizer.OWMLModConsole.WriteLine($"changing warps");
-        /*entranceIFVW._linkedOuterWarpVolume = hubOFWV; // all edits to hub IFVWs ignored???
-        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
-        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = anglerNestOFWV;
-        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = clusterOFWV;
-        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
-        foreach (var ifvw in anglerNestToVesselIFVWs) ifvw._linkedOuterWarpVolume = exitOnlyOFWV;
-        foreach (var ifvw in hubToAnglerNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
-        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
-        foreach (var ifvw in anglerNestToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = anglerNestOFWV;
-        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;*/
-
-        /*
-        space -> AnglerNest
-        AnglerNest1->Hub
-        Hub4->Cluster
-        Hub1->EscapePod
-        Hub3->Pioneer
-        AnglerNest2->SmallNest
-        Hub2->ExitOnly
-        Cluster2->Vessel
-        Cluster1->Vessel
-        EscapePod1->Vessel
-            */
-        entranceIFVW._linkedOuterWarpVolume = anglerNestOFWV;
-        foreach (var ifvw in anglerNestToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = hubOFWV; // ignored!
-        foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = clusterOFWV;
-        foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = escapePodOFWV;
-        foreach (var ifvw in hubToSmallNestIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
-        foreach (var ifvw in anglerNestToVesselIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV; // ignored?
-        foreach (var ifvw in hubToAnglerNestIFVWs) ifvw._linkedOuterWarpVolume = exitOnlyOFWV;
-        foreach (var ifvw in clusterToExitOnlyIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
-        foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;
-        escapePodToAnglerNestIFVW._linkedOuterWarpVolume = vesselOFWV;
-
-        /*var ofwvs = GameObject.FindObjectsOfType<OuterFogWarpVolume>();
-        APRandomizer.OWMLModConsole.WriteLine($"ofwvs: {ofwvs.Length}\n{string.Join("\n", ofwvs.Select(ofwv => {
-            return $"{ofwv.transform.parent.name}/{ofwv.name} ({ofwv._name}) - {ofwv._linkedInnerWarpVolume.transform.parent.name}/{ofwv._linkedInnerWarpVolume.name}";
-        }))}");
-
-        var ifwvs = GameObject.FindObjectsOfType<InnerFogWarpVolume>();
-        APRandomizer.OWMLModConsole.WriteLine($"ifwvs: {ifwvs.Length}\n{string.Join("\n", ifwvs.Select(ifwv => {
-            return $"{ifwv.transform?.parent?.name}/{ifwv.name} - {ifwv._linkedOuterWarpVolume?.transform?.parent?.name}/{ifwv._linkedOuterWarpVolume?.name} ({ifwv._linkedOuterWarpName})";
-        }))}");*/
+        // move around Signalscope signals
 
         var signals = GameObject.FindObjectsOfType<AudioSignal>();
         /*APRandomizer.OWMLModConsole.WriteLine($"signals: {signals.Length}\n{string.Join("\n", signals.Select(s => {
@@ -290,11 +267,11 @@ internal class DarkBrambleLayout
             s.gameObject.DestroyAllComponents<AudioSignal>();
         }
 
-        var signal = escapePodToAnglerNestIFVW.gameObject.AddComponent<AudioSignal>();
+        /*var signal = escapePodToAnglerNestIFVW.gameObject.AddComponent<AudioSignal>();
         signal._frequency = SignalFrequency.Traveler;
         signal._name = SignalName.Traveler_Feldspar;
         signal._onlyAudibleToScope = true;
         signal._outerFogWarpVolume = escapePodOFWV;
-        signal._owAudioSource = harmonicaSource;
+        signal._owAudioSource = harmonicaSource;*/
     }
 }
