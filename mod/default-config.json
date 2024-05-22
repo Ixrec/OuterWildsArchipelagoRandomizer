@@ -34,6 +34,16 @@
     "Boost Duration: Initial % of Vanilla": "50",
     "Boost Duration: % Increase Per Upgrade": "50",
 
+    "Separator - Quality of Life": {
+        "type": "separator"
+    },
+
+    "Auto Expand Nomai Text": {
+        "type": "toggle",
+        "value": false,
+        "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand."
+    },
+
     "Separator - Crash Testing": {
       "type": "separator"
     },

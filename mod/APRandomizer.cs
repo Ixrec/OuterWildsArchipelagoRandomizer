@@ -59,6 +59,8 @@ public class APRandomizer : ModBehaviour
     /// </summary>
     public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
+    public static bool AutoNomaiText = false;
+
     public static bool DisableConsole = false;
     public static bool DisableInGameLocationSending = false;
     private static bool DisableInGameItemReceiving = false;
@@ -548,6 +550,8 @@ public class APRandomizer : ModBehaviour
     public override void Configure(IModConfig config)
     {
         // Configure() is called early and often, including before we create the Console
+        AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
+
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
         DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");
         DisableInGameItemReceiving = config.GetSettingsValue<bool>("[DEBUG] Don't Receive Items In-Game");
