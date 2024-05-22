@@ -1,56 +1,62 @@
 {
   "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
   "enabled": true,
-  "settings": {
-    "AP Console: Mute": false,
-    "AP Console: About Me Filter": false,
+    "settings": {
+        "AP Console: Mute": false,
+        "AP Console: About Me Filter": false,
 
-    "Separator - Death Link": {
-      "type": "separator"
-    },
+        "Separator - Quality of Life": {
+            "type": "separator"
+        },
 
-    "Death Link Override": {
-      "type": "selector",
-      "value": "No Override",
-      "options": [
-        "No Override",
-        "Off",
-        "Default",
-        "All Deaths"
-      ],
-      "tooltip": "'No Override' means use the death_link option from the .yaml used to generate the multiworld. Any other value will override and ignore the .yaml option."
-    },
+        "Auto Expand Nomai Text": {
+            "type": "toggle",
+            "value": false,
+            "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. This setting will only apply at the start of the next loop."
+        },
 
-    "Separator - Suit Upgrades": {
-      "type": "separator"
-    },
+        "Instant Translator": {
+            "type": "toggle",
+            "value": false,
+            "tooltip": "With this on, your translator will translate Nomai Text instantly."
+        },
 
-    "Fuel Capacity: Initial % of Vanilla": "50",
-    "Fuel Capacity: % Increase Per Upgrade": "50",
+        "Separator - Death Link": {
+            "type": "separator"
+        },
 
-    "Oxygen Capacity: Initial % of Vanilla": "50",
-    "Oxygen Capacity: % Increase Per Upgrade": "50",
+        "Death Link Override": {
+            "type": "selector",
+            "value": "No Override",
+            "options": [
+                "No Override",
+                "Off",
+                "Default",
+                "All Deaths"
+            ],
+            "tooltip": "'No Override' means use the death_link option from the .yaml used to generate the multiworld. Any other value will override and ignore the .yaml option."
+        },
 
-    "Boost Duration: Initial % of Vanilla": "50",
-    "Boost Duration: % Increase Per Upgrade": "50",
+        "Separator - Suit Upgrades": {
+            "type": "separator"
+        },
 
-    "Separator - Quality of Life": {
-        "type": "separator"
-    },
+        "Fuel Capacity: Initial % of Vanilla": "50",
+        "Fuel Capacity: % Increase Per Upgrade": "50",
 
-    "Auto Expand Nomai Text": {
-        "type": "toggle",
-        "value": false,
-        "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. This setting will only apply at the start of the next loop."
-    },
+        "Oxygen Capacity: Initial % of Vanilla": "50",
+        "Oxygen Capacity: % Increase Per Upgrade": "50",
 
-    "Separator - Crash Testing": {
-      "type": "separator"
-    },
+        "Boost Duration: Initial % of Vanilla": "50",
+        "Boost Duration: % Increase Per Upgrade": "50",
 
-    "[DEBUG] Disable In-Game Console": false,
-    "[DEBUG] Don't Send Locations In-Game": false,
-    "[DEBUG] Don't Receive Items In-Game": false,
-    "[DEBUG] Don't Write To Save File In-Game": false
-  }
+        "Separator - Crash Testing": {
+            "type": "separator"
+        },
+
+        "[DEBUG] Disable In-Game Console": false,
+        "[DEBUG] Don't Send Locations In-Game": false,
+        "[DEBUG] Don't Receive Items In-Game": false,
+        "[DEBUG] Don't Write To Save File In-Game": false
+    }
 }

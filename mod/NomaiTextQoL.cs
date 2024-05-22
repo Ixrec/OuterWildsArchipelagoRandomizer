@@ -6,6 +6,7 @@ namespace ArchipelagoRandomizer
     internal class NomaiTextQoL
     {
         public static bool AutoNomaiText;
+        public static float TranslateTime = 0.2f;
 
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
@@ -92,6 +93,13 @@ namespace ArchipelagoRandomizer
                 
             }
             return false;
+        }
+
+        // instant Nomai text
+        [HarmonyPrefix, HarmonyPatch(typeof(NomaiTranslatorProp), nameof(NomaiTranslatorProp.SwitchTextNode))]
+        public static void NomaiTranslatorProp_SwitchTextNode_Prefix(NomaiTranslatorProp __instance)
+        {
+            __instance._totalTranslateTime = TranslateTime;
         }
     }
 }
