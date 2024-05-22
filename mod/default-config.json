@@ -41,7 +41,7 @@
     "Auto Expand Nomai Text": {
         "type": "toggle",
         "value": false,
-        "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand."
+        "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. This setting will only apply at the start of the next loop."
     },
 
     "Separator - Crash Testing": {
