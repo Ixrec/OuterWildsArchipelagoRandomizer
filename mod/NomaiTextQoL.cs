@@ -5,11 +5,13 @@ namespace ArchipelagoRandomizer
     [HarmonyPatch]
     internal class NomaiTextQoL
     {
+        public static bool AutoNomaiText;
+
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
         public static void NomaiWallText_LateInitialize_Postfix(NomaiWallText __instance)
         {
-            if (!APRandomizer.AutoNomaiText) return;
+            if (!AutoNomaiText) return;
             foreach (NomaiTextLine child in __instance.GetComponentsInChildren<NomaiTextLine>())
             {
                 child._state = NomaiTextLine.VisualState.UNREAD;
@@ -18,8 +20,9 @@ namespace ArchipelagoRandomizer
             // Ignore scrolls if they aren't socketed
             bool isScroll = __instance.transform.GetComponentInParent<ScrollItem>() != null;
             bool isSocketed = __instance.transform.GetComponentInParent<ScrollSocket>() != null;
+            bool isAProjectionWall = __instance.transform.GetComponentInParent<NomaiSharedWhiteboard>() != null;
 
-            if (!isScroll || isSocketed)
+            if ((!isScroll || isSocketed) && !isAProjectionWall)
             {
                 __instance.ShowImmediate();
             }
@@ -30,10 +33,10 @@ namespace ArchipelagoRandomizer
         public static void base_SetAsTranslated(NomaiText instance, int id) { }
 
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.SetAsTranslated))]
-        public static bool NomaiWallText_SetAsTranslated_Transpiler(NomaiWallText __instance, ref int id)
+        public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
             // This code is copied from the base game and overrides the original method
-            if (!APRandomizer.AutoNomaiText) return true;
+            if (!AutoNomaiText) return true;
             base_SetAsTranslated(__instance, id);
             bool revealedChildren = false;
             if (__instance._idToNodeDict.ContainsKey(id))
@@ -86,7 +89,6 @@ namespace ArchipelagoRandomizer
                 {
                     Locator.GetPlayerAudioController().PlayNomaiTextReveal(__instance);
                 }
-                APRandomizer.OWMLModConsole.WriteLine($"Patch in {__instance.gameObject.name} succeeded", OWML.Common.MessageType.Info);
                 
             }
             return false;

@@ -331,6 +331,12 @@ public class APRandomizer : ModBehaviour
             Victory.OnCompleteSceneLoad(scene, loadScene);
         };
 
+        // update the Nomai text setting before any can be created
+        LoadManager.OnStartSceneLoad += (scene, loadScene) =>
+        {
+            NomaiTextQoL.AutoNomaiText = AutoNomaiText;
+        };
+
         SetupSaveData();
 
         OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago APRandomizer", OWML.Common.MessageType.Success);
