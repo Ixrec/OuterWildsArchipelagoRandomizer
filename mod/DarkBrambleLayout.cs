@@ -127,9 +127,54 @@ internal class DarkBrambleLayout
 
     private static DBLayout CurrentDBLayout = null;
 
+    private static Dictionary<char, DBRoom> letterToRoom = new Dictionary<char, DBRoom>
+    {
+        { 'H', DBRoom.Hub },
+        { 'E', DBRoom.EscapePod },
+        { 'A', DBRoom.AnglerNest },
+        { 'P', DBRoom.Pioneer },
+        { 'X', DBRoom.ExitOnly },
+        { 'V', DBRoom.Vessel },
+        { 'C', DBRoom.Cluster },
+        { 'S', DBRoom.SmallNest },
+    };
+
     public static void ApplySlotDataLayout(string stringifiedLayout)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"DBL ApplySlotDataLayout: {stringifiedLayout}");
+        if (stringifiedLayout == "vanilla")
+        {
+            CurrentDBLayout = null;
+            return;
+        }
+
+        // In the stringified layout format we want to output for slot data, the vanilla DB layout is:
+        // "H->SCEA|C->PX|E->A|A->V"
+        // That's what we need to parse and turn into a DBLayout instance.
+        try
+        {
+            var layout = new DBLayout();
+            layout.warps = new();
+
+            layout.entrance = letterToRoom[stringifiedLayout[0]];
+
+            var roomStrings = stringifiedLayout.Split('|');
+
+            foreach (var roomString in roomStrings)
+            {
+                var startRoom = letterToRoom[roomString[0]];
+                // 1..2 should be "->"
+                var warpTargets = roomString.Substring(3).Select(c => letterToRoom[c]);
+
+                foreach (var (warp, target) in WarpsInRoom[startRoom].Zip(warpTargets, (w, t) => (w, t)))
+                    layout.warps[warp] = target;
+            }
+
+            CurrentDBLayout = layout;
+        }
+        catch (Exception e)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"ApplySlotDataLayout() failed to deserialize: {stringifiedLayout}\n{e.Message}\n{e.StackTrace}");
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TravelerAudioManager), nameof(TravelerAudioManager.SyncTravelers))]
@@ -155,6 +200,7 @@ internal class DarkBrambleLayout
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
     {
+        APRandomizer.OWMLModConsole.WriteLine($"OnCompleteSceneLoad()");
         var pioneerInteractables = GameObject.Find("DB_PioneerDimension_Body/Sector_PioneerDimension/Interactables_PioneerDimension");
         var vesselInteractables = GameObject.Find("DB_VesselDimension_Body/Sector_VesselDimension/Interactables_VesselDimension");
         // base game inconsistency: SmallNest's root GO is DB_SmallNest_Body, not DB_SmallNestDimension_Body
