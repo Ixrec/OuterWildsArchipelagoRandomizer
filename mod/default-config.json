@@ -5,6 +5,22 @@
     "AP Console: Mute": false,
     "AP Console: About Me Filter": false,
 
+    "Separator - Quality of Life": {
+      "type": "separator"
+    },
+
+    "Auto Expand Nomai Text": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. This setting will only apply at the start of the next loop."
+    },
+
+    "Instant Translator": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "With this on, your translator will translate Nomai Text instantly."
+    },
+
     "Separator - Death Link": {
       "type": "separator"
     },
@@ -30,7 +46,6 @@
 
     "Oxygen Capacity: Initial % of Vanilla": "50",
     "Oxygen Capacity: % Increase Per Upgrade": "50",
-
     "Boost Duration: Initial % of Vanilla": "50",
     "Boost Duration: % Increase Per Upgrade": "50",
 
