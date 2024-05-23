@@ -267,32 +267,102 @@ internal class DarkBrambleLayout
         foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
         */
 
-        // move around Signalscope signals
+        // Next, deal with the Signalscope signals.
 
         var signals = GameObject.FindObjectsOfType<AudioSignal>();
-        /*APRandomizer.OWMLModConsole.WriteLine($"signals: {signals.Length}\n{string.Join("\n", signals.Select(s => {
-            return $"{s.transform?.parent?.name}/{s.name} - {s._outerFogWarpVolume?.transform?.parent?.name}/{s._outerFogWarpVolume?.name}";
-        }))}");*/
 
+        // We can't directly "move" a signal. Instead we have to delete the vanilla signals
+        // we've made incorrect, and create new ones in the correct places.
+
+        // In the vanilla layout, Hub and Cluster are the only two DB rooms with "transitive" signals,
+        // which are the ones we need to clean up.
+        // Fortunately, these rooms do not contain any "root" signals that we want to leave alone,
+        // so we can simply delete every signal in these two rooms.
+        var signalsToDelete = signals.Where(s => {
+            var ofwv = s._outerFogWarpVolume;
+            return ofwv == RoomToOFWV[DBRoom.Hub] || ofwv == RoomToOFWV[DBRoom.Cluster];
+        });
+        APRandomizer.OWMLModConsole.WriteLine($"signalsToDelete {signalsToDelete.Count()} - {string.Join("|", signalsToDelete)}");
+
+        // While deleting these signals, take references to their audio sources to help create the replacement signals.
         OWAudioSource harmonicaSource = null;
         OWAudioSource pod3Source = null;
 
-        // actually delete all the vanilla signal on nodes inside DB (the signals on the DB exterior/entrance are untouched)
-        var dbInteriorSignals = signals.Where(s => s._outerFogWarpVolume != null);
-        foreach (var s in dbInteriorSignals)
+        foreach (var s in signalsToDelete)
         {
             if (s.name == "Signal_Harmonica" && harmonicaSource == null)
                 harmonicaSource = s._owAudioSource;
             if (s.name == "Signal_EscapePod" && pod3Source == null)
                 pod3Source = s._owAudioSource;
+
+            APRandomizer.OWMLModConsole.WriteLine($"deleting signals on {s.gameObject.transform.parent}/{s.gameObject}");
             s.gameObject.DestroyAllComponents<AudioSignal>();
         }
 
-        /*var signal = escapePodToAnglerNestIFVW.gameObject.AddComponent<AudioSignal>();
-        signal._frequency = SignalFrequency.Traveler;
-        signal._name = SignalName.Traveler_Feldspar;
-        signal._onlyAudibleToScope = true;
-        signal._outerFogWarpVolume = escapePodOFWV;
-        signal._owAudioSource = harmonicaSource;*/
+        HashSet<DBRoom> harmonicaRooms = new HashSet<DBRoom> { DBRoom.Pioneer };
+        HashSet<DBRoom> ep3Rooms = new HashSet<DBRoom> { DBRoom.EscapePod };
+        HashSet<DBWarp> harmonicaWarps = new();
+        HashSet<DBWarp> ep3Warps = new();
+
+        APRandomizer.OWMLModConsole.WriteLine($"start adding signals");
+        bool roomSetsChanged = true;
+        while (roomSetsChanged)
+        {
+            roomSetsChanged = false;
+
+            APRandomizer.OWMLModConsole.WriteLine($"checking if more signals need to be added after {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
+            foreach (var (warp, endRoom) in CurrentDBLayout.warps)
+            {
+                if (harmonicaRooms.Contains(endRoom) && !harmonicaWarps.Contains(warp))
+                {
+                    harmonicaWarps.Add(warp);
+
+                    var startRoom = WarpsInRoom.First(roomAndWarps => roomAndWarps.Value.Contains(warp)).Key;
+                    if (!harmonicaRooms.Contains(startRoom))
+                    {
+                        roomSetsChanged |= true;
+                        harmonicaRooms.Add(startRoom);
+                    }
+
+                    foreach (var ifwv in WarpToIFWVs[warp])
+                    {
+                        var signal = ifwv.gameObject.AddComponent<AudioSignal>();
+                        signal._onlyAudibleToScope = true;
+                        signal._outerFogWarpVolume = RoomToOFWV[startRoom];
+
+                        APRandomizer.OWMLModConsole.WriteLine($"adding harmonica signal to {warp}");
+                        signal._frequency = SignalFrequency.Traveler;
+                        signal._name = SignalName.Traveler_Feldspar;
+                        signal._owAudioSource = harmonicaSource;
+                    }
+                }
+
+                if (ep3Rooms.Contains(endRoom) && !ep3Warps.Contains(warp))
+                {
+                    ep3Warps.Add(warp);
+
+                    var startRoom = WarpsInRoom.First(roomAndWarps => roomAndWarps.Value.Contains(warp)).Key;
+                    if (!ep3Rooms.Contains(startRoom))
+                    {
+                        roomSetsChanged |= true;
+                        ep3Rooms.Add(startRoom);
+                    }
+
+                    foreach (var ifwv in WarpToIFWVs[warp])
+                    {
+                        var signal = ifwv.gameObject.AddComponent<AudioSignal>();
+                        signal._onlyAudibleToScope = true;
+                        signal._outerFogWarpVolume = RoomToOFWV[startRoom];
+
+                        APRandomizer.OWMLModConsole.WriteLine($"adding EP3 signal to {warp}");
+                        signal._frequency = SignalFrequency.EscapePod;
+                        signal._name = SignalName.EscapePod_DB;
+                        signal._owAudioSource = pod3Source;
+                    }
+                }
+            }
+        }
+
+        APRandomizer.OWMLModConsole.WriteLine($"finished adding signals, final warp sets were: {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
     }
 }
