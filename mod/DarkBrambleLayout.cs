@@ -50,7 +50,7 @@ internal class DarkBrambleLayout
         public Dictionary<DBWarp, DBRoom> warps;
     }
 
-    private static int Seed = 0;
+    private static int Seed = 42;
 
     private static DBLayout GenerateDBLayout()
     {
@@ -70,7 +70,6 @@ internal class DarkBrambleLayout
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
-        Seed++;
         var prng = new System.Random(Seed);
 
         var db = new DBLayout();
@@ -127,7 +126,7 @@ internal class DarkBrambleLayout
         return db;
     }
 
-    private static DBLayout CurrentDBLayout = null;
+    private static DBLayout CurrentDBLayout = GenerateDBLayout();
 
     // for testing
     [HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
@@ -141,6 +140,7 @@ internal class DarkBrambleLayout
         }
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
         {
+            Seed++;
             CurrentDBLayout = GenerateDBLayout();
             ApplyDBLayout();
         }
@@ -222,18 +222,39 @@ internal class DarkBrambleLayout
         APRandomizer.OWMLModConsole.WriteLine($"applying randomized Dark Bramble layout for seed={Seed}:\n" +
             $"space -> {CurrentDBLayout.entrance}\n{string.Join("\n", CurrentDBLayout.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
 
-        // Some inner and outer warps are not coupled. For most of these, the outer warps leave DB entirely, or are used for recursion.
-        // The main exception is Pioneer's outer warp trying to go "two zones back" to Hub.
-        // I don't think it's worth figuring out what "two zones back" means in a randomized DB layout,
-        // so I just edit this to also go directly outside.
-        RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
-
         EntranceIFVW._linkedOuterWarpVolume = RoomToOFWV[CurrentDBLayout.entrance];
+        EntranceIFVW._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW; // backing out of DB's first room should of course exit DB
 
         foreach (var (warp, room) in CurrentDBLayout.warps)
         {
-            foreach (var ifwv in WarpToIFWVs[warp]) ifwv._linkedOuterWarpVolume = RoomToOFWV[room];
-            // also edit the outer warps that go one zone back???
+            foreach (var ifwv in WarpToIFWVs[warp])
+            {
+                // This is the kind of warp we usually care about:
+                // When you go "into" a spherical portal in one room, which room do you end up in?
+                var newOFWVLink = RoomToOFWV[room];
+                ifwv._linkedOuterWarpVolume = newOFWVLink;
+
+                // Slightly more complex is "exiting" a DB room. When you pass through the room's OFWV, you emerge from its _linkedInnerWarpVolume.
+
+                // Most commonly, the _linkedInnerWarpVolume is one of DB's exits to space.
+                // We don't need to change these, so there's no code for them.
+
+                // Three OFWVs link to the "previous" room, so we need to change those to match our new layout.
+                if (newOFWVLink == RoomToOFWV[DBRoom.SmallNest] || newOFWVLink == RoomToOFWV[DBRoom.EscapePod] || newOFWVLink == RoomToOFWV[DBRoom.Cluster])
+                {
+                    // Unlike the vanilla layout, it's possible for there to be multiple entrances to one of these rooms,
+                    // but an OFWV can only have one "exit" / linked IFWV. We simply let the last entrance "win".
+                    ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = ifwv;
+                }
+
+                // The one unique case is Pioneer's OFWV linking "two zones back" to Hub.
+                // I don't think it's worth figuring out what "two zones back" should mean in all possible randomized DB layouts,
+                // so let's just edit this one to also go directly outside.
+                if (newOFWVLink == RoomToOFWV[DBRoom.Pioneer])
+                {
+                    RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
+                }
+            }
         }
 
         // keeping this test since it crashed???
