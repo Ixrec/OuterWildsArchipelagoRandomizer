@@ -51,22 +51,22 @@ internal class DarkBrambleLayout
         public DBRoom entrance;
         public Dictionary<DBWarp, DBRoom> warps;
     }
-
-    private static DBLayout GenerateDBLayout()
+ 
+    // Prototype generation code, before I ported it to Python.
+    /*
+     algorithm:
+    - call Pioneer, ExitOnly, Vessel and SmallNest the "dead end rooms"
+    - call Hub, Cluster, EscapePod, AnglerNest "transit rooms"/non-dead end rooms
+    - select a transit room for the entrance, initialize unmapped warps with that room's warps
+    - while there are transit rooms unused:
+        randomly select one of the unused warps, map it to a random unused transit room, add that room's warps to unmapped warps
+    - while there are unused dead end rooms:
+        randomly select one of the unused warps, map it to a random unused dead end room
+    - while there are still unmapped warps:
+        randomly pick any DB room to map them to
+     */
+    /*private static DBLayout GenerateDBLayout()
     {
-        /*
-         algorithm:
-        - call Pioneer, ExitOnly, Vessel and SmallNest the "dead end rooms"
-        - call Hub, Cluster, EscapePod, AnglerNest "transit rooms"/non-dead end rooms
-        - select a transit room for the entrance, initialize unmapped warps with that room's warps
-        - while there are transit rooms unused:
-            randomly select one of the unused warps, map it to a random unused transit room, add that room's warps to unmapped warps
-        - while there are unused dead end rooms:
-            randomly select one of the unused warps, map it to a random unused dead end room
-        - while there are still unmapped warps:
-            randomly pick any DB room to map them to
-         */
-
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
@@ -125,9 +125,14 @@ internal class DarkBrambleLayout
         }
 
         return db;
-    }
+    }*/
 
-    private static DBLayout CurrentDBLayout = GenerateDBLayout();
+    private static DBLayout CurrentDBLayout = null;
+
+    public static void ApplySlotDataLayout(string stringifiedLayout)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"DBL ApplySlotDataLayout: {stringifiedLayout}");
+    }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TravelerAudioManager), nameof(TravelerAudioManager.SyncTravelers))]
     public static void TravelerAudioManager_SyncTravelers_Prefix(TravelerAudioManager __instance)
