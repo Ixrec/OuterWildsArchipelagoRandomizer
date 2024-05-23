@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using Epic.OnlineServices.Presence;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ArchipelagoRandomizer;
 
@@ -50,8 +52,6 @@ internal class DarkBrambleLayout
         public Dictionary<DBWarp, DBRoom> warps;
     }
 
-    private static int Seed = 42;
-
     private static DBLayout GenerateDBLayout()
     {
         /*
@@ -70,6 +70,7 @@ internal class DarkBrambleLayout
         var unusedTransitRooms = new List<DBRoom> { DBRoom.Hub, DBRoom.Cluster, DBRoom.EscapePod, DBRoom.AnglerNest };
         var unusedDeadEndRooms = new List<DBRoom> { DBRoom.Pioneer, DBRoom.ExitOnly, DBRoom.Vessel, DBRoom.SmallNest };
 
+        int Seed = 42;
         var prng = new System.Random(Seed);
 
         var db = new DBLayout();
@@ -127,24 +128,6 @@ internal class DarkBrambleLayout
     }
 
     private static DBLayout CurrentDBLayout = GenerateDBLayout();
-
-    // for testing
-    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
-    public static void ToolModeUI_Update_Prefix()
-    {
-        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
-        {
-        }
-        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.right2))
-        {
-        }
-        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
-        {
-            Seed++;
-            CurrentDBLayout = GenerateDBLayout();
-            ApplyDBLayout();
-        }
-    }
 
     [HarmonyPrefix, HarmonyPatch(typeof(TravelerAudioManager), nameof(TravelerAudioManager.SyncTravelers))]
     public static void TravelerAudioManager_SyncTravelers_Prefix(TravelerAudioManager __instance)
@@ -215,12 +198,14 @@ internal class DarkBrambleLayout
     {
         if (CurrentDBLayout == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() returning early because DB has not been randomized");
+            APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() doing nothing because DB has not been randomized");
             return;
         }
 
-        APRandomizer.OWMLModConsole.WriteLine($"applying randomized Dark Bramble layout for seed={Seed}:\n" +
-            $"space -> {CurrentDBLayout.entrance}\n{string.Join("\n", CurrentDBLayout.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
+        APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() applying randomized Dark Bramble layout: " +
+            $"space -> {CurrentDBLayout.entrance}, {string.Join(",", CurrentDBLayout.warps.Select(wr => $"{wr.Key}->{wr.Value}"))}");
+
+        // Edit the warps between DB rooms
 
         EntranceIFVW._linkedOuterWarpVolume = RoomToOFWV[CurrentDBLayout.entrance];
         EntranceIFVW._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW; // backing out of DB's first room should of course exit DB
@@ -257,7 +242,7 @@ internal class DarkBrambleLayout
             }
         }
 
-        // keeping this test since it crashed???
+        // this setup crashed on entering DB, keeping here in case I want to debug it further
         /*
         entranceIFVW._linkedOuterWarpVolume = clusterOFWV;
         foreach (var ifvw in clusterToPioneerIFVWs) ifvw._linkedOuterWarpVolume = vesselOFWV;// hubOFWV; <- stackless crash???
@@ -267,50 +252,34 @@ internal class DarkBrambleLayout
         foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
         */
 
-        // Next, deal with the Signalscope signals.
-
-        var signals = GameObject.FindObjectsOfType<AudioSignal>();
-
+        // Edit the Signalscope signal sources inside DB
         // We can't directly "move" a signal. Instead we have to delete the vanilla signals
-        // we've made incorrect, and create new ones in the correct places.
+        // that layout rando might make incorrect, and create new ones in the correct places.
 
         // In the vanilla layout, Hub and Cluster are the only two DB rooms with "transitive" signals,
         // which are the ones we need to clean up.
         // Fortunately, these rooms do not contain any "root" signals that we want to leave alone,
         // so we can simply delete every signal in these two rooms.
-        var signalsToDelete = signals.Where(s => {
+        foreach (var s in GameObject.FindObjectsOfType<AudioSignal>()) {
             var ofwv = s._outerFogWarpVolume;
-            return ofwv == RoomToOFWV[DBRoom.Hub] || ofwv == RoomToOFWV[DBRoom.Cluster];
-        });
-        APRandomizer.OWMLModConsole.WriteLine($"signalsToDelete {signalsToDelete.Count()} - {string.Join("|", signalsToDelete)}");
+            if (ofwv == RoomToOFWV[DBRoom.Hub] || ofwv == RoomToOFWV[DBRoom.Cluster])
+                s.gameObject.DestroyAllComponents<AudioSignal>();
+        };
 
-        // While deleting these signals, take references to their audio sources to help create the replacement signals.
-        OWAudioSource harmonicaSource = null;
-        OWAudioSource pod3Source = null;
-
-        foreach (var s in signalsToDelete)
-        {
-            if (s.name == "Signal_Harmonica" && harmonicaSource == null)
-                harmonicaSource = s._owAudioSource;
-            if (s.name == "Signal_EscapePod" && pod3Source == null)
-                pod3Source = s._owAudioSource;
-
-            APRandomizer.OWMLModConsole.WriteLine($"deleting signals on {s.gameObject.transform.parent}/{s.gameObject}");
-            s.gameObject.DestroyAllComponents<AudioSignal>();
-        }
-
+        // Figuring out everywhere we need to add a signal is more involved.
+        // Since there may be several routes to each "real" signal source with branches diverging and convering,
+        // we start from the rooms with the real sources, look for all direct connections to those rooms, and
+        // do a sort of fixed point iteration until we can no longer find a room/warp that's missing a signal.
         HashSet<DBRoom> harmonicaRooms = new HashSet<DBRoom> { DBRoom.Pioneer };
         HashSet<DBRoom> ep3Rooms = new HashSet<DBRoom> { DBRoom.EscapePod };
         HashSet<DBWarp> harmonicaWarps = new();
         HashSet<DBWarp> ep3Warps = new();
 
-        APRandomizer.OWMLModConsole.WriteLine($"start adding signals");
         bool roomSetsChanged = true;
         while (roomSetsChanged)
         {
             roomSetsChanged = false;
 
-            APRandomizer.OWMLModConsole.WriteLine($"checking if more signals need to be added after {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
             foreach (var (warp, endRoom) in CurrentDBLayout.warps)
             {
                 if (harmonicaRooms.Contains(endRoom) && !harmonicaWarps.Contains(warp))
@@ -325,16 +294,7 @@ internal class DarkBrambleLayout
                     }
 
                     foreach (var ifwv in WarpToIFWVs[warp])
-                    {
-                        var signal = ifwv.gameObject.AddComponent<AudioSignal>();
-                        signal._onlyAudibleToScope = true;
-                        signal._outerFogWarpVolume = RoomToOFWV[startRoom];
-
-                        APRandomizer.OWMLModConsole.WriteLine($"adding harmonica signal to {warp}");
-                        signal._frequency = SignalFrequency.Traveler;
-                        signal._name = SignalName.Traveler_Feldspar;
-                        signal._owAudioSource = harmonicaSource;
-                    }
+                        AddSignalToGO(ifwv.gameObject, RoomToOFWV[startRoom], SignalFrequency.Traveler, SignalName.Traveler_Feldspar, AudioType.TravelerFeldspar);
                 }
 
                 if (ep3Rooms.Contains(endRoom) && !ep3Warps.Contains(warp))
@@ -349,20 +309,42 @@ internal class DarkBrambleLayout
                     }
 
                     foreach (var ifwv in WarpToIFWVs[warp])
-                    {
-                        var signal = ifwv.gameObject.AddComponent<AudioSignal>();
-                        signal._onlyAudibleToScope = true;
-                        signal._outerFogWarpVolume = RoomToOFWV[startRoom];
-
-                        APRandomizer.OWMLModConsole.WriteLine($"adding EP3 signal to {warp}");
-                        signal._frequency = SignalFrequency.EscapePod;
-                        signal._name = SignalName.EscapePod_DB;
-                        signal._owAudioSource = pod3Source;
-                    }
+                        AddSignalToGO(ifwv.gameObject, RoomToOFWV[startRoom], SignalFrequency.EscapePod, SignalName.EscapePod_DB, AudioType.NomaiEscapePodDistressSignal_LP);
                 }
             }
         }
 
         APRandomizer.OWMLModConsole.WriteLine($"finished adding signals, final warp sets were: {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
+    }
+
+    private static void AddSignalToGO(GameObject go, OuterFogWarpVolume ofwv, SignalFrequency frequency, SignalName signalName, AudioType audioType)
+    {
+        // Much of this is imitating New Horizons' SignalBuilder.Make() and GeneralAudioBuilder.Make().
+        // I'm unsure exactly how much of it is necessary.
+
+        var source = go.AddComponent<AudioSource>();
+        var owAudioSource = go.AddComponent<OWAudioSource>();
+        owAudioSource._audioSource = source;
+        owAudioSource._audioLibraryClip = audioType;
+        owAudioSource.playOnAwake = false;
+        owAudioSource.SetTrack(OWAudioMixer.TrackName.Signal);
+
+        source.loop = true;
+        source.minDistance = 1.5f;
+        source.maxDistance = 200;
+        source.velocityUpdateMode = AudioVelocityUpdateMode.Fixed;
+        source.rolloffMode = AudioRolloffMode.Custom;
+        source.spatialBlend = 1f;
+        source.volume = 0;
+        source.dopplerLevel = 0;
+
+        var signal = go.AddComponent<AudioSignal>();
+        signal._onlyAudibleToScope = true;
+        signal._outerFogWarpVolume = ofwv;
+        signal.SetSector(Locator.GetAstroObject(AstroObject.Name.DarkBramble).GetRootSector());
+
+        signal._frequency = frequency;
+        signal._name = signalName;
+        signal._owAudioSource = owAudioSource;
     }
 }
