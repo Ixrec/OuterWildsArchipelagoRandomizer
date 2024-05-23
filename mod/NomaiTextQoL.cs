@@ -36,8 +36,8 @@ namespace ArchipelagoRandomizer
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.SetAsTranslated))]
         public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
-            // This code is copied from the base game and overrides the original method
             if (!AutoNomaiText) return true;
+            // This code is copied from the base game and overrides the original method
             base_SetAsTranslated(__instance, id);
             bool revealedChildren = false;
             if (__instance._idToNodeDict.ContainsKey(id))
@@ -76,6 +76,9 @@ namespace ArchipelagoRandomizer
                         if (!__instance._idToNodeDict[id].Value.IsTranslated())
                         {
                             __instance._idToNodeDict[id].Value.SetTranslatedState(false);
+                            // The following code is normally responsible for expanding the next arc and sets its color (despite its color having already been set)
+                            // Since we don't need it to do any of that, we cut out most of the code and checks it performs
+                            // This is left in just in case "revealedChildren" is used in other parts of code or by other mods
                             if (!NomaiWallText.s_revealAllAtStart)
                             {
                                 for (int i = 0; i < owtreeNode.Children.Count; i++)
