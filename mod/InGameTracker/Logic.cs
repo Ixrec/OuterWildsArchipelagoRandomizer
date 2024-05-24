@@ -237,7 +237,7 @@ public class Logic
                 tracker.OWLocations[loc.name].hasBeenChecked = true;
                 tracker.OWLocations[loc.name].hintText = "";
             }
-            else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+            // else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
         }
     }
 

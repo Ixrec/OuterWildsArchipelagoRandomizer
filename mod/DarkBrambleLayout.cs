@@ -256,40 +256,8 @@ internal class DarkBrambleLayout
 
         // Edit the warps between DB rooms
 
-        EntranceIFVW._linkedOuterWarpVolume = RoomToOFWV[CurrentDBLayout.entrance];
-        EntranceIFVW._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW; // backing out of DB's first room should of course exit DB
-
-        foreach (var (warp, room) in CurrentDBLayout.warps)
-        {
-            foreach (var ifwv in WarpToIFWVs[warp])
-            {
-                // This is the kind of warp we usually care about:
-                // When you go "into" a spherical portal in one room, which room do you end up in?
-                var newOFWVLink = RoomToOFWV[room];
-                ifwv._linkedOuterWarpVolume = newOFWVLink;
-
-                // Slightly more complex is "exiting" a DB room. When you pass through the room's OFWV, you emerge from its _linkedInnerWarpVolume.
-
-                // Most commonly, the _linkedInnerWarpVolume is one of DB's exits to space.
-                // We don't need to change these, so there's no code for them.
-
-                // Three OFWVs link to the "previous" room, so we need to change those to match our new layout.
-                if (newOFWVLink == RoomToOFWV[DBRoom.SmallNest] || newOFWVLink == RoomToOFWV[DBRoom.EscapePod] || newOFWVLink == RoomToOFWV[DBRoom.Cluster])
-                {
-                    // Unlike the vanilla layout, it's possible for there to be multiple entrances to one of these rooms,
-                    // but an OFWV can only have one "exit" / linked IFWV. We simply let the last entrance "win".
-                    ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = ifwv;
-                }
-
-                // The one unique case is Pioneer's OFWV linking "two zones back" to Hub.
-                // I don't think it's worth figuring out what "two zones back" should mean in all possible randomized DB layouts,
-                // so let's just edit this one to also go directly outside.
-                if (newOFWVLink == RoomToOFWV[DBRoom.Pioneer])
-                {
-                    RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
-                }
-            }
-        }
+        //EntranceIFVW._linkedOuterWarpVolume = RoomToOFWV[CurrentDBLayout.entrance];
+        //EntranceIFVW._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW; // backing out of DB's first room should of course exit DB
 
         // this setup crashed on entering DB, keeping here in case I want to debug it further
         /*
@@ -300,6 +268,72 @@ internal class DarkBrambleLayout
         foreach (var ifvw in hubToClusterIFVWs) ifvw._linkedOuterWarpVolume = pioneerOFWV;
         foreach (var ifvw in hubToEscapePodIFVWs) ifvw._linkedOuterWarpVolume = smallNestOFWV;
         */
+
+        // "H->SCEA|C->PX|E->A|A->V"
+        // "C->XA|H->SVSC|E->P|A->HE"
+
+        // "H->SCEA|C->PX|E->A|A->H"
+        foreach (var (warp, room) in CurrentDBLayout.warps)
+        {
+            // if the only change from vanilla is AnglerNest1 -> Hub, we DO crash
+            // if we set AnglerNest1 -> Hub and all other warps -> SmallNest, we do NOT crash
+            // if we set AnglerNest1 -> Hub, leave Hub2-3 vanilla (CE), and all other warps -> SmallNest, we DO crash
+            // if we set AnglerNest2 -> Hub, leave Hub2-3 vanilla (CE), and all other warps -> SmallNest, we DO crash
+
+            APRandomizer.OWMLModConsole.WriteLine($"actually editing warp {warp}");
+            foreach (var ifwv in WarpToIFWVs[warp])
+            {
+                ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW;
+                if (warp == DBWarp.Hub2) continue;
+                if (warp == DBWarp.Hub3) continue;
+
+                if (warp == DBWarp.Hub1)
+                {
+                    ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.AnglerNest];
+                    continue;
+                }
+
+                if (warp == DBWarp.AnglerNest2)
+                {
+                    ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.Hub];
+                    continue;
+                }
+
+                /*if (warp == DBWarp.AnglerNest1)
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"actually editing ifwv {ifwv.transform.parent}/{ifwv}");
+                    // This is the kind of warp we usually care about:
+                    // When you go "into" a spherical portal in one room, which room do you end up in?
+                    var newOFWVLink = RoomToOFWV[room];
+                    ifwv._linkedOuterWarpVolume = newOFWVLink;
+                    continue;
+                }*/
+
+                ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.SmallNest];
+                continue;/*
+                // Slightly more complex is "exiting" a DB room. When you pass through the room's OFWV, you emerge from its _linkedInnerWarpVolume.
+
+                // Most commonly, the _linkedInnerWarpVolume is one of DB's exits to space.
+                // We don't need to change these, so there's no code for them.
+
+                // Three OFWVs link to the "previous" room, so we need to change those to match our new layout.
+                if (newOFWVLink == RoomToOFWV[DBRoom.SmallNest] || newOFWVLink == RoomToOFWV[DBRoom.EscapePod] || newOFWVLink == RoomToOFWV[DBRoom.Cluster])
+                {
+                    // Unlike the vanilla layout, it's possible for there to be multiple entrances to one of these rooms,
+                    // but an OFWV can only have one "exit" / linked IFWV. We simply let the last entrance "win".
+                    ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW;
+                }
+
+                // The one unique case is Pioneer's OFWV linking "two zones back" to Hub.
+                // I don't think it's worth figuring out what "two zones back" should mean in all possible randomized DB layouts,
+                // so let's just edit this one to also go directly outside.
+                if (newOFWVLink == RoomToOFWV[DBRoom.Pioneer])
+                {
+                    RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
+                }*/
+            }
+        }
+        return;
 
         // Edit the Signalscope signal sources inside DB
         // We can't directly "move" a signal. Instead we have to delete the vanilla signals
