@@ -2,6 +2,7 @@
 using System.Linq;
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer
 {
@@ -11,6 +12,13 @@ namespace ArchipelagoRandomizer
         public static bool AutoNomaiText;
         public static bool ColorNomaiText = true;
         public static float TranslateTime = 0.2f;
+
+        public static Dictionary<string, Location> ManualScrollLocations = new()
+        {
+            { "Arc_BH_City_School_BigBangLesson", Location.BH_SOLANUM_REPORT },
+            { "Arc_TT_Tower_CT", Location.AT_HGT_TOWERS },
+            { "Arc_TT_Tower_BH_1", Location.AT_BH_TOWER }
+        };
 
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
@@ -25,6 +33,30 @@ namespace ArchipelagoRandomizer
                 {
                     var nomaiTextData = __instance._listDBConditions[i];
                     if (string.IsNullOrEmpty(nomaiTextData.DatabaseID)) continue;
+
+                    // fix for single arcs
+                    if (__instance._textLines.Length == 1)
+                    {
+                        CheckHintData hintData = __instance._textLines[0].gameObject.GetAddComponent<CheckHintData>();
+
+                        // DatabaseID is the ship log name
+                        string log = nomaiTextData.DatabaseID;
+
+                        // Check for Location Triggers
+                        if (LocationTriggers.logFactToDefaultLocation.ContainsKey(log))
+                        {
+                            hintData.DetermineImportance(LocationTriggers.logFactToDefaultLocation[log]);
+                        }
+
+                        // Check for Logsanity checks
+                        bool isALog = Enum.TryParse<Location>("SLF__" + nomaiTextData.DatabaseID, out Location loc);
+                        if (isALog && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0)
+                        {
+                            hintData.DetermineImportance(loc);
+                        }
+                        continue;
+                    }
+
                     //APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} log found: {nomaiTextData.DatabaseID}");
                     for (int j = 0; j < nomaiTextData.ConditionBlock.Length; j++)
                     {
@@ -39,16 +71,6 @@ namespace ArchipelagoRandomizer
                                 APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} changing color for {textLine.gameObject.name}", OWML.Common.MessageType.Success);
 
                                 CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
-
-                                // Manual locations
-                                string textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
-
-                                switch (textAssetName)
-                                {
-                                    case "BH_City_School_BigBangLesson": hintData.DetermineImportance(Location.BH_SOLANUM_REPORT); break;
-                                    case "TT_Tower_CT": hintData.DetermineImportance(Location.AT_HGT_TOWERS); break;
-                                    case "TT_Tower_BH_1": hintData.DetermineImportance(Location.AT_BH_TOWER); break;
-                                }
 
                                 // DatabaseID is the ship log name
                                 string log = nomaiTextData.DatabaseID;
@@ -68,6 +90,15 @@ namespace ArchipelagoRandomizer
                             }
                         }
                     }
+                }
+
+                // For manually marked scrolls
+                if (ManualScrollLocations.ContainsKey(__instance.gameObject.name))
+                {
+                    NomaiTextLine textLine = __instance.transform.GetComponentInChildren<NomaiTextLine>();
+                    CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
+
+                    hintData.DetermineImportance(ManualScrollLocations[__instance.gameObject.name]);
                 }
             }
 
@@ -104,13 +135,14 @@ namespace ArchipelagoRandomizer
         }
 
         // fixes for the text not becoming properly grey when read
-        [HarmonyReversePatch, HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
+        [HarmonyReversePatch(HarmonyReversePatchType.Snapshot), HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
         public static void base_SetAsTranslated(NomaiText instance, int id) { }
 
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.SetAsTranslated))]
         public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
             if (!AutoNomaiText) return true;
+            if (ManualScrollLocations.ContainsKey(__instance.gameObject.name)) return true;
             // This code is copied from the base game and overrides the original method
             base_SetAsTranslated(__instance, id);
             bool revealedChildren = false;

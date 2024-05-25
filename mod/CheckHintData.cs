@@ -71,6 +71,7 @@ namespace ArchipelagoRandomizer
         public void DetermineImportance(Location loc)
         {
             locations.Add(loc);
+            if (APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[loc])) HasBeenFound = true;
 
             switch (Scouter.ScoutedLocations[loc].Flags)
             {
