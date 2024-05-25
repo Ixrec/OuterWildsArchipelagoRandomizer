@@ -90,6 +90,19 @@ namespace ArchipelagoRandomizer
             }
         }
 
+        [HarmonyPrefix, HarmonyPatch(typeof(NomaiTextLine), nameof(NomaiTextLine.DetermineTextLineColor))]
+        public static bool NomaiTextLine_DetermineTextLineColor_Prefix(NomaiText __instance, ref NomaiTextLine.VisualState state, ref Color __result)
+        {
+            CheckHintData data = __instance.GetComponent<CheckHintData>();
+            if (!ColorNomaiText || data == null || state != NomaiTextLine.VisualState.UNREAD || data.locations.Count == 0)
+            {
+                return true;
+            }
+
+            __result = data.NomaiWallColor();
+            return false;
+        }
+
         // fixes for the text not becoming properly grey when read
         [HarmonyReversePatch, HarmonyPatch(typeof(NomaiText), nameof(NomaiText.SetAsTranslated))]
         public static void base_SetAsTranslated(NomaiText instance, int id) { }
