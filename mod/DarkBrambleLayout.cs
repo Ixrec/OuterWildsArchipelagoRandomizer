@@ -283,7 +283,7 @@ internal class DarkBrambleLayout
             APRandomizer.OWMLModConsole.WriteLine($"actually editing warp {warp}");
             foreach (var ifwv in WarpToIFWVs[warp])
             {
-                if (warp == DBWarp.AnglerNest2)
+                if (warp == DBWarp.AnglerNest1)
                 {
                     ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.Hub];
                     continue;

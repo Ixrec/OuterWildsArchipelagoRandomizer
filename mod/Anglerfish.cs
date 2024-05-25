@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -92,75 +94,36 @@ internal class Anglerfish
         );
     }
 
-    // the DB crash happens if ReceiveWarpedDetector runs either RepositionWarpedBody or AddObjectToVolume(detector.gameObject)
-    [HarmonyPrefix, HarmonyPatch(typeof(FogWarpVolume), nameof(FogWarpVolume.ReceiveWarpedDetector))]
-    public static bool FogWarpVolume_ReceiveWarpedDetector(FogWarpVolume __instance, FogWarpDetector detector, Vector3 localRelVelocity, Vector3 localPos, Quaternion localRot)
+    private static HashSet<OuterFogWarpVolume.Name> VisitedOFWVs = new();
+
+    [HarmonyPrefix, HarmonyPatch(typeof(OuterFogWarpVolume), nameof(OuterFogWarpVolume.PropagateCanvasMarkerOutwards))]
+    public static bool OuterFogWarpVolume_PropagateCanvasMarkerOutwards(OuterFogWarpVolume __instance, CanvasMarker marker, bool addMarker, float warpDist = 0f)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector {__instance} {detector}");
-
-        OWRigidbody owrigidbody = detector.GetOWRigidbody();
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector A");
-        bool flag = detector.CompareName(FogWarpDetector.Name.Player) && PlayerState.IsAttached() && !PlayerState.IsInsideShip();
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector B");
-        if (flag)
+        var ofwvName = marker.GetOuterFogWarpVolume().GetName();
+        if (VisitedOFWVs.Contains(ofwvName))
         {
-            APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector B1");
-            owrigidbody = detector.GetOWRigidbody().transform.parent.GetComponentInParent<OWRigidbody>();
-            MonoBehaviour.print("body to reposition: " + owrigidbody.name);
-        }
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector C");
-        //__instance.RepositionWarpedBody(owrigidbody, localRelVelocity, localPos, localRot); // causes delayed crash
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector D");
-        if (flag)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector D1");
-            GlobalMessenger.FireEvent("PlayerRepositioned");
-        }
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector E");
-        if (detector.CompareName(FogWarpDetector.Name.Ship) && PlayerState.IsInsideShip())
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector E1");
-            __instance._sector.GetTriggerVolume().AddObjectToVolume(Locator.GetPlayerDetector());
-            __instance._sector.GetTriggerVolume().AddObjectToVolume(Locator.GetPlayerCameraDetector());
-        }
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector F");
-        __instance._sector.GetTriggerVolume().AddObjectToVolume(detector.gameObject); // crashes immediately
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector G");
-        detector.OnFogWarp();
-        APRandomizer.OWMLModConsole.WriteLine($"FogWarpVolume_ReceiveWarpedDetector H");
-
-
-        return false;
-    }
-    [HarmonyPrefix, HarmonyPatch(typeof(OWTriggerVolume), nameof(OWTriggerVolume.AddObjectToVolume))]
-    public static bool OWTriggerVolume_AddObjectToVolume(OWTriggerVolume __instance, GameObject hitObj)
-    {
-        APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume {__instance} {hitObj}");
-
-        if (!__instance._active)
-        {
+            //APRandomizer.OWMLModConsole.WriteLine($"detected duplicate OFWV.PropagateCanvasMarkerOutwards() calls on {ofwvName}, skipping base game code to prevent infinite loop");
+            if (marker.GetSecondaryLabelType() == CanvasMarker.SecondaryLabelType.NONE)
+            {
+                //APRandomizer.OWMLModConsole.WriteLine($"adding custom duplicate warning to {marker._label} marker since it has none of the vanilla warnings");
+                marker._dangerIndicatorRootObj.SetActive(true);
+                marker._markerWarningImageObj.SetActive(false);
+                marker._secondaryTextField.text = "WARNING: DUPLICATE SIGNAL(S) DETECTED, UNABLE TO PINPOINT DIRECTION";
+                marker._secondaryTextField.SetAllDirty();
+            }
             return false;
         }
-        if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume A");
-        if (__instance._trackedObjects.SafeAdd(hitObj))
+        else
         {
-            if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume A1");
-            __instance.AddHitObjectListeners(hitObj);
-            if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume A1.5");
-            __instance.FireEntryEvent(hitObj);
-            if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume A2");
-            return false;
+            VisitedOFWVs.Add(ofwvName);
+            return true;
         }
-        if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume B");
-        Debug.LogWarning("OWTriggerVolume " + __instance.gameObject.name + " already contains " + hitObj.name, __instance);
-        if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume C");
-        if (!__instance._ignoreDuplicateOccupantWarning && __instance._childEntryways.Count == 0 && __instance._sharedEntryways.Length == 0)
-        {
-            if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume C1");
-            Debug.Break();
-        }
-        if (__instance.name == "Sector_HubDimension") APRandomizer.OWMLModConsole.WriteLine($"OWTriggerVolume_AddObjectToVolume D");
-
-        return false;
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(CanvasMarker), nameof(CanvasMarker.OnTrackFogWarpVolume))]
+    public static void CanvasMarker_OnTrackFogWarpVolume(CanvasMarker __instance, FogWarpVolume warpVolume) => VisitedOFWVs = new();
+    [HarmonyPrefix, HarmonyPatch(typeof(CanvasMarker), nameof(CanvasMarker.OnUntrackFogWarpVolume))]
+    public static void CanvasMarker_OnUntrackFogWarpVolume(CanvasMarker __instance, FogWarpVolume warpVolume) => VisitedOFWVs = new();
+    [HarmonyPrefix, HarmonyPatch(typeof(CanvasMarkerManager), nameof(CanvasMarkerManager.UpdateAllFogMarkers))]
+    public static void CanvasMarkerManager_UpdateAllFogMarkers(CanvasMarkerManager __instance) => VisitedOFWVs = new();
 }
