@@ -10,9 +10,10 @@ namespace ArchipelagoRandomizer
         // we record them and their other location checks here in a list
         // so we can easily see them in Unity Explorer
         // Currently unused in any code but may use it later
-        public List<Location> locations = new List<Location>();
+        public List<Location> Locations = new List<Location>();
         public CheckImportance Importance = CheckImportance.Junk;
         public bool HasBeenFound = false;
+        public bool IsChildText = false;
 
         public static readonly Color JunkColor = new(0.5f, 1.5f, 1.5f, 1);
         public static readonly Color UsefulColor = new(0.5f, 1.8f, 0.5f, 1);
@@ -31,7 +32,22 @@ namespace ArchipelagoRandomizer
             }
         }
 
+        public static Material NormalTextMat
+        {
+            get
+            {
+                if (normalTextMat == null)
+                    normalTextMat = Locator.GetAstroObject(AstroObject.Name.TimberHearth).transform
+                        .Find("Sector_TH/Sector_Village/Sector_Observatory/Interactables_Observatory/NomaiEyeExhibit/NomaiEyePivot/Arc_TH_Museum_EyeSymbol/Arc 1")
+                        .GetComponent<Renderer>().material;
+                return normalTextMat;
+            }
+        }
+
         private static Material childTextMat;
+        private static Material normalTextMat;
+
+        private Renderer rend;
 
         public Color NomaiWallColor()
         {
@@ -70,8 +86,15 @@ namespace ArchipelagoRandomizer
 
         public void DetermineImportance(Location loc)
         {
-            locations.Add(loc);
+            rend = GetComponent<Renderer>();
+
+            Locations.Add(loc);
             if (APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[loc])) HasBeenFound = true;
+
+            if (Importance != CheckImportance.Trap)
+            {
+                if (rend.material.name.Contains("TextChild")) IsChildText = true;
+            }
 
             switch (Scouter.ScoutedLocations[loc].Flags)
             {
@@ -86,14 +109,9 @@ namespace ArchipelagoRandomizer
                     break;
                 case ItemFlags.Trap:
                     SetImportance(CheckImportance.Trap);
-                    GetComponent<Renderer>().material = ChildTextMat; // TODO make this depend on whether it's already a child arc
+                    rend.material = IsChildText ? NormalTextMat : ChildTextMat;
                     break;
             }
-        }
-
-        private void Awake()
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"I've been added to {transform.parent.name}/{gameObject.name}!");
         }
     }
     public enum CheckImportance

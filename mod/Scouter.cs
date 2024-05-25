@@ -22,7 +22,6 @@ namespace ArchipelagoRandomizer
 
         public void ScoutAllLocations(ArchipelagoSession session)
         {
-            APRandomizer.OWMLModConsole.WriteLine("Starting scout process...", OWML.Common.MessageType.Message);
             ScoutedLocations = new();
             List<long> locationIDs = new List<long>();
             foreach (Location loc in LocationNames.locationNames.Keys)
@@ -37,16 +36,13 @@ namespace ArchipelagoRandomizer
 
                 locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
             }
-            APRandomizer.OWMLModConsole.WriteLine($"Compiled list of locations to scout, with {locationIDs.Count} entries...", OWML.Common.MessageType.Message);
 
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
             session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
             {
-                APRandomizer.OWMLModConsole.WriteLine("Scouting items...", OWML.Common.MessageType.Message);
                 foreach (NetworkItem location in locationInfoPacket.Result.Locations)
                 {
                     Location name = LocationNames.archipelagoIdToLocation[location.Location];
-                    APRandomizer.OWMLModConsole.WriteLine($"Adding location {name}");
                     string item = session.Items.GetItemName(location.Item) == null ? "UNKNOWN ITEM" : session.Items.GetItemName(location.Item);
                     ScoutedLocations.Add(name, new(item, location.Player, location.Flags));
                 }

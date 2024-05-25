@@ -68,7 +68,6 @@ namespace ArchipelagoRandomizer
                             if (__instance._dictNomaiTextData.ContainsKey(key))
                             {
                                 var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
-                                APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} changing color for {textLine.gameObject.name}", OWML.Common.MessageType.Success);
 
                                 CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
 
@@ -125,7 +124,7 @@ namespace ArchipelagoRandomizer
         public static bool NomaiTextLine_DetermineTextLineColor_Prefix(NomaiText __instance, ref NomaiTextLine.VisualState state, ref Color __result)
         {
             CheckHintData data = __instance.GetComponent<CheckHintData>();
-            if (!ColorNomaiText || data == null || state != NomaiTextLine.VisualState.UNREAD || data.locations.Count == 0)
+            if (!ColorNomaiText || data == null || state != NomaiTextLine.VisualState.UNREAD || data.Locations.Count == 0)
             {
                 return true;
             }
