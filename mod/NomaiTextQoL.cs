@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+using System.Linq;
+using System;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer
 {
@@ -6,26 +9,84 @@ namespace ArchipelagoRandomizer
     internal class NomaiTextQoL
     {
         public static bool AutoNomaiText;
+        public static bool ColorNomaiText = true;
         public static float TranslateTime = 0.2f;
 
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
         public static void NomaiWallText_LateInitialize_Postfix(NomaiWallText __instance)
         {
-            if (!AutoNomaiText) return;
-            foreach (NomaiTextLine child in __instance.GetComponentsInChildren<NomaiTextLine>())
+            if (ColorNomaiText)
             {
-                child._state = NomaiTextLine.VisualState.UNREAD;
+                // we can't directly get the logs connected to arcs,
+                // so we have to do this roundabout system (also used in base game)
+                // to iterate through a bunch of conditions, and find the arc that matches the condition of the log
+                for (int i = 0; i < __instance._listDBConditions.Count; i++)
+                {
+                    var nomaiTextData = __instance._listDBConditions[i];
+                    if (string.IsNullOrEmpty(nomaiTextData.DatabaseID)) continue;
+                    //APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} log found: {nomaiTextData.DatabaseID}");
+                    for (int j = 0; j < nomaiTextData.ConditionBlock.Length; j++)
+                    {
+                        for (int k = 0; k < nomaiTextData.ConditionBlock[j].Length; k++)
+                        {
+                            int key = nomaiTextData.ConditionBlock[j][k];
+                            // if this succeeds we've found an arc that matches the conditions, and thus we can find which log is attached
+                            // I don't understand it either, blame Mobius making this system far more complicated than it needed to be
+                            if (__instance._dictNomaiTextData.ContainsKey(key))
+                            {
+                                var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
+                                APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} changing color for {textLine.gameObject.name}", OWML.Common.MessageType.Success);
+
+                                CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
+
+                                // Manual locations
+                                string textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
+
+                                switch (textAssetName)
+                                {
+                                    case "BH_City_School_BigBangLesson": hintData.DetermineImportance(Location.BH_SOLANUM_REPORT); break;
+                                    case "TT_Tower_CT": hintData.DetermineImportance(Location.AT_HGT_TOWERS); break;
+                                    case "TT_Tower_BH_1": hintData.DetermineImportance(Location.AT_BH_TOWER); break;
+                                }
+
+                                // DatabaseID is the ship log name
+                                string log = nomaiTextData.DatabaseID;
+
+                                // Check for Location Triggers
+                                if (LocationTriggers.logFactToDefaultLocation.ContainsKey(log))
+                                {
+                                    hintData.DetermineImportance(LocationTriggers.logFactToDefaultLocation[log]);
+                                }
+
+                                // Check for Logsanity checks
+                                bool isALog = Enum.TryParse<Location>("SLF__" + nomaiTextData.DatabaseID, out Location loc);
+                                if (isALog && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0)
+                                {
+                                    hintData.DetermineImportance(loc);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            // Ignore scrolls if they aren't socketed
-            bool isScroll = __instance.transform.GetComponentInParent<ScrollItem>() != null;
-            bool isSocketed = __instance.transform.GetComponentInParent<ScrollSocket>() != null;
-            bool isAProjectionWall = __instance.transform.GetComponentInParent<NomaiSharedWhiteboard>() != null;
-
-            if ((!isScroll || isSocketed) && !isAProjectionWall)
+            if (AutoNomaiText)
             {
-                __instance.ShowImmediate();
+                foreach (NomaiTextLine child in __instance.GetComponentsInChildren<NomaiTextLine>())
+                {
+                    child._state = NomaiTextLine.VisualState.UNREAD;
+                }
+
+                // Ignore scrolls if they aren't socketed
+                bool isScroll = __instance.transform.GetComponentInParent<ScrollItem>() != null;
+                bool isSocketed = __instance.transform.GetComponentInParent<ScrollSocket>() != null;
+                bool isAProjectionWall = __instance.transform.GetComponentInParent<NomaiSharedWhiteboard>() != null;
+
+                if ((!isScroll || isSocketed) && !isAProjectionWall)
+                {
+                    __instance.ShowImmediate();
+                }
             }
         }
 

@@ -9,7 +9,7 @@ namespace ArchipelagoRandomizer;
 internal class LocationTriggers
 {
     // Only for default locations. Logsanity locations have the log fact in their id so they don't need an additional hardcoded map.
-    static Dictionary<string, Location> logFactToDefaultLocation = new Dictionary<string, Location>{
+    public static Dictionary<string, Location> logFactToDefaultLocation = new Dictionary<string, Location>{
         { "S_SUNSTATION_X2", Location.SS },
 
         { "CT_HIGH_ENERGY_LAB_X3", Location.ET_HEL },
