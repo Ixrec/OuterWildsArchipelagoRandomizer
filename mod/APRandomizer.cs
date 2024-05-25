@@ -47,6 +47,7 @@ public class APRandomizer : ModBehaviour
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
     public static TrackerManager Tracker;
+    public static Scouter LocationScouter;
 
     /// <summary>
     /// Runs whenever a new session is created
@@ -320,6 +321,8 @@ public class APRandomizer : ModBehaviour
         InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
         Tracker = gameObject.AddComponent<TrackerManager>();
+
+        LocationScouter = new();
 
         LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {
