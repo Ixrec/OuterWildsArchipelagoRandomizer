@@ -283,33 +283,11 @@ internal class DarkBrambleLayout
             APRandomizer.OWMLModConsole.WriteLine($"actually editing warp {warp}");
             foreach (var ifwv in WarpToIFWVs[warp])
             {
-                ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = EntranceIFVW;
-                if (warp == DBWarp.Hub2) continue;
-                if (warp == DBWarp.Hub3) continue;
-
-                if (warp == DBWarp.Hub1)
-                {
-                    ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.AnglerNest];
-                    continue;
-                }
-
                 if (warp == DBWarp.AnglerNest2)
                 {
                     ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.Hub];
                     continue;
                 }
-
-                /*if (warp == DBWarp.AnglerNest1)
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"actually editing ifwv {ifwv.transform.parent}/{ifwv}");
-                    // This is the kind of warp we usually care about:
-                    // When you go "into" a spherical portal in one room, which room do you end up in?
-                    var newOFWVLink = RoomToOFWV[room];
-                    ifwv._linkedOuterWarpVolume = newOFWVLink;
-                    continue;
-                }*/
-
-                ifwv._linkedOuterWarpVolume = RoomToOFWV[DBRoom.SmallNest];
                 continue;/*
                 // Slightly more complex is "exiting" a DB room. When you pass through the room's OFWV, you emerge from its _linkedInnerWarpVolume.
 
