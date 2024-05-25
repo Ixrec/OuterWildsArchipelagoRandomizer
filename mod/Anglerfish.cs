@@ -30,13 +30,11 @@ internal class Anglerfish
     static bool playerMakingNoise = false;
 
     // In the vanilla game, _noiseRadius is always between 0 and 400.
-    // In testing, 200 seemed like an ideal distance for this because it allows you to think you
-    // might make it, but it's still too high to survive the 3 fish at the start of fog zone 2.
     [HarmonyPostfix, HarmonyPatch(typeof(ShipNoiseMaker), nameof(ShipNoiseMaker.Update))]
     public static void ShipNoiseMaker_Update_Postfix(ref ShipNoiseMaker __instance)
     {
         if (!hasAnglerfishKnowledge)
-            __instance._noiseRadius = Math.Max(__instance._noiseRadius, 200);
+            __instance._noiseRadius = Math.Max(__instance._noiseRadius, 1000);
 
         var newShipNoise = __instance._noiseRadius > 0;
         if (newShipNoise != shipMakingNoise)
@@ -49,7 +47,7 @@ internal class Anglerfish
     public static void PlayerNoiseMaker_Update_Postfix(ref PlayerNoiseMaker __instance)
     {
         if (!hasAnglerfishKnowledge)
-            __instance._noiseRadius = Math.Max(__instance._noiseRadius, 200);
+            __instance._noiseRadius = Math.Max(__instance._noiseRadius, 400);
 
         var newPlayerNoise = __instance._noiseRadius > 0;
         if (newPlayerNoise != playerMakingNoise)
