@@ -215,6 +215,9 @@ public class APRandomizer : ModBehaviour
         if (SlotData.ContainsKey("db_layout"))
             DarkBrambleLayout.ApplySlotDataLayout((string)SlotData["db_layout"]);
 
+        if (SlotData.ContainsKey("planet_order") && SlotData.ContainsKey("orbit_angles") && SlotData.ContainsKey("rotation_axes"))
+            Orbits.ApplySlotData(SlotData["planet_order"], SlotData["orbit_angles"], SlotData["rotation_axes"]);
+
         // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
         // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
         var totalItemsAcquired = SaveData.itemsAcquired.Sum(kv => kv.Value);
