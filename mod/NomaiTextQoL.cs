@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System.Linq;
 using System;
 using UnityEngine;
@@ -57,7 +57,6 @@ namespace ArchipelagoRandomizer
                         continue;
                     }
 
-                    //APRandomizer.OWMLModConsole.WriteLine($"{__instance.gameObject.name} log found: {nomaiTextData.DatabaseID}");
                     for (int j = 0; j < nomaiTextData.ConditionBlock.Length; j++)
                     {
                         for (int k = 0; k < nomaiTextData.ConditionBlock[j].Length; k++)
