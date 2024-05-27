@@ -30,7 +30,9 @@ internal class LocationTriggers
         { "TM_EYE_LOCATOR_X2", Location.AR_ESL },
 
         { "BH_TORNADO_SIMULATION_X2", Location.BH_OBSERVATORY },
+        { "BH_MURAL_1_X1", Location.BH_OS_MURAL },
         { "BH_MURAL_2_X1", Location.BH_OS_MURAL },
+        { "BH_MURAL_3_X1", Location.BH_OS_MURAL },
         { "BH_BLACK_HOLE_FORGE_X6", Location.BH_FORGE },
         { "BH_QUANTUM_RESEARCH_TOWER_X1", Location.BH_TOWER },
         { "BH_HANGING_CITY_X4", Location.BH_HC_SHRINE },
