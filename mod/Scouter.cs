@@ -36,9 +36,8 @@ namespace ArchipelagoRandomizer
 
                 locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
             }
-
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
-            session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
+            var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
             {
                 foreach (NetworkItem location in locationInfoPacket.Result.Locations)
                 {
@@ -46,10 +45,15 @@ namespace ArchipelagoRandomizer
                     string item = session.Items.GetItemName(location.Item) == null ? "UNKNOWN ITEM" : session.Items.GetItemName(location.Item);
                     ScoutedLocations.Add(name, new(item, location.Player, location.Flags));
                 }
-
+            }));
+            if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
+            {
+                APRandomizer.OWMLModConsole.WriteLine("Scouting failed! Hints will not be available this session.", OWML.Common.MessageType.Error);
+            }
+            else
+            {
                 APRandomizer.OWMLModConsole.WriteLine("All locations scouted.", OWML.Common.MessageType.Success);
-            }).Wait(TimeSpan.FromSeconds(5));
-
+            }
         }
     }
 }

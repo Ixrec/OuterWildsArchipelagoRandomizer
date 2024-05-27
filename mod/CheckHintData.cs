@@ -11,9 +11,10 @@ namespace ArchipelagoRandomizer
         // so we can easily see them in Unity Explorer
         // Currently unused in any code but may use it later
         public List<Location> Locations = new List<Location>();
-        public CheckImportance Importance = CheckImportance.Junk;
+        public CheckImportance Importance = CheckImportance.Filler;
         public bool HasBeenFound = false;
-        public bool IsChildText = false;
+
+        private bool IsChildText = false;
 
         public static readonly Color JunkColor = new(0.5f, 1.5f, 1.5f, 1);
         public static readonly Color UsefulColor = new(0.5f, 1.8f, 0.5f, 1);
@@ -54,7 +55,7 @@ namespace ArchipelagoRandomizer
             if (HasBeenFound) return FoundColor;
             switch (Importance)
             {
-                case CheckImportance.Junk:
+                case CheckImportance.Filler:
                     return JunkColor;
                 case CheckImportance.Useful:
                     return UsefulColor;
@@ -99,7 +100,7 @@ namespace ArchipelagoRandomizer
             switch (Scouter.ScoutedLocations[loc].Flags)
             {
                 case ItemFlags.None:
-                    SetImportance(CheckImportance.Junk);
+                    SetImportance(CheckImportance.Filler);
                     break;
                 case ItemFlags.NeverExclude:
                     SetImportance(CheckImportance.Useful);
@@ -117,7 +118,7 @@ namespace ArchipelagoRandomizer
     public enum CheckImportance
     {
         Trap = 0,
-        Junk = 1,
+        Filler = 1,
         Useful = 2,
         Progression = 3
     }

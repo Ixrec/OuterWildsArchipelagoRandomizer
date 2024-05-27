@@ -13,12 +13,7 @@ namespace ArchipelagoRandomizer
         public static bool ColorNomaiText = true;
         public static float TranslateTime = 0.2f;
 
-        public static Dictionary<string, Location> ManualScrollLocations = new()
-        {
-            { "Arc_BH_City_School_BigBangLesson", Location.BH_SOLANUM_REPORT },
-            { "Arc_TT_Tower_CT", Location.AT_HGT_TOWERS },
-            { "Arc_TT_Tower_BH_1", Location.AT_BH_TOWER }
-        };
+        
 
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
@@ -91,12 +86,12 @@ namespace ArchipelagoRandomizer
                 }
 
                 // For manually marked scrolls
-                if (ManualScrollLocations.ContainsKey(__instance.gameObject.name))
+                if (LocationTriggers.ManualScrollLocations.ContainsKey("Arc_" + __instance.gameObject.name))
                 {
                     NomaiTextLine textLine = __instance.transform.GetComponentInChildren<NomaiTextLine>();
                     CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
 
-                    hintData.DetermineImportance(ManualScrollLocations[__instance.gameObject.name]);
+                    hintData.DetermineImportance(LocationTriggers.ManualScrollLocations["Arc_" + __instance.gameObject.name]);
                 }
             }
 
@@ -140,7 +135,7 @@ namespace ArchipelagoRandomizer
         public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
             if (!AutoNomaiText) return true;
-            if (ManualScrollLocations.ContainsKey(__instance.gameObject.name)) return true;
+            if (LocationTriggers.ManualScrollLocations.ContainsKey("Arc_" + __instance.gameObject.name)) return true;
             // This code is copied from the base game and overrides the original method
             base_SetAsTranslated(__instance, id);
             bool revealedChildren = false;

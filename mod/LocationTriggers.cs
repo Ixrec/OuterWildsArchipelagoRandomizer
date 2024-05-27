@@ -73,6 +73,14 @@ internal class LocationTriggers
         { "DB_VESSEL_X1", Location.DB_VESSEL },
     };
 
+    // manual scrolls
+    public static Dictionary<string, Location> ManualScrollLocations = new()
+        {
+            { "BH_City_School_BigBangLesson", Location.BH_SOLANUM_REPORT },
+            { "TT_Tower_CT", Location.AT_HGT_TOWERS },
+            { "TT_Tower_BH_1", Location.AT_BH_TOWER }
+        };
+
     // no longer in use, keeping as notes for when we edit flavor text to justify some items' existence
     /*static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
         { Location.ET_FOSSIL, Item.SilentRunning },
@@ -281,11 +289,9 @@ internal class LocationTriggers
 
         var textAssetName = __instance._nomaiTextAsset?.name ?? "(No text asset, likely generated in code?)";
 
-        switch (textAssetName)
+        if (ManualScrollLocations.ContainsKey(textAssetName))
         {
-            case "BH_City_School_BigBangLesson": CheckLocation(Location.BH_SOLANUM_REPORT); break;
-            case "TT_Tower_CT": CheckLocation(Location.AT_HGT_TOWERS); break;
-            case "TT_Tower_BH_1": CheckLocation(Location.AT_BH_TOWER); break;
+            CheckLocation(ManualScrollLocations[textAssetName]);
         }
     }
 

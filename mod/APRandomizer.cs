@@ -61,7 +61,7 @@ public class APRandomizer : ModBehaviour
     public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
     public static bool AutoNomaiText = false;
-    public static bool CheckTypeMatchContents = true;
+    public static bool ColorNomaiText = true;
 
     public static bool DisableConsole = false;
     public static bool DisableInGameLocationSending = false;
@@ -339,7 +339,7 @@ public class APRandomizer : ModBehaviour
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
         {
             NomaiTextQoL.AutoNomaiText = AutoNomaiText;
-            NomaiTextQoL.ColorNomaiText = CheckTypeMatchContents;
+            NomaiTextQoL.ColorNomaiText = ColorNomaiText;
         };
 
         SetupSaveData();
@@ -562,7 +562,7 @@ public class APRandomizer : ModBehaviour
     {
         // Configure() is called early and often, including before we create the Console
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
-        CheckTypeMatchContents = config.GetSettingsValue<bool>("Location Appearance Matches Contents");
+        ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         NomaiTextQoL.TranslateTime = config.GetSettingsValue<bool>("Instant Translator") ? 0f : 0.2f;
 
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");

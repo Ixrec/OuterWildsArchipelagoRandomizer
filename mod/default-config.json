@@ -9,7 +9,8 @@
       "type": "separator"
     },
 
-    "Location Appearance Matches Contents": {
+    "LocationAppearanceMatchesContents": {
+      "title": "Colorize Locations By AP Item Type",
       "type": "toggle",
       "value": true,
       "tooltip": "Adjusts Nomai arc text color to match what quality of check it holds. Recommended to use with Auto Expand Nomai Text. Changes to this setting will only apply at the start of the next loop."
