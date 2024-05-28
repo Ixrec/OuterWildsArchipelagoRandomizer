@@ -86,12 +86,13 @@ namespace ArchipelagoRandomizer
                 }
 
                 // For manually marked scrolls
-                if (LocationTriggers.ManualScrollLocations.ContainsKey("Arc_" + __instance.gameObject.name))
+                string name = __instance.gameObject.name.Replace("Arc_", "");
+                if (LocationTriggers.ManualScrollLocations.ContainsKey(name))
                 {
                     NomaiTextLine textLine = __instance.transform.GetComponentInChildren<NomaiTextLine>();
                     CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
 
-                    hintData.DetermineImportance(LocationTriggers.ManualScrollLocations["Arc_" + __instance.gameObject.name]);
+                    hintData.DetermineImportance(LocationTriggers.ManualScrollLocations[name]);
                 }
             }
 
@@ -135,7 +136,7 @@ namespace ArchipelagoRandomizer
         public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
             if (!AutoNomaiText) return true;
-            if (LocationTriggers.ManualScrollLocations.ContainsKey("Arc_" + __instance.gameObject.name)) return true;
+            if (LocationTriggers.ManualScrollLocations.ContainsKey(__instance.gameObject.name.Replace("Arc_", ""))) return true;
             // This code is copied from the base game and overrides the original method
             base_SetAsTranslated(__instance, id);
             bool revealedChildren = false;
