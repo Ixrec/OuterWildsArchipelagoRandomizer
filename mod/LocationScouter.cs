@@ -39,11 +39,11 @@ namespace ArchipelagoRandomizer
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
             var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
             {
-                foreach (NetworkItem location in locationInfoPacket.Result.Locations)
+                foreach (NetworkItem apLocationInfo in locationInfoPacket.Result.Locations)
                 {
-                    Location name = LocationNames.archipelagoIdToLocation[location.Location];
-                    string item = session.Items.GetItemName(location.Item) == null ? "UNKNOWN ITEM" : session.Items.GetItemName(location.Item);
-                    ScoutedLocations.Add(name, new(item, location.Player, location.Flags));
+                    Location modLocation = LocationNames.archipelagoIdToLocation[apLocationInfo.Location];
+                    string itemName = session.Items.GetItemName(apLocationInfo.Item) == null ? "UNKNOWN ITEM" : session.Items.GetItemName(apLocationInfo.Item);
+                    ScoutedLocations.Add(modLocation, new(apLocationInfo.Item, itemName, apLocationInfo.Player, apLocationInfo.Flags));
                 }
             }));
             if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
