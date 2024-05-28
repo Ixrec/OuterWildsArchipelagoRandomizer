@@ -31,6 +31,7 @@ public class APRandomizerSaveData
     public APConnectionData apConnectionData;
     public Dictionary<Location, bool> locationsChecked;
     public Dictionary<Item, uint> itemsAcquired;
+    public Dictionary<Location, ArchipelagoItem> scoutedLocations;
 }
 
 [HarmonyPatch]

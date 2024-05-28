@@ -17,7 +17,17 @@ namespace ArchipelagoRandomizer
 
         public LocationScouter() 
         {
-            APRandomizer.OnSessionOpened += ScoutAllLocations;
+            APRandomizer.OnSessionOpened += OnSessionOpened;
+        }
+
+        public void OnSessionOpened(ArchipelagoSession session)
+        {
+            // For now, simply assume that if we have any scouts at all, then we've scouted everything we care about.
+            if (APRandomizer.SaveData.scoutedLocations != null)
+                return;
+
+            APRandomizer.OWMLModConsole.WriteLine($"save data does not contain any location scouts, so calling ScoutAllLocations()");
+            ScoutAllLocations(session);
         }
 
         public void ScoutAllLocations(ArchipelagoSession session)
@@ -45,14 +55,14 @@ namespace ArchipelagoRandomizer
                     string itemName = session.Items.GetItemName(apLocationInfo.Item) == null ? "UNKNOWN ITEM" : session.Items.GetItemName(apLocationInfo.Item);
                     ScoutedLocations.Add(modLocation, new(apLocationInfo.Item, itemName, apLocationInfo.Player, apLocationInfo.Flags));
                 }
+
+                APRandomizer.SaveData.scoutedLocations = ScoutedLocations;
+                APRandomizer.Instance.WriteToSaveFile();
+                APRandomizer.OWMLModConsole.WriteLine($"Cached {ScoutedLocations.Count} location scouts in save data.", OWML.Common.MessageType.Success);
             }));
             if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
             {
                 APRandomizer.OWMLModConsole.WriteLine("Scouting failed! Hints will not be available this session.", OWML.Common.MessageType.Error);
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine("All locations scouted.", OWML.Common.MessageType.Success);
             }
         }
     }
