@@ -9,10 +9,18 @@
       "type": "separator"
     },
 
+    "LocationAppearanceMatchesContents": {
+      "title": "Colorize Locations By AP Item Type",
+      "type": "toggle",
+      "value": true,
+      "tooltip": "Adjusts Nomai arc text color to match what quality of check it holds. Recommended to use with Auto Expand Nomai Text. Changes to this setting will only apply at the start of the next loop."
+      // remember to adjust tooltip as more features are covered by this
+    },
+
     "Auto Expand Nomai Text": {
       "type": "toggle",
       "value": false,
-      "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. This setting will only apply at the start of the next loop."
+      "tooltip": "With this on, all Nomai text in the game will start in an expanded state, allowing you to read it without having to wait for it to expand. Changes to this setting will only apply at the start of the next loop."
     },
 
     "Instant Translator": {

@@ -47,6 +47,7 @@ public class APRandomizer : ModBehaviour
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
     public static TrackerManager Tracker;
+    public static Scouter LocationScouter;
 
     /// <summary>
     /// Runs whenever a new session is created
@@ -60,6 +61,7 @@ public class APRandomizer : ModBehaviour
     public static event Action<ArchipelagoSession, bool> OnSessionClosed;
 
     public static bool AutoNomaiText = false;
+    public static bool ColorNomaiText = true;
 
     public static bool DisableConsole = false;
     public static bool DisableInGameLocationSending = false;
@@ -324,6 +326,8 @@ public class APRandomizer : ModBehaviour
 
         Tracker = gameObject.AddComponent<TrackerManager>();
 
+        LocationScouter = new();
+
         LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {
             WarpPlatforms.OnCompleteSceneLoad(scene, loadScene);
@@ -339,6 +343,7 @@ public class APRandomizer : ModBehaviour
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
         {
             NomaiTextQoL.AutoNomaiText = AutoNomaiText;
+            NomaiTextQoL.ColorNomaiText = ColorNomaiText;
         };
 
         SetupSaveData();
@@ -561,6 +566,7 @@ public class APRandomizer : ModBehaviour
     {
         // Configure() is called early and often, including before we create the Console
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
+        ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         NomaiTextQoL.TranslateTime = config.GetSettingsValue<bool>("Instant Translator") ? 0f : 0.2f;
 
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
