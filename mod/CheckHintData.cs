@@ -97,7 +97,7 @@ namespace ArchipelagoRandomizer
                 if (rend.material.name.Contains("TextChild")) IsChildText = true;
             }
 
-            switch (Scouter.ScoutedLocations[loc].Flags)
+            switch (LocationScouter.ScoutedLocations[loc].Flags)
             {
                 case ItemFlags.None:
                     SetImportance(CheckImportance.Filler);

@@ -11,11 +11,11 @@ namespace ArchipelagoRandomizer
     /// <summary>
     /// Class responsible for scouting locations and returning their values and IDs, for hinting and changing the appearance of checks
     /// </summary>
-    public class Scouter
+    public class LocationScouter
     {
         public static Dictionary<Location, ArchipelagoItem> ScoutedLocations;
 
-        public Scouter() 
+        public LocationScouter() 
         {
             APRandomizer.OnSessionOpened += ScoutAllLocations;
         }
