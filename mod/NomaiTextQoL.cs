@@ -32,7 +32,7 @@ namespace ArchipelagoRandomizer
                     // fix for single arcs
                     if (__instance._textLines.Length == 1)
                     {
-                        CheckHintData hintData = __instance._textLines[0].gameObject.GetAddComponent<CheckHintData>();
+                        ArcHintData hintData = __instance._textLines[0].gameObject.GetAddComponent<ArcHintData>();
 
                         // DatabaseID is the ship log name
                         string log = nomaiTextData.DatabaseID;
@@ -63,7 +63,7 @@ namespace ArchipelagoRandomizer
                             {
                                 var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
 
-                                CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
+                                ArcHintData hintData = textLine.gameObject.GetAddComponent<ArcHintData>();
 
                                 // DatabaseID is the ship log name
                                 string log = nomaiTextData.DatabaseID;
@@ -90,7 +90,7 @@ namespace ArchipelagoRandomizer
                 if (LocationTriggers.ManualScrollLocations.ContainsKey(name))
                 {
                     NomaiTextLine textLine = __instance.transform.GetComponentInChildren<NomaiTextLine>();
-                    CheckHintData hintData = textLine.gameObject.GetAddComponent<CheckHintData>();
+                    ArcHintData hintData = textLine.gameObject.GetAddComponent<ArcHintData>();
 
                     hintData.DetermineImportance(LocationTriggers.ManualScrollLocations[name]);
                 }
@@ -118,7 +118,7 @@ namespace ArchipelagoRandomizer
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiTextLine), nameof(NomaiTextLine.DetermineTextLineColor))]
         public static bool NomaiTextLine_DetermineTextLineColor_Prefix(NomaiText __instance, ref NomaiTextLine.VisualState state, ref Color __result)
         {
-            CheckHintData data = __instance.GetComponent<CheckHintData>();
+            ArcHintData data = __instance.GetComponent<ArcHintData>();
             if (!ColorNomaiText || data == null || state != NomaiTextLine.VisualState.UNREAD || data.Locations.Count == 0)
             {
                 return true;
@@ -203,6 +203,13 @@ namespace ArchipelagoRandomizer
         public static void NomaiTranslatorProp_SwitchTextNode_Prefix(NomaiTranslatorProp __instance)
         {
             __instance._totalTranslateTime = TranslateTime;
+        }
+
+        // Setting up scrolls to show contents
+        [HarmonyPostfix, HarmonyPatch(typeof(ScrollItem), nameof(ScrollItem.Awake))]
+        public static void ScrollItem_Awake_Postfix(ScrollItem __instance)
+        {
+            __instance.gameObject.AddComponent<ScrollHintData>();
         }
     }
 }

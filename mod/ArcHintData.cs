@@ -4,7 +4,10 @@ using Archipelago.MultiClient.Net.Enums;
 
 namespace ArchipelagoRandomizer
 {
-    public class CheckHintData : MonoBehaviour
+    /// <summary>
+    /// Determines the color of Nomai Text Arcs based on their contents
+    /// </summary>
+    public class ArcHintData : MonoBehaviour
     {
         // Since arcs have no idea which logs they're connected to,
         // we record them and their other location checks here in a list
@@ -12,14 +15,11 @@ namespace ArchipelagoRandomizer
         // Currently unused in any code but may use it later
         public List<Location> Locations = new List<Location>();
         public CheckImportance Importance = CheckImportance.Filler;
+        // used to show importance in case of traps
+        public CheckImportance DisplayImportance = CheckImportance.Trap;
         public bool HasBeenFound = false;
 
         private bool IsChildText = false;
-
-        public static readonly Color JunkColor = new(0.5f, 1.5f, 1.5f, 1);
-        public static readonly Color UsefulColor = new(0.5f, 1.8f, 0.5f, 1);
-        public static readonly Color ProgressionColor = new(1.5f, 0.5f, 1.5f, 1);
-        public static readonly Color FoundColor = new(1.2f, 1.2f, 1.2f, 1);
 
         public static Material ChildTextMat
         {
@@ -52,26 +52,32 @@ namespace ArchipelagoRandomizer
 
         public Color NomaiWallColor()
         {
-            if (HasBeenFound) return FoundColor;
+            if (HasBeenFound) return HintColors.FoundColor;
             switch (Importance)
             {
                 case CheckImportance.Filler:
-                    return JunkColor;
+                    DisplayImportance = CheckImportance.Filler;
+                    return HintColors.FillerColor;
                 case CheckImportance.Useful:
-                    return UsefulColor;
+                    DisplayImportance = CheckImportance.Useful;
+                    return HintColors.UsefulColor;
                 case CheckImportance.Progression:
-                    return ProgressionColor;
+                    DisplayImportance = CheckImportance.Progression;
+                    return HintColors.ProgressionColor;
                 default:
                     {
                         int rnd = Random.Range(0, 3);
                         switch (rnd)
                         {
                             case 0:
-                                return JunkColor;
+                                DisplayImportance = CheckImportance.Filler;
+                                return HintColors.FillerColor;
                             case 1:
-                                return UsefulColor;
+                                DisplayImportance = CheckImportance.Useful;
+                                return HintColors.UsefulColor;
                             default:
-                                return ProgressionColor;
+                                DisplayImportance = CheckImportance.Progression;
+                                return HintColors.ProgressionColor;
                         }    
                     }
             }
@@ -115,11 +121,5 @@ namespace ArchipelagoRandomizer
             }
         }
     }
-    public enum CheckImportance
-    {
-        Trap = 0,
-        Filler = 1,
-        Useful = 2,
-        Progression = 3
-    }
+    
 }
