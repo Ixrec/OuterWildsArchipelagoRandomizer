@@ -53,11 +53,9 @@ internal class NapTrap
 
     private static void ForceNap()
     {
+        // ignore Nap Traps if we're in menus or credits
         if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"Ignoring Nap Trap because we're still in {LoadManager.GetCurrentScene()}");
             return;
-        }
 
         if (napTrapComponent != null)
         {
@@ -74,7 +72,6 @@ internal class NapTrap
         APRandomizer.InGameAPConsole.AddText($"An unskippable one-minute nap will begin in");
 
         napTrapComponent = Locator.GetPlayerTransform().gameObject.AddComponent<NapTrapComponent>();
-        napTrapComponent.startTime = TimeLoop.GetSecondsElapsed();
     }
 
     class NapTrapComponent : MonoBehaviour
@@ -82,16 +79,16 @@ internal class NapTrap
         private float countdownSeconds = 3;
         private float napSeconds = 60;
 
-        public float startTime;
+        private float secondsSinceTrapActivated = 0;
 
         private int countdownLogsPrinted = 0;
         private bool isNapping = false;
 
         private void Update()
         {
-            thisIsANapTrapPrompt.SetVisibility(false);
+            secondsSinceTrapActivated += Time.deltaTime;
 
-            var secondsSinceTrapActivated = TimeLoop.GetSecondsElapsed() - startTime;
+            thisIsANapTrapPrompt.SetVisibility(false);
 
             if (secondsSinceTrapActivated < countdownSeconds)
             {
