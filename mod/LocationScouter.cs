@@ -24,7 +24,10 @@ namespace ArchipelagoRandomizer
         {
             // For now, simply assume that if we have any scouts at all, then we've scouted everything we care about.
             if (APRandomizer.SaveData.scoutedLocations != null)
+            {
+                ScoutedLocations = APRandomizer.SaveData.scoutedLocations;
                 return;
+            }
 
             APRandomizer.OWMLModConsole.WriteLine($"save data does not contain any location scouts, so calling ScoutAllLocations()");
             ScoutAllLocations(session);
