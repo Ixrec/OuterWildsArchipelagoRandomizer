@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
+// TODO: During/after EotE integration, decide if we want to randomize orbits of:
+// - HearthianMapSatellite_Body
+// - RingWorld_Body (including StaticRing_Body)
+
 [HarmonyPatch]
 internal class Orbits
 {
