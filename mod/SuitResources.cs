@@ -215,7 +215,7 @@ internal class SuitResources
     {
         // in this file "multiplier" means: 1 = 100% of the vanilla value, 0.5 = 50%, 2 = 200%, etc
         double multiplier = (initialOxygenCapacity/100f) + ((oxygenCapacityPerUpgrade/100f) * _oxygenCapacityUpgrades);
-        PlayerResources._maxOxygen = (float)(vanillaOxygenCapacity * multiplier);
+        PlayerResources._maxOxygen = Mathf.Max((float)(vanillaOxygenCapacity * multiplier), 0.01f);
 
         if (oxygenPercent != null)
             oxygenPercent.text = multiplier.ToString("P1"); // percentage with 1dp, e.g. turns 1 into "100.0%"
