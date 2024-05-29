@@ -17,22 +17,16 @@ namespace ArchipelagoRandomizer
         // since scrolls don't have a good way to see if they're traps, Trap can simply mean empty here
         private CheckImportance importance = CheckImportance.Trap;
 
-        private void Start()
+        private IEnumerator Start()
         {
-            APRandomizer.OWMLModConsole.WriteLine("bleh", OWML.Common.MessageType.Success);
-            StartCoroutine(SetScrollColors());
-        }
-
-        IEnumerator SetScrollColors()
-        {
-            // want to make sure all text has been initialized properly, so we wait a few frames
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
+            // It takes 29 frames after this for every scroll to have loaded. To be safe, we'll wait 40 frames.
+            int frames = Time.frameCount;
+            yield return new WaitUntil(() => Time.frameCount >= frames + 40);
             Renderer rend = transform.Find("Props_NOM_Scroll/Props_NOM_Scroll_Geo").GetComponent<Renderer>();
-            ArcHintData[] arcs = GetComponentsInChildren<ArcHintData>();
+            List<ArcHintData> arcs = GetComponentsInChildren<ArcHintData>().ToList();
+            arcs.RemoveAll(x => x.Locations.Count == 0);
             // We can ignore trying to change scroll colors if there are no hints found
-            if (arcs.Length == 0) yield break;
+            if (arcs.Count == 0) yield break;
             importance = arcs.Max(x => x.DisplayImportance);
             Color textColor = Color.white;
             Color trimColor = Color.white;
@@ -41,37 +35,40 @@ namespace ArchipelagoRandomizer
                 textColor = HintColors.FoundColor;
                 trimColor = HintColors.FoundColorTrim;
             }
-            else switch (importance)
+            else
             {
-                case CheckImportance.Filler:
+                switch (importance)
                 {
-                    textColor = HintColors.FillerColor;
-                    trimColor = HintColors.FillerColorTrim;
-                    break;
-                }
-                case CheckImportance.Useful:
-                {
-                    textColor = HintColors.UsefulColor;
-                    trimColor = HintColors.UsefulColorTrim;
-                    break;
-                }
-                case CheckImportance.Progression:
-                {
-                    textColor = HintColors.FillerColor;
-                    trimColor = HintColors.FillerColorTrim;
-                    break;
-                }
-                default:
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Uh this code shouldn't have been reached, the scroll at {transform.parent.name} somehow didn't inherit an importance priority.", OWML.Common.MessageType.Error);
-                    textColor = Color.red;
-                    trimColor = Color.red;
-                    break;
+                    case CheckImportance.Filler:
+                        {
+                            textColor = HintColors.FillerColor;
+                            trimColor = HintColors.FillerColorTrim;
+                            break;
+                        }
+                    case CheckImportance.Useful:
+                        {
+                            textColor = HintColors.UsefulColor;
+                            trimColor = HintColors.UsefulColorTrim;
+                            break;
+                        }
+                    case CheckImportance.Progression:
+                        {
+                            textColor = HintColors.ProgressionColor;
+                            trimColor = HintColors.ProgressionColorTrim;
+                            break;
+                        }
+                    default:
+                        {
+                            APRandomizer.OWMLModConsole.WriteLine($"Uh this code shouldn't have been reached, the scroll at {transform.parent.name} somehow didn't inherit an importance priority.", OWML.Common.MessageType.Error);
+                            textColor = Color.red;
+                            trimColor = Color.red;
+                            break;
+                        }
                 }
             }
             rend.material.SetColor("_Detail1EmissionColor", textColor);
             rend.material.SetColor("_Detail3EmissionColor", trimColor);
-            APRandomizer.OWMLModConsole.WriteLine($"Scroll has been given the color relating to importance {importance}");
+            APRandomizer.OWMLModConsole.WriteLine($"Scroll that's the child of {transform.parent.name} has been given the color relating to importance {importance}");
         }
     }
 }

@@ -209,7 +209,7 @@ namespace ArchipelagoRandomizer
         [HarmonyPostfix, HarmonyPatch(typeof(ScrollItem), nameof(ScrollItem.Awake))]
         public static void ScrollItem_Awake_Postfix(ScrollItem __instance)
         {
-            __instance.gameObject.AddComponent<ScrollHintData>();
+            if (ColorNomaiText) __instance.gameObject.AddComponent<ScrollHintData>();
         }
     }
 }

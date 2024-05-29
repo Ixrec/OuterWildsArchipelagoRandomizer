@@ -53,7 +53,7 @@ namespace ArchipelagoRandomizer
         public Color NomaiWallColor()
         {
             if (HasBeenFound) return HintColors.FoundColor;
-            switch (Importance)
+            switch (DisplayImportance)
             {
                 case CheckImportance.Filler:
                     DisplayImportance = CheckImportance.Filler;
@@ -64,27 +64,13 @@ namespace ArchipelagoRandomizer
                 case CheckImportance.Progression:
                     DisplayImportance = CheckImportance.Progression;
                     return HintColors.ProgressionColor;
-                default:
-                    {
-                        int rnd = Random.Range(0, 3);
-                        switch (rnd)
-                        {
-                            case 0:
-                                DisplayImportance = CheckImportance.Filler;
-                                return HintColors.FillerColor;
-                            case 1:
-                                DisplayImportance = CheckImportance.Useful;
-                                return HintColors.UsefulColor;
-                            default:
-                                DisplayImportance = CheckImportance.Progression;
-                                return HintColors.ProgressionColor;
-                        }    
-                    }
+                default: return Color.red;
             }
         }
 
         public void SetImportance(CheckImportance importance)
         {
+            APRandomizer.OWMLModConsole.WriteLine($"blehportant {Time.frameCount}", OWML.Common.MessageType.Warning);
             if ((int)Importance < (int)importance)
             {
                 Importance = importance;
@@ -106,16 +92,33 @@ namespace ArchipelagoRandomizer
             switch (LocationScouter.ScoutedLocations[loc].Flags)
             {
                 case ItemFlags.None:
+                    DisplayImportance = CheckImportance.Filler;
                     SetImportance(CheckImportance.Filler);
                     break;
                 case ItemFlags.NeverExclude:
+                    DisplayImportance = CheckImportance.Useful;
                     SetImportance(CheckImportance.Useful);
                     break;
                 case ItemFlags.Advancement:
+                    DisplayImportance = CheckImportance.Progression;
                     SetImportance(CheckImportance.Progression);
                     break;
                 case ItemFlags.Trap:
-                    SetImportance(CheckImportance.Trap);
+                    int rnd = Random.Range(0, 3);
+                    APRandomizer.OWMLModConsole.WriteLine($"Trap set to {rnd}");
+                    switch (rnd)
+                    {
+                        case 0:
+                            DisplayImportance = CheckImportance.Filler;
+                            break;
+                        case 1:
+                            DisplayImportance = CheckImportance.Useful;
+                            break;
+                        default:
+                            DisplayImportance = CheckImportance.Progression;
+                            break;
+                    }
+                    SetImportance(DisplayImportance);
                     rend.material = IsChildText ? NormalTextMat : ChildTextMat;
                     break;
             }
