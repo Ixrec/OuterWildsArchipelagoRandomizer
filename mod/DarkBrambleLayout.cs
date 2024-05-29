@@ -185,7 +185,7 @@ internal class DarkBrambleLayout
             var signals = __instance._signals;
             if (signals.Any(s => s == null))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix cleaning up references to vanilla AudioSignals we had to destroy, so they don't NRE later");
+                //APRandomizer.OWMLModConsole.WriteLine($"TravelerAudioManager_SyncTravelers_Prefix cleaning up references to vanilla AudioSignals we had to destroy, so they don't NRE later");
                 __instance._signals = signals.Where(s => s != null).ToList();
             }
         }
@@ -198,9 +198,10 @@ internal class DarkBrambleLayout
     private static Dictionary<DBRoom, OuterFogWarpVolume> RoomToOFWV = new();
     private static Dictionary<DBWarp, List<InnerFogWarpVolume>> WarpToIFWVs = new();
 
-    public static void OnCompleteSceneLoad(OWScene _scene, OWScene _loadScene)
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"OnCompleteSceneLoad()");
+        if (loadScene != OWScene.SolarSystem) return;
+
         var pioneerInteractables = GameObject.Find("DB_PioneerDimension_Body/Sector_PioneerDimension/Interactables_PioneerDimension");
         var vesselInteractables = GameObject.Find("DB_VesselDimension_Body/Sector_VesselDimension/Interactables_VesselDimension");
         // base game inconsistency: SmallNest's root GO is DB_SmallNest_Body, not DB_SmallNestDimension_Body
@@ -247,7 +248,7 @@ internal class DarkBrambleLayout
     {
         if (CurrentDBLayout == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() doing nothing because DB has not been randomized");
+            //APRandomizer.OWMLModConsole.WriteLine($"ApplyDBLayout() doing nothing because DB has not been randomized");
             return;
         }
 
@@ -353,7 +354,7 @@ internal class DarkBrambleLayout
             }
         }
 
-        APRandomizer.OWMLModConsole.WriteLine($"finished adding signals, final warp sets were: {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
+        // APRandomizer.OWMLModConsole.WriteLine($"finished adding signals, final warp sets were: {string.Join("|", harmonicaWarps)} and {string.Join("|", ep3Warps)}");
     }
 
     private static void AddSignalToGO(GameObject go, OuterFogWarpVolume ofwv, SignalFrequency frequency, SignalName signalName, AudioType audioType)
