@@ -91,7 +91,7 @@ internal class Orbits
         if (orbitingGONameToSlotDataId.TryGetValue(__instance.name, out var orbitingId))
             if (OrbitAngles.TryGetValue(orbitingId, out var angle))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
+                //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
                 __instance._orbitAngle = angle;
             }
 
@@ -105,7 +105,7 @@ internal class Orbits
         if (rotatingGONameToSlotDataId.TryGetValue(__instance.name, out var rotatingId))
             if (RotationAxes.TryGetValue(rotatingId, out var axis))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
+                //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
                 __instance._rotationAxis = axis;
             }
 
@@ -150,7 +150,7 @@ internal class Orbits
                 var planetId = PlanetOrder[i];
                 var goName = reorderableSlotDataIdToGOName[planetId];
                 var goToMove = GameObject.Find(goName);
-                APRandomizer.OWMLModConsole.WriteLine($"moving {planetId} / {__instance} into lane {i}");
+                //APRandomizer.OWMLModConsole.WriteLine($"moving {planetId} / {__instance} into lane {i}");
 
                 var oldSunDistance = goToMove.transform.position - sunPosition;
 
