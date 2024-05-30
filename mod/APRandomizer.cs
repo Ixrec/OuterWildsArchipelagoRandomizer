@@ -63,7 +63,9 @@ public class APRandomizer : ModBehaviour
 
     public static bool AutoNomaiText = false;
     public static bool ColorNomaiText = true;
+    public static bool InstantTranslator = false;
 
+    public static bool HasSeenSettingsText = false;
     public static bool DisableConsole = false;
     public static bool DisableInGameLocationSending = false;
     private static bool DisableInGameItemReceiving = false;
@@ -571,7 +573,8 @@ public class APRandomizer : ModBehaviour
         // Configure() is called early and often, including before we create the Console
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
         ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
-        NomaiTextQoL.TranslateTime = config.GetSettingsValue<bool>("Instant Translator") ? 0f : 0.2f;
+        InstantTranslator = config.GetSettingsValue<bool>("Instant Translator");
+        NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
 
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
         DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");
@@ -582,4 +585,5 @@ public class APRandomizer : ModBehaviour
         DeathLinkManager.ApplyOverrideSetting();
         SuitResources.ModSettingsChanged(config);
     }
+
 }

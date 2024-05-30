@@ -70,7 +70,6 @@ namespace ArchipelagoRandomizer
 
         public void SetImportance(CheckImportance importance)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"blehportant {Time.frameCount}", OWML.Common.MessageType.Warning);
             if ((int)Importance < (int)importance)
             {
                 Importance = importance;
@@ -105,7 +104,6 @@ namespace ArchipelagoRandomizer
                     break;
                 case ItemFlags.Trap:
                     int rnd = Random.Range(0, 3);
-                    APRandomizer.OWMLModConsole.WriteLine($"Trap set to {rnd}");
                     switch (rnd)
                     {
                         case 0:

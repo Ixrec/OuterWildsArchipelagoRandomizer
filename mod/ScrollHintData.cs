@@ -68,7 +68,6 @@ namespace ArchipelagoRandomizer
             }
             rend.material.SetColor("_Detail1EmissionColor", textColor);
             rend.material.SetColor("_Detail3EmissionColor", trimColor);
-            APRandomizer.OWMLModConsole.WriteLine($"Scroll that's the child of {transform.parent.name} has been given the color relating to importance {importance}");
         }
     }
 }

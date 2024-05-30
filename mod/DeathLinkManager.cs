@@ -6,17 +6,17 @@ using System.Collections.Generic;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class DeathLinkManager
+public class DeathLinkManager
 {
-    enum DeathLinkSetting: long
+    public enum DeathLinkSetting: long
     {
         Off = 0,
         Default = 1,
         AllDeaths = 2,
     }
 
-    private static DeathLinkSetting slotDataSetting = DeathLinkSetting.Off;
-    private static DeathLinkSetting? overrideSetting = null; // a null here represents 'No Override' / use slotDataSetting
+    public static DeathLinkSetting slotDataSetting = DeathLinkSetting.Off;
+    public static DeathLinkSetting? overrideSetting = null; // a null here represents 'No Override' / use slotDataSetting
 
     private static DeathLinkSetting effectiveSetting = DeathLinkSetting.Off;
 
@@ -77,15 +77,6 @@ internal class DeathLinkManager
         }
     }
 
-    public static string GetDeathLinkWakeupConsoleMessage()
-    {
-        if (overrideSetting != null)
-            return $"Death Link Override is set to: {overrideSetting}. (Ignoring .yaml option value for this multiworld: {slotDataSetting})";
-        else if (slotDataSetting != DeathLinkSetting.Off)
-            return $"Death Link option for this multiworld: {slotDataSetting}";
-
-        return null;
-    }
 
     // useful for testing
     /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
