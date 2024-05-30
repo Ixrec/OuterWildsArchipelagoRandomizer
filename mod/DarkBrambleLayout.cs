@@ -141,8 +141,6 @@ internal class DarkBrambleLayout
 
     public static void ApplySlotDataLayout(string stringifiedLayout)
     {
-        stringifiedLayout = "A->PH|H->SCEX|C->SV|E->C";
-
         if (stringifiedLayout == "vanilla")
         {
             CurrentDBLayout = null;
@@ -203,6 +201,8 @@ internal class DarkBrambleLayout
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
         if (loadScene != OWScene.SolarSystem) return;
+
+        ApplySlotDataLayout("A->PH|H->SCEX|C->SV|E->C");
 
         var pioneerInteractables = GameObject.Find("DB_PioneerDimension_Body/Sector_PioneerDimension/Interactables_PioneerDimension");
         var vesselInteractables = GameObject.Find("DB_VesselDimension_Body/Sector_VesselDimension/Interactables_VesselDimension");

@@ -26,7 +26,7 @@ internal class Orbits
 
     public static void ApplySlotData(object planetOrderSlotData, object orbitAnglesSlotData, object rotationAxesSlotData)
     {
-        if (planetOrderSlotData is string coordsString && coordsString == "vanilla")
+        /*if (planetOrderSlotData is string coordsString && coordsString == "vanilla")
             // leaving vanilla orbits unchanged
             return;
 
@@ -44,7 +44,7 @@ internal class Orbits
         {
             APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla orbits unchanged because slot_data['rotation_axes'] was invalid: {rotationAxesSlotData}", OWML.Common.MessageType.Error);
             return;
-        }
+        }*/
         PlanetOrder = ["GD", "DB", "HGT", "BH", "TH"];
         //foreach (JToken planetId in planetOrderArray)
         //    PlanetOrder.Add((string)planetId);
@@ -86,9 +86,24 @@ internal class Orbits
     [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Awake))]
     public static void InitialMotion_Awake_Postfix(InitialMotion __instance)
     {
-        // orbit randomization is off, do nothing
-        if (PlanetOrder == null)
-            return;
+        PlanetOrder = ["GD", "DB", "HGT", "BH", "TH"];
+        OrbitAngles = new Dictionary<string, long> {
+            { "GD", 330 },
+            { "DB", 240 },
+            { "HGT", 210 },
+            { "BH", 210 },
+            { "TH", 330 },
+            { "SS", 60 },
+            { "AR", 180 },
+            {  "HL", 60 },
+            { "OPC", 330 }
+        };
+        RotationAxes = new Dictionary<string, Vector3> {
+            { "ET", Vector3.left },
+            { "AT", Vector3.zero },
+            { "TH", Vector3.right },
+            { "BH", Vector3.left },
+        };
 
         var orbitingGONameToSlotDataId = new Dictionary<string, string> {
             { "FocalBody", "HGT" },
