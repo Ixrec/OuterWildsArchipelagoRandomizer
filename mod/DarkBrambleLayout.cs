@@ -141,6 +141,8 @@ internal class DarkBrambleLayout
 
     public static void ApplySlotDataLayout(string stringifiedLayout)
     {
+        stringifiedLayout = "A->PH|H->SCEX|C->SV|E->C";
+
         if (stringifiedLayout == "vanilla")
         {
             CurrentDBLayout = null;

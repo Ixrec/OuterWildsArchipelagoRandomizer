@@ -45,17 +45,31 @@ internal class Orbits
             APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla orbits unchanged because slot_data['rotation_axes'] was invalid: {rotationAxesSlotData}", OWML.Common.MessageType.Error);
             return;
         }
+        PlanetOrder = ["GD", "DB", "HGT", "BH", "TH"];
+        //foreach (JToken planetId in planetOrderArray)
+        //    PlanetOrder.Add((string)planetId);
 
-        PlanetOrder = new();
-        foreach (JToken planetId in planetOrderArray)
-            PlanetOrder.Add((string)planetId);
+        OrbitAngles = new Dictionary<string, long> {
+            { "GD", 330 },
+            { "DB", 240 },
+            { "HGT", 210 },
+            { "BH", 210 },
+            { "TH", 330 },
+            { "SS", 60 },
+            { "AR", 180 },
+            {  "HL", 60 },
+            { "OPC", 330 }
+        };
+        //foreach (var (objectId, angleToken) in orbitAnglesObject)
+        //    OrbitAngles[objectId] = (long)angleToken;
 
-        OrbitAngles = new();
-        foreach (var (objectId, angleToken) in orbitAnglesObject)
-            OrbitAngles[objectId] = (long)angleToken;
-
-        RotationAxes = new();
-        foreach (var (objectId, direction) in rotationAxesObject)
+        RotationAxes = new Dictionary<string, Vector3> {
+            { "ET", Vector3.left },
+            { "AT", Vector3.zero },
+            { "TH", Vector3.right },
+            { "BH", Vector3.left },
+        };
+        /*foreach (var (objectId, direction) in rotationAxesObject)
             switch ((string)direction)
             {
                 case "up": RotationAxes[objectId] = Vector3.up; break;
@@ -66,7 +80,7 @@ internal class Orbits
                 case "back": RotationAxes[objectId] = Vector3.back; break;
                 case "zero": RotationAxes[objectId] = Vector3.zero; break;
                 default: APRandomizer.OWMLModConsole.WriteLine($"Unsupported direction '{direction}' in slot_data['rotation_axes']: {rotationAxesSlotData}", OWML.Common.MessageType.Error); break;
-            }
+            }*/
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Awake))]
