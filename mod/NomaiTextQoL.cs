@@ -52,6 +52,8 @@ namespace ArchipelagoRandomizer
                         continue;
                     }
 
+                    if (__instance._listDBConditions[i].LocationCondition != NomaiText.Location.UNSPECIFIED && __instance._listDBConditions[i].LocationCondition != __instance._location) continue;
+
                     for (int j = 0; j < nomaiTextData.ConditionBlock.Length; j++)
                     {
                         for (int k = 0; k < nomaiTextData.ConditionBlock[j].Length; k++)
@@ -62,6 +64,7 @@ namespace ArchipelagoRandomizer
                             if (__instance._dictNomaiTextData.ContainsKey(key))
                             {
                                 var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
+                                
 
                                 ArcHintData hintData = textLine.gameObject.GetAddComponent<ArcHintData>();
 
