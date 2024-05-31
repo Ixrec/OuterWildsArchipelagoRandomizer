@@ -39,6 +39,21 @@ Outer Wilds:
     false: 0
     true: 50
 
+  randomize_orbits:
+    # Randomizes:
+    # - The order of the five planets (the Hourglass Twins as a whole, Timber Hearth, Brittle Hollow, Giant's Deep, Dark Bramble), i.e. which ones are closer or farther from the sun
+    # - The orbit angles of the five planets, as well as four satellites (Sun Station, Attlerock, Hollow's Lantern, and the Orbital Probe Cannon)
+    # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow
+    false: 0
+    true: 50
+
+  randomize_dark_bramble_layout:
+    # Randomizes which Dark Bramble 'rooms' link to which other rooms, so you can't rely on your memory of the vanilla
+    # layout. Be aware that randomized layouts are often significantly harder to navigate than vanilla Dark Bramble,
+    # since they allow several paths to the same room and more complex loops / recursion.
+    false: 50
+    true: 0
+
   trap_chance:
     # The probability for each filler item (including unique filler) to be replaced with a trap item.
     # The exact number of trap items will still be somewhat random, so you can't know
@@ -77,6 +92,5 @@ Outer Wilds:
 
   shuffle_spacesuit:
     # Puts the spacesuit into the Archipelago item pool, forcing you to play suitless until it's found.
-    # This is a HIGHLY EXPERIMENTAL setting. Expect logic bugs. Feedback encouraged.
     false: 50
     true: 0
