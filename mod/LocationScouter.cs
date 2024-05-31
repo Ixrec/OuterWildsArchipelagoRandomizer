@@ -26,6 +26,7 @@ namespace ArchipelagoRandomizer
             if (APRandomizer.SaveData.scoutedLocations != null)
             {
                 ScoutedLocations = APRandomizer.SaveData.scoutedLocations;
+                APRandomizer.OWMLModConsole.WriteLine($"Scouted locations loaded from save file.", OWML.Common.MessageType.Success);
                 return;
             }
 
@@ -65,7 +66,7 @@ namespace ArchipelagoRandomizer
             }));
             if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
             {
-                APRandomizer.OWMLModConsole.WriteLine("Scouting failed! Hints will not be available this session.", OWML.Common.MessageType.Error);
+                APRandomizer.OWMLModConsole.WriteLine("Scouting failed! Hints will not be available this session. There was likely an APWorld mismatch, check the server logs for more info.", OWML.Common.MessageType.Error);
             }
         }
     }

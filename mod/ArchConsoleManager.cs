@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using static ArchipelagoRandomizer.DeathLinkManager;
 
 namespace ArchipelagoRandomizer;
 
@@ -68,6 +69,7 @@ public class ArchConsoleManager : MonoBehaviour
         {
             s.Locations.CheckedLocationsUpdated += UpdateProgress;
             session = s;
+            APRandomizer.HasSeenSettingsText = false;
         };
 
         // Show the correct version of the console depending on if the game is paused or not
@@ -167,9 +169,11 @@ public class ArchConsoleManager : MonoBehaviour
             AddText(entry);
         WakeupConsoleMessages.Clear();
 
-        string dlMessage = DeathLinkManager.GetDeathLinkWakeupConsoleMessage();
-        if (dlMessage != null)
-            AddText(dlMessage);
+        if (!APRandomizer.HasSeenSettingsText)
+        {
+            AddText(GetSettingsMessage());
+            APRandomizer.HasSeenSettingsText = true;
+        }
 
         UpdateProgress();
 
@@ -467,5 +471,22 @@ public class ArchConsoleManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         AddText($"<color=#6BFF6B>Welcome to your {LoopNumber()} loop!</color>", true);
+    }
+
+    private static string GetSettingsMessage()
+    {
+        string settingsString = "Settings:\n";
+
+        if (overrideSetting != null)
+            settingsString += $"Death Link: {DeathLinkManager.overrideSetting} (Overriding {DeathLinkManager.slotDataSetting})\n";
+        else if (DeathLinkManager.slotDataSetting != DeathLinkSetting.Off)
+            settingsString += $"Death Link: {DeathLinkManager.slotDataSetting}\n";
+        settingsString += $"Colorize Locations By AP Item Type: {(APRandomizer.ColorNomaiText ? "<color=lime>ON</color>" : "<color=red>OFF</color>")}\n" +
+            $"Auto-Expand Nomai Text: {(APRandomizer.AutoNomaiText ? "<color=lime>ON</color>" : "<color=red>OFF</color>")}\n" +
+            $"Instant Translator: {(APRandomizer.InstantTranslator ? "<color=lime>ON</color>" : "<color=red>OFF</color>")}\n" +
+            $"You can change these in the mod config settings. If racing, make sure to observe the settings of the race.";
+
+
+        return settingsString;
     }
 }
