@@ -379,6 +379,7 @@ public class ArchConsoleManager : MonoBehaviour
         // block whatever we (and the vanilla game) were doing on waiting for the AP server response
         var _ = Task.Run(() =>
         {
+            // TODO: APSession.Say()
             var sayPacketTask = Task.Run(() => APRandomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2)))
             {

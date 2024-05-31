@@ -153,6 +153,7 @@ internal class LocationTriggers
             // block whatever we (and the vanilla game) were doing on waiting for the AP server response
             var _ = Task.Run(() =>
             {
+                // TODO: session.Socket.OnError ?
                 var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
                 if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2)))
                 {
