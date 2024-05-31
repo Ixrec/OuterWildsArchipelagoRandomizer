@@ -14,7 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- remember not to update this without also re-vendoring it -->
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.0.0-rc4" />
 
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OWML" Version="2.11.1" />
