@@ -379,7 +379,7 @@ public class ArchConsoleManager : MonoBehaviour
         // block whatever we (and the vanilla game) were doing on waiting for the AP server response
         var _ = Task.Run(() =>
         {
-            var sayPacketTask = Task.Run(() => APRandomizer.APSession.Socket.SendPacket(new SayPacket() { Text = text }));
+            var sayPacketTask = Task.Run(() => APRandomizer.APSession.Say(text));
             if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2)))
             {
                 var msg = $"AP server timed out when we tried to send the message '{text}'. Did the connection go down?";
