@@ -319,7 +319,7 @@ public class ArchConsoleManager : MonoBehaviour
                 case ItemSendLogMessage itemSendLogMessage:
                     var receiver = itemSendLogMessage.Receiver;
                     var sender = itemSendLogMessage.Sender;
-                    var networkItem = itemSendLogMessage.Item;
+                    var itemInfo = itemSendLogMessage.Item;
                     if (slot == receiver.Slot || slot == sender.Slot) irrelevantToPlayer = false;
                     break;
             }

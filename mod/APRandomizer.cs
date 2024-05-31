@@ -228,8 +228,8 @@ public class APRandomizer : ModBehaviour
         {
             OWMLModConsole.WriteLine($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
             bool saveDataChanged = false;
-            foreach (var networkItem in APSession.Items.AllItemsReceived)
-                saveDataChanged = SyncItemCountWithAPServer(networkItem.Item);
+            foreach (var itemInfo in APSession.Items.AllItemsReceived)
+                saveDataChanged = SyncItemCountWithAPServer(itemInfo.ItemId);
 
             if (saveDataChanged)
                 APRandomizer.Instance.WriteToSaveFile();
@@ -250,16 +250,16 @@ public class APRandomizer : ModBehaviour
         return result;
     }
 
-    private static void APSession_ItemReceived(ReceivedItemsHelper receivedItemsHelper)
+    private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
     {
         if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
 
         bool saveDataChanged = false;
 
         var receivedItems = new HashSet<long>();
-        while (receivedItemsHelper.PeekItem().Item != 0)
+        while (receivedItemsHelper.PeekItem().ItemId != 0)
         {
-            var itemId = receivedItemsHelper.PeekItem().Item;
+            var itemId = receivedItemsHelper.PeekItem().ItemId;
             receivedItems.Add(itemId);
             receivedItemsHelper.DequeueItem();
         }
@@ -287,7 +287,7 @@ public class APRandomizer : ModBehaviour
         }
 
         var item = ItemNames.archipelagoIdToItem[itemId];
-        var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.Item == itemId).Count();
+        var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.ItemId == itemId).Count();
 
         var savedCount = APRandomizer.SaveData.itemsAcquired[item];
         if (savedCount >= itemCountSoFar)
