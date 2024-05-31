@@ -54,9 +54,7 @@ internal class Victory
         {
             APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} completed! Notifying AP server.", OWML.Common.MessageType.Success);
 
-            var statusUpdatePacket = new StatusUpdatePacket();
-            statusUpdatePacket.Status = ArchipelagoClientState.ClientGoal;
-            APRandomizer.APSession.Socket.SendPacket(statusUpdatePacket);
+            APRandomizer.APSession.SetGoalAchieved();
         }
     }
 }
