@@ -4,7 +4,10 @@ using Archipelago.MultiClient.Net.Enums;
 
 namespace ArchipelagoRandomizer
 {
-    public class CheckHintData : MonoBehaviour
+    /// <summary>
+    /// Determines the color of Nomai Text Arcs based on their contents
+    /// </summary>
+    public class ArcHintData : MonoBehaviour
     {
         // Since arcs have no idea which logs they're connected to,
         // we record them and their other location checks here in a list
@@ -12,14 +15,11 @@ namespace ArchipelagoRandomizer
         // Currently unused in any code but may use it later
         public List<Location> Locations = new List<Location>();
         public CheckImportance Importance = CheckImportance.Filler;
+        // used to show importance in case of traps
+        public CheckImportance DisplayImportance = CheckImportance.Trap;
         public bool HasBeenFound = false;
 
         private bool IsChildText = false;
-
-        public static readonly Color JunkColor = new(0.5f, 1.5f, 1.5f, 1);
-        public static readonly Color UsefulColor = new(0.5f, 1.8f, 0.5f, 1);
-        public static readonly Color ProgressionColor = new(1.5f, 0.5f, 1.5f, 1);
-        public static readonly Color FoundColor = new(1.2f, 1.2f, 1.2f, 1);
 
         public static Material ChildTextMat
         {
@@ -52,28 +52,19 @@ namespace ArchipelagoRandomizer
 
         public Color NomaiWallColor()
         {
-            if (HasBeenFound) return FoundColor;
-            switch (Importance)
+            if (HasBeenFound) return HintColors.FoundColor;
+            switch (DisplayImportance)
             {
                 case CheckImportance.Filler:
-                    return JunkColor;
+                    DisplayImportance = CheckImportance.Filler;
+                    return HintColors.FillerColor;
                 case CheckImportance.Useful:
-                    return UsefulColor;
+                    DisplayImportance = CheckImportance.Useful;
+                    return HintColors.UsefulColor;
                 case CheckImportance.Progression:
-                    return ProgressionColor;
-                default:
-                    {
-                        int rnd = Random.Range(0, 3);
-                        switch (rnd)
-                        {
-                            case 0:
-                                return JunkColor;
-                            case 1:
-                                return UsefulColor;
-                            default:
-                                return ProgressionColor;
-                        }    
-                    }
+                    DisplayImportance = CheckImportance.Progression;
+                    return HintColors.ProgressionColor;
+                default: return Color.red;
             }
         }
 
@@ -100,26 +91,36 @@ namespace ArchipelagoRandomizer
             switch (LocationScouter.ScoutedLocations[loc].Flags)
             {
                 case ItemFlags.None:
+                    DisplayImportance = CheckImportance.Filler;
                     SetImportance(CheckImportance.Filler);
                     break;
                 case ItemFlags.NeverExclude:
+                    DisplayImportance = CheckImportance.Useful;
                     SetImportance(CheckImportance.Useful);
                     break;
                 case ItemFlags.Advancement:
+                    DisplayImportance = CheckImportance.Progression;
                     SetImportance(CheckImportance.Progression);
                     break;
                 case ItemFlags.Trap:
-                    SetImportance(CheckImportance.Trap);
+                    int rnd = Random.Range(0, 3);
+                    switch (rnd)
+                    {
+                        case 0:
+                            DisplayImportance = CheckImportance.Filler;
+                            break;
+                        case 1:
+                            DisplayImportance = CheckImportance.Useful;
+                            break;
+                        default:
+                            DisplayImportance = CheckImportance.Progression;
+                            break;
+                    }
+                    SetImportance(DisplayImportance);
                     rend.material = IsChildText ? NormalTextMat : ChildTextMat;
                     break;
             }
         }
     }
-    public enum CheckImportance
-    {
-        Trap = 0,
-        Filler = 1,
-        Useful = 2,
-        Progression = 3
-    }
+    
 }
