@@ -6,7 +6,7 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Beta (as of May 2024).
+Public Beta (as of June 2024).
 
 Many people have played this, usually with no issues. Nearly every bug that's been reported has either been fixed, or was found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
@@ -116,10 +116,10 @@ The 0.1.x releases fleshed out the Archipelago items and locations: useful, fill
 The 0.2.x releases will focus on other kinds of randomization besides items and locations.
 
 - ~~random Eye coordinates~~
-- random Dark Bramble layout
+- ~~random Dark Bramble layout~~
 - random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)
 	- random warp pad destinations should go well with this
-- random planet orbits
+- ~~random planet orbits~~
 - random ghost matter patches
 - random in-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets
 
