@@ -26,7 +26,7 @@ public class Logic
     /// <summary>
     /// List of items the player has obtained prior to receiving a new item
     /// </summary>
-    public ReadOnlyCollection<NetworkItem> previouslyObtainedItems;
+    public ReadOnlyCollection<ItemInfo> previouslyObtainedItems;
 
     /// <summary>
     /// Parsed version of locations.jsonc
@@ -123,7 +123,7 @@ public class Logic
     /// Runs when the player receives a new item
     /// </summary>
     /// <param name="itemsHelper"></param>
-    public void RecheckAccessibility(ReceivedItemsHelper itemsHelper)
+    public void RecheckAccessibility(IReceivedItemsHelper itemsHelper)
     {
         // only gets new items
         var xorCollection = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
@@ -148,9 +148,9 @@ public class Logic
     {
         // Build region logic, we always start from the Menu region
         ItemsCollected = new Dictionary<Item, uint>();
-        foreach (var itemID in APRandomizer.APSession.Items.AllItemsReceived)
+        foreach (var itemInfo in APRandomizer.APSession.Items.AllItemsReceived)
         {
-            ItemNames.archipelagoIdToItem.TryGetValue(itemID.Item, out Item item);
+            ItemNames.archipelagoIdToItem.TryGetValue(itemInfo.ItemId, out Item item);
             if (ItemsCollected.ContainsKey(item)) ItemsCollected[item] += 1;
             else ItemsCollected.Add(item, 1);
         }
