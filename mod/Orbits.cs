@@ -86,23 +86,23 @@ internal class Orbits
     [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Awake))]
     public static void InitialMotion_Awake_Postfix(InitialMotion __instance)
     {
-        PlanetOrder = ["GD", "DB", "HGT", "BH", "TH"];
+        PlanetOrder = ["GD", "DB", "HGT", "TH", "BH"];
         OrbitAngles = new Dictionary<string, long> {
-            { "GD", 330 },
-            { "DB", 240 },
-            { "HGT", 210 },
-            { "BH", 210 },
-            { "TH", 330 },
-            { "SS", 60 },
-            { "AR", 180 },
-            {  "HL", 60 },
-            { "OPC", 330 }
+            { "GD", 300 },
+            { "DB", 180},
+            { "HGT", 150 },
+            { "BH", 150 },
+            { "TH", 60 },
+            { "SS", 180 },
+            { "AR", 300 },
+            {  "HL", 120 },
+            { "OPC", 120 }
         };
         RotationAxes = new Dictionary<string, Vector3> {
             { "ET", Vector3.left },
-            { "AT", Vector3.zero },
-            { "TH", Vector3.right },
-            { "BH", Vector3.left },
+            { "AT", Vector3.up },
+            { "TH", Vector3.up },
+            { "BH", Vector3.forward },
         };
 
         var orbitingGONameToSlotDataId = new Dictionary<string, string> {
