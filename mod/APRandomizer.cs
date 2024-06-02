@@ -192,6 +192,8 @@ public class APRandomizer : ModBehaviour
         if (!result.Successful)
             return result;
 
+        APSession.Socket.ErrorReceived += APSession_ErrorReceived;
+
         SlotData = ((LoginSuccessful)result).SlotData;
         OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
@@ -248,6 +250,13 @@ public class APRandomizer : ModBehaviour
         OnSessionOpened(APSession);
 
         return result;
+    }
+
+    private static void APSession_ErrorReceived(Exception e, string message)
+    {
+        var msg = $"Received error from APSession.Socket: '{message}'\nException: {e.Message}\nException Stack: {e.StackTrace}";
+        APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
+        APRandomizer.InGameAPConsole.AddText($"<color='orange'>{msg}</color>");
     }
 
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
