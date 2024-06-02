@@ -43,16 +43,17 @@ Outer Wilds:
     # Randomizes:
     # - The order of the five planets (the Hourglass Twins as a whole, Timber Hearth, Brittle Hollow, Giant's Deep, Dark Bramble), i.e. which ones are closer or farther from the sun
     # - The orbit angles of the five planets, as well as four satellites (Sun Station, Attlerock, Hollow's Lantern, and the Orbital Probe Cannon)
-    # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow
+    # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow. This often causes the Hourglass Twins' sand pillar to pass through different areas.
     false: 0
     true: 50
 
   randomize_dark_bramble_layout:
-    # Randomizes which Dark Bramble 'rooms' link to which other rooms, so you can't rely on your memory of the vanilla
-    # layout. Be aware that randomized layouts are often significantly harder to navigate than vanilla Dark Bramble,
-    # since they allow several paths to the same room and more complex loops / recursion.
+    # Randomizes which Dark Bramble 'rooms' link to which other rooms, so you can't rely on your memory of the vanilla layout.
+    # Be aware that randomized layouts are often significantly harder to navigate than vanilla Dark Bramble, since they allow several paths to the same room and more complex loops / recursion.
+    # 'hub_start' forces the first room to be Hub (same as the vanilla game), which tends to generate shorter and simpler paths than full randomization.
     false: 50
     true: 0
+    hub_start: 0
 
   trap_chance:
     # The probability for each filler item (including unique filler) to be replaced with a trap item.
