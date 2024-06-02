@@ -94,7 +94,8 @@ internal class Orbits
             if (attachedGravityVolume == null)
                 return;
 
-            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity({primaryBody},{satelliteBody}) satelliteBody.GetWorldCenterOfMass() = {satelliteBody.GetWorldCenterOfMass()}");
+            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity({primaryBody.name},{satelliteBody.name}) GetWorldCenterOfMass() = {satelliteBody.GetWorldCenterOfMass()}");//, IsKinematic() = {satelliteBody.IsKinematic()}, IsSimulatedKinematic() = {satelliteBody.IsSimulatedKinematic()}");
+            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity({primaryBody.name},{satelliteBody.name}) transform.position = {satelliteBody.transform.position}, RigidBody.position = {satelliteBody.GetRigidbody().position}");
             var s = satelliteBody.GetWorldCenterOfMass(); // this is the first thing that changes between wakeup and statue
             var p = primaryBody.GetWorldCenterOfMass(); // sun is always 0,0,0
             Vector3 vector = s - p; // this is the same
@@ -131,6 +132,40 @@ internal class Orbits
             APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Start_Prefix {__instance}: {__instance._initLinearDirection.normalized} / {__instance._initLinearSpeed} / {__instance._primaryBody} / {__instance._satelliteBody} / {__instance._orbitAngle} / {__instance._orbitImpulseScalar}");
         }
     }
+
+    /*[HarmonyPrefix, HarmonyPatch(typeof(OWRigidbody), nameof(OWRigidbody.RunningKinematicSimulation))]
+    public static void OWRigidbody_RunningKinematicSimulation_Prefix(OWRigidbody __instance, ref bool __result)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWRigidbody_RunningKinematicSimulation_Prefix {__instance}");
+        }
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(OWRigidbody), nameof(OWRigidbody.RunningKinematicSimulation))]
+    public static void OWRigidbody_RunningKinematicSimulation_Postfix(OWRigidbody __instance, ref bool __result)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWRigidbody_RunningKinematicSimulation_Postfix {__instance} -> {__result}");
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(OWRigidbody), nameof(OWRigidbody.GetWorldCenterOfMass))]
+    public static void OWRigidbody_GetWorldCenterOfMass_Prefix(OWRigidbody __instance, ref Vector3 __result)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWRigidbody_GetWorldCenterOfMass_Prefix {__instance}");
+        }
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(OWRigidbody), nameof(OWRigidbody.GetWorldCenterOfMass))]
+    public static void OWRigidbody_GetWorldCenterOfMass_Postfix(OWRigidbody __instance, ref Vector3 __result)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWRigidbody_GetWorldCenterOfMass_Postfix {__instance} -> {__result}");
+        }
+    }*/
 
     [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Awake))]
     public static void InitialMotion_Awake_Postfix(InitialMotion __instance)
@@ -172,7 +207,8 @@ internal class Orbits
         if (orbitingGONameToSlotDataId.TryGetValue(__instance.name, out var orbitingId))
             if (OrbitAngles.TryGetValue(orbitingId, out var angle))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
+                if (__instance.name == "TimberHearth_Body")
+                    APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
                 __instance._orbitAngle = angle;
             }
 
@@ -186,7 +222,8 @@ internal class Orbits
         if (rotatingGONameToSlotDataId.TryGetValue(__instance.name, out var rotatingId))
             if (RotationAxes.TryGetValue(rotatingId, out var axis))
             {
-                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
+                if (__instance.name == "TimberHearth_Body")
+                    APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
                 __instance._rotationAxis = axis;
             }
 
@@ -244,12 +281,16 @@ internal class Orbits
                 var positionChange = newPosition - goToMove.transform.position;
 
                 // Actually move the planet
-                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position before = {goToMove.transform.position}");
+                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position before = {goToMove.transform.position}, {goToMove.GetComponent<Rigidbody>().position}");
                 goToMove.transform.position += positionChange;
-                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position after = {goToMove.transform.position}");
+                goToMove.GetComponent<Rigidbody>().position = goToMove.transform.position;
+                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position after = {goToMove.transform.position}, {goToMove.GetComponent<Rigidbody>().position}");
                 // Also move the satellites orbiting that planet (this is why we need the position *change*, not just the new position)
                 foreach (var satellite in satellites[goToMove])
+                {
                     satellite.transform.position += positionChange;
+                    satellite.GetComponent<Rigidbody>().position = satellite.transform.position;
+                }
             }
         }
     }
