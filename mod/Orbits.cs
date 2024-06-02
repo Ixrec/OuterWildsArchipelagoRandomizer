@@ -162,9 +162,16 @@ internal class Orbits
 
                 // Actually move the planet
                 goToMove.transform.position += positionChange;
+                // Rigidbody caches its GO's position, so if we don't manually invalidate its cache,
+                // planets may compute a different orbit after the statue reset than they do on wakeup.
+                goToMove.GetComponent<Rigidbody>().position = goToMove.transform.position;
+
                 // Also move the satellites orbiting that planet (this is why we need the position *change*, not just the new position)
                 foreach (var satellite in satellites[goToMove])
+                {
                     satellite.transform.position += positionChange;
+                    satellite.GetComponent<Rigidbody>().position = satellite.transform.position;
+                }
             }
         }
     }
