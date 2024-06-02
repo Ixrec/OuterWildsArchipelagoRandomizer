@@ -83,9 +83,61 @@ internal class Orbits
             }*/
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(OWPhysics), nameof(OWPhysics.CalculateOrbitVelocity))]
+    public static void OWPhysics_CalculateOrbitVelocity(Vector3 __result, OWRigidbody primaryBody, OWRigidbody satelliteBody, float orbitAngle)
+    {
+        if (satelliteBody.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity {primaryBody} / {satelliteBody} / {orbitAngle} -> {__result}");
+
+            GravityVolume attachedGravityVolume = primaryBody.GetAttachedGravityVolume();
+            if (attachedGravityVolume == null)
+                return;
+
+            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity({primaryBody},{satelliteBody}) satelliteBody.GetWorldCenterOfMass() = {satelliteBody.GetWorldCenterOfMass()}");
+            var s = satelliteBody.GetWorldCenterOfMass(); // this is the first thing that changes between wakeup and statue
+            var p = primaryBody.GetWorldCenterOfMass(); // sun is always 0,0,0
+            Vector3 vector = s - p; // this is the same
+            Vector3 vector2 = Vector3.Cross(vector, Vector3.up).normalized;
+            vector2 = Quaternion.AngleAxis(orbitAngle, vector) * vector2;
+            float num = Mathf.Sqrt(attachedGravityVolume.CalculateForceAccelerationOnBody(satelliteBody).magnitude * vector.magnitude); // 2nd change
+            var r = vector2 * num;
+            APRandomizer.OWMLModConsole.WriteLine($"OWPhysics_CalculateOrbitVelocity({primaryBody},{satelliteBody}) patch result = {r}");
+        }
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.GetInitVelocity))]
+    public static void InitialMotion_GetInitVelocity(InitialMotion __instance, Vector3 __result)
+    {
+        if (__instance.name == "Sun_Body" || __instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_GetInitVelocity {__instance} -> {__result}");
+        }
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Start))]
+    public static void InitialMotion_Start_Prefix(InitialMotion __instance)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Start_Prefix {__instance}'s initial v is {__instance._isInitVelocityDirty} / {__instance._cachedInitVelocity}");
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Start_Prefix {__instance}: {__instance._initLinearDirection.normalized} / {__instance._initLinearSpeed} / {__instance._primaryBody} / {__instance._satelliteBody} / {__instance._orbitAngle} / {__instance._orbitImpulseScalar}");
+        }
+    }
+    [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Start))]
+    public static void InitialMotion_Start_Postfix(InitialMotion __instance)
+    {
+        if (__instance.name == "TimberHearth_Body")
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Start_Postfix {__instance}'s initial v is {__instance._isInitVelocityDirty} / {__instance._cachedInitVelocity}");
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Start_Prefix {__instance}: {__instance._initLinearDirection.normalized} / {__instance._initLinearSpeed} / {__instance._primaryBody} / {__instance._satelliteBody} / {__instance._orbitAngle} / {__instance._orbitImpulseScalar}");
+        }
+    }
+
     [HarmonyPostfix, HarmonyPatch(typeof(InitialMotion), nameof(InitialMotion.Awake))]
     public static void InitialMotion_Awake_Postfix(InitialMotion __instance)
     {
+        if (__instance.name == "TimberHearth_Body")
+            APRandomizer.OWMLModConsole.WriteLine($"InitialMotion_Awake_Postfix {__instance}'s initial v is {__instance._isInitVelocityDirty} / {__instance._cachedInitVelocity}");
+
         PlanetOrder = ["TH", "HGT", "DB", "BH", "GD"];
         OrbitAngles = new Dictionary<string, long> {
             { "GD", 30 },
@@ -120,7 +172,7 @@ internal class Orbits
         if (orbitingGONameToSlotDataId.TryGetValue(__instance.name, out var orbitingId))
             if (OrbitAngles.TryGetValue(orbitingId, out var angle))
             {
-                //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
+                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
                 __instance._orbitAngle = angle;
             }
 
@@ -134,7 +186,7 @@ internal class Orbits
         if (rotatingGONameToSlotDataId.TryGetValue(__instance.name, out var rotatingId))
             if (RotationAxes.TryGetValue(rotatingId, out var axis))
             {
-                //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
+                APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
                 __instance._rotationAxis = axis;
             }
 
@@ -166,6 +218,7 @@ internal class Orbits
             };
 
             var sunPosition = GameObject.Find("Sun_Body").transform.position;
+            APRandomizer.OWMLModConsole.WriteLine($"sunPosition = {sunPosition}");
 
             var reorderableSlotDataIdToGOName = new Dictionary<string, string> {
                 { "HGT", "FocalBody" },
@@ -179,18 +232,21 @@ internal class Orbits
                 var planetId = PlanetOrder[i];
                 var goName = reorderableSlotDataIdToGOName[planetId];
                 var goToMove = GameObject.Find(goName);
-                //APRandomizer.OWMLModConsole.WriteLine($"moving {planetId} / {__instance} into lane {i}");
+                APRandomizer.OWMLModConsole.WriteLine($"moving {planetId} / {goToMove} into lane {i}");
 
                 var oldSunDistance = goToMove.transform.position - sunPosition;
 
                 var targetSunDistance = originalPositions[i] - sunPosition;
+                APRandomizer.OWMLModConsole.WriteLine($"changing {planetId} / {goToMove}'s sun distance from {oldSunDistance} to {targetSunDistance}");
                 var distanceMultiplier = (targetSunDistance.magnitude / oldSunDistance.magnitude);
 
                 var newPosition = sunPosition + (oldSunDistance * distanceMultiplier);
                 var positionChange = newPosition - goToMove.transform.position;
 
                 // Actually move the planet
+                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position before = {goToMove.transform.position}");
                 goToMove.transform.position += positionChange;
+                APRandomizer.OWMLModConsole.WriteLine($"{planetId} / {goToMove} position after = {goToMove.transform.position}");
                 // Also move the satellites orbiting that planet (this is why we need the position *change*, not just the new position)
                 foreach (var satellite in satellites[goToMove])
                     satellite.transform.position += positionChange;
