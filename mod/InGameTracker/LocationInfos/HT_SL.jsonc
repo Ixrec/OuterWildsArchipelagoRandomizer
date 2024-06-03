@@ -66,12 +66,12 @@
     },
     {
         "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X2",
-        "description": "The upper floor of the HEL has a scroll wall with a scroll already entered that discusses the possibility of increasing the amount of time travel by increasing the power output to a black hole.",
+        "description": "The upper floor of the High Energy Lab has a scroll wall with a scroll already entered that discusses the possibility of increasing the amount of time travel by increasing the power output to a black hole.",
         "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
         "locationModID": "SLF__CT_HIGH_ENERGY_LAB_X3",
-        "description": "The upper floor of the HEL has a scroll wall with a scroll already entered that discusses how the Nomai might create a 22-minute interval.",
+        "description": "The upper floor of the High Energy Lab has a scroll wall with a scroll already entered that discusses how the Nomai might create a 22-minute interval.",
         "thumbnail": "CT_HIGH_ENERGY_LAB"
     },
     {
@@ -81,17 +81,17 @@
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X2",
-        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how each warp tower will lead to a different planet.",
+        "description": "At the High Energy Lab, there is a scroll on a fallen shelf on the second floor with information about how each warp tower will lead to a different planet.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X3",
-        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how each tower will reflect its destination in appearance.",
+        "description": "At the High Energy Lab, there is a scroll on a fallen shelf on the second floor with information about how each tower will reflect its destination in appearance.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
         "locationModID": "SLF__CT_WARP_TOWER_MAP_X4",
-        "description": "At the HEL, there is a scroll on a fallen shelf on the second floor with information about how big an undertaking the ATP will be.",
+        "description": "At the High Energy Lab, there is a scroll on a fallen shelf on the second floor with information about how big an undertaking the ATP will be.",
         "thumbnail": "CT_WARP_TOWER_MAP"
     },
     {
