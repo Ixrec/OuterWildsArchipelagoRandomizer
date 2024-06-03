@@ -618,6 +618,8 @@ public static class LocationNames
         { Location.SLF__CT_HIGH_ENERGY_LAB_X1, "ET Ship Log: High Energy Lab 1 - Temporal Anomaly" },
         { Location.SLF__CT_HIGH_ENERGY_LAB_X2, "ET Ship Log: High Energy Lab 2 - Increasing Interval" },
         { Location.SLF__CT_HIGH_ENERGY_LAB_X3, "ET Ship Log: High Energy Lab 3 - ATP" },
+        // In the vanilla game, CT_WARP_TOWER_MAP_X2 is visually the 4th entry in the Tower Design ship log entry, and CT_WARP_TOWER_MAP_X4
+        // is the 2nd. We swap X4 and X2 here on purpose to make the numbers in our location names match the ship log display order.
         { Location.SLF__CT_WARP_TOWER_MAP_X1, "ET Ship Log: AT Tower Designs 1 - Identify" },
         { Location.SLF__CT_WARP_TOWER_MAP_X4, "ET Ship Log: AT Tower Designs 2 - Different Planets" },
         { Location.SLF__CT_WARP_TOWER_MAP_X3, "ET Ship Log: AT Tower Designs 3 - Reflect Destinations" },
