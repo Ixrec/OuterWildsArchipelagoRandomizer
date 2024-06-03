@@ -266,7 +266,7 @@ public class APRandomizer : ModBehaviour
         bool saveDataChanged = false;
 
         var receivedItems = new HashSet<long>();
-        while (receivedItemsHelper.PeekItem().ItemId != 0)
+        while (receivedItemsHelper.PeekItem() != null)
         {
             var itemId = receivedItemsHelper.PeekItem().ItemId;
             receivedItems.Add(itemId);
