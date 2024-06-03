@@ -69,11 +69,11 @@ internal class VelocityMatcher
     [HarmonyPostfix, HarmonyPatch(typeof(JetpackPromptController), nameof(JetpackPromptController.Update))]
     public static void JetpackPromptController_Update_Postfix(JetpackPromptController __instance)
     {
-        JetpackCannotMVPrompt.SetVisibility(false);
-        if (JetpackMVPrompt.IsVisible() && !_hasVelocityMatcher)
+        JetpackCannotMVPrompt?.SetVisibility(false);
+        if ((JetpackMVPrompt?.IsVisible() ?? false) && !_hasVelocityMatcher)
         {
-            JetpackMVPrompt.SetVisibility(false);
-            JetpackCannotMVPrompt.SetVisibility(true);
+            JetpackMVPrompt?.SetVisibility(false);
+            JetpackCannotMVPrompt?.SetVisibility(true);
         }
     }
 
