@@ -30,8 +30,8 @@ internal class WarpPlatforms
         NomaiWarpPlatform.Frequency.TimeLoop, // Ash Twin to inside Ash Twin Project
         NomaiWarpPlatform.Frequency.HourglassTwin, // Ash Twin to Ember Twin
         NomaiWarpPlatform.Frequency.TimberHearth,
-        NomaiWarpPlatform.Frequency.BrittleHollowPolar, // Ash Twin to Brittle Hollow surface near north pole
-        NomaiWarpPlatform.Frequency.BrittleHollowForge, // White Hole Station to Brittle Hollow underside of crust, just outside Black Hole Forge
+        NomaiWarpPlatform.Frequency.BrittleHollowPolar, // White Hole Station to Brittle Hollow surface near north pole
+        NomaiWarpPlatform.Frequency.BrittleHollowForge, // Ash Twin to Brittle Hollow underside of crust, just outside Black Hole Forge
         NomaiWarpPlatform.Frequency.GiantsDeep,
     };
 
