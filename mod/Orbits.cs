@@ -114,6 +114,12 @@ internal class Orbits
             {
                 //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
                 __instance._rotationAxis = axis;
+
+                // Inside the ATP, the cables to the warp core are part of AT, but the ring you walk on is a separate TimeLoopRing object.
+                // If only AT's rotation is changed, this allows the cables to crush the player to death anywhere in the ATP, including
+                // on the warp platform as they arrive. So we want them to remain at least a little in sync, to keep the danger reasonable.
+                if (rotatingId == "AT")
+                    GameObject.Find("TimeLoopRing_Body").GetComponent<InitialMotion>()._rotationAxis = -axis;
             }
 
         // arbitrarily choose one Awake() call to do planet order changes in
