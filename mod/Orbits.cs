@@ -83,6 +83,7 @@ internal class Orbits
             { "GiantsDeep_Body", "GD" },
             { "DarkBramble_Body", "DB" },
             { "SunStation_Body", "SS" },
+            { "SS_Debris_Body", "SS" },
             { "Moon_Body", "AR" },
             { "VolcanicMoon_Body", "HL" },
             { "OrbitalProbeCannon_Body", "OPC" },
@@ -93,6 +94,10 @@ internal class Orbits
             {
                 //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
                 __instance._orbitAngle = angle;
+
+                // the sun station needs to be perpendicular to its own orbit to make the spacewalk possible
+                if (orbitingId == "SS")
+                    __instance.transform.Rotate(new Vector3(0, angle, 0));
             }
 
         var rotatingGONameToSlotDataId = new Dictionary<string, string> {
