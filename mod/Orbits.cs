@@ -87,6 +87,8 @@ internal class Orbits
             { "Moon_Body", "AR" },
             { "VolcanicMoon_Body", "HL" },
             { "OrbitalProbeCannon_Body", "OPC" },
+            { "CannonMuzzle_Body", "OPC" },
+            { "CannonBarrel_Body", "OPC" },
         };
 
         if (orbitingGONameToSlotDataId.TryGetValue(__instance.name, out var orbitingId))
@@ -137,7 +139,7 @@ internal class Orbits
                 { hgt, new() },
                 { th, new List<GameObject>{ GameObject.Find("Moon_Body"), GameObject.Find("Satellite_Body") } },
                 { bh, new List<GameObject>{ GameObject.Find("VolcanicMoon_Body") } },
-                { gd, new List<GameObject>{ GameObject.Find("OrbitalProbeCannon_Body") } },
+                { gd, new List<GameObject>{ GameObject.Find("OrbitalProbeCannon_Body"), GameObject.Find("CannonMuzzle_Body"), GameObject.Find("CannonBarrel_Body") } },
                 { db, new() },
             };
 
@@ -177,6 +179,38 @@ internal class Orbits
                     satellite.transform.position += positionChange;
                     satellite.GetComponent<Rigidbody>().position = satellite.transform.position;
                 }
+            }
+        }
+    }
+
+    private static bool oplcDebrisSwitched = false;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(OrbitalProbeLaunchController), nameof(OrbitalProbeLaunchController.FixedUpdate))]
+    public static void OrbitalProbeLaunchController_FixedUpdate_Postfix(OrbitalProbeLaunchController __instance)
+    {
+        if (!oplcDebrisSwitched)
+        {
+            if (__instance._fakeCount > 0 && __instance._realCount > 0)
+            {
+                oplcDebrisSwitched = true;
+                //APRandomizer.OWMLModConsole.WriteLine($"OrbitalProbeLaunchController_FixedUpdate_Postfix switched on its own at {TimeLoop.GetMinutesElapsed()} / {TimeLoop.GetSecondsElapsed()}");
+            }
+            else if (TimeLoop.GetSecondsElapsed() > 20)
+            {
+                // copy-pasted from OPLC::FixedUpdate(), with the if()s removed
+                for (int i = 0; i < __instance._fakeDebrisBodies.Length; i++)
+                {
+                    Object.Destroy(__instance._fakeDebrisBodies[i].gameObject);
+                    __instance._fakeCount++;
+                }
+                for (int j = 0; j < __instance._realDebrisSectorProxies.Length; j++)
+                {
+                    __instance._realDebrisSectorProxies[j].gameObject.SetActive(true);
+                    __instance._realCount++;
+                }
+
+                oplcDebrisSwitched = true;
+                APRandomizer.OWMLModConsole.WriteLine($"OrbitalProbeLaunchController_FixedUpdate_Postfix switched from fake OPC debris to real OPC debris because the vanilla code did not");
             }
         }
     }
