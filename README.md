@@ -6,11 +6,16 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Beta (as of June 2024).
+Public Beta (as of July 2024).
 
-Many people have played this, usually with no issues. Nearly every bug that's been reported has either been fixed, or was found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
+Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
-Unfortunately there is a well-known "end-of-loop crash", but it affects only some players, is inconsistent for everyone it does affect, and the evidence we do have implies it's not caused by this mod, so there's currently no solution for it.
+### Vanilla(?) Bugs
+
+Unfortunately there are a couple of bugs which only affect some players, have no consistent reproduction steps, and no one seems to have encountered on their vanilla playthrough (presumably because randomizers encourage playing the game over and over). We currently believe these are issues with the vanilla game that no mod can fix:
+- Most important is the "end-of-loop crash", where the game simply crashes whenever the loop is reset, or even when you sync with the TH Village statue to start the loop.
+- Less common is a UI glitch where several elements of the user interface get rendered sideways and/or smushed together in a corner of the screen.
+- When switching between Outer Wilds and other applications, sometimes OW's lock-on feature stops working. When this happens, click on the OW window with your mouse, and it should start working again.
 
 ## Contact
 
@@ -128,11 +133,14 @@ The 0.2.x releases will focus on other kinds of randomization besides items and 
 The 0.3.x releases will focus on additional content beyond the base game.
 
 - Echoes of the Eye DLC integration
-	- Possibly randomize the flashlight
+	- This is when we'll decide whether to randomize the flashlight
 
-- Story/Content mod support???
+- Story/Content mod support
 
-- Outer Relics integration???
+- After all content is added, consider ideas for "balance features" such as:
+	- split translator
+	- progressive signalscope frequencies
+	- alternative designs for progression signals
 
 ### (Non-Programmer) Help Wanted
 
