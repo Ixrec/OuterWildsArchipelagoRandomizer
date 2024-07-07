@@ -13,11 +13,12 @@
     <DebugType>none</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <!-- remember not to update this without also re-vendoring it -->
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.0.0-rc4" />
+    <!-- remember not to update this without also re-vendoring it from Solution Explorer ->
+	Archipelago.MultiClient.Net.dll -> Properties -> Path to the git repo's mod/ folder -->
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.2.0" />
 
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OWML" Version="2.11.1" />
+    <PackageReference Include="OWML" Version="2.13.0" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" />
   </ItemGroup>
   <ItemGroup>
@@ -39,8 +40,8 @@
     <None Include="InGameTracker/LocationInfos/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
-	<!-- apparently C#/VS doesn't understand that my project needs its dependencies at runtime, so any packages
-	not already shipped by Outer Wilds itself have to be vendored and manually copy-to-outputted here -->
+	<!-- apparently C#/VS doesn't understand that my project needs its dependencies at runtime, so any packages not
+	already shipped by Outer Wilds itself have to be both vendored above and manually copy-to-outputted down here -->
     <None Include="Archipelago.MultiClient.Net.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
