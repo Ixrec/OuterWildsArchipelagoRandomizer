@@ -71,7 +71,7 @@ internal class Spawn
     {
         if (spawnInSuitNextUpdate)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"instant SuitUp()");
+            APRandomizer.OWMLModConsole.WriteLine($"executing instant SuitUp() due to spawnInSuitNextUpdate");
             Locator.GetPlayerSuit().SuitUp(isTrainingSuit: false, instantSuitUp: true, putOnHelmet: true);
             spawnInSuitNextUpdate = false;
         }
@@ -85,23 +85,19 @@ internal class Spawn
             APRandomizer.OWMLModConsole.WriteLine($"skipping AlignPlayerWithForce::OnSuitUp() call so the player wakes up facing the sky despite wearing the spacesuit");
             return false;
         }
-        APRandomizer.OWMLModConsole.WriteLine($"normal AlignPlayerWithForce::OnSuitUp() call");
+        //APRandomizer.OWMLModConsole.WriteLine($"normal AlignPlayerWithForce::OnSuitUp() call");
         return true;
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.SpawnPlayer))]
-    public static void PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
+    public static bool PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
     {
         if (spawnChoice == SpawnChoice.Vanilla || spawnChoice == SpawnChoice.TimberHearth)
         {
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're spawning in TH village");
-            return;
+            return true; // let vanilla impl run
         }
-
-        //APRandomizer.OWMLModConsole.WriteLine($"_spawnList: {string.Join("\n",
-        //    __instance._spawnList.Select(sp => $"{sp?.transform.parent.name}/{sp?.name}|{sp?._spawnLocation}|{sp?._isShipSpawn}|{sp?._triggerVolumes?.Count()}|{sp?._attachedBody?.name}|{sp?.transform.position}"))}");
-
-        if (spawnChoice == SpawnChoice.HourglassTwins)
+        else if (spawnChoice == SpawnChoice.HourglassTwins)
         {
             var emberTwinGO = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject;
 
@@ -109,40 +105,45 @@ internal class Spawn
             __instance._initialSpawnPoint = sp;
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set player spawn {sp.transform.position}");
 
-            OWRigidbody owrigidbody = Locator.GetShipBody();
+            OWRigidbody shipRigidBody = Locator.GetShipBody();
             var offsetFromPlanet = new Vector3(9, 152.45f, 16); // from in-game testing
             var shipPos = emberTwinGO.transform.TransformPoint(offsetFromPlanet);
-            owrigidbody.WarpToPositionRotation(shipPos, sp.transform.rotation);
-            owrigidbody.SetVelocity(sp.GetPointVelocity());
-            owrigidbody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {owrigidbody.transform.position}");
-            return;
+            shipRigidBody.WarpToPositionRotation(shipPos, sp.transform.rotation);
+            shipRigidBody.SetVelocity(sp.GetPointVelocity());
+            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {shipRigidBody.transform.position}");
+            return false;
         }
-
-        if (spawnChoice == SpawnChoice.BrittleHollow)
+        else if (spawnChoice == SpawnChoice.BrittleHollow)
         {
             var riebeckOldCampfireGO = GameObject.Find("BrittleHollow_Body/Sector_BH/Sector_Crossroads/Interactables_Crossroads/VisibleFrom_BH/Prefab_HEA_Campfire/");
 
             var brittleHollowGO = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject;
 
-            // how do we spawn the player at a location that isn't one of the built-in SpawnPoints???
             var sp = brittleHollowGO.transform.Find("SPAWNS_PLAYER/SPAWN_OldCamp").GetComponent<SpawnPoint>();
-            __instance._initialSpawnPoint = sp;
+
+            OWRigidbody playerRigidBody = Locator.GetPlayerBody();
+            var offsetFromCampfire = new Vector3(0, 0, 5); // from in-game testing
+            var playerPos = riebeckOldCampfireGO.transform.TransformPoint(offsetFromCampfire);
+            playerRigidBody.WarpToPositionRotation(playerPos, riebeckOldCampfireGO.transform.rotation);
+            playerRigidBody.SetVelocity(sp.GetPointVelocity());
+            playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
+
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set player spawn {sp.transform.position}");
 
-            OWRigidbody owrigidbody = Locator.GetShipBody();
+            OWRigidbody shipRigidBody = Locator.GetShipBody();
             var offsetFromPlanet = new Vector3(-6, 10, 285); // from in-game testing
             var shipPos = brittleHollowGO.transform.TransformPoint(offsetFromPlanet);
-            owrigidbody.WarpToPositionRotation(shipPos, riebeckOldCampfireGO.transform.rotation);
-            owrigidbody.SetVelocity(sp.GetPointVelocity());
-            owrigidbody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {owrigidbody.transform.position}");
-            return;
+            shipRigidBody.WarpToPositionRotation(shipPos, riebeckOldCampfireGO.transform.rotation);
+            shipRigidBody.SetVelocity(sp.GetPointVelocity());
+            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {shipRigidBody.transform.position}");
+            return false;
         }
-
-        if (spawnChoice == SpawnChoice.GiantsDeep)
+        else // if (spawnChoice == SpawnChoice.GiantsDeep)
         {
-            return;
+            // TODO
+            return false;
         }
     }
 }
