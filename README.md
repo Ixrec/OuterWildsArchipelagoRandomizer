@@ -8,14 +8,16 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 Public Beta (as of July 2024).
 
-Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or found to not be caused by this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
+Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or are believed to be vanilla bugs unrelated to this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
 
-### Vanilla(?) Bugs
-
+<details>
+<summary>Vanilla(?) Bugs</summary>
 Unfortunately there are a couple of bugs which only affect some players, have no consistent reproduction steps, and no one seems to have encountered on their vanilla playthrough (presumably because randomizers encourage playing the game over and over). We currently believe these are issues with the vanilla game that no mod can fix:
+
 - Most important is the "end-of-loop crash", where the game simply crashes whenever the loop is reset, or even when you sync with the TH Village statue to start the loop.
 - Less common is a UI glitch where several elements of the user interface get rendered sideways and/or smushed together in a corner of the screen.
 - When switching between Outer Wilds and other applications, sometimes OW's lock-on feature stops working. When this happens, click on the OW window with your mouse, and it should start working again.
+</details>
 
 ## Contact
 
