@@ -220,4 +220,24 @@ internal class Orbits
             }
         }
     }
+
+    // useful for testing orbit combinations
+    /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    public static void ToolModeUI_Update_Prefix()
+    {
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
+        {
+            var p = PlanetOrder[0];
+            PlanetOrder.RemoveAt(0);
+            PlanetOrder.Add(p);
+            APRandomizer.OWMLModConsole.WriteLine($"PlanetOrder changed to {string.Join(", ", PlanetOrder)}");
+        }
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.right2))
+        {
+            var p = PlanetOrder.Last();
+            PlanetOrder.RemoveAt(PlanetOrder.Count - 1);
+            PlanetOrder.Insert(0, p);
+            APRandomizer.OWMLModConsole.WriteLine($"PlanetOrder changed to {string.Join(", ", PlanetOrder)}");
+        }
+    }*/
 }
