@@ -38,7 +38,7 @@ public class Logic
     public Dictionary<string, TrackerRegionData> TrackerRegions;
 
     private Dictionary<Item, uint> ItemsCollected;
-    private Dictionary<string, bool> CanAccessRegion;
+    private Dictionary<string, bool> CanAccessRegion; // not guaranteed to contain region: false entries, always use TryGetValue()
 
     private TrackerManager tracker;
 
@@ -323,8 +323,10 @@ public class Logic
 
     private string GetLocationLogicString(TrackerLocationData data)
     {
+        CanAccessRegion.TryGetValue(data.region, out bool canAccessRegion);
+
         var locationLogic = new List<string> {
-            (CanAccessRegion[data.region] ? "<color=green>" : "<color=maroon>") + $"(Can Access: {data.region})</color>"
+            (canAccessRegion ? "<color=green>" : "<color=maroon>") + $"(Can Access: {data.region})</color>"
         };
         locationLogic.AddRange(
             GetLogicRequirementsStrings(data.requires)
