@@ -70,6 +70,27 @@ public class Logic
         { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
         { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
     };
+    public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
+    {
+        { "SS", "Sun Station" },
+        { "ST", "Hourglass Twins" },
+        { "ET", "Hourglass Twins" },
+        { "ETT", "Hourglass Twins" },
+        { "ATP", "Ash Twin Interior" },
+        { "ATT", "Hourglass Twins" },
+        { "TH", "Timber Hearth" },
+        { "THT", "Hourglass Twins" },
+        { "BHNG", "Brittle Hollow" },
+        { "WHS", "White Hole Station" },
+        { "BHF", "Hanging City Ceiling" },
+        { "BHT", "Hourglass Twins" },
+        { "GD", "Giant's Deep" },
+        { "GDT", "Hourglass Twins" },
+    };
+    public Dictionary<string, HashSet<string>> SlotDataWarpPlatformIdToRequiredItems = new Dictionary<string, HashSet<string>>
+    {
+        { "SS", [ "Spacesuit" ] },
+    };
     // end stuff copy-pasted from .apworld
 
     public void AddConnection(TrackerConnectionData connection)
@@ -196,6 +217,7 @@ public class Logic
             c.requires = new();
             AddConnection(c);
         }
+        // TODO: warp
         BuildRegionLogic("Menu");
 
         // Determine location logic
