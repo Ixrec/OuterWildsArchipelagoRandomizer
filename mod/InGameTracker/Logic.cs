@@ -53,6 +53,33 @@ public class Logic
     // Dark Bramble
     private readonly string[] DBPrefixes = ["DB"];
 
+    // Dynamic logic information copy-pasted from the .apworld code
+    public enum SlotDataSpawn: long
+    {
+        Vanilla = 0,
+        HourglassTwins = 1,
+        TimberHearth = 2,
+        BrittleHollow = 3,
+        GiantsDeep = 4,
+    }
+    public Dictionary<SlotDataSpawn, string> SlotDataSpawnToRegionName = new Dictionary<SlotDataSpawn, string>
+    {
+        { SlotDataSpawn.Vanilla, "Timber Hearth Village" },
+        { SlotDataSpawn.HourglassTwins, "Hourglass Twins" },
+        { SlotDataSpawn.TimberHearth, "Timber Hearth" },
+        { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
+        { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
+    };
+    // end stuff copy-pasted from .apworld
+
+    public void AddConnection(TrackerConnectionData connection)
+    {
+        if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new(connection.from));
+        if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new(connection.to));
+        TrackerRegions[connection.from].toConnections.Add(connection);
+        TrackerRegions[connection.to].fromConnections.Add(connection);
+    }
+
     /// <summary>
     /// Parse locations.jsonc and connections.json into data that we can use
     /// </summary>
@@ -61,6 +88,7 @@ public class Logic
         tracker = APRandomizer.Tracker;
         TrackerLocations = [];
         TrackerRegions = [];
+
         string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
         if (File.Exists(path))
         {
@@ -72,17 +100,13 @@ public class Logic
         {
             APRandomizer.OWMLModConsole.WriteLine($"Could not find the file at {path}!", OWML.Common.MessageType.Error);
         }
+
         path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/connections.jsonc";
-        if ( File.Exists(path))
+        if (File.Exists(path))
         {
             List<TrackerConnectionData> connections = JsonConvert.DeserializeObject<List<TrackerConnectionData>>(File.ReadAllText(path));
             foreach (TrackerConnectionData connection in connections)
-            {
-                if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new(connection.from));
-                if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new(connection.to));
-                TrackerRegions[connection.from].toConnections.Add(connection);
-                TrackerRegions[connection.to].fromConnections.Add(connection);
-            }
+                AddConnection(connection);
         }
     }
 
@@ -146,7 +170,7 @@ public class Logic
     /// <param name="category"></param>
     public void DetermineAllAccessibility()
     {
-        // Build region logic, we always start from the Menu region
+        // First rebuild ItemsCollected, since region and location logic both need items to be up to date
         ItemsCollected = new Dictionary<Item, uint>();
         foreach (var itemInfo in APRandomizer.APSession.Items.AllItemsReceived)
         {
@@ -154,10 +178,27 @@ public class Logic
             if (ItemsCollected.ContainsKey(item)) ItemsCollected[item] += 1;
             else ItemsCollected.Add(item, 1);
         }
+
+        // Build region logic recursively from Menu region, after adding dynamic connections
         CanAccessRegion = new();
+        if (APRandomizer.SlotData.ContainsKey("spawn"))
+        {
+            var rawSpawn = (long)APRandomizer.SlotData["spawn"];
+            SlotDataSpawn spawn = SlotDataSpawn.Vanilla;
+            if (Enum.IsDefined(typeof(SlotDataSpawn), rawSpawn))
+                spawn = (SlotDataSpawn)rawSpawn;
+            else
+                APRandomizer.OWMLModConsole.WriteLine($"{rawSpawn} is not a valid spawn setting, defaulting to vanilla", OWML.Common.MessageType.Error);
+
+            var c = new TrackerConnectionData();
+            c.from = "Menu";
+            c.to = SlotDataSpawnToRegionName[spawn];
+            c.requires = new();
+            AddConnection(c);
+        }
         BuildRegionLogic("Menu");
 
-        // Determine locaiton logic
+        // Determine location logic
         Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
         foreach (var data in datas)
         {
