@@ -65,6 +65,22 @@ internal class Spawn
         }
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.Start))]
+    public static void ShipLogManager_Start_Postfix(ShipLogManager __instance)
+    {
+        // The Village 2 logsanity check has a few issues:
+        // - In the base game, it can be missed if you somehow die in between talking to Hornfels and syncing with the statue.
+        // - Non-vanilla spawns make it unreachable.
+        // Since this isn't "intended missable" like Village 3, I'd rather not completely remove the location from logsanity,
+        // so instead we have to trigger this ship log fact ourselves if the player can no longer get it themselves.
+        // Since this file has to fiddle with LAUNCH_CODES_GIVEN anyway, this seems like the least bad place to put it.
+        if (PlayerData._currentGameSave.PersistentConditionExists("LAUNCH_CODES_GIVEN") && !__instance.IsFactRevealed("TH_VILLAGE_X2"))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"auto-revealing Village 2 ship log because the time loop has already started");
+            __instance.RevealFact("TH_VILLAGE_X2");
+        }
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.Update))]
     public static void PlayerSpawner_Update(PlayerSpacesuit __instance)
     {
