@@ -352,6 +352,7 @@ public class APRandomizer : ModBehaviour
             GhostMatter.OnCompleteSceneLoad(scene, loadScene);
             Victory.OnCompleteSceneLoad(scene, loadScene);
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
+            Orbits.OnCompleteSceneLoad(scene, loadScene);
         };
 
         // update the Nomai text setting before any can be created

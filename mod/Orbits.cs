@@ -189,7 +189,21 @@ internal class Orbits
         }
     }
 
+    // The following code is all about "unbreaking" the OPC's fake-to-real debris swap.
+    // The vanilla code decides when to do the swap based on the angles between TH and GD, which
+    // of course falls apart when we're doing randomized orbits, so we have to do it ourselves.
+    // In the vanilla game the swap happens at 20 seconds, so we hardcode that number here.
+
+    // TODO: make this work on "loop 0", when TimeLoop elapsed() methods always return 0?
     private static bool oplcDebrisSwitched = false;
+
+    public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
+    {
+        if (loadScene != OWScene.SolarSystem) return;
+
+        APRandomizer.OWMLModConsole.WriteLine($"resetting oplcDebrisSwitched to false, was {oplcDebrisSwitched}");
+        oplcDebrisSwitched = false;
+    }
 
     [HarmonyPostfix, HarmonyPatch(typeof(OrbitalProbeLaunchController), nameof(OrbitalProbeLaunchController.FixedUpdate))]
     public static void OrbitalProbeLaunchController_FixedUpdate_Postfix(OrbitalProbeLaunchController __instance)
