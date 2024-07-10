@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -96,6 +97,15 @@ internal class Orbits
             {
                 //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._orbitAngle to {angle}");
                 __instance._orbitAngle = angle;
+
+                // the OPC debris objects need to be rotated around the main OPC object, because simply giving all three
+                // a 90-degree orbit causes them to overlap (and squish the player) at the north and south poles of GD
+                if (orbitingId == "OPC" && __instance.name != "OrbitalProbeCannon_Body")
+                {
+                    var opcPos = GameObject.Find("OrbitalProbeCannon_Body").transform.position;
+                    var gdPos = GameObject.Find("GiantsDeep_Body").transform.position;
+                    __instance.transform.RotateAround(opcPos, opcPos - gdPos, angle);
+                }
 
                 // the sun station needs to be perpendicular to its own orbit to make the spacewalk possible
                 if (orbitingId == "SS")
@@ -236,9 +246,23 @@ internal class Orbits
     }
 
     // useful for testing orbit combinations
-    /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+
+    /*private static int TestAngle = 90;
+
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Prefix()
     {
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.up2))
+        {
+            TestAngle += 30;
+            APRandomizer.OWMLModConsole.WriteLine($"TestAngle changed to {TestAngle}");
+        }
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
+        {
+            TestAngle -= 30;
+            APRandomizer.OWMLModConsole.WriteLine($"TestAngle changed to {TestAngle}");
+        }
+
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
         {
             var p = PlanetOrder[0];
