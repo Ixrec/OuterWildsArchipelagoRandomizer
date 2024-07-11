@@ -15,7 +15,7 @@ internal class Spawn
         GiantsDeep,
     }
 
-    private static SpawnChoice spawnChoice = SpawnChoice.BrittleHollow;// SpawnChoice.Vanilla;
+    private static SpawnChoice spawnChoice = SpawnChoice.HourglassTwins;// SpawnChoice.Vanilla;
 
     public static void ApplySlotData(long spawnChoiceSlotData)
     {
@@ -115,51 +115,80 @@ internal class Spawn
         }
         else if (spawnChoice == SpawnChoice.HourglassTwins)
         {
-            var emberTwinGO = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject;
-
-            var sp = emberTwinGO.transform.Find("SPAWNS/Spawn_ChertsCamp").GetComponent<SpawnPoint>();
-            __instance._initialSpawnPoint = sp;
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set player spawn {sp.transform.position}");
-
+            var chertCampfireGO = GameObject.Find("CaveTwin_Body/Sector_CaveTwin/Sector_NorthHemisphere/Sector_NorthSurface/Sector_Lakebed/Interactables_Lakebed/Lakebed_VisibleFrom_Far/Prefab_HEA_Campfire");
+            var emberTwinOWRB = Locator.GetAstroObject(AstroObject.Name.CaveTwin).GetOWRigidbody();
+            OWRigidbody playerRigidBody = Locator.GetPlayerBody();
             OWRigidbody shipRigidBody = Locator.GetShipBody();
-            var offsetFromPlanet = new Vector3(9, 152.45f, 16); // from in-game testing
-            var shipPos = emberTwinGO.transform.TransformPoint(offsetFromPlanet);
-            shipRigidBody.WarpToPositionRotation(shipPos, sp.transform.rotation);
-            shipRigidBody.SetVelocity(sp.GetPointVelocity());
-            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {shipRigidBody.transform.position}");
+
+            var offsetFromCampfire = new Vector3(3, 0, -3);
+            var playerPos = chertCampfireGO.transform.TransformPoint(offsetFromCampfire);
+            playerRigidBody.WarpToPositionRotation(playerPos, chertCampfireGO.transform.rotation);
+            Locator.GetPlayerCameraController().SetDegreesY(80f);
+
+            var offsetFromPlanet = new Vector3(9, 152.45f, 16);
+            var shipPos = emberTwinOWRB.transform.TransformPoint(offsetFromPlanet);
+            shipRigidBody.WarpToPositionRotation(shipPos, emberTwinOWRB.transform.rotation);
+
+            playerRigidBody.SetVelocity(emberTwinOWRB.GetVelocity());
+            playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(emberTwinOWRB);
+            shipRigidBody.SetVelocity(emberTwinOWRB.GetVelocity());
+            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(emberTwinOWRB);
             return false;
         }
         else if (spawnChoice == SpawnChoice.BrittleHollow)
         {
-            var riebeckOldCampfireGO = GameObject.Find("BrittleHollow_Body/Sector_BH/Sector_Crossroads/Interactables_Crossroads/VisibleFrom_BH/Prefab_HEA_Campfire/");
-
-            var brittleHollowGO = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject;
-
-            var sp = brittleHollowGO.transform.Find("SPAWNS_PLAYER/SPAWN_OldCamp").GetComponent<SpawnPoint>();
-
+            // unfortunately VisibleFrom_BH contains two children named Prefab_HEA_Campfire, so we have to use GetChild() to pick the correct one
+            var riebeckOldCampfireGO = GameObject.Find("BrittleHollow_Body/Sector_BH/Sector_Crossroads/Interactables_Crossroads/VisibleFrom_BH").transform.GetChild(3);
+            var brittleHollowOWRB = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).GetOWRigidbody();
             OWRigidbody playerRigidBody = Locator.GetPlayerBody();
-            var offsetFromCampfire = new Vector3(0, 0, 5); // from in-game testing
+            OWRigidbody shipRigidBody = Locator.GetShipBody();
+
+            var offsetFromCampfire = new Vector3(0, 0, -3);
             var playerPos = riebeckOldCampfireGO.transform.TransformPoint(offsetFromCampfire);
             playerRigidBody.WarpToPositionRotation(playerPos, riebeckOldCampfireGO.transform.rotation);
-            playerRigidBody.SetVelocity(sp.GetPointVelocity());
-            playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
+            Locator.GetPlayerCameraController().SetDegreesY(80f);
 
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set player spawn {sp.transform.position}");
-
-            OWRigidbody shipRigidBody = Locator.GetShipBody();
-            var offsetFromPlanet = new Vector3(-6, 10, 285); // from in-game testing
-            var shipPos = brittleHollowGO.transform.TransformPoint(offsetFromPlanet);
+            var offsetFromPlanet = new Vector3(-6, 10, 285);
+            var shipPos = brittleHollowOWRB.transform.TransformPoint(offsetFromPlanet);
             shipRigidBody.WarpToPositionRotation(shipPos, riebeckOldCampfireGO.transform.rotation);
-            shipRigidBody.SetVelocity(sp.GetPointVelocity());
-            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(sp?._attachedBody);
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer set ship spawn {offsetFromPlanet} / {shipPos} / {shipRigidBody.transform.position}");
+
+            playerRigidBody.SetVelocity(brittleHollowOWRB.GetVelocity());
+            playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(brittleHollowOWRB);
+            shipRigidBody.SetVelocity(brittleHollowOWRB.GetVelocity());
+            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(brittleHollowOWRB);
+
             return false;
         }
         else // if (spawnChoice == SpawnChoice.GiantsDeep)
         {
             // TODO
             return false;
+        }
+    }
+
+    // useful for testing
+    [HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
+    public static void ToolModeUI_Update_Prefix()
+    {
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.up2))
+        {
+            spawnChoice = (SpawnChoice)(((int)spawnChoice + 1) % 4);
+            APRandomizer.OWMLModConsole.WriteLine($"spawnChoice changed to {spawnChoice}");
+        }
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
+        {
+            spawnChoice = (SpawnChoice)(((int)spawnChoice - 1) % 4);
+            APRandomizer.OWMLModConsole.WriteLine($"spawnChoice changed to {spawnChoice}");
+        }
+
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.left2))
+        {
+            var emberTwinGO = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject;
+            var probe = Locator.GetProbe().gameObject;
+            APRandomizer.OWMLModConsole.WriteLine($"ET - probe = {emberTwinGO.transform.position - probe.transform.position}");
+        }
+        if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.right2))
+        {
         }
     }
 }
