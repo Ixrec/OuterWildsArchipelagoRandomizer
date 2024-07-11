@@ -32,23 +32,6 @@ internal class Spawn
                 case /*"brittle_hollow"*/  3: spawnChoice = SpawnChoice.BrittleHollow; break;
                 case /*"giants_deep"*/     4: spawnChoice = SpawnChoice.GiantsDeep; break;
             }
-
-            EnsureTimeLoopStarted(); // all non-vanilla spawns need this
-        }
-    }
-
-    private static void EnsureTimeLoopStarted()
-    {
-        // For whatever reason, the base game uses the LAUNCH_CODES_GIVEN condition to track
-        // the time loop being started, not whether the launch codes have been given yet.
-
-        // We're calling these methods directly on the GameSave instead of PlayerData, because
-        // PlayerData::SetPersistentCondition() specifically avoids saving LAUNCH_CODES_GIVEN.
-        // See TODO for details.
-        if (!PlayerData._currentGameSave.PersistentConditionExists("LAUNCH_CODES_GIVEN"))
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"Spawn::EnsureTimeLoopStarted() setting LAUNCH_CODES_GIVEN condition to true, since this player has a non-vanilla spawn");
-            PlayerData._currentGameSave.SetPersistentCondition("LAUNCH_CODES_GIVEN", true);
         }
     }
 
@@ -60,8 +43,17 @@ internal class Spawn
 
         if (spawnChoice != SpawnChoice.Vanilla)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Spawn::OnCompleteSceneLoad() setting spawnInSuitNextUpdate to true");
+            APRandomizer.OWMLModConsole.WriteLine($"Spawn::OnCompleteSceneLoad() ensuring that the time loop has started and the player will spawn in their suit");
+
             spawnInSuitNextUpdate = true;
+
+            // For whatever reason, the base game uses the LAUNCH_CODES_GIVEN condition to track
+            // the time loop being started, not whether the launch codes have been given yet.
+
+            // We're calling these methods directly on the GameSave instead of PlayerData, because
+            // PlayerData::SetPersistentCondition() specifically avoids saving LAUNCH_CODES_GIVEN.
+            if (!PlayerData._currentGameSave.PersistentConditionExists("LAUNCH_CODES_GIVEN"))
+                PlayerData._currentGameSave.SetPersistentCondition("LAUNCH_CODES_GIVEN", true);
         }
     }
 
