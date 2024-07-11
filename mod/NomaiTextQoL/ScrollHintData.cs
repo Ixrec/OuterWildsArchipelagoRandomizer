@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.NomaiTextQoL
 {
     /// <summary>
     /// Sets the colors of scroll text and 

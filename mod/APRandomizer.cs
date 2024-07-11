@@ -3,6 +3,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using ArchipelagoRandomizer.InGameTracker;
+using ArchipelagoRandomizer.NomaiTextQoL;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -362,8 +363,8 @@ public class APRandomizer : ModBehaviour
         // update the Nomai text setting before any can be created
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
         {
-            NomaiTextQoL.AutoNomaiText = AutoNomaiText;
-            NomaiTextQoL.ColorNomaiText = ColorNomaiText;
+            NomaiTextQoL.NomaiTextQoL.AutoNomaiText = AutoNomaiText;
+            NomaiTextQoL.NomaiTextQoL.ColorNomaiText = ColorNomaiText;
         };
 
         SetupSaveData();
@@ -588,7 +589,7 @@ public class APRandomizer : ModBehaviour
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
         ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         InstantTranslator = config.GetSettingsValue<bool>("Instant Translator");
-        NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
+        NomaiTextQoL.NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
 
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
         DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");

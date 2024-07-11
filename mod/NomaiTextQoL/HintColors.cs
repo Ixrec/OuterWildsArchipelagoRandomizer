@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.NomaiTextQoL
 {
     /// <summary>
     /// Colors for locations match contents

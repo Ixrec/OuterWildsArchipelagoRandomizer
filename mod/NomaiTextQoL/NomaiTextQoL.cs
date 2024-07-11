@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.NomaiTextQoL
 {
     [HarmonyPatch]
     internal class NomaiTextQoL
@@ -13,7 +13,7 @@ namespace ArchipelagoRandomizer
         public static bool ColorNomaiText = true;
         public static float TranslateTime = 0.2f;
 
-        
+
 
         // Auto-expand all Nomai text in the game as a Quality of Life feature
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.LateInitialize))]
@@ -44,7 +44,7 @@ namespace ArchipelagoRandomizer
                         }
 
                         // Check for Logsanity checks
-                        bool isALog = Enum.TryParse<Location>("SLF__" + nomaiTextData.DatabaseID, out Location loc);
+                        bool isALog = Enum.TryParse("SLF__" + nomaiTextData.DatabaseID, out Location loc);
                         if (isALog && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0)
                         {
                             hintData.DetermineImportance(loc);
@@ -64,7 +64,7 @@ namespace ArchipelagoRandomizer
                             if (__instance._dictNomaiTextData.ContainsKey(key))
                             {
                                 var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
-                                
+
 
                                 ArcHintData hintData = textLine.gameObject.GetAddComponent<ArcHintData>();
 
@@ -78,7 +78,7 @@ namespace ArchipelagoRandomizer
                                 }
 
                                 // Check for Logsanity checks
-                                bool isALog = Enum.TryParse<Location>("SLF__" + nomaiTextData.DatabaseID, out Location loc);
+                                bool isALog = Enum.TryParse("SLF__" + nomaiTextData.DatabaseID, out Location loc);
                                 if (isALog && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0)
                                 {
                                     hintData.DetermineImportance(loc);
@@ -196,7 +196,7 @@ namespace ArchipelagoRandomizer
                 {
                     Locator.GetPlayerAudioController().PlayNomaiTextReveal(__instance);
                 }
-                
+
             }
             return false;
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.NomaiTextQoL
 {
     public enum CheckImportance
     {

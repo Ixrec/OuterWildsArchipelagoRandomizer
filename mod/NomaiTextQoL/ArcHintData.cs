@@ -2,7 +2,7 @@
 using UnityEngine;
 using Archipelago.MultiClient.Net.Enums;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer.NomaiTextQoL
 {
     /// <summary>
     /// Determines the color of Nomai Text Arcs based on their contents
@@ -122,5 +122,5 @@ namespace ArchipelagoRandomizer
             }
         }
     }
-    
+
 }
