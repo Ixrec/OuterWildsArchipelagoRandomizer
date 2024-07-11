@@ -3,20 +3,17 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using ArchipelagoRandomizer.InGameTracker;
-using ArchipelagoRandomizer.NomaiTextQoL;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer;
 
@@ -35,14 +32,13 @@ public class APRandomizerSaveData
     public Dictionary<Location, ArchipelagoItem> scoutedLocations;
 }
 
-[HarmonyPatch]
 public class APRandomizer : ModBehaviour
 {
     public static APRandomizer Instance;
 
     public static APRandomizerSaveData SaveData;
     public static AssetBundle Assets;
-    private static string SaveFileName;
+    public static string SaveFileName;
     public static ArchipelagoSession APSession;
     public static Dictionary<string, object> SlotData;
 
@@ -75,7 +71,7 @@ public class APRandomizer : ModBehaviour
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
     private static Task pendingSaveFileWrite = null;
     private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
-    public void WriteToSaveFile()
+    public static void WriteToSaveFile()
     {
         if (DisableInGameSaveFileWrites && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
 
@@ -83,7 +79,7 @@ public class APRandomizer : ModBehaviour
 
         if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
         {
-            ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+            APRandomizer.Instance.ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
             lastWriteTime = DateTimeOffset.UtcNow;
         }
 
@@ -91,7 +87,7 @@ public class APRandomizer : ModBehaviour
         {
             await Task.Delay(1000);
 
-            ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
+            APRandomizer.Instance.ModHelper.Storage.Save<APRandomizerSaveData>(SaveData, SaveFileName);
             lastWriteTime = DateTimeOffset.UtcNow;
 
             pendingSaveFileWrite = null;
@@ -127,10 +123,10 @@ public class APRandomizer : ModBehaviour
             if (SaveData == null)
             {
                 OWMLModConsole.WriteLine($"No save file found for this profile.");
-                if (ResumeRandomExpeditionGO != null)
+                if (MainMenu.ResumeRandomExpeditionGO != null)
                 {
-                    ChangeConnInfoGO?.SetActive(false);
-                    ResumeRandomExpeditionGO?.SetActive(false);
+                    MainMenu.ChangeConnInfoGO?.SetActive(false);
+                    MainMenu.ResumeRandomExpeditionGO?.SetActive(false);
                 }
             }
             else
@@ -141,42 +137,13 @@ public class APRandomizer : ModBehaviour
                 foreach (var kv in SaveData.itemsAcquired)
                     LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
 
-                if (ResumeRandomExpeditionGO != null)
+                if (MainMenu.ResumeRandomExpeditionGO != null)
                 {
-                    ChangeConnInfoGO?.SetActive(true);
-                    ResumeRandomExpeditionGO?.SetActive(true);
+                    MainMenu.ChangeConnInfoGO?.SetActive(true);
+                    MainMenu.ResumeRandomExpeditionGO?.SetActive(true);
                 }
             }
         };
-    }
-
-    // OWML.MenuHelper has no API for hiding the vanilla buttons, so we do that here instead
-    [HarmonyPostfix, HarmonyPatch(typeof(TitleScreenManager), nameof(TitleScreenManager.SetUpMainMenu))]
-    public static void TitleScreenManager_SetUpMainMenu_Postfix()
-    {
-        var resumeButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-ResumeGame");
-        resumeButton.SetActive(false);
-        var newButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-NewGame");
-        newButton.SetActive(false);
-    }
-
-    // The main menu does not autoselect the top visible button, but rather a specific named button, so the fact that we're forced
-    // to hide some vanilla buttons means we also have to hijack this autoselection logic to unbreak the main menu.
-    // In practice this is primarily a problem for controller input.
-    [HarmonyPostfix, HarmonyPatch(typeof(OWMenuInputModule), nameof(OWMenuInputModule.SelectOnNextUpdate))]
-    public static void OWMenuInputModule_SelectOnNextUpdate(OWMenuInputModule __instance, Selectable selectable)
-    {
-        if (selectable?.name == "Button-NewGame" || selectable?.name == "Button-ResumeGame")
-        {
-            GameObject gameObject = (SaveData == null) ? NewRandomExpeditionGO : ResumeRandomExpeditionGO;
-            var modButton = gameObject.GetComponent<Button>();
-            if (modButton != null)
-            {
-                OWMLModConsole.WriteLine($"OWMenuInputModule_SelectOnNextUpdate changing selectable from {selectable.name} to {gameObject.name}");
-                __instance._nextSelectableQueue.Remove(selectable);
-                __instance._nextSelectableQueue.Add(modButton);
-            }
-        }
     }
 
     private static LoginResult ConnectToAPServer(APConnectionData cdata)
@@ -238,7 +205,7 @@ public class APRandomizer : ModBehaviour
                 saveDataChanged = SyncItemCountWithAPServer(itemInfo.ItemId);
 
             if (saveDataChanged)
-                APRandomizer.Instance.WriteToSaveFile();
+                WriteToSaveFile();
         }
 
         APSession.Items.ItemReceived += APSession_ItemReceived;
@@ -282,7 +249,7 @@ public class APRandomizer : ModBehaviour
             saveDataChanged = SyncItemCountWithAPServer(itemId);
 
         if (saveDataChanged)
-            APRandomizer.Instance.WriteToSaveFile();
+            WriteToSaveFile();
     }
     private static void APSession_OnMessageReceived(LogMessage message)
     {
@@ -374,130 +341,9 @@ public class APRandomizer : ModBehaviour
         Application.quitting += () => OnSessionClosed(APSession, false);
     }
 
-    private static GameObject NewRandomExpeditionGO = null;
-    private static SubmitAction NewRandomExpeditionSA = null;
-    private static GameObject ChangeConnInfoGO = null;
-    private static SubmitAction ChangeConnInfoSA = null;
-    private static GameObject ResumeRandomExpeditionGO = null;
-    private static SubmitAction ResumeRandomExpeditionSA = null;
+    public override void SetupTitleMenu(ITitleMenuManager titleManager) => MainMenu.SetupTitleMenu(titleManager);
 
-    public override void SetupTitleMenu(ITitleMenuManager titleManager)
-    {
-        var hostAndPortInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
-            "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"",
-            "Enter hostname:port...",
-            "Confirm", "Cancel");
-        var slotInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
-            "Connection Info (2/3): Slot/Player Name\n\ne.g. \"Hearthian1\", \"Hearthian2\"",
-            "Enter slot/player name...",
-            "Confirm", "Cancel");
-        var passwordInput = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
-            "Connection Info (3/3): Password\n\nLeave blank if your server isn't using a password",
-            "Enter password...",
-            "Confirm", "Cancel");
-
-        NewRandomExpeditionSA = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("NEW RANDOM EXPEDITION", 0, true);
-        ChangeConnInfoSA = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("CHANGE CONNECTION INFO", 0, true);
-        ResumeRandomExpeditionSA = ModHelper.MenuHelper.TitleMenuManager.CreateTitleButton("RESUME RANDOM EXPEDITION", 0, true);
-
-        var pathToMainMenuButtons = "TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup";
-        NewRandomExpeditionGO = GameObject.Find($"{pathToMainMenuButtons}/Button-NEW RANDOM EXPEDITION");
-        ChangeConnInfoGO = GameObject.Find($"{pathToMainMenuButtons}/Button-CHANGE CONNECTION INFO");
-        ResumeRandomExpeditionGO = GameObject.Find($"{pathToMainMenuButtons}/Button-RESUME RANDOM EXPEDITION");
-
-        OWML.Utils.MenuExtensions.SetButtonVisible(ChangeConnInfoSA, SaveData != null);
-        OWML.Utils.MenuExtensions.SetButtonVisible(ResumeRandomExpeditionSA, SaveData != null);
-
-        SubmitAction lastButtonClicked = null;
-        APConnectionData connData = (SaveData == null) ? new() : SaveData.apConnectionData;
-
-        NewRandomExpeditionSA.OnSubmitAction += () =>
-        {
-            lastButtonClicked = NewRandomExpeditionSA;
-            StartConnInfoInput();
-        };
-        ChangeConnInfoSA.OnSubmitAction += () =>
-        {
-            lastButtonClicked = ChangeConnInfoSA;
-            StartConnInfoInput();
-        };
-
-        ResumeRandomExpeditionSA.OnSubmitAction += () =>
-        {
-            lastButtonClicked = ResumeRandomExpeditionSA;
-            AttemptToConnect(() => LoadTheGame(ResumeRandomExpeditionSA));
-        };
-
-        void StartConnInfoInput()
-        {
-            connData = (SaveData == null) ? new() : SaveData.apConnectionData;
-
-            hostAndPortInput.EnableMenu(true);
-            if (connData.hostname != null && connData.hostname.Length > 0)
-                hostAndPortInput.GetInputField().text = connData.hostname + ':' + connData.port;
-        }
-
-        hostAndPortInput.OnPopupConfirm += () => {
-            var inputText = hostAndPortInput.GetInputText();
-            OWMLModConsole.WriteLine($"hostAndPortInput.OnPopupConfirm: {inputText}");
-
-            var split = inputText.Split(':');
-            connData.hostname = split[0];
-            // if the player left out a port number, use the default localhost port of 38281
-            connData.port = (split.Length > 1) ? uint.Parse(split[1]) : 38281;
-
-            slotInput.EnableMenu(true);
-            if (connData.slotName != null && connData.slotName.Length > 0)
-                slotInput.GetInputField().text = connData.slotName;
-        };
-
-        slotInput.OnPopupConfirm += () => {
-            var inputText = slotInput.GetInputText();
-            OWMLModConsole.WriteLine($"slotInput.OnPopupConfirm: {inputText}");
-
-            connData.slotName = inputText;
-
-            passwordInput.EnableMenu(true);
-            if (connData.password != null && connData.password.Length > 0)
-                passwordInput.GetInputField().text = connData.password;
-        };
-
-        passwordInput.OnPopupConfirm += () => {
-            var inputText = passwordInput.GetInputText();
-            OWMLModConsole.WriteLine($"passwordInput.OnPopupConfirm: {inputText}");
-
-            connData.password = inputText;
-
-            if (lastButtonClicked == ChangeConnInfoSA)
-            {
-                SaveData.apConnectionData = connData;
-                WriteToSaveFile();
-            }
-            else if (lastButtonClicked == NewRandomExpeditionSA)
-            {
-                APRandomizerSaveData saveData = new();
-                saveData.apConnectionData = connData;
-                saveData.locationsChecked = Enum.GetValues(typeof(Location)).Cast<Location>().ToDictionary(ln => ln, _ => false);
-                saveData.itemsAcquired = Enum.GetValues(typeof(Item)).Cast<Item>().ToDictionary(ln => ln, _ => 0u);
-                SaveData = saveData;
-
-                AttemptToConnect(() =>
-                {
-                    // we don't overwrite the mod save file and the player's inventory until we're sure we can really start playing this new game
-                    Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, SaveFileName);
-                    foreach (var kv in SaveData.itemsAcquired)
-                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
-
-                    // also wipe the vanilla save file, since we've bypassed the base game code that would normally do this
-                    PlayerData.ResetGame();
-
-                    LoadTheGame(NewRandomExpeditionSA);
-                });
-            }
-        };
-    }
-
-    private void AttemptToConnect(Action successCallback)
+    public static void AttemptToConnect(Action successCallback)
     {
         LoginResult loginResult = null;
         string exceptionMessage = null;
@@ -529,59 +375,7 @@ public class APRandomizer : ModBehaviour
         }
     }
 
-    // quick and dirty attempt to reproduce what the vanilla New/Resume Expedition buttons do
-    private void LoadTheGame(SubmitAction mainMenuButton)
-    {
-        var scene = PlayerData.GetWarpedToTheEye() ? OWScene.EyeOfTheUniverse : OWScene.SolarSystem;
-        LoadManager.LoadSceneAsync(scene, true, LoadManager.FadeType.ToBlack, 1f, false);
-
-        ModHelper.MenuHelper.TitleMenuManager.SetButtonText(mainMenuButton, "Loading...");
-
-        var lpu = GameObject.Find("TitleMenu").AddComponent<LoadProgressUpdater>();
-        lpu.titleMenuManager = ModHelper.MenuHelper.TitleMenuManager;
-        lpu.mainMenuButton = mainMenuButton;
-    }
-
-    class LoadProgressUpdater : MonoBehaviour
-    {
-        public ITitleMenuManager titleMenuManager;
-        public SubmitAction mainMenuButton;
-
-        private void Update()
-        {
-            if (
-                mainMenuButton != null &&
-                (LoadManager.GetLoadingScene() == OWScene.SolarSystem || LoadManager.GetLoadingScene() == OWScene.EyeOfTheUniverse)
-            )
-            {
-                // I dunno what's going on with the GetAsyncLoadProgress() return value, but it's not a normal 0-1 or 0-100 number like you'd expect.
-                // This translation into a human-readable progress percentage is copy-pasted from:
-                // https://github.com/misternebula/MenuFramework/blob/3215c0d66782908e4de557bf71ee36adf693c640/MenuFramework/CustomSubmitActionLoadScene.cs#L16-L19
-                var loadProgress = LoadManager.GetAsyncLoadProgress();
-                loadProgress = loadProgress < 0.1f
-                    ? Mathf.InverseLerp(0f, 0.1f, loadProgress) * 0.9f
-                    : 0.9f + (Mathf.InverseLerp(0.1f, 1f, loadProgress) * 0.1f);
-
-                var loadProgressString = loadProgress.ToString("P0"); // P = percentage format, 0 = no decimal digits
-
-                titleMenuManager.SetButtonText(mainMenuButton, $"Loading... {loadProgressString}");
-            }
-        }
-    }
-
-    public override void SetupPauseMenu(IPauseMenuManager pauseManager)
-    {
-        if (LoadManager.GetCurrentScene() == OWScene.EyeOfTheUniverse)
-        {
-            var quitAndReset = pauseManager.MakeSimpleButton("QUIT AND RESET\nTO SOLAR SYSTEM", 0, false);
-            quitAndReset.OnSubmitAction += () =>
-            {
-                OWMLModConsole.WriteLine($"reset clicked");
-                PlayerData.SaveEyeCompletion();
-                LoadManager.LoadScene(OWScene.TitleScreen, LoadManager.FadeType.None, 1f, true);
-            };
-        }
-    }
+    public override void SetupPauseMenu(IPauseMenuManager pauseManager) => MainMenu.SetupPauseMenu(pauseManager);
 
     public override void Configure(IModConfig config)
     {

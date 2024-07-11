@@ -141,7 +141,7 @@ internal class LocationTriggers
         if (locationChecked[location]) return;
 
         locationChecked[location] = true;
-        APRandomizer.Instance.WriteToSaveFile();
+        APRandomizer.WriteToSaveFile();
 
         if (LocationNames.locationToArchipelagoId.ContainsKey(location))
         {

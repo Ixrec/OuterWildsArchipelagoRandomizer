@@ -60,7 +60,7 @@ namespace ArchipelagoRandomizer
                 }
 
                 APRandomizer.SaveData.scoutedLocations = ScoutedLocations;
-                APRandomizer.Instance.WriteToSaveFile();
+                APRandomizer.WriteToSaveFile();
                 APRandomizer.OWMLModConsole.WriteLine($"Cached {ScoutedLocations.Count} location scouts in save data.", OWML.Common.MessageType.Success);
             }));
             if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
