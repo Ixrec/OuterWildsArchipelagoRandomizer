@@ -230,8 +230,11 @@ internal class Orbits
                 // copy-pasted from OPLC::FixedUpdate(), with the if()s removed
                 for (int i = 0; i < __instance._fakeDebrisBodies.Length; i++)
                 {
-                    Object.Destroy(__instance._fakeDebrisBodies[i].gameObject);
-                    __instance._fakeCount++;
+                    if (__instance._fakeDebrisBodies[i] != null)
+                    {
+                        Object.Destroy(__instance._fakeDebrisBodies[i]?.gameObject);
+                        __instance._fakeCount++;
+                    }
                 }
                 for (int j = 0; j < __instance._realDebrisSectorProxies.Length; j++)
                 {
