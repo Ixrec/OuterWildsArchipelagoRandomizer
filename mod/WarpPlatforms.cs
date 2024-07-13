@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -83,6 +84,68 @@ internal class WarpPlatforms
     };
 
     private static Dictionary<WarpPlatform, WarpPlatform> warps = vanillaWarps;
+
+    private static Dictionary<string, WarpPlatform> slotDataIdToWarpPlatform = new Dictionary<string, WarpPlatform>
+    {
+        { "SS", WarpPlatform.SunStation },
+        { "ST", WarpPlatform.SunTower },
+        { "ET", WarpPlatform.EmberTwin },
+        { "ETT", WarpPlatform.EmberTwinTower },
+        { "ATP", WarpPlatform.AshTwinProject },
+        { "ATT", WarpPlatform.AshTwinTower },
+        { "TH", WarpPlatform.TimberHearth },
+        { "THT", WarpPlatform.TimberHearthTower },
+        { "BHNG", WarpPlatform.BrittleHollowNorthernGlacier },
+        { "WHS", WarpPlatform.WhiteHoleStation },
+        { "BHF", WarpPlatform.BlackHoleForge },
+        { "BHT", WarpPlatform.BrittleHollowTower },
+        { "GD", WarpPlatform.GiantsDeep },
+        { "GDT", WarpPlatform.GiantsDeepTower },
+    };
+
+    public static void ApplySlotData(object warpSlotData)
+    {
+        if (warpSlotData is string warpString && warpString == "vanilla")
+        {
+            warps = vanillaWarps;
+            return;
+        }
+
+        if (warpSlotData is not JArray warpsArray)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+            return;
+        }
+
+        var warpsFromSlotData = new Dictionary<WarpPlatform, WarpPlatform>();
+        foreach (JToken warpPair in warpsArray)
+        {
+            if (warpPair is not JArray warpPairArray)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                return;
+            }
+
+            var w1 = (string)warpPairArray[0];
+            var w2 = (string)warpPairArray[1];
+
+            if (!slotDataIdToWarpPlatform.TryGetValue(w1, out WarpPlatform wp1))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                return;
+            }
+            if (!slotDataIdToWarpPlatform.TryGetValue(w2, out WarpPlatform wp2))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                return;
+            }
+
+            warpsFromSlotData.Add(wp1, wp2);
+            warpsFromSlotData.Add(wp2, wp1);
+        }
+
+        warps = warpsFromSlotData;
+    }
 
     private static Dictionary<WarpPlatform, NomaiWarpPlatform> warpEnumToInGamePlatform = new();
 

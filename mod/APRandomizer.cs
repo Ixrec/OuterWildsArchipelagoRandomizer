@@ -193,6 +193,9 @@ public class APRandomizer : ModBehaviour
         if (SlotData.ContainsKey("spawn"))
             Spawn.ApplySlotData((long)SlotData["spawn"]);
 
+        if (SlotData.ContainsKey("warps"))
+            WarpPlatforms.ApplySlotData(SlotData["warps"]);
+
         // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
         // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
         var totalItemsAcquired = SaveData.itemsAcquired.Sum(kv => kv.Value);
