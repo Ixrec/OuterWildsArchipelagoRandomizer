@@ -171,6 +171,19 @@ internal class Spawn
         }
     }
 
+    // Hearing the TH Village music outside of TH is no big deal, but in many cases
+    // it ends up overlapping and fighting with the music volumes on other planets,
+    // so we only let it stay active if we're spawning on TH like the base game expects.
+    [HarmonyPostfix, HarmonyPatch(typeof(VillageMusicVolume), nameof(VillageMusicVolume.Awake))]
+    public static void VillageMusicVolume_Awake_Postfix(VillageMusicVolume __instance)
+    {
+        if (spawnChoice != SpawnChoice.Vanilla && spawnChoice != SpawnChoice.TimberHearth)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"VillageMusicVolume_Awake_Postfix() calling this.Deactivate() since we aren't spawning on TH");
+            __instance.Deactivate();
+        }
+    }
+
     // useful for testing
     /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Prefix()
