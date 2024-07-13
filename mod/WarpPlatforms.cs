@@ -24,53 +24,111 @@ internal class WarpPlatforms
         }
     }
 
-    // we don't care about the Vessel frequency used at the end of the game
-    readonly static NomaiWarpPlatform.Frequency[] frequenciesOfInterest = {
-        NomaiWarpPlatform.Frequency.SunStation,
-        NomaiWarpPlatform.Frequency.TimeLoop, // Ash Twin to inside Ash Twin Project
-        NomaiWarpPlatform.Frequency.HourglassTwin, // Ash Twin to Ember Twin
-        NomaiWarpPlatform.Frequency.TimberHearth,
-        NomaiWarpPlatform.Frequency.BrittleHollowPolar, // White Hole Station to Brittle Hollow surface near north pole
-        NomaiWarpPlatform.Frequency.BrittleHollowForge, // Ash Twin to Brittle Hollow underside of crust, just outside Black Hole Forge
-        NomaiWarpPlatform.Frequency.GiantsDeep,
+    private enum WarpPlatform
+    {
+        SunStation,
+        SunTower,
+        EmberTwin,
+        EmberTwinTower,
+        AshTwinProject,
+        AshTwinTower,
+        TimberHearth,
+        TimberHearthTower,
+        BrittleHollowNorthernGlacier,
+        WhiteHoleStation,
+        BlackHoleForge,
+        BrittleHollowTower,
+        GiantsDeep,
+        GiantsDeepTower,
+    }
+
+    // In the base game, each warp platform is either a "transmitter" or a "receiver" on a certain "warp frequency".
+    // In the randomizer, a warp can be initiated from any platform, at any time, and may go to any other platform.
+    // So when patching the platform code, we need to be able to map from e.g. "transmitter on SunStation frequency" to "the Sun Tower platform".
+    static Dictionary<NomaiWarpPlatform.Frequency, WarpPlatform> warpFrequencyToTransmitter = new Dictionary<NomaiWarpPlatform.Frequency, WarpPlatform> {
+        { NomaiWarpPlatform.Frequency.SunStation, WarpPlatform.SunTower },
+        { NomaiWarpPlatform.Frequency.TimeLoop, WarpPlatform.AshTwinTower },
+        { NomaiWarpPlatform.Frequency.HourglassTwin, WarpPlatform.EmberTwinTower },
+        { NomaiWarpPlatform.Frequency.TimberHearth, WarpPlatform.TimberHearthTower },
+        { NomaiWarpPlatform.Frequency.BrittleHollowPolar, WarpPlatform.WhiteHoleStation },
+        { NomaiWarpPlatform.Frequency.BrittleHollowForge, WarpPlatform.BrittleHollowTower },
+        { NomaiWarpPlatform.Frequency.GiantsDeep, WarpPlatform.GiantsDeepTower },
+    };
+    static Dictionary<NomaiWarpPlatform.Frequency, WarpPlatform> warpFrequencyToReceiver = new Dictionary<NomaiWarpPlatform.Frequency, WarpPlatform>
+    {
+        { NomaiWarpPlatform.Frequency.SunStation, WarpPlatform.SunStation },
+        { NomaiWarpPlatform.Frequency.TimeLoop, WarpPlatform.AshTwinProject },
+        { NomaiWarpPlatform.Frequency.HourglassTwin, WarpPlatform.EmberTwin },
+        { NomaiWarpPlatform.Frequency.TimberHearth, WarpPlatform.TimberHearth },
+        { NomaiWarpPlatform.Frequency.BrittleHollowPolar, WarpPlatform.BrittleHollowNorthernGlacier },
+        { NomaiWarpPlatform.Frequency.BrittleHollowForge, WarpPlatform.BlackHoleForge },
+        { NomaiWarpPlatform.Frequency.GiantsDeep, WarpPlatform.GiantsDeep },
     };
 
-    static Dictionary<NomaiWarpPlatform.Frequency, NomaiWarpPlatform> warpTransmitters = new();
+    private static Dictionary<WarpPlatform, WarpPlatform> vanillaWarps = new Dictionary<WarpPlatform, WarpPlatform> {
+        { WarpPlatform.SunStation, WarpPlatform.SunTower },
+        { WarpPlatform.SunTower, WarpPlatform.SunStation },
+        { WarpPlatform.EmberTwin, WarpPlatform.EmberTwinTower },
+        { WarpPlatform.EmberTwinTower, WarpPlatform.EmberTwin },
+        { WarpPlatform.AshTwinProject, WarpPlatform.AshTwinTower },
+        { WarpPlatform.AshTwinTower, WarpPlatform.AshTwinProject },
+        { WarpPlatform.TimberHearth, WarpPlatform.TimberHearthTower },
+        { WarpPlatform.TimberHearthTower, WarpPlatform.TimberHearth },
+        { WarpPlatform.BrittleHollowNorthernGlacier, WarpPlatform.WhiteHoleStation },
+        { WarpPlatform.WhiteHoleStation, WarpPlatform.BrittleHollowNorthernGlacier },
+        { WarpPlatform.BlackHoleForge, WarpPlatform.BrittleHollowTower },
+        { WarpPlatform.BrittleHollowTower, WarpPlatform.BlackHoleForge },
+        { WarpPlatform.GiantsDeep, WarpPlatform.GiantsDeepTower },
+        { WarpPlatform.GiantsDeepTower, WarpPlatform.GiantsDeep },
+    };
+
+    private static Dictionary<WarpPlatform, WarpPlatform> warps = vanillaWarps;
+
+    private static Dictionary<WarpPlatform, NomaiWarpPlatform> warpEnumToInGamePlatform = new();
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
         if (loadScene != OWScene.SolarSystem) return;
 
+        warpEnumToInGamePlatform.Clear();
+
+        warpEnumToInGamePlatform.Add(WarpPlatform.SunStation, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.SunStation));
+        warpEnumToInGamePlatform.Add(WarpPlatform.AshTwinProject, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.TimeLoop));
+        warpEnumToInGamePlatform.Add(WarpPlatform.EmberTwin, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.HourglassTwin));
+        warpEnumToInGamePlatform.Add(WarpPlatform.TimberHearth, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.TimberHearth));
+        warpEnumToInGamePlatform.Add(WarpPlatform.BrittleHollowNorthernGlacier, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.BrittleHollowPolar));
+        warpEnumToInGamePlatform.Add(WarpPlatform.BlackHoleForge, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.BrittleHollowForge));
+        warpEnumToInGamePlatform.Add(WarpPlatform.GiantsDeep, Locator.GetWarpReceiver(NomaiWarpPlatform.Frequency.GiantsDeep));
+
         var at = Locator.GetAstroObject(AstroObject.Name.TowerTwin); // Ash Twin
         var whs = GameObject.Find("WhiteholeStation_Body");
 
-        warpTransmitters.Clear();
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.GiantsDeep,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.GiantsDeepTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_GD").GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.BrittleHollowForge,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.BrittleHollowTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_BH").GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.BrittleHollowPolar,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.WhiteHoleStation,
             whs.transform.GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.TimberHearth,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.TimberHearthTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_TH").GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.HourglassTwin,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.EmberTwinTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_CT").GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.TimeLoop,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.AshTwinTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_HGT/Interactables_Tower_HGT/Interactables_Tower_TT").GetComponentInChildren<NomaiWarpTransmitter>()
         );
-        warpTransmitters.Add(
-            NomaiWarpPlatform.Frequency.SunStation,
+        warpEnumToInGamePlatform.Add(
+            WarpPlatform.SunTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_SS").GetComponentInChildren<NomaiWarpTransmitter>()
         );
     }
@@ -90,6 +148,17 @@ internal class WarpPlatforms
             ir.SetKeyCommandVisible(false);
         }
     }
+
+    // we don't care about the Vessel frequency used at the end of the game
+    readonly static NomaiWarpPlatform.Frequency[] frequenciesOfInterest = {
+        NomaiWarpPlatform.Frequency.SunStation,
+        NomaiWarpPlatform.Frequency.TimeLoop, // Ash Twin to inside Ash Twin Project
+        NomaiWarpPlatform.Frequency.HourglassTwin, // Ash Twin to Ember Twin
+        NomaiWarpPlatform.Frequency.TimberHearth,
+        NomaiWarpPlatform.Frequency.BrittleHollowPolar, // White Hole Station to Brittle Hollow surface near north pole
+        NomaiWarpPlatform.Frequency.BrittleHollowForge, // Ash Twin to Brittle Hollow underside of crust, just outside Black Hole Forge
+        NomaiWarpPlatform.Frequency.GiantsDeep,
+    };
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpPlatform), nameof(NomaiWarpPlatform.Start))]
     public static void NomaiWarpPlatform_Start_Prefix(NomaiWarpPlatform __instance)
@@ -120,12 +189,14 @@ internal class WarpPlatforms
             if (!hasNomaiWarpCodes) return;
 
             var isTransmitter = (__instance is NomaiWarpTransmitter);
-            var destination = isTransmitter ?
-                Locator.GetWarpReceiver(__instance.GetFrequency()) :
-                warpTransmitters[__instance.GetFrequency()];
+            var frequency = __instance.GetFrequency();
+            WarpPlatform source = isTransmitter ? warpFrequencyToTransmitter[frequency] : warpFrequencyToReceiver[frequency];
 
-            APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_WarpPlatformInteract OnPressInteract opening black hole {isTransmitter} / {__instance?.name} {destination?.name} / {__instance?.transform?.parent?.name} {destination?.transform?.parent?.name}");
-            __instance.OpenBlackHole(destination, false);
+            WarpPlatform destination = warps[source];
+            NomaiWarpPlatform destinationPlatform = warpEnumToInGamePlatform[destination];
+
+            APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_WarpPlatformInteract OnPressInteract opening black hole from {source} to {destination}");
+            __instance.OpenBlackHole(destinationPlatform, false);
         };
     }
 
