@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
+using Newtonsoft.Json.Linq;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -69,6 +70,27 @@ public class Logic
         { SlotDataSpawn.TimberHearth, "Timber Hearth" },
         { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
         { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
+    };
+    public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
+    {
+        { "SS", "Sun Station" },
+        { "ST", "Hourglass Twins" },
+        { "ET", "Hourglass Twins" },
+        { "ETT", "Hourglass Twins" },
+        { "ATP", "Ash Twin Interior" },
+        { "ATT", "Hourglass Twins" },
+        { "TH", "Timber Hearth" },
+        { "THT", "Hourglass Twins" },
+        { "BHNG", "Brittle Hollow" },
+        { "WHS", "White Hole Station" },
+        { "BHF", "Hanging City Ceiling" },
+        { "BHT", "Hourglass Twins" },
+        { "GD", "Giant's Deep" },
+        { "GDT", "Hourglass Twins" },
+    };
+    public Dictionary<string, HashSet<string>> SlotDataWarpPlatformIdToRequiredItems = new Dictionary<string, HashSet<string>>
+    {
+        { "SS", [ "Spacesuit" ] },
     };
     // end stuff copy-pasted from .apworld
 
@@ -179,23 +201,111 @@ public class Logic
             else ItemsCollected.Add(item, 1);
         }
 
-        // Build region logic recursively from Menu region, after adding dynamic connections
-        CanAccessRegion = new();
-        if (APRandomizer.SlotData.ContainsKey("spawn"))
+        // Add dynamic region connections due to non-vanilla spawns and warp platform randomization
+
+        SlotDataSpawn spawn = SlotDataSpawn.Vanilla;
+        if (!APRandomizer.SlotData.TryGetValue("spawn", out var rawSpawn))
         {
-            var rawSpawn = (long)APRandomizer.SlotData["spawn"];
-            SlotDataSpawn spawn = SlotDataSpawn.Vanilla;
+            APRandomizer.OWMLModConsole.WriteLine($"slot_data['spawn'] missing, defaulting to vanilla spawn", OWML.Common.MessageType.Error);
+        }
+        else
+        {
             if (Enum.IsDefined(typeof(SlotDataSpawn), rawSpawn))
                 spawn = (SlotDataSpawn)rawSpawn;
             else
                 APRandomizer.OWMLModConsole.WriteLine($"{rawSpawn} is not a valid spawn setting, defaulting to vanilla", OWML.Common.MessageType.Error);
-
-            var c = new TrackerConnectionData();
-            c.from = "Menu";
-            c.to = SlotDataSpawnToRegionName[spawn];
-            c.requires = new();
-            AddConnection(c);
         }
+
+        var spawnConnection = new TrackerConnectionData();
+        spawnConnection.from = "Menu";
+        spawnConnection.to = SlotDataSpawnToRegionName[spawn];
+        spawnConnection.requires = new();
+        AddConnection(spawnConnection);
+
+        // just hardcode the vanilla warps again, it's easier than deriving these strings from the maps in WarpPlatforms.cs
+        List<List<string>> warps = [["SS", "ST"], ["ET", "ETT"], ["ATP", "ATT"], ["TH", "THT"], ["BHNG", "WHS"], ["BHF", "BHT"], ["GD", "GDT"]];
+        if (!APRandomizer.SlotData.TryGetValue("warps", out var warpSlotData))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] missing, defaulting to vanilla warps", OWML.Common.MessageType.Error);
+        }
+        else
+        {
+            if (warpSlotData is string warpString && warpString == "vanilla")
+            {
+                // do nothing
+            }
+            else if (warpSlotData is not JArray warpsArray)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+            }
+            else
+            {
+                var warpsFromSlotData = new List<List<string>>();
+                foreach (JToken warpTokenPair in warpsArray)
+                {
+                    if (warpTokenPair is not JArray warpPairArray)
+                    {
+                        APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla warps unchanged because slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                        break;
+                    }
+
+                    List<string> warpStringPair = [warpPairArray[0].ToString(), warpPairArray[1].ToString()];
+                    warpsFromSlotData.Add(warpStringPair);
+                }
+                warps = warpsFromSlotData;
+            }
+        }
+
+        foreach (var warpPair in warps)
+        {
+            var w1 = warpPair[0];
+            var w2 = warpPair[1];
+
+            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(w1, out var r1))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                break;
+            }
+            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(w2, out var r2))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
+                break;
+            }
+
+            var requirements = new List<TrackerRequirement>();
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(r1, out var items1))
+            {
+                foreach (var item in items1) {
+                    var tr = new TrackerRequirement();
+                    tr.item = item;
+                    requirements.Add(tr);
+                }
+            }
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(r2, out var items2))
+            {
+                foreach (var item in items2)
+                {
+                    var tr = new TrackerRequirement();
+                    tr.item = item;
+                    requirements.Add(tr);
+                }
+            }
+
+            var warpConnection = new TrackerConnectionData();
+            warpConnection.from = r1;
+            warpConnection.to = r2;
+            warpConnection.requires = requirements;
+            AddConnection(warpConnection);
+
+            var reverseWarpConnection = new TrackerConnectionData();
+            warpConnection.from = r2;
+            warpConnection.to = r1;
+            warpConnection.requires = requirements;
+            AddConnection(warpConnection);
+        }
+
+        // Build region logic recursively from Menu region
+        CanAccessRegion = new();
         BuildRegionLogic("Menu");
 
         // Determine location logic
