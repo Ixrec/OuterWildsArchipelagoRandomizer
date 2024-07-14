@@ -34,6 +34,31 @@ Outer Wilds:
     song_of_five: 50
     song_of_six: 0
 
+  spawn:
+    # Where you start the game.
+    # 'vanilla' is the same as the base game: you wake up in TH Village, talk to Hornfels to get the Launch Codes, then walk by the Nomai statue to start the time loop.
+    # All other options (including timber_hearth) will spawn you in your spacesuit, with the time loop already started, and the Launch Codes item placed randomly like any other AP item.
+    # The idea is that non-vanilla spawns will require you to play "shipless" for a while, possibly using Nomai Warp Codes to visit other planets. The ship will still spawn nearby, so you can use the ship log/tracker right away.
+    # When playing with non-vanilla spawns, we recommend:
+    # - Consider enabling randomize_warp_pads for greater variety if you get warp codes early
+    # - Consider enabling early_key_item in non-solo games, or else your first session may end after only 4-10 checks
+    # - Install a fast-forward mod such as Alter Time or Cheat And Debug Mod, since you may need to do a lot of waiting for e.g. Ash Twin sand or Giant's Deep islands
+    vanilla: 50
+    hourglass_twins: 0
+    timber_hearth: 0
+    brittle_hollow: 0
+    giants_deep: 0
+
+  early_key_item:
+    # Ensure that at least one of Translator, Nomai Warp Codes, or Launch Codes will be somewhere in sphere 1.
+    # On 'local', sphere 1 means any location that you can reach with only your starting inventory.
+    # On 'global', sphere 1 means any location that any player in the multiworld can reach with their starting inventories.
+    # This is primarily intended to prevent games with non-vanilla spawns from becoming blocked too quickly.
+    # In addition, without this AP seems to almost always put Launch Codes in sphere 1, so this also helps increase variety.
+    'off': 50
+    local: 0
+    global: 0
+
   randomize_coordinates:
     # Randomize the Eye of the Universe coordinates needed to reach the end of the game.
     false: 0
@@ -46,6 +71,13 @@ Outer Wilds:
     # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow. This often causes the Hourglass Twins' sand pillar to pass through different areas.
     false: 0
     true: 50
+
+  randomize_warp_platforms:
+    # Randomize which Nomai warp platforms are connected to each other.
+    # Warp connections are still 'coupled', i.e. if platform A warps to platform B, then B will take you back to A.
+    # Highly recommended when playing with non-vanilla spawns.
+    'false': 50
+    'true': 0
 
   randomize_dark_bramble_layout:
     # Randomizes which Dark Bramble 'rooms' link to which other rooms, so you can't rely on your memory of the vanilla layout.
