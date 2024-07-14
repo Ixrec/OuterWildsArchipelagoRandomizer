@@ -33,6 +33,8 @@ public class Logic
     /// Parsed version of locations.jsonc
     /// </summary>
     public Dictionary<string, TrackerLocationData> TrackerLocations;
+
+    public Dictionary<string, TrackerRegionData> StaticTrackerRegions;
     /// <summary>
     /// List of all locations with their connections
     /// </summary>
@@ -94,12 +96,12 @@ public class Logic
     };
     // end stuff copy-pasted from .apworld
 
-    public void AddConnection(TrackerConnectionData connection)
+    public void AddConnection(Dictionary<string, TrackerRegionData> regions, TrackerConnectionData connection)
     {
-        if (!TrackerRegions.ContainsKey(connection.from)) TrackerRegions.Add(connection.from, new(connection.from));
-        if (!TrackerRegions.ContainsKey(connection.to)) TrackerRegions.Add(connection.to, new(connection.to));
-        TrackerRegions[connection.from].toConnections.Add(connection);
-        TrackerRegions[connection.to].fromConnections.Add(connection);
+        if (!regions.ContainsKey(connection.from)) regions.Add(connection.from, new(connection.from));
+        if (!regions.ContainsKey(connection.to)) regions.Add(connection.to, new(connection.to));
+        regions[connection.from].toConnections.Add(connection);
+        regions[connection.to].fromConnections.Add(connection);
     }
 
     /// <summary>
@@ -109,7 +111,7 @@ public class Logic
     {
         tracker = APRandomizer.Tracker;
         TrackerLocations = [];
-        TrackerRegions = [];
+        StaticTrackerRegions = [];
 
         string path = APRandomizer.Instance.ModHelper.Manifest.ModFolderPath + "/locations.jsonc";
         if (File.Exists(path))
@@ -128,7 +130,7 @@ public class Logic
         {
             List<TrackerConnectionData> connections = JsonConvert.DeserializeObject<List<TrackerConnectionData>>(File.ReadAllText(path));
             foreach (TrackerConnectionData connection in connections)
-                AddConnection(connection);
+                AddConnection(StaticTrackerRegions, connection);
         }
     }
 
@@ -201,8 +203,16 @@ public class Logic
             else ItemsCollected.Add(item, 1);
         }
 
-        // Add dynamic region connections due to non-vanilla spawns and warp platform randomization
+        // Reset TrackerRegions to a fresh, semi-deep copy to clear any dynamic region connections from the previous slot
+        TrackerRegions = StaticTrackerRegions.ToDictionary(e => e.Key, e => {
+            var copy = new TrackerRegionData(e.Value.name);
+            copy.fromConnections = new(e.Value.fromConnections);
+            copy.toConnections = new(e.Value.toConnections);
+            copy.requirements = new(e.Value.requirements);
+            return copy;
+        });
 
+        // Add dynamic region connections due to non-vanilla spawns and warp platform randomization
         SlotDataSpawn spawn = SlotDataSpawn.Vanilla;
         if (!APRandomizer.SlotData.TryGetValue("spawn", out var rawSpawn))
         {
@@ -220,7 +230,7 @@ public class Logic
         spawnConnection.from = "Menu";
         spawnConnection.to = SlotDataSpawnToRegionName[spawn];
         spawnConnection.requires = new();
-        AddConnection(spawnConnection);
+        AddConnection(TrackerRegions, spawnConnection);
 
         // just hardcode the vanilla warps again, it's easier than deriving these strings from the maps in WarpPlatforms.cs
         List<List<string>> warps = [["SS", "ST"], ["ET", "ETT"], ["ATP", "ATT"], ["TH", "THT"], ["BHNG", "WHS"], ["BHF", "BHT"], ["GD", "GDT"]];
@@ -273,6 +283,13 @@ public class Logic
             }
 
             var requirements = new List<TrackerRequirement>();
+
+            // every warp connection requires warp codes to use
+            var nwctr = new TrackerRequirement();
+            nwctr.item = "Nomai Warp Codes";
+            requirements.Add(nwctr);
+
+            // these maps are for corner cases where one or more additional items are required
             if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(r1, out var items1))
             {
                 foreach (var item in items1) {
@@ -295,13 +312,13 @@ public class Logic
             warpConnection.from = r1;
             warpConnection.to = r2;
             warpConnection.requires = requirements;
-            AddConnection(warpConnection);
+            AddConnection(TrackerRegions, warpConnection);
 
             var reverseWarpConnection = new TrackerConnectionData();
             warpConnection.from = r2;
             warpConnection.to = r1;
             warpConnection.requires = requirements;
-            AddConnection(warpConnection);
+            AddConnection(TrackerRegions, warpConnection);
         }
 
         // Build region logic recursively from Menu region
