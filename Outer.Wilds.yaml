@@ -50,14 +50,17 @@ Outer Wilds:
     giants_deep: 0
 
   early_key_item:
-    # Ensure that at least one of Translator, Nomai Warp Codes, or Launch Codes will be somewhere in sphere 1.
-    # On 'local', sphere 1 means any location that you can reach with only your starting inventory.
-    # On 'global', sphere 1 means any location that any player in the multiworld can reach with their starting inventories.
-    # This is primarily intended to prevent games with non-vanilla spawns from becoming blocked too quickly.
-    # In addition, without this AP seems to almost always put Launch Codes in sphere 1, so this also helps increase variety.
+    # Ensure that either Translator, Nomai Warp Codes, or Launch Codes will be somewhere in sphere 1 and
+    # in your own world, guaranteeing you can find it without waiting on other players.
+    # `any` randomly selects one of these items to place early.
+    # 
+    # Recommended for games with non-vanilla spawns, especially async games.
+    # In addition, without this AP seems to almost always put Launch Codes in sphere 1, so `any` also helps increase variety.
     'off': 50
-    local: 0
-    global: 0
+    any: 0
+    translator: 0
+    nomai_warp_codes: 0
+    launch_codes: 0
 
   randomize_coordinates:
     # Randomize the Eye of the Universe coordinates needed to reach the end of the game.
