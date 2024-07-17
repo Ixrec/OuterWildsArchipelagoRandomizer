@@ -2,7 +2,7 @@
 description: Outer Wilds Example
 game: Outer Wilds
 requires:
-  version: 0.4.6
+  version: 0.5.0
 Outer Wilds:
   # generic Archipelago settings
 
