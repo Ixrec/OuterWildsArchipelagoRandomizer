@@ -23,6 +23,7 @@ public class APConnectionData
     public uint port;
     public string slotName;
     public string password;
+    public string? roomId;
 }
 public class APRandomizerSaveData
 {
@@ -146,7 +147,7 @@ public class APRandomizer : ModBehaviour
         };
     }
 
-    private static LoginResult ConnectToAPServer(APConnectionData cdata)
+    private static LoginResult ConnectToAPServer(APConnectionData cdata, Action successCallback)
     {
         OWMLModConsole.WriteLine($"ConnectToAPServer() called with {cdata.hostname} / {cdata.port} / {cdata.slotName} / {cdata.password}");
         if (APSession != null)
@@ -162,6 +163,39 @@ public class APRandomizer : ModBehaviour
 
         APSession.Socket.ErrorReceived += APSession_ErrorReceived;
 
+        var oldRoomId = SaveData.apConnectionData.roomId;
+        var newRoomId = APSession.RoomState.Seed;
+        OWMLModConsole.WriteLine($"old room id from save file is {oldRoomId}, new room id from AP server is {newRoomId}");
+
+        // I don't know if RoomState.Seed / "room id" is guaranteed to always exist, so if it somehow doesn't just act like nothing happened
+        if (APSession.RoomState.Seed == null || oldRoomId == newRoomId)
+        {
+            FinishConnectingToAPServer(result, false /* saveDataChanged */, successCallback);
+            return result;
+        }
+
+        // Room id doesn't match, show the user a warning popup letting them choose whether to "finish" the connection we've started.
+        var modSaveCheckedLocationsCount = SaveData.locationsChecked.Where(kv => kv.Value).Count();
+        var apServerCheckedLocationCount = APSession.Locations.AllLocationsChecked.Count;
+        var countDifference = modSaveCheckedLocationsCount - apServerCheckedLocationCount;
+        var warning = $"This AP server has a different room id from the one you previously connected to on this profile. ";
+        if (countDifference > 0)
+            warning += $"Continuing with this connection will likely tell the server to immediately mark {countDifference} locations as checked. ";
+        warning += $"This usually means you forgot to start a New Random Expedition, create a new profile, or change connection info. Connect anyway?";
+        OWMLModConsole.WriteLine(warning);
+
+        var connectionFailedPopup = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup(warning, "Connect Anyway", "Cancel");
+        connectionFailedPopup.EnableMenu(true);
+        connectionFailedPopup.OnPopupConfirm += () =>
+        {
+            SaveData.apConnectionData.roomId = APSession.RoomState.Seed;
+            FinishConnectingToAPServer(result, true /* saveDataChanged */, successCallback);
+        };
+        return result;
+    }
+
+    private static void FinishConnectingToAPServer(LoginResult result, bool saveDataChanged, Action successCallback)
+    {
         SlotData = ((LoginSuccessful)result).SlotData;
         OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
@@ -203,13 +237,12 @@ public class APRandomizer : ModBehaviour
         if (totalItemsReceived > totalItemsAcquired)
         {
             OWMLModConsole.WriteLine($"AP server state has more items ({totalItemsReceived}) than local save data ({totalItemsAcquired}). Attempting to update local save data to match.");
-            bool saveDataChanged = false;
             foreach (var itemInfo in APSession.Items.AllItemsReceived)
                 saveDataChanged = SyncItemCountWithAPServer(itemInfo.ItemId);
-
-            if (saveDataChanged)
-                WriteToSaveFile();
         }
+
+        if (saveDataChanged)
+            WriteToSaveFile();
 
         APSession.Items.ItemReceived += APSession_ItemReceived;
         APSession.MessageLog.OnMessageReceived += APSession_OnMessageReceived;
@@ -223,7 +256,7 @@ public class APRandomizer : ModBehaviour
 
         OnSessionOpened(APSession);
 
-        return result;
+        successCallback();
     }
 
     private static void APSession_ErrorReceived(Exception e, string message)
@@ -353,7 +386,7 @@ public class APRandomizer : ModBehaviour
 
         try
         {
-            loginResult = ConnectToAPServer(SaveData.apConnectionData);
+            loginResult = ConnectToAPServer(SaveData.apConnectionData, successCallback);
         }
         catch (Exception ex)
         {
@@ -371,10 +404,6 @@ public class APRandomizer : ModBehaviour
             var connectionFailedPopup = Instance.ModHelper.MenuHelper.PopupMenuManager.CreateTwoChoicePopup(err, "Retry", "Cancel");
             connectionFailedPopup.EnableMenu(true);
             connectionFailedPopup.OnPopupConfirm += () => AttemptToConnect(successCallback);
-        }
-        else
-        {
-            successCallback();
         }
     }
 
