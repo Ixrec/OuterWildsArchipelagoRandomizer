@@ -90,4 +90,15 @@ internal class QuantumImaging
 
         return true;
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(QuantumObject), nameof(QuantumObject.IsLockedByProbeSnapshot))]
+    public static bool QuantumObject_IsLockedByProbeSnapshot_Prefix(QuantumObject __instance, ref bool __result)
+    {
+        if (hasImagingKnowledge)
+            return true; // let the vanilla code run unchanged
+
+        // don't allow any quantum locking (by camera) until we have the AP item
+        __result = false;
+        return false;
+    }
 }
