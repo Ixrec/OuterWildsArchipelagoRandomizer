@@ -27,6 +27,8 @@ internal class Spacesuit
         {
             var hangingSuitModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_PlayerSuit_Hanging")?.gameObject;
             hangingSuitModel.SetActive(hasSpacesuit);
+            var scoutLauncherOnFloorModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_ProbeLauncher")?.gameObject;
+            scoutLauncherOnFloorModel.SetActive(hasSpacesuit);
 
             var hangingSuitIR = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/InteractVolume")?.GetComponent<MultiInteractReceiver>();
             hangingSuitIR.EnableSingleInteraction(hasSpacesuit, 0);
