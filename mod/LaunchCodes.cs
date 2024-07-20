@@ -32,7 +32,6 @@ internal class LaunchCodes
     {
         shipCockpitSIV = __instance._interactVolume;
 
-        APRandomizer.OWMLModConsole.WriteLine($"ShipCockpitController_Start_Postfix {shipCockpitSIV?.name} {shipCockpitSIV?._screenPrompt?._text}");
         ApplyHasLaunchCodesFlag(_hasLaunchCodes);
     }
 
