@@ -22,16 +22,31 @@ internal class Spacesuit
 
     private static void ApplyHasSpacesuitFlag(bool hasSpacesuit)
     {
+        if (!PlayerState.IsWearingSuit())
+            SetSpacesuitVisible(hasSpacesuit);
+
+        var ship = Locator.GetShipBody()?.gameObject?.transform;
+        if (ship != null)
+        {
+            var hangingSuitIR = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/InteractVolume")?.GetComponent<MultiInteractReceiver>();
+            hangingSuitIR.EnableSingleInteraction(hasSpacesuit, 0);
+        }
+    }
+
+    // This is public so that it can also be called from Spawn.cs when we spawn already in our spacesuit
+    public static void SetSpacesuitVisible(bool spacesuitVisible)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) called");
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship != null)
         {
             var hangingSuitModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_PlayerSuit_Hanging")?.gameObject;
-            hangingSuitModel.SetActive(hasSpacesuit);
-            var scoutLauncherOnFloorModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_ProbeLauncher")?.gameObject;
-            scoutLauncherOnFloorModel.SetActive(hasSpacesuit);
+            hangingSuitModel.SetActive(spacesuitVisible);
 
-            var hangingSuitIR = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/InteractVolume")?.GetComponent<MultiInteractReceiver>();
-            hangingSuitIR.EnableSingleInteraction(hasSpacesuit, 0);
+            // the scout launcher model lying on the floor of the ship counts as part of the spacesuit,
+            // because we always want it to be shown or hidden whenever the suit is
+            var scoutLauncherOnFloorModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_ProbeLauncher")?.gameObject;
+            scoutLauncherOnFloorModel.SetActive(spacesuitVisible);
         }
     }
 

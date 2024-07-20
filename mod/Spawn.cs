@@ -81,6 +81,9 @@ internal class Spawn
             APRandomizer.OWMLModConsole.WriteLine($"executing instant SuitUp() due to spawnInSuitNextUpdate");
             Locator.GetPlayerSuit().SuitUp(isTrainingSuit: false, instantSuitUp: true, putOnHelmet: true);
             spawnInSuitNextUpdate = false;
+
+            // hide the suit model inside the ship, so the player won't see a "duplicate" suit
+            Spacesuit.SetSpacesuitVisible(false);
         }
     }
 
