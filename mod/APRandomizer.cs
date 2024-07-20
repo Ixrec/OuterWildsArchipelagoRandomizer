@@ -259,11 +259,21 @@ public class APRandomizer : ModBehaviour
         successCallback();
     }
 
+    private static HashSet<string> SocketWarningsAlreadyShown = new();
+
     private static void APSession_ErrorReceived(Exception e, string message)
     {
-        var msg = $"Received error from APSession.Socket: '{message}'\nException: {e.Message}\nException Stack: {e.StackTrace}";
-        APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
-        APRandomizer.InGameAPConsole.AddText($"<color='orange'>{msg}</color>");
+        if (!SocketWarningsAlreadyShown.Contains(message))
+        {
+            SocketWarningsAlreadyShown.Add(message);
+            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received error from APSession.Socket: '{message}'</color>");
+
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Received error from APSession.Socket: '{message}'\n" +
+                $"(duplicates of this error will be silently ignored)\n" +
+                $"Exception: {e.Message}\nException Stack: {e.StackTrace}",
+                OWML.Common.MessageType.Warning);
+        }
     }
 
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
