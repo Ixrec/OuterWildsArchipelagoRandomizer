@@ -247,7 +247,10 @@ internal class SuitResources
     {
         double oxygenCapacityMultiplier = (initialOxygenCapacity/100f) + ((oxygenCapacityPerUpgrade/100f) * _oxygenCapacityUpgrades);
 
-        oxygenPercent.text = (__instance._oxygenFraction * oxygenCapacityMultiplier).ToString("P1");
+        // __instance._oxygenFraction is a cache of GetOxygenFraction(), often one update out of date since it's only updated on differences >0.01f,
+        // which is fine for the base game's colored bars. Since we're writing exact numbers to the UI, using _oxygenFraction would often lead to
+        // e.g. rendering a "full tank" as 49.8% instead of 50.0%, so we always use the more up to date GetOxygenFraction() instead.
+        oxygenPercent.text = (__instance._playerResources.GetOxygenFraction() * oxygenCapacityMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxFuel()
@@ -275,7 +278,10 @@ internal class SuitResources
     {
         double fuelCapacityMultiplier = (initialFuelCapacity/100f) + ((fuelCapacityPerUpgrade/100f) * _fuelCapacityUpgrades);
 
-        fuelPercent.text = (__instance._fuelFraction * fuelCapacityMultiplier).ToString("P1");
+        // __instance._fuelFraction is a cache of GetFuelFraction(), often one update out of date since it's only updated on differences >0.01f,
+        // which is fine for the base game's colored bars. Since we're writing exact numbers to the UI, using _fuelFraction would often lead to
+        // e.g. rendering a "full tank" as 49.8% instead of 50.0%, so we always use the more up to date GetFuelFraction() instead.
+        fuelPercent.text = (__instance._playerResources.GetFuelFraction() * fuelCapacityMultiplier).ToString("P1");
     }
 
     private static void ApplyMaxBoost()
