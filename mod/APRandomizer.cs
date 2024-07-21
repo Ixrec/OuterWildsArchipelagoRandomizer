@@ -167,8 +167,9 @@ public class APRandomizer : ModBehaviour
         var newRoomId = APSession.RoomState.Seed;
         OWMLModConsole.WriteLine($"old room id from save file is {oldRoomId}, new room id from AP server is {newRoomId}");
 
-        // I don't know if RoomState.Seed / "room id" is guaranteed to always exist, so if it somehow doesn't just act like nothing happened
-        if (APSession.RoomState.Seed == null || oldRoomId == newRoomId)
+        // I don't know if RoomState.Seed is guaranteed to always exist, so if it somehow doesn't and newRoomId is null just act like nothing happened
+        // oldRoomId being null usually just means this is our first connection.
+        if (oldRoomId == null || newRoomId == null || oldRoomId == newRoomId)
         {
             FinishConnectingToAPServer(result, false /* saveDataChanged */, successCallback);
             return result;
