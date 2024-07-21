@@ -45,7 +45,10 @@ internal class Jellyfish
 
     private static void ApplyHasKnowledgeFlag()
     {
-        jellyfishInsulatingVolumes.Do(iv => iv.SetVolumeActivation(hasJellyfishKnowledge));
+        jellyfishInsulatingVolumes.Do(iv => {
+            if (iv != null)
+                iv.SetVolumeActivation(hasJellyfishKnowledge);
+        });
     }
 
     static ScreenPrompt insulationIntactPrompt = new("Jellyfish Insulation: Intact", 0);
