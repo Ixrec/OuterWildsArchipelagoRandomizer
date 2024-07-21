@@ -42,6 +42,16 @@ internal class Scout
         return true;
     }
 
+    [HarmonyPostfix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.Start))]
+    public static void ProbeLauncher_Start_Postfix(ProbeLauncher __instance)
+    {
+        if (!hasScout)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"putting the Scout Launcher in photo mode since we don't have the Scout yet");
+            __instance._photoMode = true;
+        }
+    }
+
     static ScreenPrompt launchScoutPrompt = null;
     static ScreenPrompt cannotLaunchScoutPrompt = null;
 
