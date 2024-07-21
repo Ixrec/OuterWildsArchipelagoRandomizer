@@ -35,6 +35,10 @@ public static class Coordinates
         else if (coordsSlotData is JArray coords)
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
+
+            // The UI prompt sprite is the only thing derived from the coordinates which we have to create well before its use ingame, so if we
+            // switch slots then it'll go out of date unless we explicitly reset it before EyeCoordinatePromptTrigger_Start_Postfix runs again.
+            promptCoordsSprite = null;
         }
         else
         {
