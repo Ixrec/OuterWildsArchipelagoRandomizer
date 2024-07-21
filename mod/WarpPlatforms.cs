@@ -291,4 +291,16 @@ internal class WarpPlatforms
             return false;
         }
     }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpPlatform), nameof(NomaiWarpPlatform.OnExit))]
+    public static bool NomaiWarpPlatform_OnExit(NomaiWarpPlatform __instance, GameObject hitObj)
+    {
+        if (hitObj.GetComponentInParent<OWRigidbody>() == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"skipping NomaiWarpPlatform::OnExit() call to prevent a base game NRE when dying on a warp platform");
+            return false;
+        }
+
+        return true;
+    }
 }
