@@ -171,7 +171,14 @@ public class APRandomizer : ModBehaviour
         // oldRoomId being null usually means this is our first connection on a New Expedition.
         if (oldRoomId == null || newRoomId == null || oldRoomId == newRoomId)
         {
-            FinishConnectingToAPServer(result, false /* saveDataChanged */, successCallback);
+            var saveDataChanged = false;
+            if (oldRoomId == null || newRoomId == null)
+            {
+                SaveData.apConnectionData.roomId = newRoomId;
+                saveDataChanged = true;
+            }
+
+            FinishConnectingToAPServer(result, saveDataChanged, successCallback);
             return result;
         }
 
