@@ -79,12 +79,12 @@ internal class MainMenu
         NewRandomExpeditionSA.OnSubmitAction += () =>
         {
             lastButtonClicked = NewRandomExpeditionSA;
-            StartConnInfoInput();
+            StartConnInfoInput(true);
         };
         ChangeConnInfoSA.OnSubmitAction += () =>
         {
             lastButtonClicked = ChangeConnInfoSA;
-            StartConnInfoInput();
+            StartConnInfoInput(false);
         };
 
         ResumeRandomExpeditionSA.OnSubmitAction += () =>
@@ -93,9 +93,13 @@ internal class MainMenu
             APRandomizer.AttemptToConnect(() => LoadTheGame(ResumeRandomExpeditionSA, titleManager));
         };
 
-        void StartConnInfoInput()
+        void StartConnInfoInput(bool resetRoomId)
         {
             connData = (APRandomizer.SaveData == null) ? new() : APRandomizer.SaveData.apConnectionData;
+            // It's important that we only warn the player about a "wrong" room id when they're connecting with a non-new save file,
+            // and the easiest way to do that is for New Expedition to reset our cached room id to null.
+            if (resetRoomId)
+                connData.roomId = null;
 
             hostAndPortInput.EnableMenu(true);
             if (connData.hostname != null && connData.hostname.Length > 0)
