@@ -204,7 +204,8 @@ public class APRandomizer : ModBehaviour
 
     private static void FinishConnectingToAPServer(LoginResult result, bool saveDataChanged, Action successCallback)
     {
-        SlotData = ((LoginSuccessful)result).SlotData;
+        SlotData = JsonConvert.DeserializeObject<Dictionary<string, object>>("{\"goal\":1,\"death_link\":1,\"logsanity\":1,\"spawn\":2,\"eotu_coordinates\":[[4,0,3,2],[0,4,1,3,5],[0,2,3,5,4]],\"db_layout\":\"H->ACPV|C->XV|E->S|A->XE\",\"planet_order\":[\"DB\",\"GD\",\"HGT\",\"BH\",\"TH\"],\"orbit_angles\":{\"DB\":30,\"GD\":60,\"HGT\":60,\"BH\":180,\"TH\":240,\"SS\":270,\"AR\":270,\"HL\":60,\"OPC\":120},\"rotation_axes\":{\"ET\":\"up\",\"AT\":\"forward\",\"TH\":\"zero\",\"BH\":\"back\"},\"warps\":[[\"BHF\",\"TH\"],[\"ATP\",\"ET\"],[\"SS\",\"BHT\"],[\"THT\",\"GD\"],[\"ST\",\"ETT\"],[\"BHNG\",\"GDT\"],[\"WHS\",\"ATT\"]],\"apworld_version\":\"0.2.4\"}");
+            //((LoginSuccessful)result).SlotData;
         OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
         if (SlotData.ContainsKey("apworld_version"))

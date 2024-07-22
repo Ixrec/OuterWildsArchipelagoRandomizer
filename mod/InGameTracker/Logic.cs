@@ -98,10 +98,42 @@ public class Logic
 
     public void AddConnection(Dictionary<string, TrackerRegionData> regions, TrackerConnectionData connection)
     {
+        if (
+            (connection.from == "Brittle Hollow" || connection.from == "Hourglass Twins") &&
+            (connection.to == "Brittle Hollow" || connection.to == "Hourglass Twins")
+        )
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"AddConnection BH before" +
+                $"\ntoConnections = {string.Join(", ", regions["Brittle Hollow"].toConnections.Select(c => $"{c.from}->{c.to}"))}" +
+                $"\nfromConnections = {string.Join(", ", regions["Brittle Hollow"].fromConnections.Select(c => $"{c.from}->{c.to}"))}"
+            );
+            APRandomizer.OWMLModConsole.WriteLine($"AddConnection HGT before" +
+                $"\ntoConnections = {string.Join(", ", regions["Hourglass Twins"].toConnections.Select(c => $"{c.from}->{c.to}"))}" +
+                $"\nfromConnections = {string.Join(", ", regions["Hourglass Twins"].fromConnections.Select(c => $"{c.from}->{c.to}"))}"
+            );
+
+            APRandomizer.OWMLModConsole.WriteLine($"AddConnection {connection.from} -> {connection.to} with {connection.requires.Count()} items");
+        }
+
         if (!regions.ContainsKey(connection.from)) regions.Add(connection.from, new(connection.from));
         if (!regions.ContainsKey(connection.to)) regions.Add(connection.to, new(connection.to));
         regions[connection.from].toConnections.Add(connection);
         regions[connection.to].fromConnections.Add(connection);
+
+        if (
+            (connection.from == "Brittle Hollow" || connection.from == "Hourglass Twins") &&
+            (connection.to == "Brittle Hollow" || connection.to == "Hourglass Twins")
+        )
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"AddConnection BH after" +
+                $"\ntoConnections = {string.Join(", ", regions["Brittle Hollow"].toConnections.Select(c => $"{c.from}->{c.to}"))}" +
+                $"\nfromConnections = {string.Join(", ", regions["Brittle Hollow"].fromConnections.Select(c => $"{c.from}->{c.to}"))}"
+            );
+            APRandomizer.OWMLModConsole.WriteLine($"AddConnection HGT after" +
+                $"\ntoConnections = {string.Join(", ", regions["Hourglass Twins"].toConnections.Select(c => $"{c.from}->{c.to}"))}" +
+                $"\nfromConnections = {string.Join(", ", regions["Hourglass Twins"].fromConnections.Select(c => $"{c.from}->{c.to}"))}"
+            );
+        }
     }
 
     /// <summary>
@@ -350,16 +382,19 @@ public class Logic
     /// <param name="regionName"></param>
     public void BuildRegionLogic(string regionName)
     {
+        APRandomizer.OWMLModConsole.WriteLine($"BuildRegionLogic {regionName}");
         if (!CanAccessRegion.ContainsKey(regionName)) CanAccessRegion.Add(regionName, true);
         TrackerRegionData region = TrackerRegions[regionName];
         foreach (TrackerConnectionData connection in region.toConnections)
         {
+            APRandomizer.OWMLModConsole.WriteLine($"BuildRegionLogic {regionName} connection {connection.from} -> {connection.to} ({CanAccessRegion.ContainsKey(connection.to)})");
             string to = connection.to;
             if (!CanAccessRegion.ContainsKey(to)) CanAccessRegion.Add(to, false);
             // We don't need to calculate this connection if the target region is already accessible
             if (CanAccessRegion[to]) continue;
             if (CanAccessAll(connection.requires))
             {
+                APRandomizer.OWMLModConsole.WriteLine($"BuildRegionLogic setting {to} to true");
                 CanAccessRegion[to] = true;
                 BuildRegionLogic(to);
             }
