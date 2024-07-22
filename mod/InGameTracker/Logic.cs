@@ -315,10 +315,10 @@ public class Logic
             AddConnection(TrackerRegions, warpConnection);
 
             var reverseWarpConnection = new TrackerConnectionData();
-            warpConnection.from = r2;
-            warpConnection.to = r1;
-            warpConnection.requires = requirements;
-            AddConnection(TrackerRegions, warpConnection);
+            reverseWarpConnection.from = r2;
+            reverseWarpConnection.to = r1;
+            reverseWarpConnection.requires = requirements;
+            AddConnection(TrackerRegions, reverseWarpConnection);
         }
 
         // Build region logic recursively from Menu region
