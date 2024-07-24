@@ -31,6 +31,7 @@ public class APRandomizerSaveData
     public Dictionary<Location, bool> locationsChecked;
     public Dictionary<Item, uint> itemsAcquired;
     public Dictionary<Location, ArchipelagoItem> scoutedLocations;
+    public Dictionary<string, string[]> hintsGenerated;
 }
 
 public class APRandomizer : ModBehaviour
