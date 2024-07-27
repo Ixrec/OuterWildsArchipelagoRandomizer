@@ -9,6 +9,7 @@ using OWML.Common;
 using OWML.ModHelper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -106,7 +107,7 @@ public class APRandomizer : ModBehaviour
         {
             if (StandaloneProfileManager.SharedInstance._currentProfile == null)
             {
-                OWMLModConsole.WriteLine($"No profile loaded", OWML.Common.MessageType.Error);
+                OWMLModConsole.WriteLine($"No profile loaded", MessageType.Error);
                 return;
             }
             var profileName = StandaloneProfileManager.SharedInstance._currentProfile.profileName;
@@ -275,40 +276,75 @@ public class APRandomizer : ModBehaviour
         if (!SocketWarningsAlreadyShown.Contains(message))
         {
             SocketWarningsAlreadyShown.Add(message);
-            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received error from APSession.Socket: '{message}'</color>");
+
+            StackTrace st = new StackTrace(e, true);
+            StackFrame frame = st.GetFrame(0);
+            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
+            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received error from APSession.Socket originating from {methodName}: '{message}'</color>");
 
             APRandomizer.OWMLModConsole.WriteLine(
                 $"Received error from APSession.Socket: '{message}'\n" +
                 $"(duplicates of this error will be silently ignored)\n" +
-                $"Exception: {e.Message}\nException Stack: {e.StackTrace}",
-                OWML.Common.MessageType.Warning);
+                $"\n" +
+                $"{e.StackTrace}",
+                MessageType.Warning);
         }
     }
 
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
     {
-        if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
-        bool saveDataChanged = false;
-
-        var receivedItems = new HashSet<long>();
-        while (receivedItemsHelper.PeekItem() != null)
+        try
         {
-            var itemId = receivedItemsHelper.PeekItem().ItemId;
-            receivedItems.Add(itemId);
-            receivedItemsHelper.DequeueItem();
+            if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
+            bool saveDataChanged = false;
+
+            var receivedItems = new HashSet<long>();
+            while (receivedItemsHelper.PeekItem() != null)
+            {
+                var itemId = receivedItemsHelper.PeekItem().ItemId;
+                receivedItems.Add(itemId);
+                receivedItemsHelper.DequeueItem();
+            }
+
+            OWMLModConsole.WriteLine($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
+            foreach (var itemId in receivedItems)
+                saveDataChanged = SyncItemCountWithAPServer(itemId);
+
+            if (saveDataChanged)
+                WriteToSaveFile();
         }
+        catch (Exception ex)
+        {
+            StackTrace st = new StackTrace(ex, true);
+            StackFrame frame = st.GetFrame(0);
+            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
+            APRandomizer.InGameAPConsole.AddText($"<color='red'>Caught error in APSession_ItemReceived originating from {methodName}: '{ex.Message}'</color>");
 
-        OWMLModConsole.WriteLine($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
-        foreach (var itemId in receivedItems)
-            saveDataChanged = SyncItemCountWithAPServer(itemId);
-
-        if (saveDataChanged)
-            WriteToSaveFile();
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Caught error in APSession_ItemReceived: '{ex.Message}'\n" +
+                $"{ex.StackTrace}",
+                MessageType.Error);
+        }
     }
     private static void APSession_OnMessageReceived(LogMessage message)
     {
-        ArchConsoleManager.AddAPMessage(message);
+        try
+        {
+            ArchConsoleManager.AddAPMessage(message);
+        }
+        catch (Exception ex)
+        {
+            StackTrace st = new StackTrace(ex, true);
+            StackFrame frame = st.GetFrame(0);
+            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
+            APRandomizer.InGameAPConsole.AddText($"<color='red'>Caught error in APSession_OnMessageReceived originating from {methodName}: '{ex.Message}'</color>");
+
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Caught error in APSession_OnMessageReceived: '{ex.Message}'\n" +
+                $"{ex.StackTrace}",
+                MessageType.Error);
+        }
     }
 
     private static bool SyncItemCountWithAPServer(long itemId)
