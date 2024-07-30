@@ -6,9 +6,9 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Beta (as of July 2024).
+Public Beta (as of August 2024).
 
-Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or are believed to be vanilla bugs unrelated to this mod. Many features are complete, including a full in-game tracker. But we're still missing DLC integration, random spawn, etc. See [Roadmap](#roadmap).
+Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or are believed to be vanilla bugs unrelated to this mod. Many features are complete, including a full in-game tracker. The main thing we're still missing is DLC integration. See [Roadmap](#roadmap).
 
 <details>
 <summary>Vanilla(?) Bugs</summary>
@@ -124,11 +124,11 @@ The 0.2.x releases will focus on other kinds of randomization besides items and 
 
 - ~~random Eye coordinates~~
 - ~~random Dark Bramble layout~~
-- random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)
-	- random warp pad destinations should go well with this
+- ~~random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)~~
+	- ~~random warp pad destinations should go well with this~~
 - ~~random planet orbits~~
 - random ghost matter patches
-- random in-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets
+- ~~random in-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets~~
 
 ### 0.3.0 Goals/Priorities
 
