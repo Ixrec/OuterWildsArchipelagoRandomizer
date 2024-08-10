@@ -86,9 +86,8 @@ internal class Hints
         APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_InputDialogueOption generating hints for {character}");
 
         var prefixes = characterToLocationPrefixes[character];
-        var relevantLocations = LocationNames.locationNames
-            .Where(kv => prefixes.Any(p => kv.Value.StartsWith(p)))
-            .Select(kv => kv.Key);
+        var relevantLocations = LocationNames.ActiveLocations()
+            .Where(loc => prefixes.Any(p => LocationNames.locationNames[loc].StartsWith(p)));
 
         var allChecked = APRandomizer.APSession.Locations.AllLocationsChecked;
         var uncheckedRelevantLocations = relevantLocations.Where(loc => {

@@ -38,18 +38,9 @@ namespace ArchipelagoRandomizer
         {
             ScoutedLocations = new();
             List<long> locationIDs = new List<long>();
-            foreach (Location loc in LocationNames.locationNames.Keys)
-            {
-                // annoying exception
-                if (loc == Location.SLF__TH_VILLAGE_X3) continue;
-
-                // we don't need to scout logsanity locations if logsanity is off
-                bool logsanity = APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0;
-                if (!logsanity && LocationNames.IsLogsanityLocation(loc)) continue;
-
-
+            foreach (Location loc in LocationNames.ActiveLocations())
                 locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
-            }
+
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
             var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
             {

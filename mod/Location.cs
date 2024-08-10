@@ -498,6 +498,26 @@ public static class LocationNames
     public static bool IsDLCLogsanityLocation(Location location) =>
         false;
 
+    // When DLC and story mods are added, these methods will have to consider those options too
+    public static bool IsLocationActive(Location loc, bool logsanityIsOn)
+    {
+        if (loc == Location.SLF__TH_VILLAGE_X3) return false;
+
+        if (IsLogsanityLocation(loc) && !logsanityIsOn) return false;
+
+        return true;
+    }
+    public static bool IsLocationActive(Location loc)
+    {
+        bool logsanity = APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0;
+        return IsLocationActive(loc, logsanity);
+    }
+    public static IEnumerable<Location> ActiveLocations()
+    {
+        bool logsanity = APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0;
+        return locationNames.Keys.Where(loc => IsLocationActive(loc, logsanity));
+    }
+
     public static Dictionary<Location, string> locationNames = new Dictionary<Location, string> {
         { Location.SS, "Sun Station (Projection Stone Text)" },
 

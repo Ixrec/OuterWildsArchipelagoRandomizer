@@ -129,12 +129,9 @@ internal class LocationTriggers
         var locationChecked = APRandomizer.SaveData.locationsChecked;
         if (!locationChecked.ContainsKey(location))
         {
-            if (LocationNames.IsLogsanityLocation(location) && !(APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1))
-            {
-                // location is a logsanity location, and this world does not have logsanity enabled. Doing nothing.
-            }
-            else
+            if (LocationNames.IsLocationActive(location))
                 APRandomizer.OWMLModConsole.WriteLine($"'{location}' missing from locationChecked dictionary", OWML.Common.MessageType.Error);
+            // else location is a logsanity location in a non-logsanity world, or a DLC location in a non-DLC world, etc. Doing nothing.
             return;
         }
 
