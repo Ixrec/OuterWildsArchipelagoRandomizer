@@ -316,11 +316,6 @@ public class APRandomizer : ModBehaviour
         }
         catch (Exception ex)
         {
-            StackTrace st = new StackTrace(ex, true);
-            StackFrame frame = st.GetFrame(0);
-            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
-            APRandomizer.InGameAPConsole.AddText($"<color='red'>Caught error in APSession_ItemReceived originating from {methodName}: '{ex.Message}'</color>");
-
             APRandomizer.OWMLModConsole.WriteLine(
                 $"Caught error in APSession_ItemReceived: '{ex.Message}'\n" +
                 $"{ex.StackTrace}",
@@ -335,11 +330,6 @@ public class APRandomizer : ModBehaviour
         }
         catch (Exception ex)
         {
-            StackTrace st = new StackTrace(ex, true);
-            StackFrame frame = st.GetFrame(0);
-            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
-            APRandomizer.InGameAPConsole.AddText($"<color='red'>Caught error in APSession_OnMessageReceived originating from {methodName}: '{ex.Message}'</color>");
-
             APRandomizer.OWMLModConsole.WriteLine(
                 $"Caught error in APSession_OnMessageReceived: '{ex.Message}'\n" +
                 $"{ex.StackTrace}",
