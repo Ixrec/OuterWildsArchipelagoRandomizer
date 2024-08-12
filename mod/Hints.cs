@@ -58,6 +58,8 @@ internal class Hints
     [HarmonyPrefix, HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.InputDialogueOption))]
     public static void CharacterDialogueTree_InputDialogueOption(CharacterDialogueTree __instance, int optionIndex)
     {
+        //APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_InputDialogueOption passed {optionIndex} at node {__instance._currentNode?.Name}");
+
         string selectedTextId = null;
         if (__instance._currentNode.ListDialogueOptions != null && optionIndex >= 0 && optionIndex < __instance._currentNode.ListDialogueOptions.Count())
             selectedTextId = __instance._currentNode.ListDialogueOptions[optionIndex]?._textID;
@@ -187,4 +189,11 @@ internal class Hints
             __instance._mapDialogueNodes[hintNodeName] = hintNode1;
         }
     }
+
+    // useful for testing
+    /*[HarmonyPrefix, HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.ContinueToNextNode), [])]
+    public static void CharacterDialogueTree_ContinueToNextNode(CharacterDialogueTree __instance)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_ContinueToNextNode moving from {__instance._currentNode.Name} to {__instance._currentNode.Target?.Name}");
+    }*/
 }
