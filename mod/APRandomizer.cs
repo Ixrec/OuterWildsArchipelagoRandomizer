@@ -277,10 +277,8 @@ public class APRandomizer : ModBehaviour
         {
             SocketWarningsAlreadyShown.Add(message);
 
-            StackTrace st = new StackTrace(e, true);
-            StackFrame frame = st.GetFrame(0);
-            string methodName = frame.GetMethod().Name; // file, line, col are all null/0 in practice, so only method is worth logging
-            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received error from APSession.Socket originating from {methodName}: '{message}'</color>");
+            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
+                $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
 
             APRandomizer.OWMLModConsole.WriteLine(
                 $"Received error from APSession.Socket: '{message}'\n" +
