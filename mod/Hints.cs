@@ -23,7 +23,7 @@ internal class Hints
         { "Esker", ["Esker1", "Esker2"] },
         { "Riebeck", ["Questions"] },
         { "Gabbro", ["GabbroMenu"] },
-        { "Feldspar", ["FeldsparPrimaryMenu"] },
+        { "Feldspar", ["FeldsparPrimaryMenu", "FeldsparSecondary"] },
     };
 
     private const string HintOptionTextId = "APRandomizer_HintOption";
