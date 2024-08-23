@@ -45,8 +45,11 @@ public class TrackerManager : MonoBehaviour
 
         // Signalscope frequencies. The individual signals are listed within each frequency entry.
         new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures"),
+        new InventoryItemEntry(Item.SignalFeldspar, "   Signal: Feldspar's Harmonica"),
         new InventoryItemEntry(Item.FrequencyDB, "Frequency: Distress Beacons"),
+        new InventoryItemEntry(Item.SignalEP3, "   Signal: Escape Pod 3"),
         new InventoryItemEntry(Item.FrequencyQF, "Frequency: Quantum Fluctuations"),
+        new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"), // TODO: is this actually progression?
         new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
 
         // Non-progression ship and equipment upgrades

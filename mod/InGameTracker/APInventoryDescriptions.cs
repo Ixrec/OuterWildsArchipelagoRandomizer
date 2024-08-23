@@ -38,6 +38,11 @@ public class APInventoryDescriptions
         var itemID = itemEntry.ID;
         List<string> infos = [];
 
+        if (!itemEntry.HasOneOrMore())
+        {
+            infos.Add("You have not obtained this yet.");
+        }
+
         // We currently only have one Inventory entry that doesn't correspond to an AP item: the OWV frequency
         if (itemEntry.ApItem == null)
         {
@@ -47,20 +52,15 @@ public class APInventoryDescriptions
                     infos.Add("The official frequency of the Outer Wilds Ventures space-faring travelers. Give it a listen to hear each Traveler's unique instrument!");
                     infos.Add("Signals found: ");
                     // we don't use the SignalsAndFrequencies maps here because these names are slightly different from the AP item names
-                    if (inventory[Item.SignalEsker] > 0) infos.Add("  Esker's Whistling");
-                    if (inventory[Item.SignalChert] > 0) infos.Add("  Chert's Drums");
-                    if (inventory[Item.SignalRiebeck] > 0) infos.Add("  Riebeck's Banjo");
-                    if (inventory[Item.SignalGabbro] > 0) infos.Add("  Gabbro's Flute");
-                    if (inventory[Item.SignalFeldspar] > 0) infos.Add("  Feldspar's Harmonica");
+                    infos.Add($"[{((inventory[Item.SignalEsker] > 0) ? 'X' : ' ')}] Esker's Whistling");
+                    infos.Add($"[{((inventory[Item.SignalChert] > 0) ? 'X' : ' ')}] Chert's Drums");
+                    infos.Add($"[{((inventory[Item.SignalRiebeck] > 0) ? 'X' : ' ')}] Riebeck's Banjo");
+                    infos.Add($"[{((inventory[Item.SignalGabbro] > 0) ? 'X' : ' ')}] Gabbro's Flute");
+                    infos.Add($"[{((inventory[Item.SignalFeldspar] > 0) ? 'X' : ' ')}] Feldspar's Harmonica");
                     break;
                 default:
                     return GetErrorDescription(itemID);
             }
-        }
-        // For now, we use the same placeholder description for any AP item we have 0 of
-        else if (!itemEntry.HasOneOrMore())
-        {
-            infos.Add("You have not obtained this yet.");
         }
         else
         {
@@ -90,9 +90,21 @@ public class APInventoryDescriptions
                     {
                         var item = ItemNames.signalToItem[signal];
                         var name = ItemNames.ItemToName(item);
-                        if (inventory[item] > 0)
-                            infos.Add("  " + name.Replace(" Signal", ""));
+                        infos.Add(((inventory[item] > 0) ? "[X] " : "[ ] ") + name.Replace(" Signal", ""));
                     }
+                    break;
+
+                case Item.SignalFeldspar:
+                    infos.Add("Allows your Signalscope to track Feldspar's harmonica signal no matter how far away they are.");
+                    infos.Add("This is required to find Feldspar's camp inside Dark Bramble.");
+                    break;
+                case Item.SignalEP3:
+                    infos.Add("Allows your Signalscope to track Escape Pod 3's distress signal no matter how far away it is.");
+                    infos.Add("This is required to find Escape Pod 3 and the Nomai Grave inside Dark Bramble.");
+                    break;
+                case Item.SignalQM:
+                    infos.Add("Allows your Signalscope to track the Quantum Moon signal no matter how far away it is, and scan that signal without landing on the moon.");
+                    infos.Add("Often this won't matter, but you might need it to scan the Quantum Moon signal before receiving the Imaging Rule.");
                     break;
 
                 case Item.Coordinates:

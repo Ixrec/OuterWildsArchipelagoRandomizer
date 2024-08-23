@@ -60,7 +60,7 @@ internal class SignalsAndFrequencies
             SignalName.Quantum_QM,
         } },
         { SignalFrequency.EscapePod, new HashSet<SignalName>{
-            SignalName.EscapePod_CT,
+            SignalName.EscapePod_BH,
             SignalName.EscapePod_CT,
             SignalName.EscapePod_DB,
         } },
