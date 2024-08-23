@@ -442,12 +442,14 @@ public class Logic
     {
         // we don't have the item
         if (!string.IsNullOrEmpty(requirement.item) && !ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item])) return false;
+        // we can't reach the location
+        if (!string.IsNullOrEmpty(requirement.location) && !IsAccessible(TrackerLocations[requirement.location])) return false;
         // we don't fulfill any of the AnyOf requirements
         if (requirement.anyOf != null) if (!AnyOfAccess(requirement.anyOf)) return false;
         return true;
     }
 
-    public List<string> GetLogicDisplayStrings(TrackerLocationData data)
+    public List<string> GetLogicDisplayStrings(TrackerLocationData data, bool includeLocationName = false)
     {
         // When recursing "up" through the regions needed to reach a certain location, these are
         // the base cases where we want to stop and not explain any further, because:
@@ -486,12 +488,19 @@ public class Logic
             }
         }
 
-        var logicDisplayStrings = new List<string> { GetLocationLogicString(data) };
+        var logicDisplayStrings = new List<string> { GetLocationLogicString(data, includeLocationName) };
+
         logicDisplayStrings.AddRange(regionNameToLogicDisplayString.Values);
+
+        foreach (var req in data.requires.Where(req => req.location != null))
+        {
+            logicDisplayStrings.AddRange(GetLogicDisplayStrings(TrackerLocations[req.location], true));
+        }
+
         return logicDisplayStrings;
     }
 
-    private string GetLocationLogicString(TrackerLocationData data)
+    private string GetLocationLogicString(TrackerLocationData data, bool includeLocationName = false)
     {
         CanAccessRegion.TryGetValue(data.region, out bool canAccessRegion);
 
@@ -502,7 +511,9 @@ public class Logic
             GetLogicRequirementsStrings(data.requires)
         );
 
-        return "<color=grey>Location Logic: " +
+        return "<color=grey>" +
+            (includeLocationName ? $"\"{data.name}\" " : "") +
+            "Location Logic: " +
             string.Join(" <color=lime>AND</color> ", locationLogic) +
             "</color>";
     }
@@ -558,6 +569,15 @@ public class Logic
 
                 string reqStr = (canAccess ? "<color=green>" : "<color=maroon>") +
                     $"(Item: {req.item})</color>";
+
+                reqStrings.Add(reqStr);
+            }
+            else if (!string.IsNullOrEmpty(req.location))
+            {
+                bool canAccess = CanAccess(req);
+
+                string reqStr = (canAccess ? "<color=green>" : "<color=maroon>") +
+                    $"(Location: {req.location})</color>";
 
                 reqStrings.Add(reqStr);
             }

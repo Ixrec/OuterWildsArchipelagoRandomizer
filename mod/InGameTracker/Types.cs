@@ -21,6 +21,7 @@ public enum TrackerCategory
 public class TrackerRequirement
 {
     public string item;
+    public string location;
     public List<TrackerRequirement> anyOf;
 }
 
