@@ -175,6 +175,7 @@ public class APChecklistMode : ShipLogMode
         TrackerCategory category;
         switch (index)
         {
+            case 0: category = TrackerCategory.Goal; break;
             case 1: category = TrackerCategory.HourglassTwins; break;
             case 2: category = TrackerCategory.TimberHearth; break;
             case 3: category = TrackerCategory.BrittleHollow; break;
@@ -202,7 +203,14 @@ public class APChecklistMode : ShipLogMode
     private void SelectChecklistItem(int index)
     {
         TrackerInfo info = ChecklistState.ElementAt(index).Item1;
-        TrackerLocationData data = Tracker.logic.GetLocationByName(info);
+        TrackerLocationData data = null;
+        if (info.locationModID != null)
+            data = Tracker.logic.GetLocationByName(info);
+        else
+        {
+            string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
+            data = Tracker.logic.TrackerLocations[goalLocation];
+        }
         TrackerChecklistData locData = LocationNameToChecklistData[data.name];
         ChecklistWrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
         ChecklistWrapper.GetPhoto().gameObject.SetActive(true);
@@ -210,10 +218,9 @@ public class APChecklistMode : ShipLogMode
         ChecklistWrapper.DescriptionFieldClear();
         ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
         if (locData.hintText != "" && !locData.hasBeenChecked)
-        {
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
-        }
-        ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("<color=#8DCEFF>Full name: " + data.name + "</color>");
+        if (info.locationModID != null)
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("<color=#8DCEFF>Full name: " + data.name + "</color>");
 
         foreach (var text in Tracker.logic.GetLogicDisplayStrings(data))
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(text);
@@ -221,6 +228,32 @@ public class APChecklistMode : ShipLogMode
 
     public List<(TrackerInfo, ShipLogDisplayItem)> PopulateChecklistState(TrackerCategory category, Dictionary<string, TrackerChecklistData> locationNameToChecklistData)
     {
+        // This is a special case where we will only ever have one item in the list
+        if (category == TrackerCategory.Goal) {
+            string goalEventName;
+            TrackerInfo info = new();
+            if (Victory.goalSetting == Victory.GoalSetting.SongOfFive)
+            {
+                goalEventName = "Victory - Song of Five";
+                info.description = "Reach the Eye"; info.thumbnail = "DB_VESSEL";
+            }
+            else if (Victory.goalSetting == Victory.GoalSetting.SongOfSix)
+            {
+                goalEventName = "Victory - Song of Six";
+                info.description = "Reach the Eye after meeting Solanum"; info.thumbnail = "QM_SIXTH_LOCATION";
+            }
+            else return new();
+
+            string displayName = Regex.Replace(goalEventName, "Victory - ", "");
+
+            if (APRandomizer.APSession.DataStorage.GetClientStatus(APRandomizer.APSession.ConnectionInfo.Slot) == Archipelago.MultiClient.Net.Enums.ArchipelagoClientState.ClientGoal)
+                return new List<(TrackerInfo, ShipLogDisplayItem)>{ (info, new($"<color=white>[X] {displayName}</color>", false, false, false)) };
+            else if (locationNameToChecklistData[goalEventName].isAccessible)
+                return new List<(TrackerInfo, ShipLogDisplayItem)> { (info, new($"<color=lime>[ ] {displayName}</color>", false, false, false)) };
+            else
+                return new List<(TrackerInfo, ShipLogDisplayItem)> { (info, new($"<color=red>[ ] {displayName}</color>", false, false, false)) };
+        }
+
         // we'll be "sorting" (well, partitioning?) the locations into these three groups
         List<(TrackerInfo, ShipLogDisplayItem)> checkedState = new();
         List<(TrackerInfo, ShipLogDisplayItem)> accessibleState = new();
@@ -374,7 +407,12 @@ public class APChecklistMode : ShipLogMode
             TrackerCategory category = (TrackerCategory)i;
             bool hasAvailableChecks = false;
             bool hasHint = false;
-            if (i != 0)
+            if (i == 0)
+            {
+                string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
+                hasAvailableChecks = Tracker.logic.IsAccessible(Tracker.logic.TrackerLocations[goalLocation]);
+            }
+            else
             {
                 hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
                 hasHint = Tracker.logic.GetHasHint(category);
@@ -458,6 +496,7 @@ public class APChecklistMode : ShipLogMode
         switch (category)
         {
             case TrackerCategory.All: return "All";
+            case TrackerCategory.Goal: return "Mission";
             case TrackerCategory.HourglassTwins: return "The Hourglass Twins";
             case TrackerCategory.TimberHearth: return "Timber Hearth";
             case TrackerCategory.BrittleHollow: return "Brittle Hollow";

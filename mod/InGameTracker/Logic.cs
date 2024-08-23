@@ -148,6 +148,7 @@ public class Logic
         tracker.GDLocations = new();
         tracker.DBLocations = new();
         tracker.OWLocations = new();
+        tracker.GoalLocations = new();
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {
             string prefix;
@@ -161,8 +162,8 @@ public class Logic
             else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
             else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
             else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
-            // Ignore the two Victory locations
-            else if (!name.StartsWith("Victory")) tracker.OWLocations.Add(name, data);
+            else if (name.StartsWith("Victory - ") && loc.address == null) tracker.GoalLocations.Add(name, data);
+            else tracker.OWLocations.Add(name, data);
         }
         DetermineAllAccessibility();
     }
@@ -339,6 +340,7 @@ public class Logic
                 else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
                 else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
                 else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else if (tracker.GoalLocations.ContainsKey(data.Key)) tracker.GoalLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
                 else APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
             }
         }
@@ -623,6 +625,10 @@ public class Logic
     {
         switch (category)
         {
+            case TrackerCategory.Goal:
+                {
+                    return tracker.GoalLocations;
+                }
             case TrackerCategory.HourglassTwins:
                 {
                     return tracker.HGTLocations;
@@ -650,7 +656,7 @@ public class Logic
             case TrackerCategory.All:
                 {
                     // returns all of them
-                    return tracker.HGTLocations.Concat(tracker.THLocations).Concat(tracker.BHLocations).Concat(tracker.GDLocations).Concat(tracker.DBLocations).Concat(tracker.OWLocations).ToDictionary(x => x.Key, x => x.Value);
+                    return tracker.HGTLocations.Concat(tracker.THLocations).Concat(tracker.BHLocations).Concat(tracker.GDLocations).Concat(tracker.DBLocations).Concat(tracker.OWLocations).Concat(tracker.GoalLocations).ToDictionary(x => x.Key, x => x.Value);
                 }
         }
         return null;

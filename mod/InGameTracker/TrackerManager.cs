@@ -83,6 +83,7 @@ public class TrackerManager : MonoBehaviour
     public Dictionary<string, TrackerChecklistData> GDLocations;
     public Dictionary<string, TrackerChecklistData> DBLocations;
     public Dictionary<string, TrackerChecklistData> OWLocations;
+    public Dictionary<string, TrackerChecklistData> GoalLocations;
 
     private ICustomShipLogModesAPI api;
     private APInventoryMode inventoryMode;

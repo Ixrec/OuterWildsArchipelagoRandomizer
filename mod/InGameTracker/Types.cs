@@ -7,6 +7,7 @@ namespace ArchipelagoRandomizer.InGameTracker;
 public enum TrackerCategory
 {
     All,
+    Goal,
     HourglassTwins,
     TimberHearth,
     BrittleHollow,
@@ -74,7 +75,7 @@ public class TrackerChecklistData(bool isAccessible, bool hasBeenChecked, string
 public struct TrackerInfo
 {
     /// <summary>
-    /// Location name as displayed in Location.cs
+    /// Location name as displayed in Location.cs. Will be null if this is the goal instead of an AP location.
     /// </summary>
     public string locationModID;
     /// <summary>

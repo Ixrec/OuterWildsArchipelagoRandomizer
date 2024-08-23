@@ -6,7 +6,7 @@ using System;
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
-internal class Victory
+public class Victory
 {
     public enum GoalSetting: long
     {
