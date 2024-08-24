@@ -2,9 +2,11 @@
 description: Outer Wilds Example
 game: Outer Wilds
 requires:
-  version: 0.5.0
+  version: 0.5.0 # Version of Archipelago required for this yaml to work as expected.
+
 Outer Wilds:
-  # generic Archipelago settings
+  # Generic Archipelago options. These are documented at
+  # https://archipelago.gg/tutorial/Archipelago/advanced_settings/en#universal-game-options
 
   # In addition to the "Everything" and "Everywhere" name groups that all AP games come with,
   # the following name groups are provided by Outer Wilds:
@@ -25,7 +27,7 @@ Outer Wilds:
   item_links: []
   start_inventory_from_pool: {}
 
-  # settings specific to Outer Wilds
+  # Options specific to Outer Wilds
 
   goal:
     # The victory condition for your Archipelago run.
@@ -36,10 +38,10 @@ Outer Wilds:
 
   spawn:
     # Where you wake up at the start of each loop.
-    #
+    # 
     # 'vanilla' is the same as the base game: you wake up in TH Village, talk to Hornfels to get the Launch Codes, then walk by the Nomai statue to start the time loop.
     # All other options (including timber_hearth) will spawn you in your spacesuit, with the time loop already started, and the Launch Codes item placed randomly like any other AP item.
-    #
+    # 
     # The idea is that non-vanilla spawns will require you to play "shipless" for a while, possibly using Nomai Warp Codes to visit other planets. The ship will still spawn nearby, so you can use the ship log/tracker right away.
     # When playing with non-vanilla spawns, we recommend:
     # - Consider enabling randomize_warp_pads for greater variety if you get warp codes early
@@ -66,16 +68,16 @@ Outer Wilds:
 
   randomize_coordinates:
     # Randomize the Eye of the Universe coordinates needed to reach the end of the game.
-    false: 0
-    true: 50
+    'false': 0
+    'true': 50
 
   randomize_orbits:
     # Randomizes:
     # - The order of the five planets (the Hourglass Twins as a whole, Timber Hearth, Brittle Hollow, Giant's Deep, Dark Bramble), i.e. which ones are closer or farther from the sun
     # - The orbit angles of the five planets, as well as four satellites (Sun Station, Attlerock, Hollow's Lantern, and the Orbital Probe Cannon)
     # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow. This often causes the Hourglass Twins' sand pillar to pass through different areas.
-    false: 0
-    true: 50
+    'false': 0
+    'true': 50
 
   randomize_warp_platforms:
     # Randomize which Nomai warp platforms are connected to each other.
@@ -88,8 +90,8 @@ Outer Wilds:
     # Randomizes which Dark Bramble 'rooms' link to which other rooms, so you can't rely on your memory of the vanilla layout.
     # Be aware that randomized layouts are often significantly harder to navigate than vanilla Dark Bramble, since they allow several paths to the same room and more complex loops / recursion.
     # 'hub_start' forces the first room to be Hub (same as the vanilla game), which tends to generate shorter and simpler paths than full randomization.
-    false: 50
-    true: 0
+    'false': 50
+    'true': 0
     hub_start: 0
 
   trap_chance:
@@ -119,18 +121,18 @@ Outer Wilds:
     # When you die, everyone dies. Of course the reverse is true too.
     # The "default" option will not include deaths to meditation, the supernova or the time loop ending.
     # Be aware that the game mod provides a 'Death Link Override' setting, in case you change your mind later.
-    off: 50
+    'off': 50
     default: 0
     all_deaths: 0
 
   logsanity:
     # Adds 176 locations for all the (non-DLC, non-rumor, non-missable) ship log facts in the game.
-    false: 50
-    true: 0
+    'false': 50
+    'true': 0
 
   shuffle_spacesuit:
     # Puts the spacesuit into the Archipelago item pool, forcing you to play suitless until it's found.
-    #
+    # 
     # This option is incompatible with non-vanilla spawns (i.e. generation will fail), since those imply playing "shipless" at first, and almost nothing can be done both shipless and suitless.
-    false: 50
-    true: 0
+    'false': 50
+    'true': 0
