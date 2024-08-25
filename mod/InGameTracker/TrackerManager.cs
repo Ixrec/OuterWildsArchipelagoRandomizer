@@ -346,16 +346,20 @@ public class TrackerManager : MonoBehaviour
         TrackerManager tracker = APRandomizer.Tracker;
         if (ItemNames.itemToSignal.ContainsKey(item))
         {
-            if (TryGetFrequency(item, out string frequency))
+            string frequency = "";
+            SignalFrequency sf = SignalsAndFrequencies.signalToFrequency[ItemNames.itemToSignal[signal]];
+            if (sf == SignalFrequency.Traveler)
+                frequency = "FrequencyOWV";
+            else if (ItemNames.frequencyToItem.TryGetValue(sf, out var frequencyItem))
+                frequency = frequencyItem.ToString();
+
+            if (frequency == "" || !tracker.ItemEntries.ContainsKey(frequency))
             {
-                if (!tracker.ItemEntries.ContainsKey(frequency))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"Invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
-                    return;
-                }
-                tracker.ItemEntries[frequency].SetNew(true);
+                APRandomizer.OWMLModConsole.WriteLine($"Signal item {itemID} with invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
+                return;
             }
-            else APRandomizer.OWMLModConsole.WriteLine($"Provided signal {itemID} does not belong to any mapped frequency, cannot mark as new", OWML.Common.MessageType.Warning);
+
+            tracker.ItemEntries[frequency].SetNew(true);
         }
         else if (tracker.ItemEntries.ContainsKey(itemID))
         {
@@ -367,38 +371,6 @@ public class TrackerManager : MonoBehaviour
             tracker.ItemEntries[itemID].SetNew(true);
         }
         else APRandomizer.OWMLModConsole.WriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
-    }
-
-    /// <summary>
-    /// Returns the frequency that the signal belongs to.
-    /// If you need to get the enum entry, you can just Enum.TryParse(GetFrequency(signal), out Item signalItem).
-    /// </summary>
-    /// <param name="signal"></param>
-    /// <returns></returns>
-    public static bool TryGetFrequency(Item signal, out string frequency)
-    {
-        if (signal == Item.SignalChert || signal == Item.SignalEsker || signal == Item.SignalRiebeck || signal == Item.SignalGabbro || signal == Item.SignalFeldspar)
-        {
-            frequency = "FrequencyOWV";
-            return true;
-        }
-        else if (signal == Item.SignalCaveShard || signal == Item.SignalGroveShard || signal == Item.SignalIslandShard || signal == Item.SignalMuseumShard || signal == Item.SignalTowerShard || signal == Item.SignalQM)
-        {
-            frequency = Item.FrequencyQF.ToString();
-            return true;
-        }
-        else if (signal == Item.SignalEP1 || signal == Item.SignalEP2 || signal == Item.SignalEP3)
-        {
-            frequency = Item.FrequencyDB.ToString();
-            return true;
-        }
-        else if (signal == Item.SignalGalena || signal == Item.SignalTephra)
-        {
-            frequency = Item.FrequencyHS.ToString();
-            return true;
-        }
-        frequency = "";
-        return false;
     }
     #endregion
 }
