@@ -412,6 +412,12 @@ internal class DarkBrambleLayout
     [HarmonyPrefix, HarmonyPatch(typeof(InnerFogWarpVolume), nameof(InnerFogWarpVolume.PropagateCanvasMarkerOutwards))]
     public static bool InnerFogWarpVolume_PropagateCanvasMarkerOutwards(InnerFogWarpVolume __instance, CanvasMarker marker, bool addMarker, float warpDist = 0f)
     {
+        if (CurrentDBLayout == null)
+        {
+            //APRandomizer.OWMLModConsole.WriteLine($"IFWV.PCMO() doing nothing because DB has not been randomized");
+            return true;
+        }
+
         if (!VisitedIFWVs.Contains(__instance))
         {
             VisitedIFWVs.Add(__instance);
