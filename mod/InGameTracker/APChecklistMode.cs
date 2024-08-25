@@ -205,7 +205,7 @@ public class APChecklistMode : ShipLogMode
         TrackerInfo info = ChecklistState.ElementAt(index).Item1;
         TrackerLocationData data = null;
         if (info.locationModID != null)
-            data = Tracker.logic.GetLocationByName(info);
+            data = Tracker.logic.GetLocationDataByInfo(info);
         else
         {
             string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
@@ -288,12 +288,12 @@ public class APChecklistMode : ShipLogMode
                         APRandomizer.OWMLModConsole.WriteLine($"Unable to find Location {loc}!", OWML.Common.MessageType.Warning);
                         continue;
                     }
-                    if (!locationNameToChecklistData.ContainsKey(Tracker.logic.GetLocationByName(info).name))
+                    if (!locationNameToChecklistData.ContainsKey(Tracker.logic.GetLocationDataByInfo(info).name))
                     {
-                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {Tracker.logic.GetLocationByName(info).name} in the given checklist!", OWML.Common.MessageType.Error);
+                        APRandomizer.OWMLModConsole.WriteLine($"Unable to find the location {Tracker.logic.GetLocationDataByInfo(info).name} in the given checklist!", OWML.Common.MessageType.Error);
                         continue;
                     }
-                    TrackerChecklistData data = locationNameToChecklistData[Tracker.logic.GetLocationByName(info).name];
+                    TrackerChecklistData data = locationNameToChecklistData[Tracker.logic.GetLocationDataByInfo(info).name];
                     long id = LocationNames.locationToArchipelagoId[loc];
                     bool locationChecked = data.hasBeenChecked;
                     string name = Tracker.logic.GetLocationByID(id).name;
@@ -320,40 +320,24 @@ public class APChecklistMode : ShipLogMode
         return accessibleState.Concat(inaccessibleState).Concat(checkedState).ToList();
     }
 
+    private Dictionary<TrackerCategory, string> categoryToFilenamePrefix = new Dictionary<TrackerCategory, string> {
+        { TrackerCategory.HourglassTwins, "HT" },
+        { TrackerCategory.TimberHearth, "TH" },
+        { TrackerCategory.BrittleHollow, "BH" },
+        { TrackerCategory.GiantsDeep, "GD" },
+        { TrackerCategory.DarkBramble, "DB" },
+        { TrackerCategory.OuterWilds, "OW" },
+        { TrackerCategory.Stranger, "ST" },
+        { TrackerCategory.Dreamworld, "DW" },
+    };
+
     private string GetTrackerInfoFilename(TrackerCategory category)
     {
-        string filename = "";
-        switch (category)
-        {
-            case TrackerCategory.HourglassTwins:
-                filename = "HT";
-                break;
-            case TrackerCategory.TimberHearth:
-                filename = "TH";
-                break;
-            case TrackerCategory.BrittleHollow:
-                filename = "BH";
-                break;
-            case TrackerCategory.GiantsDeep:
-                filename = "GD";
-                break;
-            case TrackerCategory.DarkBramble:
-                filename = "DB";
-                break;
-            case TrackerCategory.OuterWilds:
-                filename = "OW";
-                break;
-            case TrackerCategory.Stranger:
-                filename = "ST";
-                break;
-            case TrackerCategory.Dreamworld:
-                filename = "DW";
-                break;
-            default:
-                APRandomizer.OWMLModConsole.WriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
-                break;
-        }
-        return filename;
+        if (categoryToFilenamePrefix.TryGetValue(category, out var filenamePrefix))
+            return filenamePrefix;
+        else
+            APRandomizer.OWMLModConsole.WriteLine($"Unable to parse {category} into a filename prefix, leaving blank", OWML.Common.MessageType.Error);
+        return "";
     }
     
     // gets the ship log image for the associated fact
@@ -452,24 +436,12 @@ public class APChecklistMode : ShipLogMode
             TrackerCategory category = TrackerCategory.All;
             switch (index)
             {
-                case 1:
-                    category = TrackerCategory.HourglassTwins;
-                    break;
-                case 2:
-                    category = TrackerCategory.TimberHearth;
-                    break;
-                case 3:
-                    category = TrackerCategory.BrittleHollow;
-                    break;
-                case 4:
-                    category = TrackerCategory.GiantsDeep;
-                    break;
-                case 5:
-                    category = TrackerCategory.DarkBramble;
-                    break;
-                case 6:
-                    category = TrackerCategory.OuterWilds;
-                    break;
+                case 1: category = TrackerCategory.HourglassTwins; break;
+                case 2: category = TrackerCategory.TimberHearth; break;
+                case 3: category = TrackerCategory.BrittleHollow; break;
+                case 4: category = TrackerCategory.GiantsDeep; break;
+                case 5: category = TrackerCategory.DarkBramble; break;
+                case 6: category = TrackerCategory.OuterWilds; break;
             }
             checkedLocs = Tracker.logic.GetCheckedCount(category);
             accessLocs = Tracker.logic.GetAccessibleCount(category);

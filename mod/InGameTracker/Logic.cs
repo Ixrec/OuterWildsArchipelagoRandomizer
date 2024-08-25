@@ -175,18 +175,11 @@ public class Logic
     public void RecheckAccessibility(IReceivedItemsHelper itemsHelper)
     {
         // only gets new items
-        var xorCollection = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
+        var newItems = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
 
-        foreach (var item in xorCollection)
-        {
-            // Only bother recalculating logic if the item actually unlocks checks
-            if (item.Flags == Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)
-            {
-                DetermineAllAccessibility();
-                // We only need recalculate logic once
-                return;
-            }
-        }
+        // Only bother recalculating logic if the item actually unlocks checks
+        if (newItems.Any(item => item.Flags == Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
+            DetermineAllAccessibility();
     }
 
     /// <summary>
@@ -423,8 +416,7 @@ public class Logic
 
         // Region logic
         if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
-        if (!CanAccessRegion[data.region]) return false;
-        return true;
+        return CanAccessRegion[data.region];
     }
 
     // AND condition
@@ -645,39 +637,18 @@ public class Logic
     {
         switch (category)
         {
-            case TrackerCategory.Goal:
-                {
-                    return tracker.GoalLocations;
-                }
-            case TrackerCategory.HourglassTwins:
-                {
-                    return tracker.HGTLocations;
-                }
-            case TrackerCategory.TimberHearth:
-                {
-                    return tracker.THLocations;
-                }
-            case TrackerCategory.BrittleHollow:
-                {
-                    return tracker.BHLocations;
-                }
-            case TrackerCategory.GiantsDeep:
-                {
-                    return tracker.GDLocations;
-                }
-            case TrackerCategory.DarkBramble:
-                {
-                    return tracker.DBLocations;
-                }
-            case TrackerCategory.OuterWilds:
-                {
-                    return tracker.OWLocations;
-                }
-            case TrackerCategory.All:
-                {
-                    // returns all of them
-                    return tracker.HGTLocations.Concat(tracker.THLocations).Concat(tracker.BHLocations).Concat(tracker.GDLocations).Concat(tracker.DBLocations).Concat(tracker.OWLocations).Concat(tracker.GoalLocations).ToDictionary(x => x.Key, x => x.Value);
-                }
+            case TrackerCategory.Goal: return tracker.GoalLocations;
+            case TrackerCategory.HourglassTwins: return tracker.HGTLocations;
+            case TrackerCategory.TimberHearth: return tracker.THLocations;
+            case TrackerCategory.BrittleHollow: return tracker.BHLocations;
+            case TrackerCategory.GiantsDeep: return tracker.GDLocations;
+            case TrackerCategory.DarkBramble: return tracker.DBLocations;
+            case TrackerCategory.OuterWilds: return tracker.OWLocations;
+            case TrackerCategory.All: return tracker.HGTLocations
+                    .Concat(tracker.THLocations).Concat(tracker.BHLocations)
+                    .Concat(tracker.GDLocations).Concat(tracker.DBLocations)
+                    .Concat(tracker.OWLocations).Concat(tracker.GoalLocations)
+                    .ToDictionary(x => x.Key, x => x.Value);
         }
         return null;
     }
@@ -707,7 +678,7 @@ public class Logic
     /// </summary>
     /// <param name="info"></param>
     /// <returns></returns>
-    public TrackerLocationData GetLocationByName(TrackerInfo info)
+    public TrackerLocationData GetLocationDataByInfo(TrackerInfo info)
     {
         if (Enum.TryParse<Location>(info.locationModID, out Location loc))
         {
