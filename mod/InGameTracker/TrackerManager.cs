@@ -17,64 +17,6 @@ public class TrackerManager : MonoBehaviour
 {
     public Logic logic;
 
-    // Tuples: name, green arrow, green exclamation point, orange asterisk
-    public List<Tuple<string, bool, bool, bool>> InventoryItems;
-
-    // This dictionary is the list of items in the Inventory Mode
-    // They'll also display in this order, with the second string as the visible name
-    private static List<InventoryItemEntry> _ItemEntries = new()
-    {
-        // Progression items you normally start with in vanilla
-        new InventoryItemEntry(Item.Spacesuit, "Spacesuit"),
-        new InventoryItemEntry(Item.LaunchCodes, "Launch Codes"),
-        new InventoryItemEntry(Item.Translator, "Translator"),
-        new InventoryItemEntry(Item.Signalscope, "Signalscope"),
-        new InventoryItemEntry(Item.Scout, "Scout"),
-        new InventoryItemEntry(Item.CameraGM, "Ghost Matter Wavelength"),
-
-        // Progression items that represent vanilla knowledge checks you wouldn't have at the start
-        new InventoryItemEntry(Item.ElectricalInsulation, "Electrical Insulation"),
-        new InventoryItemEntry(Item.SilentRunning, "Silent Running Mode"),
-        new InventoryItemEntry(Item.TornadoAdjustment, "Tornado Aerodynamic Adjustments"),
-        new InventoryItemEntry(Item.WarpPlatformCodes, "Nomai Warp Platform Codes"),
-        new InventoryItemEntry(Item.WarpCoreManual, "Nomai Warp Core Installation Manual"),
-        new InventoryItemEntry(Item.CameraQuantum, "Imaging Rule / Quantum Wavelength"),
-        new InventoryItemEntry(Item.EntanglementRule, "Entanglement Rule / Suit Lights Controls"),
-        new InventoryItemEntry(Item.ShrineDoorCodes, "Sixth Location Rule / Shrine Door Codes"),
-        new InventoryItemEntry(Item.Coordinates, "Eye of the Universe Coordinates"),
-
-        // Signalscope frequencies. The individual signals are listed within each frequency entry.
-        new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures"),
-        new InventoryItemEntry(Item.SignalFeldspar, "   Signal: Feldspar's Harmonica"),
-        new InventoryItemEntry(Item.FrequencyDB, "Frequency: Distress Beacons"),
-        new InventoryItemEntry(Item.SignalEP3, "   Signal: Escape Pod 3"),
-        new InventoryItemEntry(Item.FrequencyQF, "Frequency: Quantum Fluctuations"),
-        new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"), // TODO: is this actually progression?
-        new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
-
-        // Non-progression ship and equipment upgrades
-        new InventoryItemEntry(Item.Autopilot, "Autopilot"),
-        new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
-        new InventoryItemEntry(Item.EjectButton, "Eject Button"),
-        new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
-        new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
-        new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Suit Upgrade: Oxygen Capacity"),
-        new InventoryItemEntry(Item.FuelCapacityUpgrade, "Suit Upgrade: Fuel Capacity"),
-        new InventoryItemEntry(Item.BoostDurationUpgrade, "Suit Upgrade: Boost Duration"),
-
-        // Filler items
-        new InventoryItemEntry(Item.OxygenRefill, "Oxygen Refill"),
-        new InventoryItemEntry(Item.FuelRefill, "Jetpack Fuel Refill"),
-        new InventoryItemEntry(Item.Marshmallow, "Marshmallow"), // includes Perfect and Burnt
-
-        // Trap items
-        new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
-        new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
-        new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
-    };
-    
-    // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
-    public Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
 
     // Location checklist data for each area
     public Dictionary<string, TrackerChecklistData> HGTLocations;
@@ -126,12 +68,7 @@ public class TrackerManager : MonoBehaviour
         APRandomizer.OnSessionClosed += (s, m) =>
         {
             if (s != null)
-            {
-                foreach (InventoryItemEntry entry in ItemEntries.Values)
-                {
-                    entry.Hints.Clear();
-                }
-            }
+                APInventoryMode.ClearAllHints();
             else APRandomizer.OWMLModConsole.WriteLine("Ran session cleanup, but no session was found", OWML.Common.MessageType.Warning);
         };
         logic.ParseLocations();
@@ -142,8 +79,6 @@ public class TrackerManager : MonoBehaviour
     /// </summary>
     public void AddModes()
     {
-        // Retrive hints from server and set up subscription to hint events in the future
-        CheckInventory();
         api.AddMode(inventoryMode, () => true, () => "AP Inventory");
         api.ItemListMake(true, true, itemList =>
         {
@@ -174,28 +109,11 @@ public class TrackerManager : MonoBehaviour
         {
             // hints for items that belong to your world
             if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
-            {
-                // We don't care about hints for items that have already been found
-                if (hint.Found) continue;
+                APInventoryMode.AddHint(hint, session);
 
-                ItemNames.archipelagoIdToItem.TryGetValue(hint.ItemId, out Item item);
-                string itemName = item.ToString();
-                // We don't need to track hints for items that aren't on the tracker
-                if (!ItemEntries.ContainsKey(itemName))
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"{itemName} is not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
-                    continue;
-                }
-                string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
-                string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
-                string hintedEntrance = hint.Entrance;
-                ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
-            }
             // hints for items placed in your world
             if (hint.FindingPlayer == session.ConnectionInfo.Slot)
-            {
-                ApplyHint(hint, session);
-            }
+                AddHintToChecklistModeDescriptions(hint, session);
         }
     }
 
@@ -203,7 +121,7 @@ public class TrackerManager : MonoBehaviour
     /// Reads a hint and applies it to the checklist
     /// </summary>
     /// <param name="hint"></param>
-    private void ApplyHint(Hint hint, ArchipelagoSession session)
+    private void AddHintToChecklistModeDescriptions(Hint hint, ArchipelagoSession session)
     {
         string playerName;
         if (hint.ReceivingPlayer == session.ConnectionInfo.Slot)
@@ -258,44 +176,6 @@ public class TrackerManager : MonoBehaviour
         else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
     }
 
-    #region Inventory
-    // Determines what items the player has and shows them in the inventory mode
-    public void CheckInventory()
-    {
-        Dictionary<Item, uint> items = APRandomizer.SaveData.itemsAcquired;
-
-        InventoryItems = [];
-        foreach (InventoryItemEntry item in ItemEntries.Values)
-        {
-            if (Enum.TryParse(item.ID, out Item subject))
-            {
-                uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
-
-                // The three marshmallow items are treated as a single "Marshmallow" entry by the tracker
-                if (subject == Item.Marshmallow)
-                    quantity += items[Item.BurntMarshmallow] + items[Item.PerfectMarshmallow];
-
-                // Produce a string like "[X] Launch Codes" or "[5] Marshmallow"
-                bool couldHaveMultiple = item.ApItem >= Item.OxygenCapacityUpgrade; // see comments in Item enum
-                string countText = couldHaveMultiple ? quantity.ToString() : (quantity != 0 ? "X" : " "); // only unique items use X
-                string itemName = $"[{countText}] {item.Name}";
-
-                // Tuple: name, green arrow, green exclamation point, orange asterisk
-                InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, item.Hints.Any()));
-            }
-            else if (item.ID == "FrequencyOWV")
-            {
-                string itemName = "[X] Frequency: Outer Wilds Ventures";
-                InventoryItems.Add(new Tuple<string, bool, bool, bool>(itemName, false, item.ItemIsNew, false));
-            }
-            else
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
-            }
-
-        }
-    }
-
     /// <summary>
     /// Gets the requested texture from the InGameTracker\Icons folder. Thanks xen!
     /// </summary>
@@ -308,7 +188,7 @@ public class TrackerManager : MonoBehaviour
             string path = Path.Combine([APRandomizer.Instance.ModHelper.Manifest.ModFolderPath, "InGameTracker", "Icons", filename + ".png"]);
 
             byte[] data = null;
-            if(File.Exists(path)) 
+            if (File.Exists(path))
             {
                 data = File.ReadAllBytes(path);
             }
@@ -325,52 +205,10 @@ public class TrackerManager : MonoBehaviour
 
             return Sprite.Create(tex, rect, pivot);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             APRandomizer.OWMLModConsole.WriteLine("Unable to load provided texture: " + e.Message, OWML.Common.MessageType.Error);
             return null;
         }
     }
-
-    /// <summary>
-    /// Sets an item as new, so it'll have a green exclamation point in the inventory
-    /// </summary>
-    /// <param name="item"></param>
-    public static void MarkItemAsNew(Item item)
-    {
-        // The three marshmallow items are treated as a single "Marshmallow" entry by the tracker
-        if (item == Item.BurntMarshmallow || item == Item.PerfectMarshmallow)
-            item = Item.Marshmallow;
-
-        string itemID = item.ToString();
-        TrackerManager tracker = APRandomizer.Tracker;
-        if (ItemNames.itemToSignal.ContainsKey(item))
-        {
-            string frequency = "";
-            SignalFrequency sf = SignalsAndFrequencies.signalToFrequency[ItemNames.itemToSignal[signal]];
-            if (sf == SignalFrequency.Traveler)
-                frequency = "FrequencyOWV";
-            else if (ItemNames.frequencyToItem.TryGetValue(sf, out var frequencyItem))
-                frequency = frequencyItem.ToString();
-
-            if (frequency == "" || !tracker.ItemEntries.ContainsKey(frequency))
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Signal item {itemID} with invalid frequency {frequency} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
-                return;
-            }
-
-            tracker.ItemEntries[frequency].SetNew(true);
-        }
-        else if (tracker.ItemEntries.ContainsKey(itemID))
-        {
-            if (!tracker.ItemEntries.ContainsKey(itemID))
-            {
-                APRandomizer.OWMLModConsole.WriteLine($"Invalid item {itemID} requested to be marked as new! Skipping", OWML.Common.MessageType.Warning);
-                return;
-            }
-            tracker.ItemEntries[itemID].SetNew(true);
-        }
-        else APRandomizer.OWMLModConsole.WriteLine($"Item received is {itemID}, which does not exist in the inventory. Skipping.", OWML.Common.MessageType.Warning);
-    }
-    #endregion
 }

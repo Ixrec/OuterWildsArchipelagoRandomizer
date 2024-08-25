@@ -8,16 +8,10 @@ namespace ArchipelagoRandomizer.InGameTracker;
 /// </summary>
 public class APInventoryDescriptions
 {
-    public static void DisplayItemText(string itemID, ItemListWrapper Wrapper)
+    public static void DisplayItemText(InventoryItemEntry itemEntry, ItemListWrapper Wrapper)
     {
         var inventory = APRandomizer.SaveData.itemsAcquired;
         Wrapper.DescriptionFieldClear();
-        if (!APRandomizer.Tracker.ItemEntries.ContainsKey(itemID))
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"Could not obtain a tracker description for {itemID}!", OWML.Common.MessageType.Error);
-            return;
-        }
-        InventoryItemEntry itemEntry = APRandomizer.Tracker.ItemEntries[itemID];
 
         var infos = GetDescriptionText(itemEntry, new ReadOnlyDictionary<Item, uint>(inventory));
 

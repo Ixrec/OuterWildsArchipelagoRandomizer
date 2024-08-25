@@ -357,7 +357,7 @@ public class APRandomizer : ModBehaviour
         }
         else
         {
-            TrackerManager.MarkItemAsNew(item);
+            APInventoryMode.MarkItemAsNew(item);
             APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
             LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
             return true;
