@@ -5,6 +5,28 @@
     "AP Console: Mute": false,
     "AP Console: About Me Filter": false,
 
+    "Separator - Client-Side Features": {
+      "type": "separator"
+    },
+
+    "Randomize Ghost Matter": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "In places where the vanilla game and randomizer logic expect you to find a safe path using the camera, this randomizes which path is safe each loop."
+    },
+
+    "Death Link Override": {
+      "type": "selector",
+      "value": "No Override",
+      "options": [
+        "No Override",
+        "Off",
+        "Default",
+        "All Deaths"
+      ],
+      "tooltip": "'No Override' means use the death_link option from the .yaml used to generate the multiworld. Any other value will override and ignore the .yaml option."
+    },
+
     "Separator - Quality of Life": {
       "type": "separator"
     },
@@ -27,22 +49,6 @@
       "type": "toggle",
       "value": false,
       "tooltip": "With this on, your translator will translate Nomai Text instantly."
-    },
-
-    "Separator - Death Link": {
-      "type": "separator"
-    },
-
-    "Death Link Override": {
-      "type": "selector",
-      "value": "No Override",
-      "options": [
-        "No Override",
-        "Off",
-        "Default",
-        "All Deaths"
-      ],
-      "tooltip": "'No Override' means use the death_link option from the .yaml used to generate the multiworld. Any other value will override and ignore the .yaml option."
     },
 
     "Separator - Suit Upgrades": {

@@ -470,6 +470,7 @@ public class APRandomizer : ModBehaviour
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();
         SuitResources.ModSettingsChanged(config);
+        GhostMatter.ModSettingsChanged(config);
     }
 
 }
