@@ -31,7 +31,7 @@
     <None Include="Assets/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="../Archipelago/worlds/outer_wilds/shared_static_logic/**">
+    <None Include="../Archipelago/worlds/outer_wilds/shared_static_logic/*.jsonc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>
     <None Include="InGameTracker/Icons/**">
