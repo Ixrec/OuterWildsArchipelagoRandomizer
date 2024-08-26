@@ -120,15 +120,7 @@ The 0.1.x releases fleshed out the Archipelago items and locations: useful, fill
 
 ### 0.2.0+ Patch Goals
 
-The 0.2.x releases will focus on other kinds of randomization besides items and locations.
-
-- ~~random Eye coordinates~~
-- ~~random Dark Bramble layout~~
-- ~~random player & ship spawn (with spacesuit on, time loop started, and Launch Codes placed in a random location like most other items)~~
-	- ~~random warp pad destinations should go well with this~~
-- ~~random planet orbits~~
-- random ghost matter patches
-- ~~random in-game hints, by editing the other astronauts' dialogue trees to offer hints about valuable items or locations on their respective planets~~
+The 0.2.x releases focused on other kinds of randomization besides items and locations, specifically: random spawn, random orbits, random warp platforms, random Eye coordinates, random Dark Bramble layout, random ghost matter, and random in-game hints.
 
 ### 0.3.0 Goals/Priorities
 
