@@ -69,6 +69,7 @@ public class APRandomizer : ModBehaviour
     public static bool DisableConsole = false;
     public static bool DisableInGameLocationSending = false;
     private static bool DisableInGameItemReceiving = false;
+    public static bool DisableInGameItemApplying = false;
     private static bool DisableInGameSaveFileWrites = false;
 
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
@@ -463,6 +464,7 @@ public class APRandomizer : ModBehaviour
         DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
         DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");
         DisableInGameItemReceiving = config.GetSettingsValue<bool>("[DEBUG] Don't Receive Items In-Game");
+        DisableInGameItemApplying = config.GetSettingsValue<bool>("[DEBUG] Don't Apply Received Items In-Game");
         DisableInGameSaveFileWrites = config.GetSettingsValue<bool>("[DEBUG] Don't Write To Save File In-Game");
 
         InGameAPConsole?.ModSettingsChanged(config);

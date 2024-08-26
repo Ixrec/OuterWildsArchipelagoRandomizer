@@ -168,6 +168,8 @@ internal class LocationTriggers
 
     public static void ApplyItemToPlayer(Item item, uint count)
     {
+        if (APRandomizer.DisableInGameItemApplying && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
+
         if (ItemNames.itemToFrequency.ContainsKey(item))
         {
             SignalsAndFrequencies.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
