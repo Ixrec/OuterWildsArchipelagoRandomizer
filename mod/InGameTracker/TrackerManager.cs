@@ -17,16 +17,6 @@ public class TrackerManager : MonoBehaviour
 {
     public Logic logic;
 
-
-    // Location checklist data for each area
-    public Dictionary<string, TrackerChecklistData> HGTLocations;
-    public Dictionary<string, TrackerChecklistData> THLocations;
-    public Dictionary<string, TrackerChecklistData> BHLocations;
-    public Dictionary<string, TrackerChecklistData> GDLocations;
-    public Dictionary<string, TrackerChecklistData> DBLocations;
-    public Dictionary<string, TrackerChecklistData> OWLocations;
-    public Dictionary<string, TrackerChecklistData> GoalLocations;
-
     private ICustomShipLogModesAPI api;
     private APInventoryMode inventoryMode;
     //private TrackerSelectionMode selectionMode;
@@ -143,37 +133,13 @@ public class TrackerManager : MonoBehaviour
         string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
         string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
         TrackerLocationData loc = logic.GetLocationByID(hint.LocationId);
-        if (HGTLocations.ContainsKey(loc.name))
+        if (!logic.LocationChecklistData.ContainsKey(loc.name))
         {
-            if (!HGTLocations[loc.name].hasBeenChecked)
-                HGTLocations[loc.name].hintText = hintDescription;
+            APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a checklist data object for {loc.name}!", OWML.Common.MessageType.Error);
+            return;
         }
-        else if (THLocations.ContainsKey(loc.name))
-        {
-            if (!THLocations[loc.name].hasBeenChecked)
-                THLocations[loc.name].hintText = hintDescription;
-        }
-        else if (BHLocations.ContainsKey(loc.name))
-        {
-            if (!BHLocations[loc.name].hasBeenChecked)
-                BHLocations[loc.name].hintText = hintDescription;
-        }
-        else if (GDLocations.ContainsKey(loc.name))
-        {
-            if (!GDLocations[loc.name].hasBeenChecked)
-                GDLocations[loc.name].hintText = hintDescription;
-        }
-        else if (DBLocations.ContainsKey(loc.name))
-        {
-            if (!DBLocations[loc.name].hasBeenChecked)
-                DBLocations[loc.name].hintText = hintDescription;
-        }
-        else if (OWLocations.ContainsKey(loc.name))
-        {
-            if (!OWLocations[loc.name].hasBeenChecked)
-                OWLocations[loc.name].hintText = hintDescription;
-        }
-        else APRandomizer.OWMLModConsole.WriteLine($"ApplyHint was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+        if (!logic.LocationChecklistData[loc.name].hasBeenChecked)
+            logic.LocationChecklistData[loc.name].hintText = hintDescription;
     }
 
     /// <summary>

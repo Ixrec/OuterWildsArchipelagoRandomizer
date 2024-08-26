@@ -45,16 +45,7 @@ public class Logic
 
     private TrackerManager tracker;
 
-    // Ember Twin, Ash Twin, Cave Twin, Tower Twin
-    private readonly string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
-    // Timber Hearth, Attlerock, Timber Moon
-    private readonly string[] THPrefixes = ["TH", "AR", "TM"];
-    // Brittle Hollow, Hollow's Lantern, Volcano Moon
-    private readonly string[] BHPrefixes = ["BH", "HL", "VM"];
-    // Giant's Deep, Orbital Probe Cannon x2
-    private readonly string[] GDPrefixes = ["GD", "OP", "OR"];
-    // Dark Bramble
-    private readonly string[] DBPrefixes = ["DB"];
+    public Dictionary<string, TrackerChecklistData> LocationChecklistData;
 
     // Dynamic logic information copy-pasted from the .apworld code
     public enum SlotDataSpawn: long
@@ -134,6 +125,27 @@ public class Logic
         }
     }
 
+    // subsets of LocationChecklistData
+    private Dictionary<string, TrackerChecklistData> HGTLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> THLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> BHLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> GDLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> DBLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> OWLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> GoalLocationChecklistData;
+
+    // Ember Twin, Ash Twin, Cave Twin, Tower Twin
+    private readonly static string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
+    // Timber Hearth, Attlerock, Timber Moon
+    private readonly static string[] THPrefixes = ["TH", "AR", "TM"];
+    // Brittle Hollow, Hollow's Lantern, Volcano Moon
+    private readonly static string[] BHPrefixes = ["BH", "HL", "VM"];
+    // Giant's Deep, Orbital Probe Cannon x2
+    private readonly static string[] GDPrefixes = ["GD", "OP", "OR"];
+    // Dark Bramble
+    private readonly static string[] DBPrefixes = ["DB"];
+    private readonly static string GoalPrefix = "Victory - ";
+
     /// <summary>
     /// Populates all the (prefix)Locations dictionaries in Tracker Manager
     /// </summary>
@@ -141,31 +153,54 @@ public class Logic
     {
         bool logsanity = false;
         if (APRandomizer.SlotData.ContainsKey("logsanity")) logsanity = (long)APRandomizer.SlotData["logsanity"] > 0;
+
         CanAccessRegion = new();
-        tracker.HGTLocations = new();
-        tracker.THLocations = new();
-        tracker.BHLocations = new();
-        tracker.GDLocations = new();
-        tracker.DBLocations = new();
-        tracker.OWLocations = new();
-        tracker.GoalLocations = new();
+
+        LocationChecklistData = new();
+
+        HGTLocationChecklistData = new();
+        THLocationChecklistData = new();
+        BHLocationChecklistData = new();
+        GDLocationChecklistData = new();
+        DBLocationChecklistData = new();
+        OWLocationChecklistData = new();
+        GoalLocationChecklistData = new();
+
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {
-            string prefix;
             string name = loc.name;
             // skip logsanity locations if logsanity is off
             if (!logsanity && name.Contains("Ship Log")) continue;
-            prefix = name.Substring(0, 2);
+            string prefix = name.Substring(0, 2);
             TrackerChecklistData data = new(false, false, "");
-            if (HGTPrefixes.Contains(prefix)) tracker.HGTLocations.Add(name, data);
-            else if (THPrefixes.Contains(prefix)) tracker.THLocations.Add(name, data);
-            else if (BHPrefixes.Contains(prefix)) tracker.BHLocations.Add(name, data);
-            else if (GDPrefixes.Contains(prefix)) tracker.GDLocations.Add(name, data);
-            else if (DBPrefixes.Contains(prefix)) tracker.DBLocations.Add(name, data);
-            else if (name.StartsWith("Victory - ") && loc.address == null) tracker.GoalLocations.Add(name, data);
-            else tracker.OWLocations.Add(name, data);
+
+            LocationChecklistData.Add(name, data);
+
+            if (HGTPrefixes.Contains(prefix)) HGTLocationChecklistData.Add(name, data);
+            else if (THPrefixes.Contains(prefix)) THLocationChecklistData.Add(name, data);
+            else if (BHPrefixes.Contains(prefix)) BHLocationChecklistData.Add(name, data);
+            else if (GDPrefixes.Contains(prefix)) GDLocationChecklistData.Add(name, data);
+            else if (DBPrefixes.Contains(prefix)) DBLocationChecklistData.Add(name, data);
+            else if (name.StartsWith(GoalPrefix)) GoalLocationChecklistData.Add(name, data);
+            else OWLocationChecklistData.Add(name, data);
         }
         DetermineAllAccessibility();
+    }
+
+    public Dictionary<string, TrackerChecklistData> GetLocationChecklist(TrackerCategory category)
+    {
+        switch (category)
+        {
+            case TrackerCategory.Goal: return GoalLocationChecklistData;
+            case TrackerCategory.HourglassTwins: return HGTLocationChecklistData;
+            case TrackerCategory.TimberHearth: return THLocationChecklistData;
+            case TrackerCategory.BrittleHollow: return BHLocationChecklistData;
+            case TrackerCategory.GiantsDeep: return GDLocationChecklistData;
+            case TrackerCategory.DarkBramble: return DBLocationChecklistData;
+            case TrackerCategory.OuterWilds: return OWLocationChecklistData;
+            case TrackerCategory.All: return LocationChecklistData;
+        }
+        return null;
     }
 
     /// <summary>
@@ -327,14 +362,10 @@ public class Logic
             // we can skip accessibility calculation if the location has been checked or ever been accessible
             if (!checklistEntry.hasBeenChecked && !checklistEntry.isAccessible)
             {
-                if (tracker.HGTLocations.ContainsKey(data.Key)) tracker.HGTLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.THLocations.ContainsKey(data.Key)) tracker.THLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.BHLocations.ContainsKey(data.Key)) tracker.BHLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.GDLocations.ContainsKey(data.Key)) tracker.GDLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.DBLocations.ContainsKey(data.Key)) tracker.DBLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.OWLocations.ContainsKey(data.Key)) tracker.OWLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else if (tracker.GoalLocations.ContainsKey(data.Key)) tracker.GoalLocations[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
-                else APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find a Locations dictionary for {data.Key}!", OWML.Common.MessageType.Error);
+                if (LocationChecklistData.ContainsKey(data.Key))
+                    LocationChecklistData[data.Key].SetAccessible(IsAccessible(TrackerLocations[data.Key]));
+                else
+                    APRandomizer.OWMLModConsole.WriteLine($"DetermineAllAccessibility was unable to find checklist data object for {data.Key}!", OWML.Common.MessageType.Error);
             }
         }
     }
@@ -370,37 +401,12 @@ public class Logic
         foreach (long location in checkedLocations)
         {
             TrackerLocationData loc = GetLocationByID(location);
-            if (tracker.HGTLocations.ContainsKey(loc.name))
+            if (LocationChecklistData.ContainsKey(loc.name))
             {
-                tracker.HGTLocations[loc.name].hasBeenChecked = true;
-                tracker.HGTLocations[loc.name].hintText = "";
+                LocationChecklistData[loc.name].hasBeenChecked = true;
+                LocationChecklistData[loc.name].hintText = "";
             }
-            else if (tracker.THLocations.ContainsKey(loc.name))
-            { 
-                tracker.THLocations[loc.name].hasBeenChecked = true;
-                tracker.THLocations[loc.name].hintText = "";
-            }
-            else if (tracker.BHLocations.ContainsKey(loc.name))
-            {
-                tracker.BHLocations[loc.name].hasBeenChecked = true;
-                tracker.BHLocations[loc.name].hintText = "";
-            }
-            else if (tracker.GDLocations.ContainsKey(loc.name))
-            {
-                tracker.GDLocations[loc.name].hasBeenChecked = true;
-                tracker.GDLocations[loc.name].hintText = "";
-            }
-            else if (tracker.DBLocations.ContainsKey(loc.name))
-            { 
-                tracker.DBLocations[loc.name].hasBeenChecked = true;
-                tracker.DBLocations[loc.name].hintText = "";
-            }
-            else if (tracker.OWLocations.ContainsKey(loc.name))
-            {
-                tracker.OWLocations[loc.name].hasBeenChecked = true;
-                tracker.OWLocations[loc.name].hintText = "";
-            }
-            else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a Locations dictionary for {loc.name}!", OWML.Common.MessageType.Error);
+            else APRandomizer.OWMLModConsole.WriteLine($"CheckLocations was unable to find a checklist data object for {loc.name}!", OWML.Common.MessageType.Error);
         }
     }
 
@@ -626,31 +632,6 @@ public class Logic
     public bool GetHasHint(TrackerCategory category)
     {
         return GetLocationChecklist(category).Count(x => x.Value.hintText != "" && !x.Value.hasBeenChecked) > 0;
-    }
-
-    /// <summary>
-    /// Returns the dictionary for the requested category.
-    /// </summary>
-    /// <param name="category"></param>
-    /// <returns></returns>
-    public Dictionary<string, TrackerChecklistData> GetLocationChecklist(TrackerCategory category)
-    {
-        switch (category)
-        {
-            case TrackerCategory.Goal: return tracker.GoalLocations;
-            case TrackerCategory.HourglassTwins: return tracker.HGTLocations;
-            case TrackerCategory.TimberHearth: return tracker.THLocations;
-            case TrackerCategory.BrittleHollow: return tracker.BHLocations;
-            case TrackerCategory.GiantsDeep: return tracker.GDLocations;
-            case TrackerCategory.DarkBramble: return tracker.DBLocations;
-            case TrackerCategory.OuterWilds: return tracker.OWLocations;
-            case TrackerCategory.All: return tracker.HGTLocations
-                    .Concat(tracker.THLocations).Concat(tracker.BHLocations)
-                    .Concat(tracker.GDLocations).Concat(tracker.DBLocations)
-                    .Concat(tracker.OWLocations).Concat(tracker.GoalLocations)
-                    .ToDictionary(x => x.Key, x => x.Value);
-        }
-        return null;
     }
 
     /// <summary>
