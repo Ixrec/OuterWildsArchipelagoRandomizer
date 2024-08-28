@@ -181,7 +181,7 @@ public class APInventoryDescriptions
                     break;
                 case Item.OxygenCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
-                    infos.Add("By default, your tank starts with 50% of that, at 3.5 minutes. Each upgrade adds another 50% or 3.5 minutes.");
+                    infos.Add("By default, your tank starts with 50% of that, at 3.75 minutes. Each upgrade adds another 50% or 3.75 minutes.");
                     infos.Add("These values can be changed in the mod settings (warning: lower values may make the game unbeatable).");
                     break;
                 case Item.FuelCapacityUpgrade:
