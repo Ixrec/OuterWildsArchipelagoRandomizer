@@ -54,15 +54,15 @@ public class APChecklistMode : ShipLogMode
     private const string completed = "#82BD8E";
     private const string noAccessible = "red";
 
-    private readonly string[] optionsEntries =
+    private readonly (string, TrackerCategory)[] optionsEntries =
     {
-        "Mission",
-        "Hourglass Twins",
-        "Timber Hearth",
-        "Brittle Hollow",
-        "Giant's Deep",
-        "Dark Bramble",
-        "The Outer Wilds"
+        ("Mission", TrackerCategory.Goal),
+        ("Hourglass Twins", TrackerCategory.HourglassTwins),
+        ("Timber Hearth", TrackerCategory.TimberHearth),
+        ("Brittle Hollow", TrackerCategory.BrittleHollow),
+        ("Giant's Deep", TrackerCategory.GiantsDeep),
+        ("Dark Bramble", TrackerCategory.DarkBramble),
+        ("The Outer Wilds", TrackerCategory.OuterWilds),
         // When DLC support is added, add Stranger and Dreamworld conditionally
     };
     private List<ShipLogDisplayItem> optionsList;
@@ -384,14 +384,11 @@ public class APChecklistMode : ShipLogMode
     private void OpenSelectionMode()
     {
         optionsList = new();
-        for (int i = 0; i < optionsEntries.Length; i++)
+        foreach (var (text, category) in optionsEntries)
         {
-            var entry = optionsEntries[i];
-
-            TrackerCategory category = (TrackerCategory)i;
             bool hasAvailableChecks = false;
             bool hasHint = false;
-            if (i == 0)
+            if (category == TrackerCategory.Goal)
             {
                 string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
                 hasAvailableChecks = Tracker.logic.IsAccessible(Tracker.logic.TrackerLocations[goalLocation]);
@@ -401,7 +398,7 @@ public class APChecklistMode : ShipLogMode
                 hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
                 hasHint = Tracker.logic.GetHasHint(category);
             }
-            optionsList.Add(new(entry, false, hasAvailableChecks, hasHint));
+            optionsList.Add(new(text, false, hasAvailableChecks, hasHint));
         }
 
         SelectionWrapper.Open();
