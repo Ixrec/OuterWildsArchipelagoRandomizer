@@ -15,6 +15,7 @@ internal class LaunchCodes
             if (_hasLaunchCodes != value)
             {
                 _hasLaunchCodes = value;
+                ApplyHasLaunchCodesFlag(_hasLaunchCodes);
 
                 if (_hasLaunchCodes)
                 {
