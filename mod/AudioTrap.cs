@@ -32,7 +32,7 @@ internal class AudioTrap
         if (Locator.GetPlayerAudioController() == null || globalMusicController == null) return;
 
         var playerAudioSource = Locator.GetPlayerAudioController()._oneShotSource;
-        var selection = prng.Next(0, 3);
+        var selection = prng.Next(0, 4);
         switch (selection)
         {
             case 0:
@@ -50,6 +50,16 @@ internal class AudioTrap
                 var endTimesSource = globalMusicController._endTimesSource;
                 endTimesSource.AssignAudioLibraryClip(global::AudioType.EndOfTime);
                 endTimesSource.FadeInToLibraryVolume(2f, false, false);
+                break;
+            case 3:
+                APRandomizer.InGameAPConsole.AddText($"Audio Trap has randomly selected: Owlk Scream", skipGameplayConsole: true);
+                // I couldn't pick just one of the owlk sounds
+                AudioType[] owlkScreams = [
+                    global::AudioType.Ghost_CallForHelp,
+                    global::AudioType.Ghost_IntruderConfirmed,
+                    global::AudioType.Ghost_SomeoneIsInHereHowl,
+                ];
+                Locator.GetPlayerAudioController()._oneShotSource.PlayOneShot(owlkScreams[prng.Next(0, 3)], 1f);
                 break;
             default: APRandomizer.OWMLModConsole.WriteLine($"Invalid audio selection: {selection}", OWML.Common.MessageType.Error); break;
         }
