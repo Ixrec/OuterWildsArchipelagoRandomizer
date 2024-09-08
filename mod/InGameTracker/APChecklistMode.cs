@@ -71,18 +71,26 @@ public class APChecklistMode : ShipLogMode
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
     {
-        
-        if (Victory.goalSetting == Victory.GoalSetting.SongOfFive)
+        switch (Victory.goalSetting)
         {
-            victoryCondition = $"<color={so5}>THE SONG OF FIVE</color>";
-        }
-        else if (Victory.goalSetting == Victory.GoalSetting.SongOfSix)
-        {
-            victoryCondition = $"<color={so6}>THE SONG OF SIX</color>";
-        }
-        else
-        {
-            victoryCondition = $"<color={so7}>THE SONG OF SEVEN</color>";
+            case Victory.GoalSetting.SongOfFive:
+                victoryCondition = $"<color={so5}>THE SONG OF FIVE</color>";
+                break;
+            case Victory.GoalSetting.SongOfSix:
+                victoryCondition = $"<color={so6}>THE SONG OF SIX</color>";
+                break;
+            case Victory.GoalSetting.SongOfSeven:
+                victoryCondition = $"<color={so7}>THE SONG OF SEVEN</color>";
+                break;
+            case Victory.GoalSetting.SongOfTheNomai:
+                victoryCondition = $"<color={so6}>THE SONG OF THE NOMAI</color>";
+                break;
+            case Victory.GoalSetting.SongOfTheStranger:
+                victoryCondition = $"<color={so7}>THE SONG OF THE STRANGER</color>";
+                break;
+            case Victory.GoalSetting.EchoesOfTheEye:
+                victoryCondition = $"<color={so7}>THE ECHOES OF THE EYE</color>";
+                break;
         }
 
         var slotData = APRandomizer.SlotData;
