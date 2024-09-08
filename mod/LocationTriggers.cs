@@ -73,6 +73,45 @@ internal class LocationTriggers
         { "DB_FROZEN_JELLYFISH_X1", Location.DB_JELLY_TR },
         { "DB_NOMAI_GRAVE_X3", Location.DB_GRAVE },
         { "DB_VESSEL_X1", Location.DB_VESSEL },
+
+        { "IP_ZONE_1_X2", Location.RL_WORKSHOP },
+        { "IP_ZONE_1_STORY_X1", Location.RL_SR },
+        { "IP_ZONE_2_X2", Location.CI_EYE },
+        { "IP_ZONE_2_STORY_X1", Location.CI_SR },
+        { "IP_ZONE_2_LIGHTHOUSE_X1", Location.CI_TOWER_SR },
+        { "IP_ZONE_3_STORY_X1", Location.HG_SR },
+        { "IP_ZONE_3_ENTRANCE_X3", Location.HG_LAB_SR },
+        { "IP_ZONE_4_X3", Location.RESERVOIR_CRAFT_PROJECTION },
+        { "IP_ZONE_4_X4", Location.RESERVOIR_STRANGER_PROJECTION },
+        { "IP_ZONE_4_STORY_X1", Location.RESERVOIR_SR },
+        { "IP_PRISON_X2", Location.SUBMERGED_STRUCTURE },
+
+        { "IP_DREAM_ZONE_1_X3", Location.SW_BRIDGE },
+        { "IP_DREAM_ZONE_2_X3", Location.SC_BURNED },
+        { "IP_DREAM_ZONE_2_X4", Location.SC_TOWER_UPPER },
+        { "IP_DREAM_ZONE_3_X2", Location.EC_MURAL },
+        { "IP_DREAM_LAKE_R1", Location.VAULT_VISION }, // I believe this is our only default location tied to a rumor fact
+        { "IP_DREAM_LAKE_X2", Location.SL_GREEN_LIGHT },
+
+        { "IP_ZONE_2_CODE_X3", Location.CI_SYMBOL_ROOM },
+        { "IP_ZONE_3_LAB_X1", Location.TEMPLE_ENTER },
+        { "IP_ZONE_3_LAB_X2", Location.TEMPLE_SR },
+
+        { "IP_MAP_PROJECTION_1_X1", Location.TEMPLE_MAPS },
+        { "IP_MAP_PROJECTION_2_X1", Location.TEMPLE_MAPS },
+        { "IP_MAP_PROJECTION_3_X1", Location.TEMPLE_MAPS },
+
+        { "IP_ZONE_1_SECRET_X1", Location.RL_SECRET_SR },
+        { "IP_ZONE_2_SECRET_X1", Location.CI_SECRET_SR },
+        { "IP_ZONE_3_SECRET_X1", Location.HG_SECRET_SR },
+        { "IP_DREAM_1_STORY_X1", Location.SW_FA_STORY_SR },
+        { "IP_DREAM_1_RULE_X1", Location.SW_FA_GLITCH_SR },
+        { "IP_DREAM_2_STORY_X1", Location.SC_FA_STORY_SR },
+        { "IP_DREAM_2_RULE_X1", Location.SC_FA_GLITCH_SR_1 },
+        { "IP_DREAM_2_RULE_X2", Location.SC_FA_GLITCH_SR_2 },
+        { "IP_DREAM_3_STORY_X1", Location.EC_FA_STORY_SR },
+        { "IP_DREAM_3_RULE_X1", Location.EC_FA_GLITCH_SR },
+        { "IP_SARCOPHAGUS_X2", Location.SL_VAULT },
     };
 
     // manual scrolls
@@ -214,6 +253,16 @@ internal class LocationTriggers
             case Item.ShipDamageTrap: ShipDamage.shipDamageTraps = count; break;
             case Item.AudioTrap: AudioTrap.audioTraps = count; break;
             case Item.NapTrap: NapTrap.napTraps = count; break;
+            case Item.LightModulator: StrangerLightModulator.hasLightModulator = (count > 0); break;
+            case Item.BreachOverrideCodes: /* = (count > 0);*/ break;
+            case Item.RLPaintingCode: /* = (count > 0);*/ break;
+            case Item.CIPaintingCode: /* = (count > 0);*/ break;
+            case Item.HGPaintingCode: /* = (count > 0);*/ break;
+            case Item.DreamTotemPatch: SimulationTotems.hasTotemPatch = (count > 0); break;
+            case Item.RaftDocksPatch: SimulationDocks.hasDocksPatch = (count > 0); break;
+            case Item.LimboWarpPatch: SimulationGlitches.hasLimboWarpPatch = (count > 0); break;
+            case Item.ProjectionRangePatch: SimulationGlitches.hasProjectionRangePatch = (count > 0); break;
+            case Item.AlarmBypassPatch: SimulationGlitches.hasAlarmBypassPatch = (count > 0); break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;
@@ -347,6 +396,13 @@ internal class LocationTriggers
             (__instance as WarpCoreItem).GetWarpCoreType() == WarpCoreType.VesselBroken
         ) {
             Locator.GetShipLogManager().RevealFact("DB_VESSEL_X2");
+        }
+
+        // I'll allow malfunctioning dream lanterns here since it's funny, and those can only be found next to a working one anyway.
+        if (__instance.GetItemType() == ItemType.DreamLantern)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OWItem_PickUpItem_Postfix detected ItemType.DreamLantern");
+            CheckLocation(Location.ARTIFACT);
         }
     }
 }

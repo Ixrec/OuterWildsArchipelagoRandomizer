@@ -69,6 +69,21 @@ public enum Item
     ShipDamageTrap,
     AudioTrap,
     NapTrap,
+
+    FrequencyDSR,
+    SignalDSRTower,
+    SignalDSRSatellite,
+
+    LightModulator,
+    BreachOverrideCodes,
+    RLPaintingCode,
+    CIPaintingCode,
+    HGPaintingCode,
+    DreamTotemPatch,
+    RaftDocksPatch,
+    LimboWarpPatch,
+    ProjectionRangePatch,
+    AlarmBypassPatch,
 };
 
 public static class ItemNames
@@ -132,6 +147,21 @@ public static class ItemNames
         { Item.ShipDamageTrap, "Ship Damage Trap" },
         { Item.AudioTrap, "Audio Trap" },
         { Item.NapTrap, "Nap Trap" },
+
+        { Item.FrequencyDSR, "Deep Space Radio Frequency" },
+        { Item.SignalDSRTower, "Radio Tower Signal" },
+        { Item.SignalDSRSatellite, "Deep Space Satellite Signal" },
+
+        { Item.LightModulator, "Stranger Light Modulator" },
+        { Item.BreachOverrideCodes, "Breach Override Codes" },
+        { Item.RLPaintingCode, "River Lowlands Painting Code" },
+        { Item.CIPaintingCode, "Cinder Isles Painting Code" },
+        { Item.HGPaintingCode, "Hidden Gorge Painting Code" },
+        { Item.DreamTotemPatch, "Dream Totem Patch" },
+        { Item.RaftDocksPatch, "Raft Docks Patch" },
+        { Item.LimboWarpPatch, "Limbo Warp Patch" },
+        { Item.ProjectionRangePatch, "Projection Range Patch" },
+        { Item.AlarmBypassPatch, "Alarm Bypass Patch" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -165,6 +195,8 @@ public static class ItemNames
         { SignalName.EscapePod_DB, Item.SignalEP3 },
         { SignalName.HideAndSeek_Galena, Item.SignalGalena },
         { SignalName.HideAndSeek_Tephra, Item.SignalTephra },
+        { SignalName.RadioTower, Item.SignalDSRTower },
+        { SignalName.MapSatellite, Item.SignalDSRSatellite },
     };
     public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 
@@ -193,6 +225,17 @@ public static class ItemNames
         { Item.SignalFeldspar,       "HAS_AP_ITEM_FELDSPARS_SIGNAL" },
         { Item.SignalQM,             "HAS_AP_ITEM_QUANTUM_MOON_SIGNAL" },
         { Item.SignalEP3,            "HAS_AP_ITEM_ESCAPE_POD_3_SIGNAL" },
+        { Item.FrequencyDSR,         "HAS_AP_ITEM_DEEP_SPACE_RADIO_FREQUENCY" },
+        { Item.LightModulator,       "HAS_AP_ITEM_CONTROL_SENSOR_WAVELENGTH" },
+        { Item.BreachOverrideCodes,  "HAS_AP_ITEM_BREACH_OVERRIDE_CODES" },
+        { Item.RLPaintingCode,       "HAS_AP_ITEM_RIVER_LOWLANDS_PAINTING_CODE" },
+        { Item.CIPaintingCode,       "HAS_AP_ITEM_CINDER_ISLES_PAINTING_CODE" },
+        { Item.HGPaintingCode,       "HAS_AP_ITEM_HIDDEN_GORGE_PAINTING_CODE" },
+        { Item.DreamTotemPatch,      "HAS_AP_ITEM_DREAM_TOTEM_PATCH" },
+        { Item.RaftDocksPatch,       "HAS_AP_ITEM_RAFT_DOCKS_PATCH" },
+        { Item.LimboWarpPatch,       "HAS_AP_ITEM_RAFT_LIMBO_PATCH" },
+        { Item.ProjectionRangePatch, "HAS_AP_ITEM_PROJECTION_RANGE_PATCH" },
+        { Item.AlarmBypassPatch,     "HAS_AP_ITEM_ALARM_BYPASS_PATCH" },
     };
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly

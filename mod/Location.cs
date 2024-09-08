@@ -95,8 +95,45 @@ public enum Location
     FREQ_QUANTUM,
     FREQ_HIDE_SEEK,
 
+    // didn't add these until DLC integration because I was unsure if a DLC-less game had these
+    DSR_TOWER_SIGNAL,
+    DSR_SATELLITE_SIGNAL,
+    SATELLITE_TR,
+
     // DLC Locations
-    // TODO
+    RL_WORKSHOP,
+    RL_SR,
+    CI_EYE,
+    CI_SR,
+    CI_TOWER_SR,
+    HG_SR,
+    HG_LAB_SR,
+    RESERVOIR_CRAFT_PROJECTION,
+    RESERVOIR_STRANGER_PROJECTION,
+    RESERVOIR_SR,
+    SUBMERGED_STRUCTURE,
+    ARTIFACT,
+    SW_BRIDGE,
+    SC_BURNED,
+    SC_TOWER_UPPER,
+    EC_MURAL,
+    VAULT_VISION,
+    SL_GREEN_LIGHT,
+    CI_SYMBOL_ROOM,
+    TEMPLE_ENTER,
+    TEMPLE_SR,
+    TEMPLE_MAPS,
+    RL_SECRET_SR,
+    CI_SECRET_SR,
+    HG_SECRET_SR,
+    SW_FA_STORY_SR,
+    SW_FA_GLITCH_SR,
+    SC_FA_STORY_SR,
+    SC_FA_GLITCH_SR_1,
+    SC_FA_GLITCH_SR_2,
+    EC_FA_STORY_SR,
+    EC_FA_GLITCH_SR,
+    SL_VAULT,
 
     // Logsanity Locations (SLF = Ship Log Fact)
     SLF__S_SUNSTATION_X1,
@@ -280,8 +317,9 @@ public enum Location
     SLF__QM_SIXTH_LOCATION_X2,
     SLF__QM_SIXTH_LOCATION_X6,
 
-    /* DLC & Logsanity Locations
     SLF__TH_RADIO_TOWER_X1,
+
+    // DLC & Logsanity Locations
     SLF__IP_RING_WORLD_X1,
     SLF__IP_ZONE_1_X1,
     SLF__IP_ZONE_1_X2,
@@ -353,7 +391,6 @@ public enum Location
     SLF__IP_DREAM_3_STORY_X1,
     SLF__IP_DREAM_3_STORY_X2,
     SLF__IP_DREAM_3_RULE_X1,
-    */
 
     /* Rumorsanity Locations
     SLF__S_SUNSTATION_R1,
@@ -614,6 +651,49 @@ public static class LocationNames
         { Location.TH_GALENA_SIGNAL, "TH: Scan Galena's Radio Signal" },
         { Location.TH_TEPHRA_SIGNAL, "TH: Scan Tephra's Radio Signal" },
 
+        // didn't add these until DLC integration because I was unsure if a DLC-less game had these
+        { Location.DSR_TOWER_SIGNAL, "TH: Scan Radio Tower Signal" },
+        { Location.DSR_SATELLITE_SIGNAL, "Scan Deep Space Satellite Signal" },
+        { Location.SATELLITE_TR, "Gabbro's Satellite Recorder" },
+
+        // DLC Locations
+        { Location.RL_WORKSHOP, "EotE: River Lowlands Workshop" },
+        { Location.RL_SR, "EotE: River Lowlands Slide Reel" },
+        { Location.CI_EYE, "EotE: Cinder Isles Eye" },
+        { Location.CI_SR, "EotE: Cinder Isles Slide Reel" },
+        { Location.CI_TOWER_SR, "EotE: Island Tower Slide Reel" },
+        { Location.HG_SR, "EotE: Hidden Gorge Slide Reel" },
+        { Location.HG_LAB_SR, "EotE: Laboratory Experiments Slide Reel" },
+        { Location.RESERVOIR_CRAFT_PROJECTION, "EotE: Reservoir Jammer Projection" },
+        { Location.RESERVOIR_STRANGER_PROJECTION, "EotE: Reservoir Stranger Projection" },
+        { Location.RESERVOIR_SR, "EotE: Reservoir Slide Reel" },
+        { Location.SUBMERGED_STRUCTURE, "EotE: Submerged Structure" },
+        { Location.ARTIFACT, "EotE: Find an Artifact" },
+
+        { Location.SW_BRIDGE, "DW: Shrouded Woodlands Bridge" },
+        { Location.SC_BURNED, "DW: Starlit Cove Burned Building" },
+        { Location.SC_TOWER_UPPER, "DW: Starlit Cove Upper Tower Floors" },
+        { Location.EC_MURAL, "DW: Endless Canyon Mural" },
+        { Location.VAULT_VISION, "DW: Vault Vision" },
+        { Location.SL_GREEN_LIGHT, "DW: Subterranean Lake Green Light" },
+
+        { Location.CI_SYMBOL_ROOM, "EotE: Symbol Room Temple Code" },
+        { Location.TEMPLE_ENTER, "EotE: Abandoned Temple" },
+        { Location.TEMPLE_SR, "EotE: Abandoned Temple Slide Reel" },
+        { Location.TEMPLE_MAPS, "EotE: Map Projections" },
+        { Location.RL_SECRET_SR, "EotE: River Lowlands Secret Slide Reel" },
+        { Location.CI_SECRET_SR, "EotE: Cinder Isles Secret Slide Reel" },
+        { Location.HG_SECRET_SR, "EotE: Hidden Gorge Secret Slide Reel" },
+
+        { Location.SW_FA_STORY_SR, "DW: Woodlands Archive Story Reel" },
+        { Location.SW_FA_GLITCH_SR, "DW: Woodlands Archive Glitch Reel" },
+        { Location.SC_FA_STORY_SR, "DW: Cove Archive Story Reel" },
+        { Location.SC_FA_GLITCH_SR_1, "DW: Cove Archive 1st Glitch Reel" },
+        { Location.SC_FA_GLITCH_SR_2, "DW: Cove Archive 2nd Glitch Reel" },
+        { Location.EC_FA_STORY_SR, "DW: Canyon Archive Story Reel" },
+        { Location.EC_FA_GLITCH_SR, "DW: Canyon Archive Glitch Reel" },
+        { Location.SL_VAULT, "DW: Sealed Vault" },
+
         // Logsanity locations
         { Location.SLF__S_SUNSTATION_X1, "Ship Log: Sun Station 1 - Purpose" },
         { Location.SLF__S_SUNSTATION_X2, "Ship Log: Sun Station 2 - Test Result" },
@@ -796,6 +876,87 @@ public static class LocationNames
         { Location.SLF__QM_SIXTH_LOCATION_X4, "QM Ship Log: Sixth Location 4 - Source" },
         { Location.SLF__QM_SIXTH_LOCATION_X2, "QM Ship Log: Sixth Location 5 - Conscious Observer" },
         { Location.SLF__QM_SIXTH_LOCATION_X6, "QM Ship Log: Sixth Location 6 - Status" },
+
+        // DLC & Logsanity Locations
+        { Location.SLF__TH_RADIO_TOWER_X1, "TH Ship Log: Radio Tower" },
+        { Location.SLF__IP_RING_WORLD_X1, "EotE Ship Log: The Stranger" },
+
+        { Location.SLF__IP_ZONE_1_X1, "EotE Ship Log: River Lowlands 1 - Visit" },
+        { Location.SLF__IP_ZONE_1_X2, "EotE Ship Log: River Lowlands 2 - Workshop" },
+        { Location.SLF__IP_ZONE_1_STORY_X1, "EotE Ship Log: Lowlands Slide Reel 1 - Origin" },
+        { Location.SLF__IP_ZONE_1_STORY_X2, "EotE Ship Log: Lowlands Slide Reel 2 - Burned" },
+        { Location.SLF__IP_ZONE_2_X1, "EotE Ship Log: Cinder Isles 1 - Visit" },
+        { Location.SLF__IP_ZONE_2_X2, "EotE Ship Log: Cinder Isles 2 - Eye" },
+        { Location.SLF__IP_ZONE_2_STORY_X1, "EotE Ship Log: Cinder Isles Slide Reel 1 - Anomaly" },
+        { Location.SLF__IP_ZONE_2_STORY_X2, "EotE Ship Log: Cinder Isles Slide Reel 2 - Burned" },
+        { Location.SLF__IP_ZONE_2_LIGHTHOUSE_X2, "EotE Ship Log: Island Tower 1 - Upper Floors" },
+        { Location.SLF__IP_ZONE_2_LIGHTHOUSE_X1, "EotE Ship Log: Island Tower 2 - Slide Reel" },
+        { Location.SLF__IP_ZONE_3_X1, "EotE Ship Log: Hidden Gorge 1 - Visit" },
+        { Location.SLF__IP_ZONE_3_STORY_X1, "EotE Ship Log: Hidden Gorge Slide Reel 1 - Green Fire" },
+        { Location.SLF__IP_ZONE_3_STORY_X2, "EotE Ship Log: Hidden Gorge Slide Reel 2 - Burned" },
+        // for some reason the _LAB_ facts are about Abandoned Temple, while the _ENTRANCE_ facts are about the Lab
+        { Location.SLF__IP_ZONE_3_ENTRANCE_X1, "EotE Ship Log: Laboratory 1 - Enter" },
+        { Location.SLF__IP_ZONE_3_ENTRANCE_X2, "EotE Ship Log: Laboratory 2 - Sleep" },
+        { Location.SLF__IP_ZONE_3_ENTRANCE_X3, "EotE Ship Log: Laboratory 3 - Experiments" },
+        { Location.SLF__IP_ZONE_4_X2, "EotE Ship Log: Reservoir 1 - Visit" },
+        { Location.SLF__IP_ZONE_4_X3, "EotE Ship Log: Reservoir 2 - Broken Connection" },
+        { Location.SLF__IP_ZONE_4_X4, "EotE Ship Log: Reservoir 3 - Predicted Radius" },
+        { Location.SLF__IP_ZONE_4_STORY_X1, "EotE Ship Log: Reservoir Slide Reel 1 - Vault" },
+        { Location.SLF__IP_ZONE_4_STORY_X2, "EotE Ship Log: Reservoir Slide Reel 2 - Burned" },
+        { Location.SLF__IP_PRISON_X1, "EotE Ship Log: Submerged Structure 1 - Enter" },
+        { Location.SLF__IP_PRISON_X2, "EotE Ship Log: Submerged Structure 2 - Vault" },
+
+        { Location.SLF__IP_DREAM_ZONE_1_X1, "DW Ship Log: Shrouded Woodlands 1 - Visit" },
+        { Location.SLF__IP_DREAM_ZONE_1_X2, "DW Ship Log: Shrouded Woodlands 2 - Music" },
+        { Location.SLF__IP_DREAM_ZONE_1_X3, "DW Ship Log: Shrouded Woodlands 3 - Covered Bridge" },
+        { Location.SLF__IP_DREAM_ZONE_2_X1, "DW Ship Log: Starlit Cove 1 - Visit" },
+        { Location.SLF__IP_DREAM_ZONE_2_X2, "DW Ship Log: Starlit Cove 2 - Alarm Bell" },
+        { Location.SLF__IP_DREAM_ZONE_2_X3, "DW Ship Log: Starlit Cove 3 - Burned Building" },
+        { Location.SLF__IP_DREAM_ZONE_2_X4, "DW Ship Log: Starlit Cove 4 - Upper Floors" },
+        { Location.SLF__IP_DREAM_ZONE_3_X1, "DW Ship Log: Endless Canyon 1 - Visit" },
+        { Location.SLF__IP_DREAM_ZONE_3_X2, "DW Ship Log: Endless Canyon 2 - Mural" },
+        { Location.SLF__IP_DREAM_LAKE_X1, "DW Ship Log: Subterranean Lake 1 - Visit" },
+        { Location.SLF__IP_DREAM_LAKE_X2, "DW Ship Log: Subterranean Lake 2 - Green Light" },
+
+        { Location.SLF__IP_ZONE_2_CODE_X1, "EotE Ship Log: Symbol Room 1 - Enter" },
+        { Location.SLF__IP_ZONE_2_CODE_X2, "EotE Ship Log: Symbol Room 2 - Burned Away" },
+        { Location.SLF__IP_ZONE_2_CODE_X3, "EotE Ship Log: Symbol Room 3 - Reel Symbol" },
+        { Location.SLF__IP_ZONE_3_LAB_X1, "EotE Ship Log: Abandoned Temple 1 - Enter" },
+        { Location.SLF__IP_ZONE_3_LAB_X3, "EotE Ship Log: Abandoned Temple 2 - Symbols" },
+        { Location.SLF__IP_ZONE_3_LAB_X4, "EotE Ship Log: Abandoned Temple 3 - Secret Room" },
+        { Location.SLF__IP_ZONE_3_LAB_X2, "EotE Ship Log: Abandoned Temple 4 - Reels" },
+        { Location.SLF__IP_MAP_PROJECTION_1_X1, "EotE Ship Log: Map Projection 1" },
+        { Location.SLF__IP_MAP_PROJECTION_2_X1, "EotE Ship Log: Map Projection 2" },
+        { Location.SLF__IP_MAP_PROJECTION_3_X1, "EotE Ship Log: Map Projection 3" },
+
+        { Location.SLF__IP_ZONE_1_SECRET_X2, "EotE Ship Log: River Lowlands Secret Room 1 - Enter" },
+        { Location.SLF__IP_ZONE_1_SECRET_X1, "EotE Ship Log: River Lowlands Secret Room 2 - Slide Reel" },
+        { Location.SLF__IP_ZONE_2_SECRET_X2, "EotE Ship Log: Cinder Isles Secret Room 1 - Enter" },
+        { Location.SLF__IP_ZONE_2_SECRET_X1, "EotE Ship Log: Cinder Isles Secret Room 2 - Slide Reel" },
+        { Location.SLF__IP_ZONE_3_SECRET_X2, "EotE Ship Log: Hidden Gorge Secret Room 1 - Enter" },
+        { Location.SLF__IP_ZONE_3_SECRET_X1, "EotE Ship Log: Hidden Gorge Secret Room 2 - Slide Reel" },
+
+        { Location.SLF__IP_DREAM_LIBRARY_1_X1, "DW Ship Log: Shrouded Woodlands Archive 1 - Enter" },
+        { Location.SLF__IP_DREAM_LIBRARY_1_X2, "DW Ship Log: Shrouded Woodlands Archive 2 - Destroyed Again" },
+        { Location.SLF__IP_DREAM_1_STORY_X1, "DW Ship Log: Shrouded Woodlands Archive 3 - Origin" },
+        { Location.SLF__IP_DREAM_1_STORY_X2, "DW Ship Log: Shrouded Woodlands Archive 4 - Sacrifice" },
+        { Location.SLF__IP_DREAM_1_RULE_X1, "DW Ship Log: Shrouded Woodlands Archive 5 - Jumping Off" },
+        { Location.SLF__IP_DREAM_LIBRARY_2_X1, "DW Ship Log: Starlit Cove Archive 1 - Enter" },
+        { Location.SLF__IP_DREAM_LIBRARY_2_X2, "DW Ship Log: Starlit Cove Archive 2 - Destroyed Again" },
+        { Location.SLF__IP_DREAM_2_STORY_X1, "DW Ship Log: Starlit Cove Archive 3 - Anomaly" },
+        { Location.SLF__IP_DREAM_2_STORY_X2, "DW Ship Log: Starlit Cove Archive 4 - Signal Blocker" },
+        { Location.SLF__IP_DREAM_2_RULE_X1, "DW Ship Log: Starlit Cove Archive 5 - After Death" },
+        { Location.SLF__IP_DREAM_2_RULE_X2, "DW Ship Log: Starlit Cove Archive 6 - Failing Bell" },
+        { Location.SLF__IP_DREAM_LIBRARY_3_X1, "DW Ship Log: Endless Canyon Archive 1 - Enter" },
+        { Location.SLF__IP_DREAM_LIBRARY_3_X2, "DW Ship Log: Endless Canyon Archive 2 - Destroyed Again" },
+        { Location.SLF__IP_DREAM_3_STORY_X1, "DW Ship Log: Endless Canyon Archive 3 - Green Fire" },
+        { Location.SLF__IP_DREAM_3_STORY_X2, "DW Ship Log: Endless Canyon Archive 4 - Simulated" },
+        { Location.SLF__IP_DREAM_3_RULE_X1, "DW Ship Log: Endless Canyon Archive 5 - Walking Beyond" },
+
+        { Location.SLF__IP_SARCOPHAGUS_X2, "DW Ship Log: Sealed Vault 1 - Imprisoned" },
+        { Location.SLF__IP_SARCOPHAGUS_X3, "DW Ship Log: Sealed Vault 2 - Actions" },
+        { Location.SLF__IP_SARCOPHAGUS_X4, "DW Ship Log: Sealed Vault 3 - History" },
+        { Location.SLF__IP_SARCOPHAGUS_X5, "DW Ship Log: Sealed Vault 4 - Farewell" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
@@ -807,8 +968,7 @@ public static class LocationNames
         { SignalFrequency.EscapePod, Location.FREQ_DISTRESS },
         { SignalFrequency.Quantum, Location.FREQ_QUANTUM },
         { SignalFrequency.HideAndSeek, Location.FREQ_HIDE_SEEK },
-        // DLC will add: SignalFrequency.Radio
-        // left out Default, WarpCore and Statue because I don't believe they get used
+        // left out Default, WarpCore and Statue because I don't believe they get used, and Radio because I don't think we need another "scan any..." location
     };
     public static Dictionary<Location, SignalFrequency> locationToFrequency = frequencyToLocation.ToDictionary(ftl => ftl.Value, ftl => ftl.Key);
 
@@ -829,7 +989,8 @@ public static class LocationNames
         { SignalName.EscapePod_DB, Location.DB_EP3_SIGNAL },
         { SignalName.HideAndSeek_Galena, Location.TH_GALENA_SIGNAL },
         { SignalName.HideAndSeek_Tephra, Location.TH_TEPHRA_SIGNAL },
-        // DLC will add: SignalName.RadioTower, SignalName.MapSatellite
+        { SignalName.RadioTower, Location.DSR_TOWER_SIGNAL },
+        { SignalName.MapSatellite, Location.DSR_SATELLITE_SIGNAL },
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
     };
