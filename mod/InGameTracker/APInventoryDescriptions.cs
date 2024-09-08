@@ -219,6 +219,46 @@ public class APInventoryDescriptions
                     infos.Add("The primary symptoms are sporadic 'sleep attacks' which last about one minute. Patients report feeling a sleep attack about three seconds before loss of vision.");
                     infos.Add("It is strongly advised not to attempt 'sleepwalking' during these attacks, unless there was something even more dangerous nearby when you fell asleep.");
                     break;
+                case Item.LightModulator:
+                    infos.Add("Makes your flashlight and your Scout's lights (if you have the Scout) emit the same wavelength as the eyeshine of The Stranger's inhabitants.");
+                    infos.Add("That wavelength activates the light sensors controlling most doors, elevators and rafts inside The Stranger.");
+                    infos.Add("This is not required to enter The Stranger, because the light sensors in the hangar airlocks accept a wider range of light. Presumably the airlocks were built to higher engineering standards than most of the ship.");
+                    infos.Add("This also doesn't matter inside the simulation, since the artifact was already designed to emit this wavelength.");
+                    break;
+                case Item.BreachOverrideCodes:
+                    infos.Add("Allows you to open the Laboratory doors and directly access Hidden Gorge, despite them being locked down to contain a hull breach.");
+                    break;
+                case Item.RLPaintingCode:
+                    infos.Add("Opens the secret door to the basement of the River Lowlands tower.");
+                    infos.Add("The green fire in that tower is one of two ways to reach Shrouded Woodlands. The other involves Raft Docks Patch.");
+                    break;
+                case Item.CIPaintingCode:
+                    infos.Add("Opens the secret door to the basement of the Cinder Isles tower.");
+                    infos.Add("The green fire in that tower is one of two ways to reach Starlit Cove. The other involves Raft Docks Patch.");
+                    break;
+                case Item.HGPaintingCode:
+                    infos.Add("Opens the secret door to the basement of the Hidden Gorge tower.");
+                    infos.Add("The green fire in that tower is one of two ways to reach Endless Canyon. The other involves Raft Docks Patch.");
+                    break;
+                case Item.DreamTotemPatch:
+                    infos.Add("Patches the simulation to make totems compatible with Hearthians. This allows you to project objects, extinguish objects, and warp to hand totems within the simulation.");
+                    break;
+                case Item.RaftDocksPatch:
+                    infos.Add("Patches a door in Shrouded Woodlands, the dock in Starlit Cove, and an elevator in Endless Canyon, so those three areas can all be entered from the raft docks on the simulation's main river.");
+                    infos.Add("Normally none of these docks can be used without first using the corresponding green flame to unlock the dock. But this patch allows you to use any one Painting Code to reach all three areas.");
+                    break;
+                case Item.LimboWarpPatch:
+                    infos.Add("After the Stranger's inhabitants discoverd they could fall below the simulation world by jumping off a raft, they developed a 'temporary' hack that simply kills anyone who tries it.");
+                    infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to reach the center of Subterranean Lake.");
+                    break;
+                case Item.ProjectionRangePatch:
+                    infos.Add("After the Stranger's inhabitants discoverd they could walk beyond the simulation artifact's projection radius, they developed a 'temporary' hack that simply teleports you back to the artifact if you get out of range.");
+                    infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to see parts of the simulation hidden by the projection.");
+                    break;
+                case Item.AlarmBypassPatch:
+                    infos.Add("After the Stranger's inhabitants discoverd the simulation's alarm bells don't work on the deceased, they developed a 'temporary' hack that simply refuses to import your brainwaves if no heartbeat is detected.");
+                    infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to bypass alarm bells in the simulation.");
+                    break;
                 default:
                     return GetErrorDescription(itemID);
             }

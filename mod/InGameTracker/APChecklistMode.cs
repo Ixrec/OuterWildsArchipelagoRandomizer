@@ -63,7 +63,8 @@ public class APChecklistMode : ShipLogMode
         ("Giant's Deep", TrackerCategory.GiantsDeep),
         ("Dark Bramble", TrackerCategory.DarkBramble),
         ("The Outer Wilds", TrackerCategory.OuterWilds),
-        // When DLC support is added, add Stranger and Dreamworld conditionally
+        ("The Stranger", TrackerCategory.Stranger),
+        ("Dreamworld", TrackerCategory.Dreamworld),
     };
     private List<ShipLogDisplayItem> optionsList;
 
@@ -182,6 +183,9 @@ public class APChecklistMode : ShipLogMode
             case 4: category = TrackerCategory.GiantsDeep; break;
             case 5: category = TrackerCategory.DarkBramble; break;
             case 6: category = TrackerCategory.OuterWilds; break;
+            // TODO: story mods break this assumption
+            case 7: category = TrackerCategory.Stranger; break;
+            case 8: category = TrackerCategory.Dreamworld; break;
             // We don't need to care about switching to the checklist if an invalid entry is selected
             default: return;
         }
@@ -268,9 +272,8 @@ public class APChecklistMode : ShipLogMode
             foreach (TrackerInfo info in trackerInfos)
                 trackerInfosInCategory.Add(info);
 
-            if (APRandomizer.SlotData.ContainsKey("logsanity") &&
-                (long)APRandomizer.SlotData["logsanity"] != 0 &&
-                File.Exists(filepath + "_SL.jsonc"))
+            // Most tracker-relevant options add new categories. logsanity is the only one that changes categories' content.
+            if (APRandomizer.LogsanityEnabled() && File.Exists(filepath + "_SL.jsonc"))
             {
                 trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
                 foreach (TrackerInfo info in trackerInfos)
@@ -386,10 +389,15 @@ public class APChecklistMode : ShipLogMode
         optionsList = new();
         foreach (var (text, category) in optionsEntries)
         {
+            if (category == TrackerCategory.Stranger || category == TrackerCategory.Dreamworld)
+                if (!APRandomizer.EotEDLCEnabled())
+                    continue;
+
             bool hasAvailableChecks = false;
             bool hasHint = false;
             if (category == TrackerCategory.Goal)
             {
+                // TODO: new goals
                 string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
                 hasAvailableChecks = Tracker.logic.IsAccessible(Tracker.logic.TrackerLocations[goalLocation]);
             }
@@ -439,6 +447,9 @@ public class APChecklistMode : ShipLogMode
                 case 4: category = TrackerCategory.GiantsDeep; break;
                 case 5: category = TrackerCategory.DarkBramble; break;
                 case 6: category = TrackerCategory.OuterWilds; break;
+                // TODO: story mods break this assumption
+                case 7: category = TrackerCategory.Stranger; break;
+                case 8: category = TrackerCategory.Dreamworld; break;
             }
             checkedLocs = Tracker.logic.GetCheckedCount(category);
             accessLocs = Tracker.logic.GetAccessibleCount(category);
@@ -472,6 +483,8 @@ public class APChecklistMode : ShipLogMode
             case TrackerCategory.GiantsDeep: return "Giant's Deep";
             case TrackerCategory.DarkBramble: return "Dark Bramble";
             case TrackerCategory.OuterWilds: return "The Outer Wilds";
+            case TrackerCategory.Stranger: return "The Stranger";
+            case TrackerCategory.Dreamworld: return "Dreamworld";
         }
         return "NULL";
     }

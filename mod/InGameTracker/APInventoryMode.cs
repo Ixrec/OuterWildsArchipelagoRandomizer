@@ -74,6 +74,18 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
         new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
         new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
+
+        // Progression items for the EotE DLC
+        new InventoryItemEntry(Item.LightModulator, "Stranger Light Modulator"),
+        new InventoryItemEntry(Item.BreachOverrideCodes, "Breach Override Codes"),
+        new InventoryItemEntry(Item.RLPaintingCode, "River Lowlands Painting Code"),
+        new InventoryItemEntry(Item.CIPaintingCode, "Cinder Isles Painting Code"),
+        new InventoryItemEntry(Item.HGPaintingCode, "Hidden Gorge Painting Code"),
+        new InventoryItemEntry(Item.DreamTotemPatch, "Dream Totem Patch"),
+        new InventoryItemEntry(Item.RaftDocksPatch, "Raft Docks Patch"),
+        new InventoryItemEntry(Item.LimboWarpPatch, "Limbo Warp Patch"),
+        new InventoryItemEntry(Item.ProjectionRangePatch, "Projection Range Patch"),
+        new InventoryItemEntry(Item.AlarmBypassPatch, "Alarm Bypass Patch"),
     };
 
     // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code

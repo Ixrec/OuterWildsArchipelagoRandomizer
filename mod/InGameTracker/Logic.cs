@@ -133,6 +133,8 @@ public class Logic
     private Dictionary<string, TrackerChecklistData> DBLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> OWLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> GoalLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> StrangerLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> DWLocationChecklistData;
 
     // Ember Twin, Ash Twin, Cave Twin, Tower Twin
     private readonly static string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
@@ -145,15 +147,14 @@ public class Logic
     // Dark Bramble
     private readonly static string[] DBPrefixes = ["DB"];
     private readonly static string GoalPrefix = "Victory - ";
+    private readonly static string[] StrangerPrefixes = ["EotE"];
+    private readonly static string[] DWPrefixes = ["DW"];
 
     /// <summary>
     /// Populates all the (prefix)Locations dictionaries in Tracker Manager
     /// </summary>
     public void InitializeAccessibility()
     {
-        bool logsanity = false;
-        if (APRandomizer.SlotData.ContainsKey("logsanity")) logsanity = (long)APRandomizer.SlotData["logsanity"] > 0;
-
         CanAccessRegion = new();
 
         LocationChecklistData = new();
@@ -165,23 +166,31 @@ public class Logic
         DBLocationChecklistData = new();
         OWLocationChecklistData = new();
         GoalLocationChecklistData = new();
+        StrangerLocationChecklistData = new();
+        DWLocationChecklistData = new();
 
+        bool logsanity = APRandomizer.LogsanityEnabled();
+        bool enable_eote_dlc = APRandomizer.EotEDLCEnabled();
+        var DLCPrefixes = StrangerPrefixes.Concat(DWPrefixes);
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {
             string name = loc.name;
-            // skip logsanity locations if logsanity is off
-            if (!logsanity && name.Contains("Ship Log")) continue;
-            string prefix = name.Substring(0, 2);
-            TrackerChecklistData data = new(false, false, "");
 
+            if (!logsanity && name.Contains("Ship Log")) continue;
+            if (!enable_eote_dlc && DLCPrefixes.Any(p => name.StartsWith(p))) continue;
+
+            TrackerChecklistData data = new(false, false, "");
             LocationChecklistData.Add(name, data);
 
-            if (HGTPrefixes.Contains(prefix)) HGTLocationChecklistData.Add(name, data);
-            else if (THPrefixes.Contains(prefix)) THLocationChecklistData.Add(name, data);
-            else if (BHPrefixes.Contains(prefix)) BHLocationChecklistData.Add(name, data);
-            else if (GDPrefixes.Contains(prefix)) GDLocationChecklistData.Add(name, data);
-            else if (DBPrefixes.Contains(prefix)) DBLocationChecklistData.Add(name, data);
+            if (HGTPrefixes.Any(p => name.StartsWith(p))) HGTLocationChecklistData.Add(name, data);
+            else if (THPrefixes.Any(p => name.StartsWith(p))) THLocationChecklistData.Add(name, data);
+            else if (BHPrefixes.Any(p => name.StartsWith(p))) BHLocationChecklistData.Add(name, data);
+            else if (GDPrefixes.Any(p => name.StartsWith(p))) GDLocationChecklistData.Add(name, data);
+            else if (DBPrefixes.Any(p => name.StartsWith(p))) DBLocationChecklistData.Add(name, data);
+            else if (StrangerPrefixes.Any(p => name.StartsWith(p))) StrangerLocationChecklistData.Add(name, data);
+            else if (DWPrefixes.Any(p => name.StartsWith(p))) DWLocationChecklistData.Add(name, data);
             else if (name.StartsWith(GoalPrefix)) GoalLocationChecklistData.Add(name, data);
+            // "The Outer Wilds" is the catch-all category for base game locations lacking a special prefix
             else OWLocationChecklistData.Add(name, data);
         }
         DetermineAllAccessibility();
@@ -198,6 +207,8 @@ public class Logic
             case TrackerCategory.GiantsDeep: return GDLocationChecklistData;
             case TrackerCategory.DarkBramble: return DBLocationChecklistData;
             case TrackerCategory.OuterWilds: return OWLocationChecklistData;
+            case TrackerCategory.Stranger: return StrangerLocationChecklistData;
+            case TrackerCategory.Dreamworld: return DWLocationChecklistData;
             case TrackerCategory.All: return LocationChecklistData;
         }
         return null;

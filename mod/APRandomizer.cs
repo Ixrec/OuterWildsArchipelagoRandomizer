@@ -43,7 +43,12 @@ public class APRandomizer : ModBehaviour
     public static AssetBundle Assets;
     public static string SaveFileName;
     public static ArchipelagoSession APSession;
+
     public static Dictionary<string, object> SlotData;
+    public static bool LogsanityEnabled() =>
+        SlotData.ContainsKey("logsanity") && (long)SlotData["logsanity"] > 0;
+    public static bool EotEDLCEnabled() =>
+        SlotData.ContainsKey("enable_eote_dlc") && (long)SlotData["enable_eote_dlc"] > 0;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
