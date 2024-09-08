@@ -237,7 +237,7 @@ internal class LocationTriggers
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
 
-        if (APRandomizer.SlotData != null && APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] == 1)
+        if (APRandomizer.LogsanityEnabled())
         {
             // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
             // we can simply parse the fact id instead of writing another hardcoded map.

@@ -492,31 +492,27 @@ public static class LocationNames
     public static bool IsDefaultLocation(Location location) =>
         location >= Location.SS && location <= Location.FREQ_HIDE_SEEK;
     public static bool IsDLCLocation(Location location) =>
-        false;
+        location >= Location.RL_WORKSHOP && location <= Location.SL_VAULT;
     public static bool IsLogsanityLocation(Location location) =>
         location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
     public static bool IsDLCLogsanityLocation(Location location) =>
-        false;
+        location >= Location.SLF__IP_RING_WORLD_X1 && location <= Location.SLF__IP_DREAM_3_RULE_X1;
 
-    // When DLC and story mods are added, these methods will have to consider those options too
-    public static bool IsLocationActive(Location loc, bool logsanityIsOn)
+    // When story mods are added, these methods will have to consider those options too
+    public static bool IsLocationActive(Location loc)
     {
         if (loc == Location.SLF__TH_VILLAGE_X3) return false;
 
+        bool logsanityIsOn = APRandomizer.LogsanityEnabled();
+        bool dlcIsOn = APRandomizer.EotEDLCEnabled();
+
         if (IsLogsanityLocation(loc) && !logsanityIsOn) return false;
+        if (IsDLCLocation(loc) && !dlcIsOn) return false;
+        if (IsDLCLogsanityLocation(loc) && (!logsanityIsOn || !dlcIsOn)) return false;
 
         return true;
     }
-    public static bool IsLocationActive(Location loc)
-    {
-        bool logsanity = APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0;
-        return IsLocationActive(loc, logsanity);
-    }
-    public static IEnumerable<Location> ActiveLocations()
-    {
-        bool logsanity = APRandomizer.SlotData.ContainsKey("logsanity") && (long)APRandomizer.SlotData["logsanity"] != 0;
-        return locationNames.Keys.Where(loc => IsLocationActive(loc, logsanity));
-    }
+    public static IEnumerable<Location> ActiveLocations() => locationNames.Keys.Where(loc => IsLocationActive(loc));
 
     public static Dictionary<Location, string> locationNames = new Dictionary<Location, string> {
         { Location.SS, "Sun Station (Projection Stone Text)" },
