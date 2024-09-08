@@ -50,7 +50,7 @@ public class APChecklistMode : ShipLogMode
     // colors for various string tags
     private const string so5 = "orange";
     private const string so6 = "#6C81FE";
-    private const string so7 = "#92FEF0";
+    private const string so7 = "#92FEA3";
     private const string completed = "#82BD8E";
     private const string noAccessible = "red";
 
