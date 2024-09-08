@@ -27,6 +27,7 @@ public class Victory
         else
             APRandomizer.OWMLModConsole.WriteLine($"{goal} is not a valid goal setting", OWML.Common.MessageType.Error);
     }
+
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
         if (loadScene != OWScene.EyeOfTheUniverse) return;
@@ -40,25 +41,82 @@ public class Victory
             $"Goal setting is: {goalSetting}");
 
         bool isVictory = false;
+        string uniqueMessagePart = null;
         if (goalSetting == GoalSetting.SongOfFive)
+        {
             isVictory = true;
-        else // currently SongOfSix is the only other goal
+        }
+        else if (goalSetting == GoalSetting.SongOfTheNomai)
         {
             if (metSolanum)
                 isVictory = true;
             else
+                uniqueMessagePart = "Your goal is Song of the Nomai, but you haven't met Solanum yet.";
+        }
+        else if (goalSetting == GoalSetting.SongOfTheStranger)
+        {
+            if (metPrisoner)
+                isVictory = true;
+            else
+                uniqueMessagePart = "Your goal is Song of the Stranger, but you haven't met the Prisoner yet.";
+        }
+        else if (goalSetting == GoalSetting.SongOfSix)
+        {
+            if (metSolanum || metPrisoner)
+                isVictory = true;
+            else
+                uniqueMessagePart = "Your goal is Song of Six, but you haven't met either Solanum or the Prisoner yet.";
+        }
+        else if (goalSetting == GoalSetting.SongOfSeven)
+        {
+            if (metSolanum && metPrisoner)
+                isVictory = true;
+            else
             {
-                APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} is NOT completed. Notifying the player.", OWML.Common.MessageType.Info);
-                APRandomizer.InGameAPConsole.AddText("<color=red>Goal NOT completed.</color> Your goal is Song of Six, but you haven't met Solanum yet. " +
-                    "You can quickly return to the solar system without completing the Eye by pausing and selecting 'Quit and Reset to Solar System'.");
+                if (!metSolanum && !metPrisoner)
+                    uniqueMessagePart = "Your goal is Song of Seven, but you haven't met either Solanum or the Prisoner yet.";
+                else if (!metSolanum)
+                    uniqueMessagePart = "Your goal is Song of Seven, but you haven't met Solanum yet.";
+                else
+                    uniqueMessagePart = "Your goal is Song of Seven, but you haven't met the Prisoner yet.";
             }
+        }
+        else if (goalSetting == GoalSetting.EchoesOfTheEye)
+        {
+            uniqueMessagePart = "Your goal is Echoes of the Eye, which doesn't involve warping to the Eye of the Universe.";
+        }
+        else
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Goal setting is an unsupported value of {goalSetting}. Aborting.", OWML.Common.MessageType.Error);
+            return;
         }
 
         if (isVictory)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} completed! Notifying AP server.", OWML.Common.MessageType.Success);
-
-            APRandomizer.APSession.SetGoalAchieved();
+            SetGoalAchieved();
         }
+        else
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} is NOT completed. Notifying the player.", OWML.Common.MessageType.Info);
+            var inGameMessage = "<color=red>Goal NOT completed.</color> " + uniqueMessagePart + " You can quickly return to the solar system " +
+                "without completing the Eye by pausing and selecting 'Quit and Reset to Solar System'.";
+            APRandomizer.InGameAPConsole.AddText(inGameMessage);
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(EchoesOverController), nameof(EchoesOverController.OnTriggerEndOfDLC))]
+    public static void EchoesOverController_OnTriggerEndOfDLC()
+    {
+        if (goalSetting == GoalSetting.EchoesOfTheEye)
+            SetGoalAchieved();
+        else
+            APRandomizer.OWMLModConsole.WriteLine($"Echoes of the Eye DLC completed, but the goal was {goalSetting}. Doing nothing.", OWML.Common.MessageType.Info);
+    }
+
+    private static void SetGoalAchieved()
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} completed! Notifying AP server.", OWML.Common.MessageType.Success);
+
+        APRandomizer.APSession.SetGoalAchieved();
     }
 }
