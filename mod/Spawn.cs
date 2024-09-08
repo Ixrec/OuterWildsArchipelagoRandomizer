@@ -71,6 +71,12 @@ internal class Spawn
             APRandomizer.OWMLModConsole.WriteLine($"auto-revealing Village 2 ship log because the time loop has already started");
             __instance.RevealFact("TH_VILLAGE_X2");
         }
+
+        if (APRandomizer.EotEDLCEnabled() && !__instance.IsFactRevealed("IP_RING_WORLD_X1"))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"auto-revealing The Stranger ship log because EotE DLC is enabled");
+            __instance.RevealFact("IP_RING_WORLD_X1");
+        }
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.Update))]
