@@ -215,6 +215,12 @@ public class APRandomizer : ModBehaviour
         SlotData = ((LoginSuccessful)result).SlotData;
         OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
+        // compatibility warnings
+        if (EotEDLCEnabled() && EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
+        {
+            InGameAPConsole.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
+                $"but <color=red>the DLC is not installed</color>.");
+        }
         if (SlotData.ContainsKey("apworld_version"))
         {
             var apworld_version = (string)SlotData["apworld_version"];
