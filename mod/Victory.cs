@@ -11,10 +11,10 @@ public class Victory
     public enum GoalSetting: long
     {
         SongOfFive = 0,
-        SongOfSix = 1,
-        SongOfSeven = 2,
-        SongOfTheNomai = 3,
-        SongOfTheStranger = 4,
+        SongOfTheNomai = 1,
+        SongOfTheStranger = 2,
+        SongOfSix = 3,
+        SongOfSeven = 4,
         EchoesOfTheEye = 5
     }
 
