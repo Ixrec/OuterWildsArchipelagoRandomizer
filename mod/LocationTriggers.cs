@@ -254,10 +254,10 @@ internal class LocationTriggers
             case Item.AudioTrap: AudioTrap.audioTraps = count; break;
             case Item.NapTrap: NapTrap.napTraps = count; break;
             case Item.LightModulator: StrangerLightModulator.hasLightModulator = (count > 0); break;
-            case Item.BreachOverrideCodes: /* = (count > 0);*/ break;
-            case Item.RLPaintingCode: /* = (count > 0);*/ break;
-            case Item.CIPaintingCode: /* = (count > 0);*/ break;
-            case Item.HGPaintingCode: /* = (count > 0);*/ break;
+            case Item.BreachOverrideCodes: StrangerDoorCodes.hasBreachOverrideCodes = (count > 0); break;
+            case Item.RLPaintingCode: StrangerDoorCodes.hasRLPaintingCode = (count > 0); break;
+            case Item.CIPaintingCode: StrangerDoorCodes.hasCIPaintingCode = (count > 0); break;
+            case Item.HGPaintingCode: StrangerDoorCodes.hasHGPaintingCode = (count > 0); break;
             case Item.DreamTotemPatch: SimulationTotems.hasTotemPatch = (count > 0); break;
             case Item.RaftDocksPatch: SimulationDocks.hasDocksPatch = (count > 0); break;
             case Item.LimboWarpPatch: SimulationGlitches.hasLimboWarpPatch = (count > 0); break;
