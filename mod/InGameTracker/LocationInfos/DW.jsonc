@@ -1,7 +1,72 @@
 ﻿[
-    {
-        "locationModID": "TH_GM",
-        "description": "A plaque near the Zero-G Cave in the Village describes a dangerous substance known as Ghost Matter.",
-        "thumbnail": "TH_VILLAGE"
-    }
+  {
+    "locationModID": "SW_BRIDGE",
+    "description": "A plaque near the Zero-G Cave in the Village describes a dangerous substance known as Ghost Matter.",
+    "thumbnail": "IP_DREAM_ZONE_1"
+  },
+  {
+    "locationModID": "SC_BURNED",
+    "description": "Find the burned building near Starlit Cove village. To reach it: enter the village, turn right, proceed down some stairs, sneak past the alarm, and use the dream raft.",
+    "thumbnail": "IP_DREAM_ZONE_2"
+  },
+  {
+    "locationModID": "SC_TOWER_UPPER",
+    "description": "Reach the upper floors of the Starlit Cove tower through its lower entrance. The entrance becomes accessible after using a totem in the village to project the raft dock.",
+    "thumbnail": "IP_DREAM_ZONE_2"
+  },
+  {
+    "locationModID": "EC_MURAL",
+    "description": "Navigate to bottom floor of the Endless Canyon lodge and observe the tree mural.",
+    "thumbnail": "IP_DREAM_ZONE_3"
+  },
+  {
+    "locationModID": "VAULT_VISION",
+    "description": "Take the dream raft to the unnamed zone with the dream equivalent of the Reservoir's Submerged Structure. On the walkways surrounding the structure is a vision torch showing where the Sealed Vault was taken.",
+    "thumbnail": "IP_ZONE_4_STORY"
+  },
+  {
+    "locationModID": "SL_GREEN_LIGHT",
+    "description": "Use the mechanism in front of the Sealed Vault to force it slightly open, then step into the green light that spills out.",
+    "thumbnail": "IP_DREAM_LAKE"
+  },
+  {
+    "locationModID": "SW_FA_STORY_SR",
+    "description": "Inside the Shrouded Woodlands Forbidden Archives, find an undamaged version of the River Lowlands slide reel.",
+    "thumbnail": "IP_DREAM_LIBRARY_1"
+  },
+  {
+    "locationModID": "SW_FA_GLITCH_SR",
+    "description": "Inside the Shrouded Woodlands Forbidden Archives, find a slide reel illustrating the Limbo Warp glitch.",
+    "thumbnail": "IP_DREAM_LIBRARY_1"
+  },
+  {
+    "locationModID": "SC_FA_STORY_SR",
+    "description": "Inside the Starlit Cove Forbidden Archives, find an undamaged version of the Cinder Isles slide reel.",
+    "thumbnail": "IP_DREAM_LIBRARY_2"
+  },
+  {
+    "locationModID": "SC_FA_GLITCH_SR_1",
+    "description": "Inside the Starlit Cove Forbidden Archives, find a slide reel illustrating part of the Alarm Bypass glitch.",
+    "thumbnail": "IP_DREAM_LIBRARY_2"
+  },
+  {
+    "locationModID": "SC_FA_GLITCH_SR_2",
+    "description": "Inside the Starlit Cove Forbidden Archives, find a slide reel illustrating part of the Alarm Bypass glitch.",
+    "thumbnail": "IP_DREAM_LIBRARY_2"
+  },
+  {
+    "locationModID": "EC_FA_STORY_SR",
+    "description": "Inside the Starlit Cove Forbidden Archives, find an undamaged version of the Hidden Gorge slide reel.",
+    "thumbnail": "IP_DREAM_LIBRARY_3"
+  },
+  {
+    "locationModID": "EC_FA_GLITCH_SR",
+    "description": "Inside the Starlit Cove Forbidden Archives, find a slide reel illustrating part of the Projection Range glitch.",
+    "thumbnail": "IP_DREAM_LIBRARY_3"
+  },
+  {
+    "locationModID": "SL_VAULT",
+    "description": "Enter the Sealed Vault by reaching the dream raft and then exploiting the Limbo Warp, Projection Range and Alarm Bypass glitches to open all three seals.",
+    "thumbnail": "IP_SARCOPHAGUS"
+  }
 ]

@@ -1,7 +1,157 @@
 ﻿[
-    {
-        "locationModID": "TH_GM",
-        "description": "A plaque near the Zero-G Cave in the Village describes a dangerous substance known as Ghost Matter.",
-        "thumbnail": "TH_VILLAGE"
-    }
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_1_X1",
+		"description": "Enter the Shrouded Woodlands. Either enter directly through the River Lowlands green flame, or take the dream raft from one of the other dream zones.",
+		"thumbnail": "IP_DREAM_ZONE_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_1_X2",
+		"description": "In the Shrouded Woodlands is a building where The Stranger's inhabitants are playing music. Use the totems to project a bridge to get close enough to hear it.",
+		"thumbnail": "IP_DREAM_ZONE_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_1_X3",
+		"description": "In the Shrouded Woodlands, use a totem to project a covered bridge leading to a darker part of the forest patrolled by the inhabitants.",
+		"thumbnail": "IP_DREAM_ZONE_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_2_X1",
+		"description": "Enter the Starlit Cove. Either enter directly through the Cinder Isles green flame, or take the dream raft from one of the other dream zones.",
+		"thumbnail": "IP_DREAM_ZONE_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_2_X2",
+		"description": "In the center of the Starlit Cove village is a large well. Discover the alarms protecting it.",
+		"thumbnail": "IP_DREAM_ZONE_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_2_X3",
+		"description": "Find the burned building near Starlit Cove village. To reach it: enter the village, turn right, proceed down some stairs, sneak past the alarm, and use the dream raft.",
+		"thumbnail": "IP_DREAM_ZONE_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_2_X4",
+		"description": "Reach the upper floors of the Starlit Cove tower through its lower entrance. The entrance becomes accessible after using a totem in the village to project the raft dock.",
+		"thumbnail": "IP_DREAM_ZONE_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_3_X1",
+		"description": "Enter the Endless Canyon. Either enter directly through the Hidden Gorge green flame, or take the dream raft from one of the other dream zones.",
+		"thumbnail": "IP_DREAM_ZONE_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_ZONE_3_X2",
+		"description": "Navigate to bottom floor of the Endless Canyon lodge and observe the tree mural.",
+		"thumbnail": "IP_DREAM_ZONE_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LAKE_X1",
+		"description": "Enter the Subterranean Lake. Either enter directly through the Submerged Structure green flame, or exploit the Limbo Warp Glitch.",
+		"thumbnail": "IP_DREAM_LAKE"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LAKE_X2",
+		"description": "Use the mechanism in front of the Sealed Vault to force it slightly open, then step into the green light that spills out.",
+		"thumbnail": "IP_DREAM_LAKE"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_1_X1",
+		"description": "Enter the Shrouded Woodlands Forbidden Archives. This requires being in Shrouded Woodlands after the dam breaks, so none of the inhabitants block the secret passage in the lodge.",
+		"thumbnail": "IP_DREAM_LIBRARY_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_1_X2",
+		"description": "Inside the Shrouded Woodlands Forbidden Archives, find the vault code and discover it's been burned even within the simulation.",
+		"thumbnail": "IP_DREAM_LIBRARY_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_1_STORY_X1",
+		"description": "Inside the Shrouded Woodlands Forbidden Archives, find an undamaged version of the River Lowlands slide reel.",
+		"thumbnail": "IP_DREAM_LIBRARY_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_1_STORY_X2",
+		"description": "Inside the Shrouded Woodlands Forbidden Archives, see the parts of the River Lowlands slide reel that were previously burned.",
+		"thumbnail": "IP_DREAM_LIBRARY_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_1_RULE_X1",
+		"description": "Inside the Shrouded Woodlands Forbidden Archives, find a slide reel illustrating the Limbo Warp glitch.",
+		"thumbnail": "IP_DREAM_LIBRARY_1"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_2_X1",
+		"description": "Enter the Starlit Cove Forbidden Archives. If you have the Alarm Bypass glitch, simply walk in. Otherwise, use the raft connecting the village to the burned building to find a hidden warp totem, extinguish the village lights, and then sneak past the inhabitants.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_2_X2",
+		"description": "Inside the Starlit Cove Forbidden Archives, find the vault code and discover it's been burned even within the simulation.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_2_STORY_X1",
+		"description": "Inside the Starlit Cove Forbidden Archives, find an undamaged version of the Cinder Isles slide reel.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_2_STORY_X2",
+		"description": "Inside the Starlit Cove Forbidden Archives, see the parts of the Cinder Isles slide reel that were previously burned.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_2_RULE_X1",
+		"description": "Inside the Starlit Cove Forbidden Archives, find a slide reel illustrating part of the Alarm Bypass glitch.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_2_RULE_X2",
+		"description": "Inside the Starlit Cove Forbidden Archives, find a slide reel illustrating part of the Alarm Bypass glitch.",
+		"thumbnail": "IP_DREAM_LIBRARY_2"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_3_X1",
+		"description": "Enter the Endless Canyon Forbidden Archives. Use an invisible bridge to reach a totem extinguishing all lights in the lodge, then navigate to the lodge's bottom floor where another invisible bridge is now accessible.",
+		"thumbnail": "IP_DREAM_LIBRARY_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_LIBRARY_3_X2",
+		"description": "Inside the Endless Canyon Forbidden Archives, use the Projection Range Glitch to reach the vault code and discover it's been burned even within the simulation.",
+		"thumbnail": "IP_DREAM_LIBRARY_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_3_STORY_X1",
+		"description": "Inside the Endless Canyon Forbidden Archives, find an undamaged version of the Hidden Gorge slide reel.",
+		"thumbnail": "IP_DREAM_LIBRARY_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_3_STORY_X2",
+		"description": "Inside the Endless Canyon Forbidden Archives, see the parts of the Hidden Gorge slide reel that were previously burned.",
+		"thumbnail": "IP_DREAM_LIBRARY_3"
+	},
+	{
+		"locationModID": "SLF__IP_DREAM_3_RULE_X1",
+		"description": "Inside the Endless Canyon Forbidden Archives, find a slide reel illustrating the Projection Range glitch.",
+		"thumbnail": "IP_DREAM_LIBRARY_3"
+	},
+	{
+		"locationModID": "SLF__IP_SARCOPHAGUS_X2",
+		"description": "Enter the Sealed Vault by reaching the dream raft and then exploiting the Limbo Warp, Projection Range and Alarm Bypass glitches to open all three seals. Then 'talk' to the Prisoner inside.",
+		"thumbnail": "IP_SARCOPHAGUS"
+	},
+	{
+		"locationModID": "SLF__IP_SARCOPHAGUS_X3",
+		"description": "Watch the Prisoner's vision about how they became imprisoned.",
+		"thumbnail": "IP_SARCOPHAGUS"
+	},
+	{
+		"locationModID": "SLF__IP_SARCOPHAGUS_X4",
+		"description": "Use the vision torch to show the Prisoner what's happened since their imprisonment.",
+		"thumbnail": "IP_SARCOPHAGUS"
+	},
+	{
+		"locationModID": "SLF__IP_SARCOPHAGUS_X5",
+		"description": "After the Prisoner leaves the Sealed Vault, watch the final vision they left at the water's edge.",
+		"thumbnail": "IP_SARCOPHAGUS"
+	}
 ]

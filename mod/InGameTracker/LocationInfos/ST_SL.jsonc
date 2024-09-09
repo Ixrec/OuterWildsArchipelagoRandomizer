@@ -1,7 +1,197 @@
 ﻿[
-    {
-        "locationModID": "TH_GM",
-        "description": "A plaque near the Zero-G Cave in the Village describes a dangerous substance known as Ghost Matter.",
-        "thumbnail": "TH_VILLAGE"
-    }
+  {
+    "locationModID": "SLF__IP_RING_WORLD_X1",
+    "description": "The randomizer gives you this ship log automatically so you can fly directly to The Stranger as soon as you have Launch Codes.",
+    "thumbnail": "IP_RING_WORLD"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_X1",
+    "description": "Simply reach the River Lowlands. From either of The Stranger's main hangars, all you have to do is walk through the airlock.",
+    "thumbnail": "IP_ZONE_1"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_X2",
+    "description": "In the River Lowlands is a workshop surrounded by trees and ghost matter. Inside it are metal artifacts.",
+    "thumbnail": "IP_ZONE_1"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_STORY_X1",
+    "description": "In the River Lowlands is a building with a slide projector. The shelves upstairs have slide reels.",
+    "thumbnail": "IP_ZONE_1_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_STORY_X2",
+    "description": "Scroll through enough of the River Lowlands slide reel to see a burned slide.",
+    "thumbnail": "IP_ZONE_1_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_X1",
+    "description": "Simply reach the Cinder Isles by taking a raft from the River Lowlands.",
+    "thumbnail": "IP_ZONE_2"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_X2",
+    "description": "In the Cinder Isles is a burned-out building with a large metal object resembling the Nomai symbol for the Eye of the Universe.",
+    "thumbnail": "IP_ZONE_2"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_STORY_X1",
+    "description": "In the Cinder Isles is a building with a slide projector. The shelves on the lower floor have slide reels.",
+    "thumbnail": "IP_ZONE_2_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_STORY_X2",
+    "description": "Scroll through enough of the Cinder Islands slide reel to see a burned slide.",
+    "thumbnail": "IP_ZONE_2_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_LIGHTHOUSE_X2",
+    "description": "In the Cinder Isles is a large tower. A nearby cave leads to a hidden entrance, allowing you to reach the upper floors.",
+    "thumbnail": "IP_ZONE_2_LIGHTHOUSE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_LIGHTHOUSE_X1",
+    "description": "In the upper floors of the Cinder Isles tower is a slide reel.",
+    "thumbnail": "IP_ZONE_2_LIGHTHOUSE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_STORY_X1",
+    "description": "In the Hidden Gorge is a building with a slide projector. The shelves on the lower floor have slide reels.",
+    "thumbnail": "IP_ZONE_3_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_STORY_X2",
+    "description": "Scroll through enough of the Hidden Gorge slide reel to see a burned slide.",
+    "thumbnail": "IP_ZONE_3_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_ENTRANCE_X1",
+    "description": "In the Hidden Gorge is a laboratory whose doors are locked down due to a hull breach. If you can't reach Hidden Gorge from inside the Stranger, you can use the hull breach instead.",
+    "thumbnail": "IP_ZONE_3_ENTRANCE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_ENTRANCE_X2",
+    "description": "The lab recorded its experiments on vision torches inside the test chambers.",
+    "thumbnail": "IP_ZONE_3_ENTRANCE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_ENTRANCE_X3",
+    "description": "The lab also recorded its experiments on a slide reel outside the test chambers.",
+    "thumbnail": "IP_ZONE_3_ENTRANCE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_4_X2",
+    "description": "Simply reach the Reservoir. Either take a raft from another area, or use the elevator hidden in one of the main hangars.",
+    "thumbnail": "IP_ZONE_4"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_4_X3",
+    "description": "In the Reservoir is a building whose front door requires a 5-symbol code to open. You can find this code either inside the same building (by sending your Scout through a small hole), or inside the Cinder Isles Symbol Room. Inside is a projection of another craft.",
+    "thumbnail": "IP_ZONE_4"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_4_X4",
+    "description": "The top of the dam can be reached either from the Reservoir's raft elevator, or an elevator hidden in one of the main hangars. From there, stairs lead down to a room with a projection of the Stranger and the predicted supernova.",
+    "thumbnail": "IP_ZONE_4"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_4_STORY_X1",
+    "description": "In the Reservoir is a building with a slide projector. Part of that building has collapsed into the water, including its shelves of slide reels.",
+    "thumbnail": "IP_ZONE_4_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_4_STORY_X2",
+    "description": "Scroll through enough of the Reservoid slide reel to see a burned slide.",
+    "thumbnail": "IP_ZONE_4_STORY"
+  },
+  {
+    "locationModID": "SLF__IP_PRISON_X1",
+    "description": "In the Reservoir, enter the large structure suspended underwater by massive chains.",
+    "thumbnail": "IP_PRISON"
+  },
+  {
+    "locationModID": "SLF__IP_PRISON_X2",
+    "description": "In the Reservoir, enter the large structure suspended underwater by massive chains and see what's inside.",
+    "thumbnail": "IP_PRISON"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_CODE_X1",
+    "description": "In the upper room of the Cinder Isles tower is another hidden room containing several 5-symbol codes. The door to it will only open when specific candles have been blown out in the equivalent room in Starlit Cove.",
+    "thumbnail": "IP_ZONE_2_CODE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_CODE_X2",
+    "description": "In the upper room of the Cinder Isles tower is another hidden room containing several 5-symbol codes. The door to it will only open when specific candles have been blown out in the equivalent room in Starlit Cove. Get inside and find one of the burned codes.",
+    "thumbnail": "IP_ZONE_2_CODE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_CODE_X3",
+    "description": "In the upper room of the Cinder Isles tower is another hidden room containing several 5-symbol codes. The door to it will only open when specific candles have been blown out in the equivalent room in Starlit Cove. Get inside and find the 5-symbol code to the Abandoned Temple.",
+    "thumbnail": "IP_ZONE_2_CODE"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_LAB_X1",
+    "description": "Enter the Abandoned Temple through the narrow, ghost matter-filled passage from Hidden Gorge.",
+    "thumbnail": "IP_ZONE_3_LAB"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_LAB_X3",
+    "description": "Interact with the 5-symbol device inside the Abandoned Temple.",
+    "thumbnail": "IP_ZONE_3_LAB"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_LAB_X4",
+    "description": "Use the 5-symbol code from the Cinder Isles Symbol Room to reach the Abandoned Temple's basement.",
+    "thumbnail": "IP_ZONE_3_LAB"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_LAB_X2",
+    "description": "Use the 5-symbol code from the Cinder Isles Symbol Room to reach the Abandoned Temple's basement and retrieve a slide reel.",
+    "thumbnail": "IP_ZONE_3_LAB"
+  },
+  {
+    "locationModID": "SLF__IP_MAP_PROJECTION_1_X1",
+    "description": "Use the 5-symbol code from the Cinder Isles Symbol Room to reach the Abandoned Temple's basement and observe the map projection indicating a secret room in River Lowlands.",
+    "thumbnail": "IP_MAP_PROJECTION_1"
+  },
+  {
+    "locationModID": "SLF__IP_MAP_PROJECTION_2_X1",
+    "description": "Use the 5-symbol code from the Cinder Isles Symbol Room to reach the Abandoned Temple's basement and observe the map projection indicating a secret room in Cinder Isles.",
+    "thumbnail": "IP_MAP_PROJECTION_2"
+  },
+  {
+    "locationModID": "SLF__IP_MAP_PROJECTION_3_X1",
+    "description": "Use the 5-symbol code from the Cinder Isles Symbol Room to reach the Abandoned Temple's basement and observe the map projection indicating a secret room in Hidden Gorge.",
+    "thumbnail": "IP_MAP_PROJECTION_3"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_SECRET_X2",
+    "description": "The Slide Burning Room in River Lowlands can be found behind some trees near the building with the slide projector.",
+    "thumbnail": "IP_ZONE_1_SECRET"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_1_SECRET_X1",
+    "description": "Escape the trap room with the slide reel through a hole in the ceiling.",
+    "thumbnail": "IP_ZONE_1_SECRET"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_SECRET_X2",
+    "description": "The Slide Burning Room near Cinder Isles is in a cave best reached by taking a raft from the River Lowlands.",
+    "thumbnail": "IP_ZONE_2_SECRET"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_2_SECRET_X1",
+    "description": "Escape the trap room with the slide reel through a hole in the floor.",
+    "thumbnail": "IP_ZONE_2_SECRET"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_SECRET_X2",
+    "description": "The Slide Burning Room in Hidden Gorge is partway down the elevator tower with the missing pedestal.",
+    "thumbnail": "IP_ZONE_3_SECRET"
+  },
+  {
+    "locationModID": "SLF__IP_ZONE_3_SECRET_X1",
+    "description": "Escape the trap room with the slide reel by shooting your Scout outside to illuminate the door sensors.",
+    "thumbnail": "IP_ZONE_3_SECRET"
+  }
 ]
