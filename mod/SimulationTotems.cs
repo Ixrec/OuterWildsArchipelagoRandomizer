@@ -95,7 +95,7 @@ internal class SimulationTotems
     public static void DreamObjectProjector_Start(DreamObjectProjector __instance)
     {
         projectorIRs.Add(__instance._interactReceiver);
-        ApplyTotemPatchFlagToIR(false, __instance._interactReceiver);
+        ApplyTotemPatchFlagToIR(hasTotemPatch, __instance._interactReceiver);
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(DreamObjectProjector), nameof(DreamObjectProjector.FixedUpdate))]
