@@ -25,7 +25,8 @@ internal class SimulationDocks
                 var nd = new NotificationData(NotificationTarget.Player, "SIMULATION HACK SUCCESSFUL. APPLIED HOTFIXES TO MULTIPLE AREAS ENABLING DIRECT ACCESS FROM SIMULATION RAFTS.", 10);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
 
-                ApplyDockPatches();
+                if (Locator.GetDreamWorldController()?.IsInDream() ?? false)
+                    ApplyDockPatches();
             }
         }
     }
