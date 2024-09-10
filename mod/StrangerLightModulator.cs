@@ -98,7 +98,7 @@ internal class StrangerLightModulator
 
     [HarmonyPostfix, HarmonyPatch(typeof(SingleLightSensor), nameof(SingleLightSensor.UpdateIllumination))]
     public static void SingleLightSensor_UpdateIllumination_Postfix(SingleLightSensor __instance) {
-        if (!_hasLightModulator && !Locator.GetDreamWorldController().IsInDream() && sensorsNeedingModulator.Contains(__instance))
+        if (!_hasLightModulator && (!Locator.GetDreamWorldController()?.IsInDream() ?? false) && sensorsNeedingModulator.Contains(__instance))
         {
             if (__instance._illuminated)
             {

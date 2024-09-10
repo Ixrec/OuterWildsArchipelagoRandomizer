@@ -169,8 +169,8 @@ public class Logic
         StrangerLocationChecklistData = new();
         DWLocationChecklistData = new();
 
-        bool logsanity = APRandomizer.LogsanityEnabled();
-        bool enable_eote_dlc = APRandomizer.EotEDLCEnabled();
+        bool logsanity = APRandomizer.SlotEnabledLogsanity();
+        bool enable_eote_dlc = APRandomizer.SlotEnabledEotEDLC();
         var DLCPrefixes = StrangerPrefixes.Concat(DWPrefixes);
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {

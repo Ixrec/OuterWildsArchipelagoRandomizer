@@ -46,14 +46,27 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.ShrineDoorCodes, "Sixth Location Rule / Shrine Door Codes"),
         new InventoryItemEntry(Item.Coordinates, "Eye of the Universe Coordinates"),
 
+        // Progression items for the EotE DLC
+        new InventoryItemEntry(Item.LightModulator, "Stranger Light Modulator", true),
+        new InventoryItemEntry(Item.BreachOverrideCodes, "Breach Override Codes", true),
+        new InventoryItemEntry(Item.RLPaintingCode, "River Lowlands Painting Code", true),
+        new InventoryItemEntry(Item.CIPaintingCode, "Cinder Isles Painting Code", true),
+        new InventoryItemEntry(Item.HGPaintingCode, "Hidden Gorge Painting Code", true),
+        new InventoryItemEntry(Item.DreamTotemPatch, "Dream Totem Patch", true),
+        new InventoryItemEntry(Item.RaftDocksPatch, "Raft Docks Patch", true),
+        new InventoryItemEntry(Item.LimboWarpPatch, "Limbo Warp Patch", true),
+        new InventoryItemEntry(Item.ProjectionRangePatch, "Projection Range Patch", true),
+        new InventoryItemEntry(Item.AlarmBypassPatch, "Alarm Bypass Patch", true),
+
         // Signalscope frequencies. The individual signals are listed within each frequency entry.
         new InventoryItemEntry("FrequencyOWV", "Frequency: Outer Wilds Ventures"),
         new InventoryItemEntry(Item.SignalFeldspar, "   Signal: Feldspar's Harmonica"),
         new InventoryItemEntry(Item.FrequencyDB, "Frequency: Distress Beacons"),
         new InventoryItemEntry(Item.SignalEP3, "   Signal: Escape Pod 3"),
         new InventoryItemEntry(Item.FrequencyQF, "Frequency: Quantum Fluctuations"),
-        new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"), // TODO: is this actually progression?
+        new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"),
         new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
+        new InventoryItemEntry(Item.FrequencyDSR, "Frequency: Deep Space Radio"),
 
         // Non-progression ship and equipment upgrades
         new InventoryItemEntry(Item.Autopilot, "Autopilot"),
@@ -74,22 +87,12 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.ShipDamageTrap, "Ship Damage Trap"),
         new InventoryItemEntry(Item.AudioTrap, "Audio Trap"),
         new InventoryItemEntry(Item.NapTrap, "Nap Trap"),
-
-        // Progression items for the EotE DLC
-        new InventoryItemEntry(Item.LightModulator, "Stranger Light Modulator"),
-        new InventoryItemEntry(Item.BreachOverrideCodes, "Breach Override Codes"),
-        new InventoryItemEntry(Item.RLPaintingCode, "River Lowlands Painting Code"),
-        new InventoryItemEntry(Item.CIPaintingCode, "Cinder Isles Painting Code"),
-        new InventoryItemEntry(Item.HGPaintingCode, "Hidden Gorge Painting Code"),
-        new InventoryItemEntry(Item.DreamTotemPatch, "Dream Totem Patch"),
-        new InventoryItemEntry(Item.RaftDocksPatch, "Raft Docks Patch"),
-        new InventoryItemEntry(Item.LimboWarpPatch, "Limbo Warp Patch"),
-        new InventoryItemEntry(Item.ProjectionRangePatch, "Projection Range Patch"),
-        new InventoryItemEntry(Item.AlarmBypassPatch, "Alarm Bypass Patch"),
     };
 
     // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
     private static Dictionary<string, InventoryItemEntry> ItemEntries = _ItemEntries.ToDictionary(entry => entry.ID, entry => entry);
+
+    private static Dictionary<string, InventoryItemEntry> VisibleItemEntries = null;
 
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
@@ -163,7 +166,8 @@ public class APInventoryMode : ShipLogMode
     // Shows the item selected and the associated info
     private void SelectItem(int index)
     {
-        InventoryItemEntry entry = ItemEntries.ElementAt(index).Value;
+        if (VisibleItemEntries == null) return;
+        InventoryItemEntry entry = VisibleItemEntries.ElementAt(index).Value;
         string itemID = entry.ID;
         Sprite sprite = TrackerManager.GetSprite(itemID);
         // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
@@ -191,9 +195,15 @@ public class APInventoryMode : ShipLogMode
     {
         Dictionary<Item, uint> items = APRandomizer.SaveData.itemsAcquired;
 
+        VisibleItemEntries = new();
+
         List<InventoryDisplayItem> inventoryDisplayItems = [];
-        foreach (InventoryItemEntry item in ItemEntries.Values)
+        foreach (var (name, item) in ItemEntries)
         {
+            if (item.IsDLCOnly && !APRandomizer.SlotEnabledEotEDLC()) // DLC is the only option that changes which items exist
+                continue;
+            VisibleItemEntries.Add(name, item);
+
             if (Enum.TryParse(item.ID, out Item subject))
             {
                 uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
@@ -203,7 +213,7 @@ public class APInventoryMode : ShipLogMode
                     quantity += items[Item.BurntMarshmallow] + items[Item.PerfectMarshmallow];
 
                 // Produce a string like "[X] Launch Codes" or "[5] Marshmallow"
-                bool couldHaveMultiple = item.ApItem >= Item.OxygenCapacityUpgrade; // see comments in Item enum
+                bool couldHaveMultiple = item.ApItem >= Item.OxygenCapacityUpgrade && item.ApItem <= Item.NapTrap; // see comments in Item enum
                 string countText = couldHaveMultiple ? quantity.ToString() : (quantity != 0 ? "X" : " "); // only unique items use X
                 string itemName = $"[{countText}] {item.Name}";
 

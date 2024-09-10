@@ -286,7 +286,7 @@ internal class LocationTriggers
         if (logFactToDefaultLocation.ContainsKey(factId))
             CheckLocation(logFactToDefaultLocation[factId]);
 
-        if (APRandomizer.LogsanityEnabled())
+        if (APRandomizer.SlotEnabledLogsanity())
         {
             // Because logsanity locations correspond exactly 1-to-1 to ship log facts,
             // we can simply parse the fact id instead of writing another hardcoded map.
@@ -328,6 +328,7 @@ internal class LocationTriggers
             case "Riebeck_SouthPoleRecording": CheckLocation(Location.BH_OBSERVATORY_TR); break;
             case "Riebeck_Journal_1": CheckLocation(Location.BH_CAMPSITE_NOTE); break;
             case "Chert_QuantumMoonLocatorNotes": CheckLocation(Location.ET_QML_TR); break;
+            case "Gabbro_SatelliteNote": CheckLocation(Location.SATELLITE_TR); break;
         }
     }
 

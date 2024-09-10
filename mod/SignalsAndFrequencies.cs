@@ -36,7 +36,8 @@ internal class SignalsAndFrequencies
         { SignalName.EscapePod_DB, SignalFrequency.EscapePod },
         { SignalName.HideAndSeek_Galena, SignalFrequency.HideAndSeek },
         { SignalName.HideAndSeek_Tephra, SignalFrequency.HideAndSeek },
-        // DLC will add: SignalFrequency.Radio
+        { SignalName.RadioTower, SignalFrequency.Radio },
+        { SignalName.MapSatellite, SignalFrequency.Radio },
         // left out Default, WarpCore and Statue frequencies because I don't believe they get used
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
@@ -68,6 +69,10 @@ internal class SignalsAndFrequencies
             SignalName.HideAndSeek_Galena,
             SignalName.HideAndSeek_Tephra,
         } },
+        { SignalFrequency.Radio, new HashSet<SignalName>{
+            SignalName.RadioTower,
+            SignalName.MapSatellite,
+        } }
     };
 
     public static HashSet<SignalFrequency> usableFrequencies = new();

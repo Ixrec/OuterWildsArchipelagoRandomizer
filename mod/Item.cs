@@ -69,6 +69,7 @@ public enum Item
     ShipDamageTrap,
     AudioTrap,
     NapTrap,
+    // end of non-unique items
 
     FrequencyDSR,
     SignalDSRTower,
@@ -174,6 +175,7 @@ public static class ItemNames
         { SignalFrequency.EscapePod, Item.FrequencyDB },
         { SignalFrequency.Quantum, Item.FrequencyQF },
         { SignalFrequency.HideAndSeek, Item.FrequencyHS },
+        { SignalFrequency.Radio, Item.FrequencyDSR },
     };
     public static Dictionary<Item, SignalFrequency> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

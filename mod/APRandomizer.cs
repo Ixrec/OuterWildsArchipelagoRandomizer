@@ -45,9 +45,9 @@ public class APRandomizer : ModBehaviour
     public static ArchipelagoSession APSession;
 
     public static Dictionary<string, object> SlotData;
-    public static bool LogsanityEnabled() =>
+    public static bool SlotEnabledLogsanity() =>
         SlotData.ContainsKey("logsanity") && (long)SlotData["logsanity"] > 0;
-    public static bool EotEDLCEnabled() =>
+    public static bool SlotEnabledEotEDLC() =>
         SlotData.ContainsKey("enable_eote_dlc") && (long)SlotData["enable_eote_dlc"] > 0;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
@@ -216,7 +216,7 @@ public class APRandomizer : ModBehaviour
         OWMLModConsole.WriteLine($"Received SlotData: {JsonConvert.SerializeObject(SlotData)}", MessageType.Info);
 
         // compatibility warnings
-        if (EotEDLCEnabled() && EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
+        if (SlotEnabledEotEDLC() && EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
         {
             InGameAPConsole.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
                 $"but <color=red>the DLC is not installed</color>.");

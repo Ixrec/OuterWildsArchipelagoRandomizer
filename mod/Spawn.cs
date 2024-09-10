@@ -72,7 +72,7 @@ internal class Spawn
             __instance.RevealFact("TH_VILLAGE_X2");
         }
 
-        if (APRandomizer.EotEDLCEnabled() && !__instance.IsFactRevealed("IP_RING_WORLD_X1"))
+        if (APRandomizer.SlotEnabledEotEDLC() && !__instance.IsFactRevealed("IP_RING_WORLD_X1"))
         {
             APRandomizer.OWMLModConsole.WriteLine($"auto-revealing The Stranger ship log because EotE DLC is enabled");
             __instance.RevealFact("IP_RING_WORLD_X1");

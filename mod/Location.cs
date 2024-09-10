@@ -540,8 +540,8 @@ public static class LocationNames
     {
         if (loc == Location.SLF__TH_VILLAGE_X3) return false;
 
-        bool logsanityIsOn = APRandomizer.LogsanityEnabled();
-        bool dlcIsOn = APRandomizer.EotEDLCEnabled();
+        bool logsanityIsOn = APRandomizer.SlotEnabledLogsanity();
+        bool dlcIsOn = APRandomizer.SlotEnabledEotEDLC();
 
         if (IsLogsanityLocation(loc) && !logsanityIsOn) return false;
         if (IsDLCLocation(loc) && !dlcIsOn) return false;

@@ -1,52 +1,63 @@
 [
-    {
-        "locationModID": "SS",
-        "description": "A projection stone in the Sun Station contains information on the performance of the station.",
-        "thumbnail": "S_SUNSTATION"
-    },
-    {
-        "locationModID": "WHS",
-        "description": "In the distant reaches of the Solar System lies a white hole, with a station in close proximity. Certainly there is some text within explaining its purpose.",
-        "thumbnail": "WHITE_HOLE_STATION"
-    },
-    {
-        "locationModID": "FROZEN_SHUTTLE",
-        "description": "On the Interloper, there is a Nomai shuttle on the dark side of it. Some text near or in the shuttle might explain what it is.",
-        "thumbnail": "COMET_SHUTTLE"
-    },
-    {
-        "locationModID": "IL_CORE",
-        "description": "Within the depths of the Interloper, there must be a Nomai log recalling the events of the expedition there.",
-        "thumbnail": "COMET_INTERIOR"
-    },
-    {
-        "locationModID": "SOLANUM_SHUTTLE",
-        "description": "A Nomai shuttle can be found on the Quantum Moon, though there may be a way to access it off of the moon. It is likely equipped with a Nomai Audio Log.",
-        "thumbnail": "QM_SHUTTLE"
-    },
-    {
-        "locationModID": "QM_LAND",
-        "description": "One with sufficient Quantum Knowledge may attempt to land on the Quantum Moon.",
-        "thumbnail": "QUANTUM_MOON"
-    },
-    {
-        "locationModID": "QM_6L",
-        "description": "There must be someone to talk to at the Sixth Location.",
-        "thumbnail": "QM_SIXTH_LOCATION"
-    },
-    {
-        "locationModID": "QM_SIGNAL",
-        "description": "The Quantum Moon is emitting a signal. The easiest way to detect it is to land on it, but if your Signalscope has been configured to detect its frequency at range, you can try your luck reading the signal by simply flying into it with your Signalscope out.",
-        "thumbnail": "QUANTUM_MOON"
-    },
-    {
-        "locationModID": "FREQ_DISTRESS",
-        "description": "The Nomai Escape Pods all have a Distress Beacon that emits a loud signal.",
-        "thumbnail": "BH_ESCAPE_POD"
-    },
-    {
-        "locationModID": "FREQ_QUANTUM",
-        "description": "The various quantum shards in The Outer Wilds emit a strong, haunting signal.",
-        "thumbnail": "BH_QUANTUM_SHARD"
-    }
+  {
+    "locationModID": "SS",
+    "description": "A projection stone in the Sun Station contains information on the performance of the station.",
+    "thumbnail": "S_SUNSTATION"
+  },
+  {
+    "locationModID": "WHS",
+    "description": "In the distant reaches of the Solar System lies a white hole, with a station in close proximity. Certainly there is some text within explaining its purpose.",
+    "thumbnail": "WHITE_HOLE_STATION"
+  },
+  {
+    "locationModID": "FROZEN_SHUTTLE",
+    "description": "On the Interloper, there is a Nomai shuttle on the dark side of it. Some text near or in the shuttle might explain what it is.",
+    "thumbnail": "COMET_SHUTTLE"
+  },
+  {
+    "locationModID": "IL_CORE",
+    "description": "Within the depths of the Interloper, there must be a Nomai log recalling the events of the expedition there.",
+    "thumbnail": "COMET_INTERIOR"
+  },
+  {
+    "locationModID": "SOLANUM_SHUTTLE",
+    "description": "A Nomai shuttle can be found on the Quantum Moon, though there may be a way to access it off of the moon. It is likely equipped with a Nomai Audio Log.",
+    "thumbnail": "QM_SHUTTLE"
+  },
+  {
+    "locationModID": "QM_LAND",
+    "description": "One with sufficient Quantum Knowledge may attempt to land on the Quantum Moon.",
+    "thumbnail": "QUANTUM_MOON"
+  },
+  {
+    "locationModID": "QM_6L",
+    "description": "There must be someone to talk to at the Sixth Location.",
+    "thumbnail": "QM_SIXTH_LOCATION"
+  },
+  {
+    "locationModID": "QM_SIGNAL",
+    "description": "The Quantum Moon is emitting a signal. The easiest way to detect it is to land on it, but if your Signalscope has been configured to detect its frequency at range, you can try your luck reading the signal by simply flying into it with your Signalscope out.",
+    "thumbnail": "QUANTUM_MOON"
+  },
+  {
+    "locationModID": "FREQ_DISTRESS",
+    "description": "The Nomai Escape Pods all have a Distress Beacon that emits a loud signal.",
+    "thumbnail": "BH_ESCAPE_POD"
+  },
+  {
+    "locationModID": "FREQ_QUANTUM",
+    "description": "The various quantum shards in The Outer Wilds emit a strong, haunting signal.",
+    "thumbnail": "BH_QUANTUM_SHARD"
+  },
+  {
+    "locationModID": "DSR_SATELLITE_SIGNAL",
+    "description": "The deep space satellite is sending a signal to the radio tower on Timber Hearth.",
+    "thumbnail": "TH_RADIO_TOWER"
+  },
+  {
+    "locationModID": "SATELLITE_TR",
+    "description": "Gabbro left a tape recorder out here when they came to check on the deep space satellite.",
+    "thumbnail": "TH_RADIO_TOWER",
+    "isDLCOnly": true
+  }
 ]

@@ -68,6 +68,15 @@ public class APChecklistMode : ShipLogMode
     };
     private List<ShipLogDisplayItem> optionsList;
 
+    private static Dictionary<Victory.GoalSetting, (string, string, string)> goalDisplayMetadata = new Dictionary<Victory.GoalSetting, (string, string, string)> {
+        { Victory.GoalSetting.SongOfFive, ("Victory - Song of Five", "Reach the Eye", "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfTheNomai, ("Victory - Song of the Nomai", "Reach the Eye after meeting Solanum", "QM_SIXTH_LOCATION") },
+        { Victory.GoalSetting.SongOfTheStranger, ("Victory - Song of the Stranger", "Reach the Eye after meeting the Prisoner", "IP_SARCOPHAGUS") },
+        { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfSeven, ("Victory - Song of the Nomai", "Reach the Eye after meeting both Solanum and the Prisoner", "DB_VESSEL") },
+        { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", "IP_SARCOPHAGUS") },
+    };
+
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
     {
@@ -220,7 +229,7 @@ public class APChecklistMode : ShipLogMode
             data = Tracker.logic.GetLocationDataByInfo(info);
         else
         {
-            string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
+            string goalLocation = goalDisplayMetadata[Victory.goalSetting].Item1;
             data = Tracker.logic.TrackerLocations[goalLocation];
         }
         TrackerChecklistData locData = LocationNameToChecklistData[data.name];
@@ -242,19 +251,13 @@ public class APChecklistMode : ShipLogMode
     {
         // This is a special case where we will only ever have one item in the list
         if (category == TrackerCategory.Goal) {
-            string goalEventName;
+            if (!goalDisplayMetadata.ContainsKey(Victory.goalSetting))
+                throw new ArgumentException($"Victory.goalSetting had an invalid value of {Victory.goalSetting}");
+            var goalMetadata = goalDisplayMetadata[Victory.goalSetting];
+            string goalEventName = goalMetadata.Item1;
             TrackerInfo info = new();
-            if (Victory.goalSetting == Victory.GoalSetting.SongOfFive)
-            {
-                goalEventName = "Victory - Song of Five";
-                info.description = "Reach the Eye"; info.thumbnail = "DB_VESSEL";
-            }
-            else if (Victory.goalSetting == Victory.GoalSetting.SongOfSix)
-            {
-                goalEventName = "Victory - Song of Six";
-                info.description = "Reach the Eye after meeting Solanum"; info.thumbnail = "QM_SIXTH_LOCATION";
-            }
-            else return new();
+            info.description = goalMetadata.Item2;
+            info.thumbnail = goalMetadata.Item3;
 
             string displayName = Regex.Replace(goalEventName, "Victory - ", "");
 
@@ -280,8 +283,7 @@ public class APChecklistMode : ShipLogMode
             foreach (TrackerInfo info in trackerInfos)
                 trackerInfosInCategory.Add(info);
 
-            // Most tracker-relevant options add new categories. logsanity is the only one that changes categories' content.
-            if (APRandomizer.LogsanityEnabled() && File.Exists(filepath + "_SL.jsonc"))
+            if (APRandomizer.SlotEnabledLogsanity() && File.Exists(filepath + "_SL.jsonc"))
             {
                 trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
                 foreach (TrackerInfo info in trackerInfos)
@@ -291,6 +293,8 @@ public class APChecklistMode : ShipLogMode
             // generate the ShipLogDisplayItem for each TrackerInfo, and add each pair to checklistState
             foreach (TrackerInfo info in trackerInfosInCategory)
             {
+                if (info.isDLCOnly && !APRandomizer.SlotEnabledEotEDLC()) continue;
+
                 // TODO add hints and confirmation of checked locations
                 if (Enum.TryParse<Location>(info.locationModID, out Location loc))
                 {
@@ -398,15 +402,14 @@ public class APChecklistMode : ShipLogMode
         foreach (var (text, category) in optionsEntries)
         {
             if (category == TrackerCategory.Stranger || category == TrackerCategory.Dreamworld)
-                if (!APRandomizer.EotEDLCEnabled())
+                if (!APRandomizer.SlotEnabledEotEDLC())
                     continue;
 
             bool hasAvailableChecks = false;
             bool hasHint = false;
             if (category == TrackerCategory.Goal)
             {
-                // TODO: new goals
-                string goalLocation = (Victory.goalSetting == Victory.GoalSetting.SongOfFive ? "Victory - Song of Five" : "Victory - Song of Six");
+                string goalLocation = goalDisplayMetadata[Victory.goalSetting].Item1;
                 hasAvailableChecks = Tracker.logic.IsAccessible(Tracker.logic.TrackerLocations[goalLocation]);
             }
             else

@@ -62,7 +62,7 @@ public class APInventoryDescriptions
             switch (itemEntry.ApItem)
             {
                 // Frequency items are special though
-                case Item.FrequencyQF: case Item.FrequencyDB: case Item.FrequencyHS:
+                case Item.FrequencyQF: case Item.FrequencyDB: case Item.FrequencyHS: case Item.FrequencyDSR:
                     switch (itemEntry.ApItem)
                     {
                         case Item.FrequencyQF:
@@ -74,6 +74,9 @@ public class APInventoryDescriptions
                         case Item.FrequencyHS:
                             infos.Add("Tephra and Galena want to play Hide and Seek with you!");
                             break;
+                        case Item.FrequencyDSR:
+                            infos.Add("Timber Hearth's radio tower uses this frequency to communicate with the deep space satellite.");
+                            break;
                     }
 
                     infos.Add("Signals found: ");
@@ -84,7 +87,7 @@ public class APInventoryDescriptions
                     {
                         var item = ItemNames.signalToItem[signal];
                         var name = ItemNames.ItemToName(item);
-                        infos.Add(((inventory[item] > 0) ? "[X] " : "[ ] ") + name.Replace(" Signal", ""));
+                        infos.Add(((inventory.ContainsKey(item) && inventory[item] > 0) ? "[X] " : "[ ] ") + name.Replace(" Signal", ""));
                     }
                     break;
 

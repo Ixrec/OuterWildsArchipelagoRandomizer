@@ -45,7 +45,7 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
 
                         // Check for Logsanity checks
                         bool isALog = Enum.TryParse("SLF__" + nomaiTextData.DatabaseID, out Location loc);
-                        if (isALog && APRandomizer.LogsanityEnabled())
+                        if (isALog && APRandomizer.SlotEnabledLogsanity())
                         {
                             hintData.DetermineImportance(loc);
                         }
@@ -79,7 +79,7 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
 
                                 // Check for Logsanity checks
                                 bool isALog = Enum.TryParse("SLF__" + nomaiTextData.DatabaseID, out Location loc);
-                                if (isALog && APRandomizer.LogsanityEnabled())
+                                if (isALog && APRandomizer.SlotEnabledLogsanity())
                                 {
                                     hintData.DetermineImportance(loc);
                                 }

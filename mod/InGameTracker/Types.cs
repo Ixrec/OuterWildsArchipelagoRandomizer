@@ -87,6 +87,7 @@ public struct TrackerInfo
     /// Explore Fact card picture showing the general location of the item
     /// </summary>
     public string thumbnail;
+    public bool isDLCOnly;
 }
 
 public class InventoryItemHint
@@ -127,6 +128,7 @@ public class InventoryItemEntry
     /// If the item has been hinted, any hints for not-yet-found instances will be added here
     /// </summary>
     public List<InventoryItemHint> Hints = new();
+    public bool IsDLCOnly = false;
 
     public InventoryItemEntry(string id, string name, Item? apItem, bool itemIsNew = false)
     {
@@ -143,11 +145,12 @@ public class InventoryItemEntry
         ApItem = null;
     }
 
-    public InventoryItemEntry(Item apItem, string name)
+    public InventoryItemEntry(Item apItem, string name, bool isDLCOnly = false)
     {
         ID = apItem.ToString();
         Name = name;
         ApItem = apItem;
+        IsDLCOnly = isDLCOnly;
     }
 
     public bool HasOneOrMore()
