@@ -107,6 +107,8 @@ public class Victory
     [HarmonyPrefix, HarmonyPatch(typeof(EchoesOverController), nameof(EchoesOverController.OnTriggerEndOfDLC))]
     public static void EchoesOverController_OnTriggerEndOfDLC()
     {
+        APRandomizer.OWMLModConsole.WriteLine($"EchoesOverController_OnTriggerEndOfDLC() called");
+
         if (goalSetting == GoalSetting.EchoesOfTheEye)
             SetGoalAchieved();
         else
