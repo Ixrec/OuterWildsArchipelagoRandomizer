@@ -20,7 +20,7 @@ internal class StrangerDoorCodes
             if (_hasBreachOverrideCodes != value)
             {
                 _hasBreachOverrideCodes = value;
-                // TODO: UpdateLabDoorsIRState();
+                UpdateLabIRState();
             }
         }
     }
@@ -76,10 +76,14 @@ internal class StrangerDoorCodes
     private static SlidingDoor rlPaintingDoor = null;
     private static SlidingDoor ciPaintingDoor = null;
     private static SlidingDoor hgPaintingDoor = null;
+    private static RotatingDoor labRoomBDoor = null;
+    private static RotatingDoor labToHGDoor = null;
 
     private static InteractReceiver rlPaintingIR = null;
     private static InteractReceiver ciPaintingIR = null;
     private static InteractReceiver hgPaintingIR = null;
+    private static InteractReceiver labRoomBIR = null;
+    private static InteractReceiver labToHGIR = null;
 
     [HarmonyPostfix, HarmonyPatch(typeof(RingWorldController), nameof(RingWorldController.Start))]
     public static void RingWorldController_Start()
@@ -152,6 +156,52 @@ internal class StrangerDoorCodes
             hgPaintingDoor.Open();
             hgPaintingIR.DisableInteraction();
         };
+
+        labRoomBDoor = GameObject.Find("RingWorld_Body/Sector_RingWorld/Sector_SecretEntrance/Interactibles_SecretEntrance/Experiment_2_Destroyed/HullBreachController/Prefab_IP_Door_Metal/")
+            .GetComponent<RotatingDoor>();
+
+        GameObject labRoomBIRAnchor = new GameObject("APRandomizer_Lab_RoomB_InteractReceiver");
+        labRoomBIRAnchor.transform.SetParent(labRoomBDoor.transform, false);
+        var roomBDoorBox = labRoomBIRAnchor.AddComponent<BoxCollider>();
+        roomBDoorBox.isTrigger = true;
+        roomBDoorBox.size = new Vector3(7, 10, 6);
+        labRoomBIR = labRoomBIRAnchor.AddComponent<InteractReceiver>();
+
+        UpdateLabIRState();
+
+        labRoomBIR.OnPressInteract += () =>
+        {
+            if (!hasBreachOverrideCodes) return;
+            if (labRoomBDoor == null) return;
+            if (labRoomBDoor.IsOpen()) return;
+
+            APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_Lab_RoomB_InteractReceiver OnPressInteract opening laboratory door");
+            labRoomBDoor.Open();
+            labRoomBIR.DisableInteraction();
+        };
+
+        labToHGDoor = GameObject.Find("RingWorld_Body/Sector_RingWorld/Sector_SecretEntrance/Interactibles_SecretEntrance/Prefab_IP_InteractableDoor")
+            .GetComponent<RotatingDoor>();
+
+        GameObject labToHGIRAnchor = new GameObject("APRandomizer_Lab_ToHG_InteractReceiver");
+        labToHGIRAnchor.transform.SetParent(labToHGDoor.transform, false);
+        var labToHGBox = labToHGIRAnchor.AddComponent<BoxCollider>();
+        labToHGBox.isTrigger = true;
+        labToHGBox.size = new Vector3(7, 10, 6);
+        labToHGIR = labToHGIRAnchor.AddComponent<InteractReceiver>();
+
+        UpdateLabIRState();
+
+        labToHGIR.OnPressInteract += () =>
+        {
+            if (!hasBreachOverrideCodes) return;
+            if (labToHGDoor == null) return;
+            if (labToHGDoor.IsOpen()) return;
+
+            APRandomizer.OWMLModConsole.WriteLine($"APRandomizer_Lab_ToHG_InteractReceiver OnPressInteract opening laboratory door");
+            labToHGDoor.Open();
+            labToHGIR.DisableInteraction();
+        };
     }
 
     private static void UpdateRLPaintingIRState()
@@ -202,6 +252,39 @@ internal class StrangerDoorCodes
         {
             hgPaintingIR.ChangePrompt("Requires Hidden Gorge Painting Code");
             hgPaintingIR.SetKeyCommandVisible(false);
+        }
+    }
+
+    private static void UpdateLabIRState()
+    {
+        if (labRoomBIR == null || labRoomBDoor == null) return;
+        if (labToHGIR == null || labToHGDoor == null) return;
+
+        if (!labRoomBDoor.IsOpen())
+        {
+            if (hasBreachOverrideCodes)
+            {
+                labRoomBIR.ChangePrompt("Override Hull Breach Lockdown");
+                labRoomBIR.SetKeyCommandVisible(true);
+            }
+            else
+            {
+                labRoomBIR.ChangePrompt("Requires Breach Override Codes");
+                labRoomBIR.SetKeyCommandVisible(false);
+            }
+        }
+        if (!labToHGDoor.IsOpen())
+        {
+            if (hasBreachOverrideCodes)
+            {
+                labToHGIR.ChangePrompt("Override Hull Breach Lockdown");
+                labToHGIR.SetKeyCommandVisible(true);
+            }
+            else
+            {
+                labToHGIR.ChangePrompt("Requires Breach Override Codes");
+                labToHGIR.SetKeyCommandVisible(false);
+            }
         }
     }
 }
