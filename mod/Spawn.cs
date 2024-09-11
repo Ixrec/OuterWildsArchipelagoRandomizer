@@ -13,6 +13,7 @@ internal class Spawn
         TimberHearth,
         BrittleHollow,
         GiantsDeep,
+        Stranger,
     }
 
     private static SpawnChoice spawnChoice = SpawnChoice.Vanilla;
@@ -31,6 +32,7 @@ internal class Spawn
                 case /*"timber_hearth"*/   2: spawnChoice = SpawnChoice.TimberHearth; break;
                 case /*"brittle_hollow"*/  3: spawnChoice = SpawnChoice.BrittleHollow; break;
                 case /*"giants_deep"*/     4: spawnChoice = SpawnChoice.GiantsDeep; break;
+                case /*"stranger"*/        5: spawnChoice = SpawnChoice.Stranger; break;
             }
         }
     }
@@ -163,7 +165,7 @@ internal class Spawn
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(brittleHollowOWRB);
             return false;
         }
-        else // if (spawnChoice == SpawnChoice.GiantsDeep)
+        else if (spawnChoice == SpawnChoice.GiantsDeep)
         {
             var statueIslandGO = GameObject.Find("StatueIsland_Body");
             var statueIslandOWRB = statueIslandGO.GetComponent<OWRigidbody>();
@@ -183,6 +185,27 @@ internal class Spawn
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(statueIslandOWRB);
             return false;
         }
+        else if (spawnChoice == SpawnChoice.Stranger)
+        {
+            var sunsideHangarGO = GameObject.Find("RingWorld_Body/Sector_RingWorld/Sector_LightSideDockingBay/Geo_LightSideDockingBay/Structure_IP_Docking_Bay/DockingBay_Col");
+            var ringWorldOWRB = Locator.GetAstroObject(AstroObject.Name.RingWorld).GetComponent<OWRigidbody>();
+            OWRigidbody playerRigidBody = Locator.GetPlayerBody();
+            OWRigidbody shipRigidBody = Locator.GetShipBody();
+
+            var playerPos = sunsideHangarGO.transform.TransformPoint(new Vector3(4, -11.75f, 25));
+            playerRigidBody.WarpToPositionRotation(playerPos, sunsideHangarGO.transform.rotation);
+            Locator.GetPlayerCameraController().SetDegreesY(80f);
+
+            var shipPos = sunsideHangarGO.transform.TransformPoint(new Vector3(4, -12.25f, -5));
+            shipRigidBody.WarpToPositionRotation(shipPos, sunsideHangarGO.transform.rotation);
+
+            playerRigidBody.SetVelocity(ringWorldOWRB.GetVelocity());
+            playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(ringWorldOWRB);
+            shipRigidBody.SetVelocity(ringWorldOWRB.GetVelocity());
+            shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(ringWorldOWRB);
+            return false;
+        }
+        else throw new System.ArgumentException($"spawnChoice had an invalid value of {spawnChoice}");
     }
 
     // Hearing the TH Village music outside of TH is no big deal, but in many cases
