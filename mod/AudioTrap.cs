@@ -32,7 +32,7 @@ internal class AudioTrap
         if (Locator.GetPlayerAudioController() == null || globalMusicController == null) return;
 
         var playerAudioSource = Locator.GetPlayerAudioController()._oneShotSource;
-        var selection = prng.Next(0, 4);
+        var selection = prng.Next(0, APRandomizer.SlotEnabledEotEDLC() ? 4 : 3); // don't use owlk sounds if DLC is off
         switch (selection)
         {
             case 0:
