@@ -4,7 +4,7 @@ The Ship Log tracker includes an inventory mode, allowing the player to see what
 
 ## Registering the Item
 
-To make the item appear in the inventory, you need to go to `TrackerManager.cs` and add a new `InventoryItemEntry` to the `_ItemEntries` `List`.
+To make the item appear in the inventory, you need to go to `APInventoryMode.cs` and add a new `InventoryItemEntry` to the `_ItemEntries` `List`.
 The entry's ID should be either an `Item` enum value, or (for entries that don't correspond to an AP item) a string.
 The second argument is the display name of the item as it'll appear in the inventory.
 
@@ -68,15 +68,8 @@ The Ship Log Tracker includes a Location Tracker mode, displaying a list of majo
 
 ## Setting up a Location
 
-The way the Tracker determines which major region a location is in is by looking at the name value for the location in locations.jsonc and looking at the prefix (first two characters) of the name:
-
-* Hourglass Twins: **"ET"** (Ember Twin), **"AT"** (Ash Twin), **"CT"** (Cave Twin), or **"TT"** (Tower Twin)
-* Timber Hearth: **"TH"** (Timber Hearth), **"AR"** (Attlerock), or **"TM"** (Timber Moon)
-* Brittle Hollow: **"BH"** (Brittle Hollow), **"HL"** (Hollow's Lantern), or **"VM"** (Volcanic Moon)
-* Giant's Deep: **"GD"** (Giant's Deep), **"OP"**, or **"OR"** (both for Orbital Probe Cannon)
-* Dark Bramble: **"DB"** (Dark Bramble)
-
-Anything else gets thrown into the generic "Outer Wilds" region.
+The Tracker determines which category a location is in is by checking its name for hardcoded prefixes, defined in `Logic.cs` as `static string[]`s.
+Any location which matches none of those prefixes gets thrown into the generic "Outer Wilds" region.
 Thus, when naming a location, it should include the relevant prefix.
 
 ## Making the Location Show Up in the Tracker
