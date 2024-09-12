@@ -236,5 +236,51 @@ internal class GhostMatter
             eyeShrineBackCornerPSR.transform.localPosition = new Vector3(-8, -16, -6);
             eyeShrineBackCornerDMV.transform.localPosition = new Vector3(-8, -16, -6);
         }
+
+        // don't try to edit DLC ghost matter if the DLC is not installed
+        if (EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
+            return;
+
+        var changeRLWorkshopGM = prng.Next(0, 2);
+        if (changeRLWorkshopGM == 1)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing river lowlands workshop");
+
+            var workshopEntranceDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone1/Interactables_Zone1/GhostMatter_Submergible/DarkMatterVolume (3)");
+            var workshopEntrancePSR = workshopEntranceDMV.transform.Find("Effects_GM_AuroraWisps (1)");
+
+            workshopEntranceDMV.transform.localPosition = new Vector3(-108, 2.75f, -55);
+            // the PSR is a child of the DMV, so we don't need to move it separately
+
+            // I can't seem to scale the DMV along only one axis, so to keep it from leaking up through the floor, I can't widen it either.
+            // I'm guessing this is because it uses a SphereShape for collision detection, and that's strictly spheres, not ellipsoids?
+            // Fortunately we can still widen the PSR. This does mean the danger zone is smaller than the visual effect, but that's okay.
+            workshopEntrancePSR.transform.localScale = new Vector3(2, 1, 2);
+        }
+
+        var changeTemplePathFirstTreeGM = prng.Next(0, 2);
+        if (changeTemplePathFirstTreeGM == 1)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing first tree on path to Abandoned Temple");
+
+            var firstTreeDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/DarkMatterVolume"); // no number
+            var firstTreePSR = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/Effects_GM_AuroraWisps (1)");
+
+            firstTreeDMV.transform.localPosition = new Vector3(-6, -1, 6);
+            firstTreeDMV.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f); // because the path curves, a sphere fits more naturally on the "outside",
+                                                                                  // and needs to shrink when we move it to the "inside" path
+            firstTreePSR.transform.localPosition = new Vector3(-6, -1, 6);
+        }
+        var changeTemplePathSecondTreeGM = prng.Next(0, 2);
+        if (changeTemplePathSecondTreeGM == 1)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing second tree on path to Abandoned Temple");
+
+            var secondTreeDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/DarkMatterVolume (1)");
+            var secondTreePSR = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/Effects_GM_AuroraWisps (2)");
+
+            secondTreeDMV.transform.localPosition = new Vector3(2, -1, -5);
+            secondTreePSR.transform.localPosition = new Vector3(2, -1, -4);
+        }
     }
 }
