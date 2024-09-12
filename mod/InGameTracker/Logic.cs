@@ -55,6 +55,7 @@ public class Logic
         TimberHearth = 2,
         BrittleHollow = 3,
         GiantsDeep = 4,
+        Stranger = 5,
     }
     public Dictionary<SlotDataSpawn, string> SlotDataSpawnToRegionName = new Dictionary<SlotDataSpawn, string>
     {
@@ -63,6 +64,7 @@ public class Logic
         { SlotDataSpawn.TimberHearth, "Timber Hearth" },
         { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
         { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
+        { SlotDataSpawn.Stranger, "Stranger Sunside Hangar" },
     };
     public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
     {
