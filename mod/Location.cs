@@ -527,13 +527,13 @@ public enum Location
 public static class LocationNames
 {
     public static bool IsDefaultLocation(Location location) =>
-        location >= Location.SS && location <= Location.FREQ_HIDE_SEEK;
-    public static bool IsDLCLocation(Location location) =>
+        location >= Location.SS && location <= Location.SATELLITE_TR;
+    public static bool IsDLCDefaultLocation(Location location) =>
         location >= Location.RL_WORKSHOP && location <= Location.SL_VAULT;
     public static bool IsLogsanityLocation(Location location) =>
         location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
     public static bool IsDLCLogsanityLocation(Location location) =>
-        location >= Location.SLF__IP_RING_WORLD_X1 && location <= Location.SLF__IP_DREAM_3_RULE_X1;
+        location >= Location.SLF__TH_RADIO_TOWER_X1 && location <= Location.SLF__IP_DREAM_3_RULE_X1;
 
     // When story mods are added, these methods will have to consider those options too
     public static bool IsLocationActive(Location loc)
@@ -544,7 +544,7 @@ public static class LocationNames
         bool dlcIsOn = APRandomizer.SlotEnabledEotEDLC();
 
         if (IsLogsanityLocation(loc) && !logsanityIsOn) return false;
-        if (IsDLCLocation(loc) && !dlcIsOn) return false;
+        if (IsDLCDefaultLocation(loc) && !dlcIsOn) return false;
         if (IsDLCLogsanityLocation(loc) && (!logsanityIsOn || !dlcIsOn)) return false;
 
         return true;
