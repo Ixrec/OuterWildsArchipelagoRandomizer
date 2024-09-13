@@ -6,9 +6,9 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Public Beta (as of August 2024).
+Public Beta (as of September 2024).
 
-Many people have played this, usually with no issues or only minor issues. Most reported bugs have either been fixed, or are believed to be vanilla bugs unrelated to this mod. Many features are complete, including a full in-game tracker. The main thing we're still missing is DLC integration. See [Roadmap](#roadmap).
+This randomizer is very close to complete. It's been extensively played, all known bugs are fixed (the remaining problems are all believed to be base game bugs), and most of the featuers I wanted to implement have been shipped, including a full in-game tracker and DLC integration. See [Roadmap](#roadmap) for what little remains.
 
 <details>
 <summary>Vanilla(?) Bugs</summary>
@@ -118,23 +118,19 @@ Either way, the Mod Manager should immediately display the version number of the
 
 The 0.1.x releases fleshed out the Archipelago items and locations: useful, filler and trap items, more base game locations, and a logsanity option for even more locations. They also included an in-game tracker for the ship log with in-game descriptions of every item and location (this is much more important for OW than most randomizers since the vanilla game mostly doesn't have "items").
 
-### 0.2.0+ Patch Goals
-
 The 0.2.x releases focused on other kinds of randomization besides items and locations, specifically: random spawn, random orbits, random warp platforms, random Eye coordinates, random Dark Bramble layout, random ghost matter, and random in-game hints.
 
 ### 0.3.0 Goals/Priorities
 
 The 0.3.x releases will focus on additional content beyond the base game.
 
-- Echoes of the Eye DLC integration
-	- This is when we'll decide whether to randomize the flashlight
+- ~~Echoes of the Eye DLC integration~~
 
 - Story/Content mod support
 
-- After all content is added, consider ideas for "balance features" such as:
+- Minor "balance features" such as:
 	- split translator
-	- progressive signalscope frequencies
-	- alternative designs for progression signals
+	- progressive signalscope
 
 ### (Non-Programmer) Help Wanted
 
