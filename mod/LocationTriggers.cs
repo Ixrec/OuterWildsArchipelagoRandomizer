@@ -14,7 +14,7 @@ internal class LocationTriggers
 
         { "CT_HIGH_ENERGY_LAB_X3", Location.ET_HEL },
         { "CT_SUNLESS_CITY_X3", Location.ET_SC_SHRINE },
-        { "QM_SIXTH_LOCATION_R1", Location.ET_QML },
+        { "QM_SIXTH_LOCATION_R1", Location.ET_QML }, // TODO: rumor fact, is this broken?
         { "CT_ANGLERFISH_FOSSIL_X2", Location.ET_FOSSIL },
         { "CT_LAKEBED_CAVERN_X1", Location.ET_LAKEBED_CAVE },
         { "CT_LAKEBED_CAVERN_X3", Location.ET_COLEUS_CAVE },
@@ -47,9 +47,9 @@ internal class LocationTriggers
         // Consider "control module logs" checked if *any* of the three sets of text wheels get translated
         { "OPC_INTACT_MODULE_X1", Location.OPC_CM },
         { "OPC_INTACT_MODULE_X2", Location.OPC_CM },
-        { "OPC_SUNKEN_MODULE_R2", Location.OPC_CM }, // the 3rd set only gives rumors
+        { "OPC_SUNKEN_MODULE_R2", Location.OPC_CM }, // the 3rd set only gives rumors // TODO: rumor fact, is this broken?
 
-        { "GD_OCEAN_R3", Location.GD_BI },
+        { "GD_OCEAN_R3", Location.GD_BI }, // TODO: rumor fact, is this broken?
         { "GD_CONSTRUCTION_YARD_X1", Location.GD_CY },
         { "GD_STATUE_WORKSHOP_X1", Location.GD_SIW },
         { "GD_OCEAN_X1", Location.GD_DEPTHS },
