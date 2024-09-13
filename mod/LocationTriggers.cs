@@ -90,7 +90,6 @@ internal class LocationTriggers
         { "IP_DREAM_ZONE_2_X3", Location.SC_BURNED },
         { "IP_DREAM_ZONE_2_X4", Location.SC_TOWER_UPPER },
         { "IP_DREAM_ZONE_3_X2", Location.EC_MURAL },
-        { "IP_DREAM_LAKE_R1", Location.VAULT_VISION }, // I believe this is our only default location tied to a rumor fact
         { "IP_DREAM_LAKE_X2", Location.SL_GREEN_LIGHT },
 
         { "IP_ZONE_2_CODE_X3", Location.CI_SYMBOL_ROOM },
@@ -404,6 +403,18 @@ internal class LocationTriggers
         {
             APRandomizer.OWMLModConsole.WriteLine($"OWItem_PickUpItem_Postfix detected ItemType.DreamLantern");
             CheckLocation(Location.ARTIFACT);
+        }
+    }
+
+    // The usual RevealFact() override doesn't work for a vision torch with a rumor fact because SlideCollectionContainer guards its RevealFact() call
+    // with a IsFactRevealed() check, and rumor facts can get preemptively revealed by the corresponding regular fact.
+    // As far as I know, this is also the only vision torch with a rumor fact.
+    [HarmonyPostfix, HarmonyPatch(typeof(MindSlideProjector), nameof(MindSlideProjector.Play))]
+    private static void MindSlideProjector_Play(MindSlideProjector __instance, bool reset)
+    {
+        switch (__instance._slideCollectionItem._shipLogOnComplete)
+        {
+            case "IP_DREAM_LAKE_R2": CheckLocation(Location.VAULT_VISION); break;
         }
     }
 }
