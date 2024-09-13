@@ -455,6 +455,8 @@ public class Logic
         if (!string.IsNullOrEmpty(requirement.item) && !ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item])) return false;
         // we can't reach the location
         if (!string.IsNullOrEmpty(requirement.location) && !IsAccessible(TrackerLocations[requirement.location])) return false;
+        // we can't reach the region
+        if (!string.IsNullOrEmpty(requirement.region) && (!CanAccessRegion.TryGetValue(requirement.region, out bool canAccessRegion) || !canAccessRegion)) return false;
         // we don't fulfill any of the AnyOf requirements
         if (requirement.anyOf != null) if (!AnyOfAccess(requirement.anyOf)) return false;
         return true;
