@@ -592,13 +592,23 @@ public class Logic
 
                 reqStrings.Add(reqStr);
             }
+            else if (!string.IsNullOrEmpty(req.region))
+            {
+                CanAccessRegion.TryGetValue(req.region, out bool canAccessRegion);
+
+                string reqStr = (canAccessRegion ? "<color=green>" : "<color=maroon>") +
+                    $"(Can Access: {req.region})</color>";
+
+                reqStrings.Add(reqStr);
+            }
             else if (req.anyOf != null && req.anyOf.Count > 0)
             {
                 string reqStr = string.Join(
                     " <color=orange>OR</color> ",
                     GetLogicRequirementsStrings(req.anyOf)
                 );
-                if (req.anyOf.Count > 1) {
+                if (req.anyOf.Count > 1)
+                {
                     reqStr = "(" + reqStr + ")";
                 }
                 reqStrings.Add(reqStr);

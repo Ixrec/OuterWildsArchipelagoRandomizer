@@ -22,6 +22,7 @@ public class TrackerRequirement
 {
     public string item;
     public string location;
+    public string region;
     public List<TrackerRequirement> anyOf;
 }
 
