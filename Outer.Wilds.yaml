@@ -146,7 +146,8 @@ Outer Wilds:
     all_deaths: 0
 
   logsanity:
-    # Adds 176 locations for all the (non-DLC, non-rumor, non-missable) ship log facts in the game.
+    # Adds 176 locations for all the (non-rumor, non-missable) ship log facts in the game.
+    # Also affects how many locations are added by enable_eote_dlc.
     'false': 50
     'true': 0
 
