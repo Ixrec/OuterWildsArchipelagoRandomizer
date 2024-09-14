@@ -73,7 +73,7 @@ public class APChecklistMode : ShipLogMode
         { Victory.GoalSetting.SongOfTheNomai, ("Victory - Song of the Nomai", "Reach the Eye after meeting Solanum", "QM_SIXTH_LOCATION") },
         { Victory.GoalSetting.SongOfTheStranger, ("Victory - Song of the Stranger", "Reach the Eye after meeting the Prisoner", "IP_SARCOPHAGUS") },
         { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", "DB_VESSEL") },
-        { Victory.GoalSetting.SongOfSeven, ("Victory - Song of the Nomai", "Reach the Eye after meeting both Solanum and the Prisoner", "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", "DB_VESSEL") },
         { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", "IP_SARCOPHAGUS") },
     };
 
