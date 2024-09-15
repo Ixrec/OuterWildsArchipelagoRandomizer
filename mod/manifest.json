@@ -4,7 +4,7 @@
   "author": "Ixrec",
   "name": "ArchipelagoRandomizer",
   "uniqueName": "Ixrec.ArchipelagoRandomizer",
-  "version": "0.3.0-rc2",
+  "version": "0.3.0-rc3",
   "owmlVersion": "2.9.8",
   "dependencies": [
     "xen.EnableMeditation",
