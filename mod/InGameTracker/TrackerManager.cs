@@ -130,8 +130,9 @@ public class TrackerManager : MonoBehaviour
             case Archipelago.MultiClient.Net.Enums.ItemFlags.Trap: itemColor = "#DA6F62"; break;
             default: itemColor = "#01CACA"; break;
         }
-        string itemTitle = $"<color={itemColor}>{session.Items.GetItemName(hint.ItemId)}</color>";
-        string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemTitle}</color> can be found here";
+        string receivingGame = session.Players.GetPlayerInfo(hint.ReceivingPlayer).Game;
+        string itemName = session.Items.GetItemName(hint.ItemId, receivingGame); // the game name argument is required to work with non-OW items
+        string hintDescription = $"It looks like {playerName} <color={itemColor}>{itemName}</color> can be found here";
         TrackerLocationData loc = logic.GetLocationByID(hint.LocationId);
         if (!logic.LocationChecklistData.ContainsKey(loc.name))
         {
