@@ -39,11 +39,14 @@ internal class StrangerLightModulator
         }
         return noLightModulatorPrompt;
     }
-    private static void showNoLightModulatorPrompt()
+    private static void showPromptIfPlayerClose(Vector3 lightSensorPosition)
     {
         var prompt = getNoLightModulatorPrompt();
         if (!prompt.IsVisible())
         {
+            var distanceFromPlayer = (Locator.GetPlayerBody().transform.position - lightSensorPosition).magnitude;
+            if (distanceFromPlayer > 10) return;
+
             APRandomizer.OWMLModConsole.WriteLine($"showing light modulator prompt");
             prompt.SetVisibility(true);
 
@@ -103,7 +106,7 @@ internal class StrangerLightModulator
             if (__instance._illuminated)
             {
                 __instance._illuminated = false;
-                showNoLightModulatorPrompt();
+                showPromptIfPlayerClose(__instance.transform.position);
             }
         }
     }
