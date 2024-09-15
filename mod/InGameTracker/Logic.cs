@@ -178,8 +178,8 @@ public class Logic
         {
             string name = loc.name;
 
-            if (!logsanity && name.Contains("Ship Log")) continue;
-            if (!enable_eote_dlc && DLCPrefixes.Any(p => name.StartsWith(p))) continue;
+            if (!logsanity && name.Contains("logsanity")) continue;
+            if (!enable_eote_dlc && (loc.creation_settings?.Contains("enable_eote_dlc") ?? false)) continue;
 
             TrackerChecklistData data = new(false, false, "");
             LocationChecklistData.Add(name, data);
