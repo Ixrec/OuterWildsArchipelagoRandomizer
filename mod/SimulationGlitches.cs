@@ -67,6 +67,10 @@ internal class SimulationGlitches
         OWRigidbody playerRigidBody = Locator.GetPlayerBody();
         var lanternPosition = Locator.GetDreamWorldController().GetPlayerLantern().gameObject.transform.position;
         playerRigidBody.WarpToPositionRotation(lanternPosition + new UnityEngine.Vector3(0, 1, 0), playerRigidBody.GetRotation());
+
+        // prevent accidental deaths from getting teleported above ground while falling
+        var dreamworldVelocity = Locator.GetAstroObject(AstroObject.Name.DreamWorld).GetOWRigidbody().GetVelocity();
+        playerRigidBody.SetVelocity(dreamworldVelocity);
     }
 
     private static bool _hasAlarmBypassPatch = false;
