@@ -288,7 +288,8 @@ public class APInventoryMode : ShipLogMode
             APRandomizer.OWMLModConsole.WriteLine($"{itemName} is not an item in the inventory, so skipping", OWML.Common.MessageType.Warning);
             return;
         }
-        string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId);
+        string findingGame = session.Players.GetPlayerInfo(hint.FindingPlayer).Game;
+        string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId, findingGame);
         string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
         string hintedEntrance = hint.Entrance;
         ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
