@@ -54,7 +54,7 @@ internal class StrangerLightModulator
             {
                 await Task.Delay(3000);
                 APRandomizer.OWMLModConsole.WriteLine($"hiding light modulator prompt");
-                noLightModulatorPrompt?.SetVisibility(false);
+                prompt?.SetVisibility(false);
             });
         }
     }
