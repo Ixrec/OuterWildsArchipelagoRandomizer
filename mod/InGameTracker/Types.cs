@@ -43,7 +43,8 @@ public class TrackerConnectionData
 /// </summary>
 public class TrackerLocationData
 {
-    public string[] creation_settings;
+    public string? category;
+    public bool? logsanity;
     public int? address;
     public string name;
     public string region;

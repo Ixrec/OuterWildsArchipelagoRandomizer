@@ -173,13 +173,17 @@ public class Logic
 
         bool logsanity = APRandomizer.SlotEnabledLogsanity();
         bool enable_eote_dlc = APRandomizer.SlotEnabledEotEDLC();
+        bool dlc_only = APRandomizer.SlotEnabledDLCOnly();
         var DLCPrefixes = StrangerPrefixes.Concat(DWPrefixes);
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {
             string name = loc.name;
 
-            if (!logsanity && name.Contains("logsanity")) continue;
-            if (!enable_eote_dlc && (loc.creation_settings?.Contains("enable_eote_dlc") ?? false)) continue;
+            if (!logsanity && (loc.logsanity ?? false)) continue;
+            if (!enable_eote_dlc && (loc.category == "dlc")) continue;
+            if (dlc_only && (loc.category == "base")) continue;
+            // this category is only used on some victory events so probably not important, but might as well get it right
+            if ((!enable_eote_dlc || dlc_only) && (loc.category == "base+dlc")) continue;
 
             TrackerChecklistData data = new(false, false, "");
             LocationChecklistData.Add(name, data);

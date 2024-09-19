@@ -49,6 +49,8 @@ public class APRandomizer : ModBehaviour
         SlotData.ContainsKey("logsanity") && (long)SlotData["logsanity"] > 0;
     public static bool SlotEnabledEotEDLC() =>
         SlotData.ContainsKey("enable_eote_dlc") && (long)SlotData["enable_eote_dlc"] > 0;
+    public static bool SlotEnabledDLCOnly() =>
+        SlotData.ContainsKey("dlc_only") && (long)SlotData["dlc_only"] > 0;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
