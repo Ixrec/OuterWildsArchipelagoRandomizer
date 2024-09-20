@@ -177,6 +177,12 @@ internal class MainMenu
         var lpu = GameObject.Find("TitleMenu").AddComponent<LoadProgressUpdater>();
         lpu.titleMenuManager = titleManager;
         lpu.mainMenuButton = mainMenuButton;
+
+        // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
+        // so we wait to initialize the autosplitter conditions until we know we're about to leave the main menu and won't be switching profiles any more.
+        foreach (var kv in APRandomizer.SaveData.itemsAcquired)
+            if (ItemNames.itemToPersistentCondition.TryGetValue(kv.Key, out var condition))
+                PlayerData.SetPersistentCondition(condition, kv.Value > 0); // for now, only unique items have conditions
     }
 
     class LoadProgressUpdater : MonoBehaviour

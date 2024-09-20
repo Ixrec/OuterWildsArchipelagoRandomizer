@@ -374,6 +374,12 @@ public class APRandomizer : ModBehaviour
             APInventoryMode.MarkItemAsNew(item);
             APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
             LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
+
+            // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
+            if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
+                if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
+                    PlayerData.SetPersistentCondition(condition, itemCountSoFar > 0); // for now, only unique items have conditions
+
             return true;
         }
     }
