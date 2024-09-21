@@ -67,6 +67,7 @@ public class APChecklistMode : ShipLogMode
         ("Dreamworld", TrackerCategory.Dreamworld),
     };
     private List<ShipLogDisplayItem> optionsList;
+    private List<TrackerCategory> displayedCategories = null;
 
     private static Dictionary<Victory.GoalSetting, (string, string, string)> goalDisplayMetadata = new Dictionary<Victory.GoalSetting, (string, string, string)> {
         { Victory.GoalSetting.SongOfFive, ("Victory - Song of Five", "Reach the Eye", "DB_VESSEL") },
@@ -190,22 +191,7 @@ public class APChecklistMode : ShipLogMode
     #region checklist
     private void OpenChecklistPage(int index)
     {
-        TrackerCategory category;
-        switch (index)
-        {
-            case 0: category = TrackerCategory.Goal; break;
-            case 1: category = TrackerCategory.HourglassTwins; break;
-            case 2: category = TrackerCategory.TimberHearth; break;
-            case 3: category = TrackerCategory.BrittleHollow; break;
-            case 4: category = TrackerCategory.GiantsDeep; break;
-            case 5: category = TrackerCategory.DarkBramble; break;
-            case 6: category = TrackerCategory.OuterWilds; break;
-            // TODO: story mods break this assumption
-            case 7: category = TrackerCategory.Stranger; break;
-            case 8: category = TrackerCategory.Dreamworld; break;
-            // We don't need to care about switching to the checklist if an invalid entry is selected
-            default: return;
-        }
+        TrackerCategory category = displayedCategories[index];
 
         LocationNameToChecklistData = Tracker.logic.GetLocationChecklist(category);
         ChecklistState = PopulateChecklistState(category, LocationNameToChecklistData);
@@ -293,7 +279,11 @@ public class APChecklistMode : ShipLogMode
             // generate the ShipLogDisplayItem for each TrackerInfo, and add each pair to checklistState
             foreach (TrackerInfo info in trackerInfosInCategory)
             {
+                // unfortunately DLC-ness doesn't map cleanly onto tracker categories because of the 2 DLC-only tape recorders
                 if (info.isDLCOnly && !APRandomizer.SlotEnabledEotEDLC()) continue;
+                if (APRandomizer.SlotEnabledDLCOnly())
+                    if (!(category == TrackerCategory.Stranger || category == TrackerCategory.Dreamworld) && !info.isDLCOnly)
+                        continue;
 
                 // TODO add hints and confirmation of checked locations
                 if (Enum.TryParse<Location>(info.locationModID, out Location loc))
@@ -399,11 +389,12 @@ public class APChecklistMode : ShipLogMode
     private void OpenSelectionMode()
     {
         optionsList = new();
+        displayedCategories = new();
         foreach (var (text, category) in optionsEntries)
         {
-            if (category == TrackerCategory.Stranger || category == TrackerCategory.Dreamworld)
-                if (!APRandomizer.SlotEnabledEotEDLC())
-                    continue;
+            // this is how we hide categories with 0 locations
+            if (Tracker.logic.GetTotalCount(category) == 0) continue;
+            displayedCategories.Add(category);
 
             bool hasAvailableChecks = false;
             bool hasHint = false;
@@ -430,13 +421,27 @@ public class APChecklistMode : ShipLogMode
         SelectSelectionItem(SelectionWrapper.GetSelectedIndex());
     }
 
+    private Dictionary<TrackerCategory, string> categoryToIcon = new Dictionary<TrackerCategory, string> {
+        { TrackerCategory.Goal, "OuterWildsVentures" },
+        { TrackerCategory.HourglassTwins, "PlanetHT" },
+        { TrackerCategory.TimberHearth, "PlanetTH" },
+        { TrackerCategory.BrittleHollow, "PlanetBH" },
+        { TrackerCategory.GiantsDeep, "PlanetGD" },
+        { TrackerCategory.DarkBramble, "PlanetDB" },
+        { TrackerCategory.OuterWilds, "PlanetOW" },
+        { TrackerCategory.Stranger, "PlanetStranger" },
+        { TrackerCategory.Dreamworld, "PlanetDreamworld" },
+    };
+
     private void SelectSelectionItem(int index)
     {
-        // toggle visibility of icons so only the currently selected planet or emblem is visible
-        for (int i = 0; i < icons.Count; i++)
-        {
-            icons.ElementAt(i).Value.SetActive(i == index);
-        }
+        TrackerCategory category = displayedCategories[index];
+
+        string iconToShow = categoryToIcon[category];
+        foreach (var (name, go) in icons)
+            go.SetActive(name == iconToShow);
+        // TODO: story mod logos?
+
         if (index == 0)
         {
             missionGroup.SetActive(true);
@@ -449,19 +454,6 @@ public class APChecklistMode : ShipLogMode
             float checkedLocs;
             float accessLocs;
             float allLocs;
-            TrackerCategory category = TrackerCategory.All;
-            switch (index)
-            {
-                case 1: category = TrackerCategory.HourglassTwins; break;
-                case 2: category = TrackerCategory.TimberHearth; break;
-                case 3: category = TrackerCategory.BrittleHollow; break;
-                case 4: category = TrackerCategory.GiantsDeep; break;
-                case 5: category = TrackerCategory.DarkBramble; break;
-                case 6: category = TrackerCategory.OuterWilds; break;
-                // TODO: story mods break this assumption
-                case 7: category = TrackerCategory.Stranger; break;
-                case 8: category = TrackerCategory.Dreamworld; break;
-            }
             checkedLocs = Tracker.logic.GetCheckedCount(category);
             accessLocs = Tracker.logic.GetAccessibleCount(category);
             allLocs = Tracker.logic.GetTotalCount(category);
