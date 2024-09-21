@@ -43,7 +43,7 @@ public class ArchConsoleManager : MonoBehaviour
     private bool pauseConsoleNeedsUpdate = false;
     private bool meditateTextHasBeenShortened = false;
 
-    public List<string> WakeupConsoleMessages = new();
+    public static List<string> WakeupConsoleMessages = new();
 
     // Console can only handle ~65000 vertices
     // As there's 4 vertices per character, we can only support a quarter of this
@@ -326,7 +326,10 @@ public class ArchConsoleManager : MonoBehaviour
         }
         else irrelevantToPlayer = false;
 
-        AddConsoleText(inGameConsoleMessage, irrelevantToPlayer, soundToPlay, false);
+        if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
+            AddConsoleText(inGameConsoleMessage, irrelevantToPlayer, soundToPlay, false);
+        else
+            WakeupConsoleMessages.Add(inGameConsoleMessage);
     }
 
     /// <summary>

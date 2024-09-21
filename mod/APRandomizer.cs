@@ -220,7 +220,7 @@ public class APRandomizer : ModBehaviour
         // compatibility warnings
         if (SlotEnabledEotEDLC() && EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
         {
-            InGameAPConsole.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
+            ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
                 $"but <color=red>the DLC is not installed</color>.");
         }
         if (SlotData.ContainsKey("apworld_version"))
@@ -229,7 +229,7 @@ public class APRandomizer : ModBehaviour
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
             var mod_version = "0.3.0";
             if (apworld_version != mod_version)
-                InGameAPConsole.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
         }
 
@@ -271,12 +271,20 @@ public class APRandomizer : ModBehaviour
         APSession.Items.ItemReceived += APSession_ItemReceived;
         APSession.MessageLog.OnMessageReceived += APSession_OnMessageReceived;
 
-        // ensure that our local locations state matches the AP server by simply re-reporting all checked locations
+        // ensure that our local locations state matches the AP server by simply re-reporting any "missed" locations
         // it's important to do this after setting up the event handlers above, since a missed location will lead to AP sending us an item and a message
-        var allCheckedLocationIds = SaveData.locationsChecked
+        var locallyCheckedLocationIds = SaveData.locationsChecked
             .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
             .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
-        APSession.Locations.CompleteLocationChecks(allCheckedLocationIds.ToArray());
+        var apServerCheckedLocationIds = APSession.Locations.AllLocationsChecked;
+        var locationIdsMissedByServer = locallyCheckedLocationIds.Where(id => !apServerCheckedLocationIds.Contains(id));
+        if (locationIdsMissedByServer.Any())
+        {
+            ArchConsoleManager.WakeupConsoleMessages.Add($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
+                locationIdsMissedByServer.Join(id => "- " + LocationNames.locationNames[LocationNames.archipelagoIdToLocation[id]], "\n") +
+                $"\nSending them to the AP server now.");
+            APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
+        }
 
         OnSessionOpened(APSession);
 
@@ -353,7 +361,7 @@ public class APRandomizer : ModBehaviour
     {
         if (!ItemNames.archipelagoIdToItem.ContainsKey(itemId))
         {
-            InGameAPConsole.WakeupConsoleMessages.Add(
+            ArchConsoleManager.WakeupConsoleMessages.Add(
                 $"<color=red>Warning</color>: This mod does not recognize the item id {itemId}, which the Archipelago server just sent us. " +
                 $"Check if your mod version matches the .apworld version used to generate this multiworld.");
             return false;
