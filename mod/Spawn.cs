@@ -20,20 +20,14 @@ internal class Spawn
 
     public static void ApplySlotData(long spawnChoiceSlotData)
     {
-        if (spawnChoiceSlotData == 0)
+        switch (spawnChoiceSlotData)
         {
-            // do nothing, let the base game handle vanilla spawn
-        }
-        else
-        {
-            switch (spawnChoiceSlotData)
-            {
-                case /*"hourglass_twins"*/ 1: spawnChoice = SpawnChoice.HourglassTwins; break;
-                case /*"timber_hearth"*/   2: spawnChoice = SpawnChoice.TimberHearth; break;
-                case /*"brittle_hollow"*/  3: spawnChoice = SpawnChoice.BrittleHollow; break;
-                case /*"giants_deep"*/     4: spawnChoice = SpawnChoice.GiantsDeep; break;
-                case /*"stranger"*/        5: spawnChoice = SpawnChoice.Stranger; break;
-            }
+            case /*"vanilla"*/         0: spawnChoice = SpawnChoice.Vanilla; break;
+            case /*"hourglass_twins"*/ 1: spawnChoice = SpawnChoice.HourglassTwins; break;
+            case /*"timber_hearth"*/   2: spawnChoice = SpawnChoice.TimberHearth; break;
+            case /*"brittle_hollow"*/  3: spawnChoice = SpawnChoice.BrittleHollow; break;
+            case /*"giants_deep"*/     4: spawnChoice = SpawnChoice.GiantsDeep; break;
+            case /*"stranger"*/        5: spawnChoice = SpawnChoice.Stranger; break;
         }
     }
 
