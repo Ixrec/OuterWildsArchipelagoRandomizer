@@ -469,10 +469,9 @@ public class Logic
     public List<string> GetLogicDisplayStrings(TrackerLocationData data, bool includeLocationName = false)
     {
         // When recursing "up" through the regions needed to reach a certain location, these are
-        // the base cases where we want to stop and not explain any further, because:
-        // 1) most (all?) cycles involve these regions, and it's nice to not have to deal with cycles
-        // 2) it's just too verbose to explain things that indirectly affect nearly every location
-        // like "Launch Codes get you to Space" or "Warp Codes get you to any other planet"
+        // the base cases where we want to stop and not explain any further, because it's
+        // just too verbose to explain things that indirectly affect nearly every location
+        // like "Launch Codes get you to Space" or "Warp Codes get you to any other planet".
         string[] regionLogicDenylist = [
             "Menu",
             "Space",
