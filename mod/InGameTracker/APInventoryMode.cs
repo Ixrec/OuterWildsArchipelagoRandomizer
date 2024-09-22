@@ -171,7 +171,7 @@ public class APInventoryMode : ShipLogMode
         string itemID = entry.ID;
         Sprite sprite = TrackerManager.GetSprite(itemID);
         // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
-        if (entry.HasOneOrMore())
+        if (entry.HasOneOrMore() || (entry.ApItem == Item.Translator && APRandomizer.SlotEnabledSplitTranslator()))
         {
             if (sprite != null)
             {

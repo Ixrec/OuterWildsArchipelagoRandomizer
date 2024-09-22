@@ -85,6 +85,13 @@ public enum Item
     LimboWarpPatch,
     ProjectionRangePatch,
     AlarmBypassPatch,
+
+    TranslatorHGT,
+    TranslatorTH,
+    TranslatorBH,
+    TranslatorGD,
+    TranslatorDB,
+    TranslatorOther,
 };
 
 public static class ItemNames
@@ -163,6 +170,13 @@ public static class ItemNames
         { Item.LimboWarpPatch, "Limbo Warp Patch" },
         { Item.ProjectionRangePatch, "Projection Range Patch" },
         { Item.AlarmBypassPatch, "Alarm Bypass Patch" },
+
+        { Item.TranslatorHGT, "Translator (Hourglass Twins)" },
+        { Item.TranslatorTH, "Translator (Timber Hearth)" },
+        { Item.TranslatorBH, "Translator (Brittle Hollow)" },
+        { Item.TranslatorGD, "Translator (Giant's Deep)" },
+        { Item.TranslatorDB, "Translator (Dark Bramble)" },
+        { Item.TranslatorOther, "Translator (Other)" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);

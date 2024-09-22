@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -456,7 +457,11 @@ public class Logic
     private bool CanAccess(TrackerRequirement requirement)
     {
         if (!string.IsNullOrEmpty(requirement.item))
+        {
+            if (requirement.item.StartsWith("Translator (") && !APRandomizer.SlotEnabledSplitTranslator())
+                return ItemsCollected.ContainsKey(Item.Translator);
             return ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item]);
+        }
         if (!string.IsNullOrEmpty(requirement.location))
             return IsAccessible(TrackerLocations[requirement.location]);
         if (!string.IsNullOrEmpty(requirement.region))
@@ -588,8 +593,12 @@ public class Logic
             {
                 bool canAccess = CanAccess(req);
 
+                string itemName = req.item;
+                if (itemName.StartsWith("Translator (") && !APRandomizer.SlotEnabledSplitTranslator())
+                    itemName = "Translator";
+
                 string reqStr = (canAccess ? "<color=green>" : "<color=maroon>") +
-                    $"(Item: {req.item})</color>";
+                    $"(Item: {itemName})</color>";
 
                 reqStrings.Add(reqStr);
             }

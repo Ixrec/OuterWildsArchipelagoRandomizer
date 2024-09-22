@@ -34,7 +34,8 @@ public class APInventoryDescriptions
 
         if (!itemEntry.HasOneOrMore())
         {
-            infos.Add("You have not obtained this yet.");
+            if (!(itemEntry.ApItem == Item.Translator && APRandomizer.SlotEnabledSplitTranslator()))
+                infos.Add("You have not obtained this yet.");
         }
 
         // We currently only have one Inventory entry that doesn't correspond to an AP item: the OWV frequency
@@ -117,6 +118,13 @@ public class APInventoryDescriptions
                     break;
                 case Item.Translator:
                     infos.Add("The translator tool that you and Hal have been working on since Feldspar brought that Nomai wall to the museum.");
+                    if (APRandomizer.SlotEnabledSplitTranslator())
+                    {
+                        infos.Add("Because this world was generated with split_translator: true, this tool is broken into six pieces:");
+                        foreach (var tl in new List<Item> { Item.TranslatorHGT, Item.TranslatorTH, Item.TranslatorBH, Item.TranslatorGD, Item.TranslatorDB, Item.TranslatorOther })
+                            infos.Add(((inventory.ContainsKey(tl) && inventory[tl] > 0) ? "[X] " : "[ ] ") + ItemNames.ItemToName(tl));
+                        infos.Add("Texts that can be translated from multiple parts of the solar system use the translator for their initial position, e.g. the Tower of Quantum Knowledge text walls use Translator (Brittle Hollow) even when it's at White Hole Station.");
+                    }
                     break;
                 case Item.Signalscope:
                     infos.Add("A fancy combination of telescope and signal receiver.");

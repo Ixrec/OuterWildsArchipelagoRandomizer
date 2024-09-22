@@ -51,6 +51,8 @@ public class APRandomizer : ModBehaviour
         SlotData.ContainsKey("enable_eote_dlc") && (long)SlotData["enable_eote_dlc"] > 0;
     public static bool SlotEnabledDLCOnly() =>
         SlotData.ContainsKey("dlc_only") && (long)SlotData["dlc_only"] > 0;
+    public static bool SlotEnabledSplitTranslator() =>
+        SlotData.ContainsKey("split_translator") && (long)SlotData["split_translator"] == 1;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
@@ -253,6 +255,8 @@ public class APRandomizer : ModBehaviour
 
         if (SlotData.ContainsKey("warps"))
             WarpPlatforms.ApplySlotData(SlotData["warps"]);
+
+        Translator.splitTranslator = SlotEnabledSplitTranslator();
 
         // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
         // but in that case the ItemReceived event handler will be invoked as many times as it takes to get up to date.
