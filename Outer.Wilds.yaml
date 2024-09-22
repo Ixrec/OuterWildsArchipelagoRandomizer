@@ -55,8 +55,8 @@ Outer Wilds:
     # 
     # The idea is that non-vanilla spawns will require you to play "shipless" for a while, possibly using Nomai Warp Codes to visit other planets. The ship will still spawn nearby, so you can use the ship log/tracker right away.
     # When playing with non-vanilla spawns, we recommend:
-    # - Consider enabling randomize_warp_pads for greater variety if you get warp codes early
-    # - Consider enabling early_key_item in non-solo games, or else your first session may end after only 4-10 checks
+    # - Consider enabling randomize_warp_platforms for greater variety if you get warp codes early
+    # - Consider using early_key_item, especially in non-solo games
     # - Install a fast-forward mod such as Alter Time or Cheat And Debug Mod, since you may need to do a lot of waiting for e.g. Ash Twin sand or Giant's Deep islands
     vanilla: 50
     hourglass_twins: 0
@@ -64,11 +64,14 @@ Outer Wilds:
     brittle_hollow: 0
     giants_deep: 0
     stranger: 0
+    random_non_vanilla: 0
 
   early_key_item:
-    # Ensure that either Translator, Nomai Warp Codes, or Launch Codes will be somewhere in sphere 1 and
-    # in your own world, guaranteeing you can find it without waiting on other players.
-    # `any` randomly selects one of these items to place early.
+    # Ensure that one of Translator, Nomai Warp Codes, Launch Codes, or Stranger Light Modulator will be somewhere
+    # in sphere 1 and in your own world, guaranteeing you can find it without waiting on other players.
+    # 
+    # `any` will randomly select one of these items that's relevant to your spawn (especially useful with `spawn: random`).
+    # For base game spawns it will choose Translator, NWC or LC, and for stranger spawns it will choose LC or SLM.
     # 
     # Recommended for games with non-vanilla spawns, especially async games.
     # In addition, without this AP seems to almost always put Launch Codes in sphere 1, so `any` also helps increase variety.
@@ -77,6 +80,7 @@ Outer Wilds:
     translator: 0
     nomai_warp_codes: 0
     launch_codes: 0
+    stranger_light_modulator: 0
 
   enable_eote_dlc:
     # Incorporates Echoes of the Eye content into the randomizer with an additional 10 items and 34 locations.
@@ -84,6 +88,14 @@ Outer Wilds:
     # 
     # When this is enabled, the randomizer mod will give you the "The Stranger" ship log automatically,
     # so you can fly there without repeating the satellite puzzle (once you have Launch Codes).
+    'false': 50
+    'true': 0
+
+  dlc_only:
+    # Sets enable_eote_dlc to true, spawn to stranger, goal to echoes_of_the_eye (see descriptions of those options),
+    # and then prevents generation of all the base game locations and of many items not useful in the DLC.
+    # 
+    # Not compatible with story mods (once those are implemented).
     'false': 50
     'true': 0
 
@@ -140,7 +152,8 @@ Outer Wilds:
 
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
-    # The "default" option will not include deaths to meditation, the supernova or the time loop ending.
+    # The "default" option will not include deaths to meditation, the supernova, the time loop ending,
+    # or 'deaths' that merely enter or exit the dreamworld.
     # Be aware that the game mod provides a 'Death Link Override' setting, in case you change your mind later.
     'off': 50
     default: 0
