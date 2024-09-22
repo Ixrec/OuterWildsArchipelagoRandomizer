@@ -225,6 +225,11 @@ public class DeathLinkManager
             APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DeathManager._isDying is already true");
             return;
         }
+        if (Locator.GetDreamWorldController().IsExitingDream())
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DreamWorldController.IsExitingDream() is true");
+            return;
+        }
 
         if (effectiveSetting == DeathLinkSetting.Off)
         {
