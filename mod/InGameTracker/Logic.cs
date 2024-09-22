@@ -488,6 +488,8 @@ public class Logic
         ];
 
         List<string> unexplainedRegions = new List<string> { data.region };
+        unexplainedRegions.AddRange(data.requires.Where(req => req.region != null).Select(req => req.region));
+
         Dictionary<string, string> regionNameToLogicDisplayString = new();
 
         while (unexplainedRegions.Count > 0)
