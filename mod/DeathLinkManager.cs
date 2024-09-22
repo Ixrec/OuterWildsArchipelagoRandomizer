@@ -212,28 +212,28 @@ public class DeathLinkManager
         // if this death was sent to us by another player's death link, do nothing, since that would start an infinite death loop
         if (manualDeathInProgress)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because this is a death we received from another player");
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death because this is a death we received from another player");
             return;
         }
         if (__instance._isDead)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DeathManager._isDead is already true");
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death because DeathManager._isDead is already true");
             return;
         }
         if (__instance._isDying)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DeathManager._isDying is already true");
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death because DeathManager._isDying is already true");
             return;
         }
         if (Locator.GetDreamWorldController().IsExitingDream())
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death because DreamWorldController.IsExitingDream() is true");
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death because DreamWorldController.IsExitingDream() is true");
             return;
         }
 
         if (effectiveSetting == DeathLinkSetting.Off)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is off");
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is off");
             return;
         }
 
@@ -246,7 +246,20 @@ public class DeathLinkManager
         if (effectiveSetting == DeathLinkSetting.Default) {
             if (deathType == DeathType.Meditation || deathType == DeathType.Supernova || deathType == DeathType.TimeLoop || deathType == DeathType.BigBang)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer ignoring {deathType} death since death_link is only set to Default");
+                APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is only set to Default");
+                return;
+            }
+            // this condition is copy-pasted from the KillPlayer() method
+            if (PlayerState.InDreamWorld() && deathType != DeathType.Dream && deathType != DeathType.DreamExplosion && deathType != DeathType.Supernova && deathType != DeathType.TimeLoop && deathType != DeathType.Meditation)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is only set to Default, " +
+                    $"and this 'death' will merely exit the dreamworld.");
+                return;
+            }
+            if (__instance.CheckShouldWakeInDreamWorld())
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is only set to Default, " +
+                    $"and this 'death' will merely enter the dreamworld.");
                 return;
             }
         }
