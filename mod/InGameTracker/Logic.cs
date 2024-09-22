@@ -455,15 +455,18 @@ public class Logic
 
     private bool CanAccess(TrackerRequirement requirement)
     {
-        // we don't have the item
-        if (!string.IsNullOrEmpty(requirement.item) && !ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item])) return false;
-        // we can't reach the location
-        if (!string.IsNullOrEmpty(requirement.location) && !IsAccessible(TrackerLocations[requirement.location])) return false;
-        // we can't reach the region
-        if (!string.IsNullOrEmpty(requirement.region) && (!CanAccessRegion.TryGetValue(requirement.region, out bool canAccessRegion) || !canAccessRegion)) return false;
-        // we don't fulfill any of the AnyOf requirements
-        if (requirement.anyOf != null) if (!AnyOfAccess(requirement.anyOf)) return false;
-        return true;
+        if (!string.IsNullOrEmpty(requirement.item))
+            return ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item]);
+        if (!string.IsNullOrEmpty(requirement.location))
+            return IsAccessible(TrackerLocations[requirement.location]);
+        if (!string.IsNullOrEmpty(requirement.region))
+        {
+            CanAccessRegion.TryGetValue(requirement.region, out bool canAccessRegion);
+            return canAccessRegion;
+        }
+        if (requirement.anyOf != null)
+            return AnyOfAccess(requirement.anyOf);
+        throw new ArgumentException($"CanAccess called with invalid TrackerRequirement: {requirement}");
     }
 
     public List<string> GetLogicDisplayStrings(TrackerLocationData data, bool includeLocationName = false)
