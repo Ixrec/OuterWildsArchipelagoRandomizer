@@ -28,8 +28,8 @@ internal class Spacesuit
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship != null)
         {
-            var hangingSuitIR = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/InteractVolume")?.GetComponent<MultiInteractReceiver>();
-            hangingSuitIR.EnableSingleInteraction(hasSpacesuit, 0);
+            var spv = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear").GetComponent<SuitPickupVolume>();
+            spv._interactVolume.EnableSingleInteraction(hasSpacesuit, spv._pickupSuitCommandIndex);
         }
     }
 
@@ -40,12 +40,28 @@ internal class Spacesuit
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship != null)
         {
-            var hangingSuitModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_PlayerSuit_Hanging")?.gameObject;
-            hangingSuitModel.SetActive(spacesuitVisible);
+            var gear = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear");
 
-            // the scout launcher model lying on the floor of the ship counts as part of the spacesuit,
-            // because we always want it to be shown or hidden whenever the suit is
-            var scoutLauncherOnFloorModel = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear/EquipmentGeo/Props_HEA_ProbeLauncher")?.gameObject;
+            var spv = gear.GetComponent<SuitPickupVolume>();
+            if (spv._containsSuit != spacesuitVisible)
+            {
+                // a highly simplified version of the parts of SuitPickupVolume::OnPressInteract() we care about, e.g. without the SuitUp() call
+                spv._containsSuit = !spv._containsSuit;
+                spv._interactVolume.ChangePrompt(spv._containsSuit ? UITextType.SuitUpPrompt : UITextType.ReturnSuitPrompt, spv._pickupSuitCommandIndex);
+                spv._suitOWCollider?.SetActivation(spv._containsSuit);
+            }
+
+            // Unfortunately the SPV doesn't seem to control most of the objects that toggle visibility when you don and doff the suit,
+            // so we still have to manually toggle the rest of these.
+            // For some reason all of the relevant objects are grouped together under PlayerSuit_Hanging *except* for the ProbeLauncher.
+
+            // When you don/doff the suit, the game toggles each individual object's visibility one by one, never the whole group.
+            // We mimic that here to avoid breaking the Remove Suit/Suit Up interactions.
+            var hangingSuitModel = gear.Find("EquipmentGeo/Props_HEA_PlayerSuit_Hanging")?.gameObject;
+            for (int c = 0; c < hangingSuitModel.transform.childCount; c++)
+                hangingSuitModel.transform.GetChild(c).gameObject.SetActive(spacesuitVisible);
+
+            var scoutLauncherOnFloorModel = gear.Find("EquipmentGeo/Props_HEA_ProbeLauncher")?.gameObject;
             scoutLauncherOnFloorModel.SetActive(spacesuitVisible);
         }
     }
