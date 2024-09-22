@@ -223,7 +223,13 @@ internal class LocationTriggers
         {
             case Item.LaunchCodes: LaunchCodes.hasLaunchCodes = (count > 0); break;
             case Item.Spacesuit: Spacesuit.hasSpacesuit = (count > 0); break;
-            case Item.Translator: Translator.hasTranslator = (count > 0); break;
+            case Item.Translator: Translator.hasRegularTranslator = (count > 0); break;
+            case Item.TranslatorHGT: Translator.hasHGTTranslator = (count > 0); break;
+            case Item.TranslatorTH: Translator.hasTHTranslator = (count > 0); break;
+            case Item.TranslatorBH: Translator.hasBHTranslator = (count > 0); break;
+            case Item.TranslatorGD: Translator.hasGDTranslator = (count > 0); break;
+            case Item.TranslatorDB: Translator.hasDBTranslator = (count > 0); break;
+            case Item.TranslatorOther: Translator.hasOtherTranslator = (count > 0); break;
             case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
             case Item.Scout: Scout.hasScout = (count > 0); break;
             case Item.CameraGM: GhostMatter.hasGhostMatterKnowledge = (count > 0); break;
