@@ -184,37 +184,37 @@ public static class ItemNames
     public static string ItemToName(Item item) => itemNames[item];
     public static Item NameToItem(string itemName) => itemNamesReversed[itemName];
 
-    public static Dictionary<SignalFrequency, Item> frequencyToItem = new Dictionary<SignalFrequency, Item>
+    public static Dictionary<string, Item> frequencyToItem = new Dictionary<string, Item>
     {
-        { SignalFrequency.EscapePod, Item.FrequencyDB },
-        { SignalFrequency.Quantum, Item.FrequencyQF },
-        { SignalFrequency.HideAndSeek, Item.FrequencyHS },
-        { SignalFrequency.Radio, Item.FrequencyDSR },
+        { "EscapePod", Item.FrequencyDB },
+        { "Quantum", Item.FrequencyQF },
+        { "HideAndSeek", Item.FrequencyHS },
+        { "Radio", Item.FrequencyDSR },
     };
-    public static Dictionary<Item, SignalFrequency> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
+    public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 
-    public static Dictionary<SignalName, Item> signalToItem = new Dictionary<SignalName, Item>
+    public static Dictionary<string, Item> signalToItem = new Dictionary<string, Item>
     {
-        { SignalName.Traveler_Chert, Item.SignalChert },
-        { SignalName.Traveler_Esker, Item.SignalEsker },
-        { SignalName.Traveler_Riebeck, Item.SignalRiebeck },
-        { SignalName.Traveler_Gabbro, Item.SignalGabbro },
-        { SignalName.Traveler_Feldspar, Item.SignalFeldspar },
-        { SignalName.Quantum_TH_MuseumShard, Item.SignalMuseumShard },
-        { SignalName.Quantum_TH_GroveShard, Item.SignalGroveShard },
-        { SignalName.Quantum_CT_Shard, Item.SignalCaveShard },
-        { SignalName.Quantum_BH_Shard, Item.SignalTowerShard },
-        { SignalName.Quantum_GD_Shard, Item.SignalIslandShard },
-        { SignalName.Quantum_QM, Item.SignalQM },
-        { SignalName.EscapePod_BH, Item.SignalEP1 },
-        { SignalName.EscapePod_CT, Item.SignalEP2 },
-        { SignalName.EscapePod_DB, Item.SignalEP3 },
-        { SignalName.HideAndSeek_Galena, Item.SignalGalena },
-        { SignalName.HideAndSeek_Tephra, Item.SignalTephra },
-        { SignalName.RadioTower, Item.SignalDSRTower },
-        { SignalName.MapSatellite, Item.SignalDSRSatellite },
+        { "Traveler_Chert", Item.SignalChert },
+        { "Traveler_Esker", Item.SignalEsker },
+        { "Traveler_Riebeck", Item.SignalRiebeck },
+        { "Traveler_Gabbro", Item.SignalGabbro },
+        { "Traveler_Feldspar", Item.SignalFeldspar },
+        { "Quantum_TH_MuseumShard", Item.SignalMuseumShard },
+        { "Quantum_TH_GroveShard", Item.SignalGroveShard },
+        { "Quantum_CT_Shard", Item.SignalCaveShard },
+        { "Quantum_BH_Shard", Item.SignalTowerShard },
+        { "Quantum_GD_Shard", Item.SignalIslandShard },
+        { "Quantum_QM", Item.SignalQM },
+        { "EscapePod_BH", Item.SignalEP1 },
+        { "EscapePod_CT", Item.SignalEP2 },
+        { "EscapePod_DB", Item.SignalEP3 },
+        { "HideAndSeek_Galena", Item.SignalGalena },
+        { "HideAndSeek_Tephra", Item.SignalTephra },
+        { "RadioTower", Item.SignalDSRTower },
+        { "MapSatellite", Item.SignalDSRSatellite },
     };
-    public static Dictionary<Item, SignalName> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
+    public static Dictionary<Item, string> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 
     // The OW autosplitter can be driven by persistent condition changes, so these enable autosplitting with the randomizer.
     // For now, we define a condition for every progression item.
