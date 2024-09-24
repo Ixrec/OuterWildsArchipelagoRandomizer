@@ -104,9 +104,9 @@ internal class Spawn
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.SpawnPlayer))]
     public static bool PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
     {
-        if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)
+        if (!APRandomizer.IsVanillaSystemLoaded())
         {
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're not in the solar system");
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're not in the vanilla solar system");
             return true; // let vanilla impl run
         }
         if (spawnChoice == SpawnChoice.Vanilla || spawnChoice == SpawnChoice.TimberHearth)
