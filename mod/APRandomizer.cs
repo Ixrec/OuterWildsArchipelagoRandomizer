@@ -58,6 +58,11 @@ public class APRandomizer : ModBehaviour
     public static ArchConsoleManager InGameAPConsole;
     public static TrackerManager Tracker;
     public static LocationScouter LocationScouter;
+    public static INewHorizons? NewHorizonsAPI = null;
+
+    public static bool IsVanillaSystemLoaded() =>
+        LoadManager.GetCurrentScene() == OWScene.SolarSystem &&
+        (NewHorizonsAPI == null || NewHorizonsAPI.GetCurrentStarSystem() == "SolarSystem");
 
     /// <summary>
     /// Runs whenever a new session is created
@@ -446,6 +451,8 @@ public class APRandomizer : ModBehaviour
         };
 
         SetupSaveData();
+
+        NewHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
 
         OWMLModConsole.WriteLine($"Loaded Ixrec's Archipelago APRandomizer", OWML.Common.MessageType.Success);
 
