@@ -297,6 +297,11 @@ internal class SignalsAndFrequencies
         if (signalToFrequency.TryGetValue(__instance.GetName(), out var f) && f == SignalFrequency.HideAndSeek)
             return true;
 
+        // We only want to block long-range detection of signals which have AP items unlocking that signal
+        // and thus will be added to usableSignals later. Most story mod signals do not have items.
+        if (!ItemNames.signalToItem.ContainsKey(__instance.GetName()))
+            return true;
+
         // copy-pasted from several early returns in the vanilla code
         __instance._signalStrength = 0f;
         __instance._degreesFromScope = 180f;
