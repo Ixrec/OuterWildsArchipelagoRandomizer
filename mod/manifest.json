@@ -14,5 +14,8 @@
   "warning": {
     "title": "This randomizer requires an Archipelago server",
     "body": "If you're not familiar with generating and hosting Archipelago multiworlds, click Show On Website in the mod manager for detailed setup instructions."
-  }
+  },
+  "conflicts": [
+    "FancyFurret.LoreTracker"
+  ]
 }
