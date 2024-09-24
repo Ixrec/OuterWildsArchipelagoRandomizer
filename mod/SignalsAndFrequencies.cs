@@ -19,69 +19,69 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class SignalsAndFrequencies
 {
-    public static Dictionary<SignalName, SignalFrequency> signalToFrequency = new Dictionary<SignalName, SignalFrequency>{
-        { SignalName.Traveler_Chert, SignalFrequency.Traveler },
-        { SignalName.Traveler_Esker, SignalFrequency.Traveler },
-        { SignalName.Traveler_Riebeck, SignalFrequency.Traveler },
-        { SignalName.Traveler_Gabbro, SignalFrequency.Traveler },
-        { SignalName.Traveler_Feldspar, SignalFrequency.Traveler },
-        { SignalName.Quantum_TH_MuseumShard, SignalFrequency.Quantum },
-        { SignalName.Quantum_TH_GroveShard, SignalFrequency.Quantum },
-        { SignalName.Quantum_CT_Shard, SignalFrequency.Quantum },
-        { SignalName.Quantum_BH_Shard, SignalFrequency.Quantum },
-        { SignalName.Quantum_GD_Shard, SignalFrequency.Quantum },
-        { SignalName.Quantum_QM, SignalFrequency.Quantum },
-        { SignalName.EscapePod_CT, SignalFrequency.EscapePod },
-        { SignalName.EscapePod_BH, SignalFrequency.EscapePod },
-        { SignalName.EscapePod_DB, SignalFrequency.EscapePod },
-        { SignalName.HideAndSeek_Galena, SignalFrequency.HideAndSeek },
-        { SignalName.HideAndSeek_Tephra, SignalFrequency.HideAndSeek },
-        { SignalName.RadioTower, SignalFrequency.Radio },
-        { SignalName.MapSatellite, SignalFrequency.Radio },
+    public static Dictionary<string, string> signalToFrequency = new Dictionary<string, string>{
+        { "Traveler_Chert", "Traveler" },
+        { "Traveler_Esker", "Traveler" },
+        { "Traveler_Riebeck", "Traveler" },
+        { "Traveler_Gabbro", "Traveler" },
+        { "Traveler_Feldspar", "Traveler" },
+        { "Quantum_TH_MuseumShard", "Quantum" },
+        { "Quantum_TH_GroveShard", "Quantum" },
+        { "Quantum_CT_Shard", "Quantum" },
+        { "Quantum_BH_Shard", "Quantum" },
+        { "Quantum_GD_Shard", "Quantum" },
+        { "Quantum_QM", "Quantum" },
+        { "EscapePod_CT", "EscapePod" },
+        { "EscapePod_BH", "EscapePod" },
+        { "EscapePod_DB", "EscapePod" },
+        { "HideAndSeek_Galena", "HideAndSeek" },
+        { "HideAndSeek_Tephra", "HideAndSeek" },
+        { "RadioTower", "Radio" },
+        { "MapSatellite", "Radio" },
         // left out Default, WarpCore and Statue frequencies because I don't believe they get used
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
     };
 
-    public static Dictionary<SignalFrequency, HashSet<SignalName>> frequencyToSignals = new Dictionary<SignalFrequency, HashSet<SignalName>>
+    public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
     {
-        { SignalFrequency.Traveler, new HashSet<SignalName>{
-            SignalName.Traveler_Chert,
-            SignalName.Traveler_Esker,
-            SignalName.Traveler_Riebeck,
-            SignalName.Traveler_Gabbro,
-            SignalName.Traveler_Feldspar,
+        { "Traveler", new HashSet<string>{
+            "Traveler_Chert",
+            "Traveler_Esker",
+            "Traveler_Riebeck",
+            "Traveler_Gabbro",
+            "Traveler_Feldspar",
         } },
-        { SignalFrequency.Quantum, new HashSet<SignalName>{
-            SignalName.Quantum_TH_MuseumShard,
-            SignalName.Quantum_TH_GroveShard,
-            SignalName.Quantum_CT_Shard,
-            SignalName.Quantum_BH_Shard,
-            SignalName.Quantum_GD_Shard,
-            SignalName.Quantum_QM,
+        { "Quantum", new HashSet<string>{
+            "Quantum_TH_MuseumShard",
+            "Quantum_TH_GroveShard",
+            "Quantum_CT_Shard",
+            "Quantum_BH_Shard",
+            "Quantum_GD_Shard",
+            "Quantum_QM",
         } },
-        { SignalFrequency.EscapePod, new HashSet<SignalName>{
-            SignalName.EscapePod_BH,
-            SignalName.EscapePod_CT,
-            SignalName.EscapePod_DB,
+        { "EscapePod", new HashSet<string>{
+            "EscapePod_BH",
+            "EscapePod_CT",
+            "EscapePod_DB",
         } },
-        { SignalFrequency.HideAndSeek, new HashSet<SignalName>{
-            SignalName.HideAndSeek_Galena,
-            SignalName.HideAndSeek_Tephra,
+        { "HideAndSeek", new HashSet<string>{
+            "HideAndSeek_Galena",
+            "HideAndSeek_Tephra",
         } },
-        { SignalFrequency.Radio, new HashSet<SignalName>{
-            SignalName.RadioTower,
-            SignalName.MapSatellite,
+        { "Radio", new HashSet<string>{
+            "RadioTower",
+            "MapSatellite",
         } }
     };
 
-    public static HashSet<SignalFrequency> usableFrequencies = new();
-    public static HashSet<SignalName> usableSignals = new();
-    public static void SetFrequencyUsable(SignalFrequency frequency, bool usable)
+    public static HashSet<string> usableFrequencies = new();
+    public static HashSet<string> usableSignals = new();
+    public static void SetFrequencyUsable(string frequency, bool usable)
     {
         if (usable) usableFrequencies.Add(frequency); else usableFrequencies.Remove(frequency);
     }
-    public static void SetSignalUsable(SignalName signal, bool usable)
+    public static void SetSignalUsable(string signal, bool usable)
     {
         if (usable) usableSignals.Add(signal); else usableSignals.Remove(signal);
     }
@@ -96,10 +96,10 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsFrequency))]
     public static bool PlayerData_KnowsFrequency_Prefix(SignalFrequency frequency, ref bool __result)
     {
-        if (!ItemNames.frequencyToItem.ContainsKey(frequency))
+        if (!ItemNames.frequencyToItem.ContainsKey(frequency.ToString()))
             return true; // not a frequency we've turned into an AP item & location, let the vanilla implementation handle it
 
-        __result = usableFrequencies.Contains(frequency); // override return value
+        __result = usableFrequencies.Contains(frequency.ToString()); // override return value
         return false; // skip vanilla implementation
     }
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
@@ -116,14 +116,14 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
-        if (!ItemNames.signalToItem.ContainsKey(signalName))
+        if (!ItemNames.signalToItem.ContainsKey(signalName.ToString()))
             return true; // not a signal we've turned into an AP item & location, let the vanilla implementation handle it
 
         // if we let the game think the signal's known, then you won't be able to scan it,
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
-        var location = LocationNames.signalToLocation[signalName];
-        var isKnown = APRandomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName);
+        var location = LocationNames.signalToLocation[signalName.ToString()];
+        var isKnown = APRandomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName.ToString());
 
         __result = isKnown; // override return value
         return false; // skip vanilla implementation
@@ -141,18 +141,18 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnFrequency))]
     public static void PlayerData_LearnFrequency_Prefix(SignalFrequency frequency)
     {
-        if (LocationNames.frequencyToLocation.ContainsKey(frequency))
+        if (LocationNames.frequencyToLocation.ContainsKey(frequency.ToString()))
         {
-            var locationName = LocationNames.frequencyToLocation[frequency];
+            var locationName = LocationNames.frequencyToLocation[frequency.ToString()];
             LocationTriggers.CheckLocation(locationName);
         }
     }
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.LearnSignal))]
     public static void PlayerData_LearnSignal_Prefix(SignalName signalName)
     {
-        if (LocationNames.signalToLocation.ContainsKey(signalName))
+        if (LocationNames.signalToLocation.ContainsKey(signalName.ToString()))
         {
-            var locationName = LocationNames.signalToLocation[signalName];
+            var locationName = LocationNames.signalToLocation[signalName.ToString()];
             LocationTriggers.CheckLocation(locationName);
         }
     }
@@ -170,7 +170,7 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.IdentifyFrequency))]
     public static bool AudioSignal_IdentifyFrequency_Prefix(AudioSignal __instance)
     {
-        if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency(), out Location location))
+        if (!LocationNames.frequencyToLocation.TryGetValue(__instance.GetFrequency().ToString(), out Location location))
             return true;
 
         if (APRandomizer.SaveData.locationsChecked[location])
@@ -182,15 +182,15 @@ internal class SignalsAndFrequencies
     public static bool AudioSignal_IdentifySignal_Prefix(AudioSignal __instance)
     {
         var signal = __instance.GetName();
-        if (!LocationNames.signalToLocation.TryGetValue(signal, out Location signalLocation))
+        if (!LocationNames.signalToLocation.TryGetValue(signal.ToString(), out Location signalLocation))
             return true;
 
         // Because of all the different states you can be in with frequency item, frequency location,
         // signal item and signal location all being separate things you may or may not have,
         // there are corner cases where the vanilla "scanning a signal implies scanning the frequency"
         // doesn't work and we have to do a frequency check here instead of relying on IdentifyFrequency.
-        if (signalToFrequency.TryGetValue(signal, out var frequency))
-            if (LocationNames.frequencyToLocation.TryGetValue(frequency, out var frequencyLocation))
+        if (signalToFrequency.TryGetValue(signal.ToString(), out var frequency))
+            if (LocationNames.frequencyToLocation.TryGetValue(frequency.ToString(), out var frequencyLocation))
                 if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
                     LocationTriggers.CheckLocation(frequencyLocation);
 
@@ -210,7 +210,7 @@ internal class SignalsAndFrequencies
     public static bool AudioSignalDetectionTrigger_Update_Prefix(AudioSignalDetectionTrigger __instance)
     {
         var signalName = __instance._signal.GetName();
-        if (!LocationNames.signalToLocation.ContainsKey(signalName))
+        if (!LocationNames.signalToLocation.ContainsKey(signalName.ToString()))
             return true; // not a signal we've turned into an AP item & location, let the vanilla implementation handle it
 
         // isDetecting=false means this Update() is deciding whether to show Unidentified Signal Nearby,
@@ -221,13 +221,13 @@ internal class SignalsAndFrequencies
 
         // If this signal corresponds to an AP frequency item that we don't have yet,
         // prevent us from "detecting" and thus scanning it until we get that item.
-        if (signalToFrequency.TryGetValue(signalName, out var frequency))
-            if (frequency != SignalFrequency.Traveler)
+        if (signalToFrequency.TryGetValue(signalName.ToString(), out var frequency))
+            if (frequency != "Traveler")
                 if (!usableFrequencies.Contains(frequency) && mightDisplayUnidentifiedSignalMessage)
                     return false; // skip vanilla implementation
 
         // If the player has already scanned this signal, then don't display "Unidentified Signal Nearby"
-        var location = LocationNames.signalToLocation[signalName];
+        var location = LocationNames.signalToLocation[signalName.ToString()];
         if (APRandomizer.SaveData.locationsChecked[location] && mightDisplayUnidentifiedSignalMessage)
             return false; // skip vanilla implementation
 
@@ -279,7 +279,7 @@ internal class SignalsAndFrequencies
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.UpdateSignalStrength))]
     public static bool AudioSignal_UpdateSignalStrength_Prefix(AudioSignal __instance, Signalscope scope, float distToClosestScopeObstruction)
     {
-        if (usableSignals.Contains(__instance.GetName()))
+        if (usableSignals.Contains(__instance.GetName().ToString()))
             return true;
 
         // If this is the "Unidentified Signal Nearby" signal, then we do want it to be shown
@@ -294,12 +294,12 @@ internal class SignalsAndFrequencies
 
         // The Hide & Seek signals don't do the whole "Unidentified Signal Nearby" thing,
         // so we can't "hide them at long range" without breaking scanning them.
-        if (signalToFrequency.TryGetValue(__instance.GetName(), out var f) && f == SignalFrequency.HideAndSeek)
+        if (signalToFrequency.TryGetValue(__instance.GetName().ToString(), out var f) && f == "HideAndSeek")
             return true;
 
         // We only want to block long-range detection of signals which have AP items unlocking that signal
         // and thus will be added to usableSignals later. Most story mod signals do not have items.
-        if (!ItemNames.signalToItem.ContainsKey(__instance.GetName()))
+        if (!ItemNames.signalToItem.ContainsKey(__instance.GetName().ToString()))
             return true;
 
         // copy-pasted from several early returns in the vanilla code

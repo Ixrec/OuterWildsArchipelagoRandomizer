@@ -249,8 +249,8 @@ public class APInventoryMode : ShipLogMode
         if (ItemNames.itemToSignal.ContainsKey(item))
         {
             string frequency = "";
-            SignalFrequency sf = SignalsAndFrequencies.signalToFrequency[ItemNames.itemToSignal[item]];
-            if (sf == SignalFrequency.Traveler)
+            var sf = SignalsAndFrequencies.signalToFrequency[ItemNames.itemToSignal[item]];
+            if (sf == "Traveler")
                 frequency = "FrequencyOWV";
             else if (ItemNames.frequencyToItem.TryGetValue(sf, out var frequencyItem))
                 frequency = frequencyItem.ToString();

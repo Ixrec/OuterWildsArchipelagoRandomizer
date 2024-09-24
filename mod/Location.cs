@@ -964,37 +964,37 @@ public static class LocationNames
     public static string LocationToName(Location location) => locationNames[location];
     public static Location NameToLocation(string locationName) => locationNamesReversed[locationName];
 
-    public static Dictionary<SignalFrequency, Location> frequencyToLocation = new Dictionary<SignalFrequency, Location>{
-        { SignalFrequency.EscapePod, Location.FREQ_DISTRESS },
-        { SignalFrequency.Quantum, Location.FREQ_QUANTUM },
-        { SignalFrequency.HideAndSeek, Location.FREQ_HIDE_SEEK },
+    public static Dictionary<string, Location> frequencyToLocation = new Dictionary<string, Location>{
+        { "EscapePod", Location.FREQ_DISTRESS },
+        { "Quantum", Location.FREQ_QUANTUM },
+        { "HideAndSeek", Location.FREQ_HIDE_SEEK },
         // left out Default, WarpCore and Statue because I don't believe they get used, and Radio because I don't think we need another "scan any..." location
     };
-    public static Dictionary<Location, SignalFrequency> locationToFrequency = frequencyToLocation.ToDictionary(ftl => ftl.Value, ftl => ftl.Key);
+    public static Dictionary<Location, string> locationToFrequency = frequencyToLocation.ToDictionary(ftl => ftl.Value, ftl => ftl.Key);
 
-    public static Dictionary<SignalName, Location> signalToLocation = new Dictionary<SignalName, Location>{
-        { SignalName.Traveler_Chert, Location.ET_DRUM },
-        { SignalName.Traveler_Esker, Location.AR_WHISTLE },
-        { SignalName.Traveler_Riebeck, Location.BH_BANJO },
-        { SignalName.Traveler_Gabbro, Location.GD_FLUTE },
-        { SignalName.Traveler_Feldspar, Location.DB_HARMONICA },
-        { SignalName.Quantum_TH_MuseumShard, Location.TH_MS_SIGNAL },
-        { SignalName.Quantum_TH_GroveShard, Location.TH_GS_SIGNAL },
-        { SignalName.Quantum_CT_Shard, Location.ET_SHARD_SIGNAL },
-        { SignalName.Quantum_BH_Shard, Location.BH_SHARD_SIGNAL },
-        { SignalName.Quantum_GD_Shard, Location.GD_SHARD_SIGNAL },
-        { SignalName.Quantum_QM, Location.QM_SIGNAL },
-        { SignalName.EscapePod_BH, Location.BH_EP1_SIGNAL },
-        { SignalName.EscapePod_CT, Location.ET_EP2_SIGNAL },
-        { SignalName.EscapePod_DB, Location.DB_EP3_SIGNAL },
-        { SignalName.HideAndSeek_Galena, Location.TH_GALENA_SIGNAL },
-        { SignalName.HideAndSeek_Tephra, Location.TH_TEPHRA_SIGNAL },
-        { SignalName.RadioTower, Location.DSR_TOWER_SIGNAL },
-        { SignalName.MapSatellite, Location.DSR_SATELLITE_SIGNAL },
+    public static Dictionary<string, Location> signalToLocation = new Dictionary<string, Location>{
+        { "Traveler_Chert", Location.ET_DRUM },
+        { "Traveler_Esker", Location.AR_WHISTLE },
+        { "Traveler_Riebeck", Location.BH_BANJO },
+        { "Traveler_Gabbro", Location.GD_FLUTE },
+        { "Traveler_Feldspar", Location.DB_HARMONICA },
+        { "Quantum_TH_MuseumShard", Location.TH_MS_SIGNAL },
+        { "Quantum_TH_GroveShard", Location.TH_GS_SIGNAL },
+        { "Quantum_CT_Shard", Location.ET_SHARD_SIGNAL },
+        { "Quantum_BH_Shard", Location.BH_SHARD_SIGNAL },
+        { "Quantum_GD_Shard", Location.GD_SHARD_SIGNAL },
+        { "Quantum_QM", Location.QM_SIGNAL },
+        { "EscapePod_BH", Location.BH_EP1_SIGNAL },
+        { "EscapePod_CT", Location.ET_EP2_SIGNAL },
+        { "EscapePod_DB", Location.DB_EP3_SIGNAL },
+        { "HideAndSeek_Galena", Location.TH_GALENA_SIGNAL },
+        { "HideAndSeek_Tephra", Location.TH_TEPHRA_SIGNAL },
+        { "RadioTower", Location.DSR_TOWER_SIGNAL },
+        { "MapSatellite", Location.DSR_SATELLITE_SIGNAL },
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
     };
-    public static Dictionary<Location, SignalName> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
+    public static Dictionary<Location, string> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
     public static Dictionary<long, Location> archipelagoIdToLocation = null;
