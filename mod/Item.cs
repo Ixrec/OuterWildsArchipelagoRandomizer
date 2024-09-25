@@ -96,6 +96,7 @@ public enum Item
     // Hearth's Neighbor items
     FrequencyNeighborDistress,
     FrequencyLavaCore,
+    FrequencyGalacticCommunication,
 };
 
 public static class ItemNames
@@ -185,6 +186,7 @@ public static class ItemNames
         // Hearth's Neighbor items
         { Item.FrequencyNeighborDistress, "Neighbor's Distress Signal Frequency" },
         { Item.FrequencyLavaCore, "Lava Core Signals Frequency" },
+        { Item.FrequencyGalacticCommunication, "Galactic Communication Frequency" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -202,6 +204,7 @@ public static class ItemNames
         // Hearth's Neighbor frequency items
         { "NEIGHBOR'S DISTRESS SIGNAL", Item.FrequencyNeighborDistress },
         { "Lava Core Signals", Item.FrequencyLavaCore },
+        { "GALACTIC COMMUNICATION", Item.FrequencyGalacticCommunication }
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

@@ -532,6 +532,8 @@ public enum Location
     HN1_SIGNAL_LCS_CLIFF,
     HN1_SIGNAL_LCS_PILLARS,
     HN1_SIGNAL_LCS_TOWN,
+    HN1_SIGNAL_GC_COCKPIT,
+    HN1_SIGNAL_GC_SURVIVOR,
 };
 
 public static class LocationNames
@@ -976,6 +978,8 @@ public static class LocationNames
         { Location.HN1_SIGNAL_LCS_CLIFF, "Scan Structure By Cliff Signal" },
         { Location.HN1_SIGNAL_LCS_PILLARS, "Scan Structure With Pillars Signal" },
         { Location.HN1_SIGNAL_LCS_TOWN, "Scan Old Abandoned Town Signal" },
+        { Location.HN1_SIGNAL_GC_COCKPIT, "Scan Derelict Ship Cockpit Signal" },
+        { Location.HN1_SIGNAL_GC_SURVIVOR, "Scan Sole Survivor Signal" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
@@ -1021,6 +1025,8 @@ public static class LocationNames
         { "STRUCTURE BY CLIFF", Location.HN1_SIGNAL_LCS_CLIFF },
         { "STRUCTURE WITH PILLARS", Location.HN1_SIGNAL_LCS_PILLARS },
         { "OLD ABANDONED TOWN", Location.HN1_SIGNAL_LCS_TOWN },
+        { "DERELICT SHIP COCKPIT", Location.HN1_SIGNAL_GC_COCKPIT },
+        { "SOLE SURVIVOR", Location.HN1_SIGNAL_GC_SURVIVOR },
     };
     public static Dictionary<Location, string> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
 

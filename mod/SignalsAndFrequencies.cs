@@ -50,6 +50,8 @@ internal class SignalsAndFrequencies
         { "STRUCTURE BY CLIFF", "Lava Core Signals" },
         { "STRUCTURE WITH PILLARS", "Lava Core Signals" },
         { "OLD ABANDONED TOWN", "Lava Core Signals" },
+        { "DERELICT SHIP COCKPIT", "GALACTIC COMMUNICATION" },
+        { "SOLE SURVIVOR", "GALACTIC COMMUNICATION" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -94,6 +96,10 @@ internal class SignalsAndFrequencies
             "STRUCTURE BY CLIFF",
             "STRUCTURE WITH PILLARS",
             "OLD ABANDONED TOWN",
+        } },
+        { "GALACTIC COMMUNICATION", new HashSet<string>{
+            "DERELICT SHIP COCKPIT",
+            "SOLE SURVIVOR",
         } },
     };
 
