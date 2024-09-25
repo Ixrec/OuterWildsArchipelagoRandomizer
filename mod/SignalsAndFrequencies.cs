@@ -116,6 +116,7 @@ internal class SignalsAndFrequencies
     // Aside from LearnFrequency/Signal() which we still want writing to the player's save file,
     // these 4 methods are all the direct reads and writes of .knownFrequencies/Signals
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsFrequency))]
+    [HarmonyPriority(Priority.Low)] // run this *after* the New Horizons patch for KnowsFrequency, so our __result overrides NH's
     public static bool PlayerData_KnowsFrequency_Prefix(SignalFrequency frequency, ref bool __result)
     {
         if (!ItemNames.frequencyToItem.ContainsKey(frequency.ToString()))
