@@ -41,6 +41,15 @@ internal class SignalsAndFrequencies
         // left out Default, WarpCore and Statue frequencies because I don't believe they get used
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
+
+        // Hearth's Neighbor
+        { "DERELICT SHIP", "NEIGHBOR'S DISTRESS SIGNAL" },
+        { "DEAD LAKE DISH", "NEIGHBOR'S DISTRESS SIGNAL" },
+        { "ENTRANCE STATION", "Lava Core Signals" },
+        { "LAVA SHRINE", "Lava Core Signals" },
+        { "STRUCTURE BY CLIFF", "Lava Core Signals" },
+        { "STRUCTURE WITH PILLARS", "Lava Core Signals" },
+        { "OLD ABANDONED TOWN", "Lava Core Signals" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -72,7 +81,20 @@ internal class SignalsAndFrequencies
         { "Radio", new HashSet<string>{
             "RadioTower",
             "MapSatellite",
-        } }
+        } },
+
+        // Hearth's Neighbor
+        { "NEIGHBOR'S DISTRESS SIGNAL", new HashSet<string>{
+            "DERELICT SHIP",
+            "DEAD LAKE DISH",
+        } },
+        { "Lava Core Signals", new HashSet<string>{
+            "ENTRANCE STATION",
+            "LAVA SHRINE",
+            "STRUCTURE BY CLIFF",
+            "STRUCTURE WITH PILLARS",
+            "OLD ABANDONED TOWN",
+        } },
     };
 
     public static HashSet<string> usableFrequencies = new();

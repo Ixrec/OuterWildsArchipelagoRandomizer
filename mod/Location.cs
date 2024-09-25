@@ -522,6 +522,16 @@ public enum Location
     SLF__IP_DREAM_ZONE_3_R1,
     SLF__IP_DREAM_LIBRARY_3_R1,
      */
+
+    // Hearth's Neighbor locations
+    HN1_SIGNAL_NDS_SHIP,
+    HN1_SIGNAL_NDS_LAKE_DISH,
+    // no "frequency location" / "scan any lava core signal" because there's already a ship log for that
+    HN1_SIGNAL_LCS_ENTRANCE,
+    HN1_SIGNAL_LCS_SHRINE,
+    HN1_SIGNAL_LCS_CLIFF,
+    HN1_SIGNAL_LCS_PILLARS,
+    HN1_SIGNAL_LCS_TOWN,
 };
 
 public static class LocationNames
@@ -957,6 +967,15 @@ public static class LocationNames
         { Location.SLF__IP_SARCOPHAGUS_X3, "DW Ship Log: Sealed Vault 2 - Actions" },
         { Location.SLF__IP_SARCOPHAGUS_X4, "DW Ship Log: Sealed Vault 3 - History" },
         { Location.SLF__IP_SARCOPHAGUS_X5, "DW Ship Log: Sealed Vault 4 - Farewell" },
+
+        // Hearth's Neighbor locations
+        { Location.HN1_SIGNAL_NDS_SHIP, "Scan Derelict Ship Signal" },
+        { Location.HN1_SIGNAL_NDS_LAKE_DISH, "Scan Dead Lake Dish Signal" },
+        { Location.HN1_SIGNAL_LCS_ENTRANCE, "Scan Entrance Station Signal" },
+        { Location.HN1_SIGNAL_LCS_SHRINE, "Scan Lava Shrine Signal" },
+        { Location.HN1_SIGNAL_LCS_CLIFF, "Scan Structure By Cliff Signal" },
+        { Location.HN1_SIGNAL_LCS_PILLARS, "Scan Structure With Pillars Signal" },
+        { Location.HN1_SIGNAL_LCS_TOWN, "Scan Old Abandoned Town Signal" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
@@ -993,6 +1012,15 @@ public static class LocationNames
         { "MapSatellite", Location.DSR_SATELLITE_SIGNAL },
         // left out Default, HideAndSeek_Arkose and all the White Hole signals because I don't believe they're used
         // left out Nomai and Prisoner because I believe those are only available during the finale
+
+        // Hearth's Neighbor signals
+        { "DERELICT SHIP", Location.HN1_SIGNAL_NDS_SHIP },
+        { "DEAD LAKE DISH", Location.HN1_SIGNAL_NDS_LAKE_DISH },
+        { "ENTRANCE STATION", Location.HN1_SIGNAL_LCS_ENTRANCE },
+        { "LAVA SHRINE", Location.HN1_SIGNAL_LCS_SHRINE },
+        { "STRUCTURE BY CLIFF", Location.HN1_SIGNAL_LCS_CLIFF },
+        { "STRUCTURE WITH PILLARS", Location.HN1_SIGNAL_LCS_PILLARS },
+        { "OLD ABANDONED TOWN", Location.HN1_SIGNAL_LCS_TOWN },
     };
     public static Dictionary<Location, string> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
 

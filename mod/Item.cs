@@ -92,6 +92,10 @@ public enum Item
     TranslatorGD,
     TranslatorDB,
     TranslatorOther,
+
+    // Hearth's Neighbor items
+    FrequencyNeighborDistress,
+    FrequencyLavaCore,
 };
 
 public static class ItemNames
@@ -177,6 +181,10 @@ public static class ItemNames
         { Item.TranslatorGD, "Translator (Giant's Deep)" },
         { Item.TranslatorDB, "Translator (Dark Bramble)" },
         { Item.TranslatorOther, "Translator (Other)" },
+
+        // Hearth's Neighbor items
+        { Item.FrequencyNeighborDistress, "Neighbor's Distress Signal Frequency" },
+        { Item.FrequencyLavaCore, "Lava Core Signals Frequency" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -190,6 +198,10 @@ public static class ItemNames
         { "Quantum", Item.FrequencyQF },
         { "HideAndSeek", Item.FrequencyHS },
         { "Radio", Item.FrequencyDSR },
+
+        // Hearth's Neighbor frequency items
+        { "NEIGHBOR'S DISTRESS SIGNAL", Item.FrequencyNeighborDistress },
+        { "Lava Core Signals", Item.FrequencyLavaCore },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 
