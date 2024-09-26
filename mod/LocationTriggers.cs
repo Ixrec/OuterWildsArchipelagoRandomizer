@@ -111,6 +111,19 @@ internal class LocationTriggers
         { "IP_DREAM_3_STORY_X1", Location.EC_FA_STORY_SR },
         { "IP_DREAM_3_RULE_X1", Location.EC_FA_GLITCH_SR },
         { "IP_SARCOPHAGUS_X2", Location.SL_VAULT },
+
+        // Hearth's Neighbor default locations
+        { "LH_ELEVATOR", Location.HN1_LH_ELEVATOR },
+        { "LH_PLANT_INFO", Location.HN1_LH_GM_PLANT },
+        { "LV_SHRINE_ENTRY", Location.HN1_LAVA_SHRINE_SYMBOL },
+        { "LV_SHRINE_MURALS", Location.HN1_LAVA_SHRINE_MURAL },
+        { "LK_MAZE_GAZEBO", Location.HN1_LAKE_GAZEBO },
+        { "LK_SHRINE_MURAL", Location.HN1_LAKE_SHRINE_MURAL },
+        { "AC_CODE", Location.HN1_ALPINE_CODE },
+        { "AC_RED_MURAL", Location.HN1_ALPINE_HOUSE_MURAL },
+        { "DS_INFO", Location.HN1_SHIP_ENTER },
+        { "DS_COCKPIT", Location.HN1_SHIP_COCKPIT },
+        { "HN_POD_RESOLUTION", Location.HN1_SURVIVOR_POD },
     };
 
     // manual scrolls

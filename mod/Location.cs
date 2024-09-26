@@ -524,6 +524,18 @@ public enum Location
      */
 
     // Hearth's Neighbor locations
+    HN1_LH_ELEVATOR,
+    HN1_LH_GM_PLANT,
+    HN1_LAVA_SHRINE_SYMBOL,
+    HN1_LAVA_SHRINE_MURAL,
+    HN1_LAKE_GAZEBO,
+    HN1_LAKE_SHRINE_MURAL,
+    HN1_ALPINE_CODE,
+    HN1_ALPINE_HOUSE_MURAL,
+    HN1_SHIP_ENTER,
+    HN1_SHIP_COCKPIT,
+    HN1_SURVIVOR_POD,
+
     HN1_SIGNAL_NDS_SHIP,
     HN1_SIGNAL_NDS_LAKE_DISH,
     // no "frequency location" / "scan any lava core signal" because there's already a ship log for that
@@ -534,6 +546,52 @@ public enum Location
     HN1_SIGNAL_LCS_TOWN,
     HN1_SIGNAL_GC_COCKPIT,
     HN1_SIGNAL_GC_SURVIVOR,
+
+    SLF__HN_MUSEUM_PLATE_DETAILS,
+    SLF__HN_MUSEUM_PLATE_RESOLUTION,
+
+    SLF__HN_POD_RESOLUTION,
+    SLF__HN_POD_THANKS,
+    SLF__HN_POD_HN2,
+
+    SLF__LH_INFO,
+    SLF__LH_ELEVATOR,
+    SLF__LH_PLANT_NO_ENTRY,
+    SLF__LH_PLANT_INFO,
+    SLF__LH_VOLCANO_ELEVATOR,
+    SLF__LH_WASTELAND_ELEVATOR,
+    SLF__LH_LAKE_ELEVATOR,
+    SLF__LH_LAKE_HANGAR,
+    SLF__LH_LAKE_SATELLITE,
+
+    SLF__LV_BUTTONS,
+    SLF__LV_SIGNAL,
+    SLF__LV_FIRST_BUTTON_INFO,
+    SLF__LV_SECOND_BUTTON_INFO,
+    SLF__LV_THIRD_BUTTON_INFO,
+    SLF__LV_SHRINE_ENTRY,
+    SLF__LV_SHRINE_MURALS,
+
+    SLF__LK_RAFT,
+    SLF__LK_MAZE_GAZEBO,
+    SLF__LK_SHRINE_ENTRY,
+    SLF__LK_SHRINE_STATION,
+    SLF__LK_SHRINE_LEVER,
+    SLF__LK_SHRINE_MURAL,
+    SLF__LK_SHRINE_POSTER,
+
+    SLF__AC_RED_HOUSE,
+    SLF__AC_RED_MURAL,
+    SLF__AC_CODE,
+
+    SLF__DS_ENTRY,
+    SLF__DS_BARRIER,
+    SLF__DS_INFO,
+    SLF__DS_CRYO,
+    SLF__DS_COCKPIT,
+    SLF__DS_DAMAGE,
+    SLF__DS_HOPE,
+    SLF__DS_ENDING,
 };
 
 public static class LocationNames
@@ -971,15 +1029,73 @@ public static class LocationNames
         { Location.SLF__IP_SARCOPHAGUS_X5, "DW Ship Log: Sealed Vault 4 - Farewell" },
 
         // Hearth's Neighbor locations
-        { Location.HN1_SIGNAL_NDS_SHIP, "Scan Derelict Ship Signal" },
-        { Location.HN1_SIGNAL_NDS_LAKE_DISH, "Scan Dead Lake Dish Signal" },
-        { Location.HN1_SIGNAL_LCS_ENTRANCE, "Scan Entrance Station Signal" },
-        { Location.HN1_SIGNAL_LCS_SHRINE, "Scan Lava Shrine Signal" },
-        { Location.HN1_SIGNAL_LCS_CLIFF, "Scan Structure By Cliff Signal" },
-        { Location.HN1_SIGNAL_LCS_PILLARS, "Scan Structure With Pillars Signal" },
-        { Location.HN1_SIGNAL_LCS_TOWN, "Scan Old Abandoned Town Signal" },
-        { Location.HN1_SIGNAL_GC_COCKPIT, "Scan Derelict Ship Cockpit Signal" },
-        { Location.HN1_SIGNAL_GC_SURVIVOR, "Scan Sole Survivor Signal" },
+        { Location.HN1_LH_ELEVATOR, "HN1: Lonely Hermit Elevators" },
+        { Location.HN1_LH_GM_PLANT, "HN1: Lonely Hermit GM Structure" },
+        { Location.HN1_LAVA_SHRINE_SYMBOL, "HN1: Lava Shrine Symbol" },
+        { Location.HN1_LAVA_SHRINE_MURAL, "HN1: Lava Shrine Mural" },
+        { Location.HN1_LAKE_GAZEBO, "HN1: Lake Gazebo" },
+        { Location.HN1_LAKE_SHRINE_MURAL, "HN1: Lake Shrine Mural" },
+        { Location.HN1_ALPINE_CODE, "HN1: Alpine Core Code" },
+        { Location.HN1_ALPINE_HOUSE_MURAL, "HN1: Alpine Core Mural" },
+        { Location.HN1_SHIP_ENTER, "HN1: Ship Interior" },
+        { Location.HN1_SHIP_COCKPIT, "HN1: Ship Cockpit" },
+        { Location.HN1_SURVIVOR_POD, "HN1: Sole Pod" },
+
+        { Location.HN1_SIGNAL_NDS_SHIP, "HN1: Scan Derelict Ship Signal" },
+        { Location.HN1_SIGNAL_NDS_LAKE_DISH, "HN1: Scan Dead Lake Dish Signal" },
+        { Location.HN1_SIGNAL_LCS_ENTRANCE, "HN1: Scan Entrance Station Signal" },
+        { Location.HN1_SIGNAL_LCS_SHRINE, "HN1: Scan Lava Shrine Signal" },
+        { Location.HN1_SIGNAL_LCS_CLIFF, "HN1: Scan Structure By Cliff Signal" },
+        { Location.HN1_SIGNAL_LCS_PILLARS, "HN1: Scan Structure With Pillars Signal" },
+        { Location.HN1_SIGNAL_LCS_TOWN, "HN1: Scan Old Abandoned Town Signal" },
+        { Location.HN1_SIGNAL_GC_COCKPIT, "HN1: Scan Derelict Ship Cockpit Signal" },
+        { Location.HN1_SIGNAL_GC_SURVIVOR, "HN1: Scan Sole Survivor Signal" },
+
+        { Location.SLF__HN_MUSEUM_PLATE_DETAILS, "HN1 Ship Log: Museum Plate 1 - Two Systems" },
+        { Location.SLF__HN_MUSEUM_PLATE_RESOLUTION, "HN1 Ship Log: Museum Plate 2 - Crashed" },
+
+        { Location.SLF__HN_POD_RESOLUTION, "HN1 Ship Log: Escape Pod 1 - Landed" },
+        { Location.SLF__HN_POD_THANKS, "HN1 Ship Log: Escape Pod 2 - Thanks" },
+        { Location.SLF__HN_POD_HN2, "HN1 Ship Log: Escape Pod 3 - Sequel" },
+
+        { Location.SLF__LH_INFO, "HN1 Ship Log: Lonely Hermit 1 - Planet" },
+        { Location.SLF__LH_ELEVATOR, "HN1 Ship Log: Lonely Hermit 2 - Below" },
+        { Location.SLF__LH_PLANT_NO_ENTRY, "HN1 Ship Log: Ghost Matter Structure 1 - Leaking" },
+        { Location.SLF__LH_PLANT_INFO, "HN1 Ship Log: Ghost Matter Structure 2 - Mural" },
+        { Location.SLF__LH_VOLCANO_ELEVATOR, "HN1 Ship Log: Extinct Volcano" },
+        { Location.SLF__LH_WASTELAND_ELEVATOR, "HN1 Ship Log: Northern Wasteland" },
+        { Location.SLF__LH_LAKE_ELEVATOR, "HN1 Ship Log: Dead Lake 1 - Elevator" },
+        { Location.SLF__LH_LAKE_HANGAR, "HN1 Ship Log: Dead Lake 2 - Hangar" },
+        { Location.SLF__LH_LAKE_SATELLITE, "HN1 Ship Log: Satellite Room" },
+
+        { Location.SLF__LV_BUTTONS, "HN1 Ship Log: Lava Core 1 - Buttons" },
+        { Location.SLF__LV_SIGNAL, "HN1 Ship Log: Lava Core 2 - Communications" },
+        { Location.SLF__LV_FIRST_BUTTON_INFO, "HN1 Ship Log: Structure On A Cliff" },
+        { Location.SLF__LV_SECOND_BUTTON_INFO, "HN1 Ship Log: Structure By Pillars" },
+        { Location.SLF__LV_THIRD_BUTTON_INFO, "HN1 Ship Log: Old Abandoned Town" },
+        { Location.SLF__LV_SHRINE_ENTRY, "HN1 Ship Log: Lava Shrine 1 - Entry" },
+        { Location.SLF__LV_SHRINE_MURALS, "HN1 Ship Log: Lava Shrine 2 - Murals" },
+
+        { Location.SLF__LK_RAFT, "HN1 Ship Log: Lake Core" },
+        { Location.SLF__LK_MAZE_GAZEBO, "HN1 Ship Log: Maze Island" },
+        { Location.SLF__LK_SHRINE_ENTRY, "HN1 Ship Log: Shrine Island 1 - Entrance" },
+        { Location.SLF__LK_SHRINE_STATION, "HN1 Ship Log: Shrine Island 2 - Communications" },
+        { Location.SLF__LK_SHRINE_LEVER, "HN1 Ship Log: Shrine Island 3 - Hangar" },
+        { Location.SLF__LK_SHRINE_MURAL, "HN1 Ship Log: Shrine Island 4 - Mural" },
+        { Location.SLF__LK_SHRINE_POSTER, "HN1 Ship Log: Shrine Island 5 - Poster" },
+
+        { Location.SLF__AC_RED_HOUSE, "HN1 Ship Log: Alpine Core 1 - Building" },
+        { Location.SLF__AC_RED_MURAL, "HN1 Ship Log: Alpine Core 2 - Mural" },
+        { Location.SLF__AC_CODE, "HN1 Ship Log: Odd Code" },
+
+        { Location.SLF__DS_ENTRY, "HN1 Ship Log: Derelict Ship 1 - Edge" },
+        { Location.SLF__DS_BARRIER, "HN1 Ship Log: Derelict Ship 2 - Barrier" },
+        { Location.SLF__DS_INFO, "HN1 Ship Log: Derelict Ship 3 - Ghost Matter" },
+        { Location.SLF__DS_CRYO, "HN1 Ship Log: Derelict Ship 4 - Pods" },
+        { Location.SLF__DS_COCKPIT, "HN1 Ship Log: Derelict Ship 5 - Cockpit" },
+        { Location.SLF__DS_DAMAGE, "HN1 Ship Log: Derelict Ship 6 - Report" },
+        { Location.SLF__DS_HOPE, "HN1 Ship Log: Derelict Ship 7 - Signal" },
+        { Location.SLF__DS_ENDING, "HN1 Ship Log: Escape Pod Signal" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
