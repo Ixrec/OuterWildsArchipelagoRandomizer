@@ -128,7 +128,10 @@ public class DeathLinkManager
         {
             " became one with the universe.",
             " stubbed their toe on a fascinating rock.",
-            " made an oopsie."
+            " made an oopsie.",
+            " is electrifying.",
+            " got spooked.",
+            " leaned too close to the campfire."
         } },
         { DeathType.Impact, new List<string>
         {
