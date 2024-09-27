@@ -15,7 +15,8 @@ public enum TrackerCategory
     DarkBramble,
     OuterWilds,
     Stranger,
-    Dreamworld
+    Dreamworld,
+    HearthsNeighbor,
 }
 
 public class TrackerRequirement

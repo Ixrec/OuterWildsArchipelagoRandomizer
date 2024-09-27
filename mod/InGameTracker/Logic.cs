@@ -138,6 +138,7 @@ public class Logic
     private Dictionary<string, TrackerChecklistData> GoalLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> StrangerLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> DWLocationChecklistData;
+    private Dictionary<string, TrackerChecklistData> HN1LocationChecklistData;
 
     // Ember Twin, Ash Twin, Cave Twin, Tower Twin
     private readonly static string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
@@ -152,6 +153,7 @@ public class Logic
     private readonly static string GoalPrefix = "Victory - ";
     private readonly static string[] StrangerPrefixes = ["EotE"];
     private readonly static string[] DWPrefixes = ["DW"];
+    private readonly static string[] HN1Prefixes = ["HN1"];
 
     /// <summary>
     /// Populates all the (prefix)Locations dictionaries in Tracker Manager
@@ -171,20 +173,24 @@ public class Logic
         GoalLocationChecklistData = new();
         StrangerLocationChecklistData = new();
         DWLocationChecklistData = new();
+        HN1LocationChecklistData = new();
 
         bool logsanity = APRandomizer.SlotEnabledLogsanity();
         bool enable_eote_dlc = APRandomizer.SlotEnabledEotEDLC();
         bool dlc_only = APRandomizer.SlotEnabledDLCOnly();
+        bool hn1_mod = (APRandomizer.SlotData.ContainsKey("enable_hn1_mod") && (long)APRandomizer.SlotData["enable_hn1_mod"] > 0);
+
         var DLCPrefixes = StrangerPrefixes.Concat(DWPrefixes);
         foreach (TrackerLocationData loc in TrackerLocations.Values)
         {
             string name = loc.name;
 
+            // Here we only care about `category` values used in locations.jsonc, so e.g. the "dlc|hn1" in items.jsonc can be ignored
             if (!logsanity && (loc.logsanity ?? false)) continue;
             if (!enable_eote_dlc && (loc.category == "dlc")) continue;
             if (dlc_only && (loc.category == "base")) continue;
-            // this category is only used on some victory events so probably not important, but might as well get it right
-            if ((!enable_eote_dlc || dlc_only) && (loc.category == "base+dlc")) continue;
+            if ((!enable_eote_dlc || dlc_only) && (loc.category == "base+dlc")) continue; // only used on some victory events, but may as well
+            if (!hn1_mod && (loc.category == "hn1")) continue;
 
             TrackerChecklistData data = new(false, false, "");
             LocationChecklistData.Add(name, data);
@@ -196,6 +202,7 @@ public class Logic
             else if (DBPrefixes.Any(p => name.StartsWith(p))) DBLocationChecklistData.Add(name, data);
             else if (StrangerPrefixes.Any(p => name.StartsWith(p))) StrangerLocationChecklistData.Add(name, data);
             else if (DWPrefixes.Any(p => name.StartsWith(p))) DWLocationChecklistData.Add(name, data);
+            else if (HN1Prefixes.Any(p => name.StartsWith(p))) HN1LocationChecklistData.Add(name, data);
             else if (name.StartsWith(GoalPrefix)) GoalLocationChecklistData.Add(name, data);
             // "The Outer Wilds" is the catch-all category for base game locations lacking a special prefix
             else OWLocationChecklistData.Add(name, data);
@@ -216,6 +223,7 @@ public class Logic
             case TrackerCategory.OuterWilds: return OWLocationChecklistData;
             case TrackerCategory.Stranger: return StrangerLocationChecklistData;
             case TrackerCategory.Dreamworld: return DWLocationChecklistData;
+            case TrackerCategory.HearthsNeighbor: return HN1LocationChecklistData;
             case TrackerCategory.All: return LocationChecklistData;
         }
         return null;

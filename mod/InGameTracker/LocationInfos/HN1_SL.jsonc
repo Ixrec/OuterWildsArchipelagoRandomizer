@@ -1,0 +1,194 @@
+﻿[
+  {
+    "locationModID": "SLF__HN_MUSEUM_PLATE_DETAILS",
+    "description": "A new exhibit has been added to the museum in Timber Hearth Village.",
+    "thumbnail": "HN_MUSEUM_PLATE"
+  },
+  {
+    "locationModID": "SLF__HN_MUSEUM_PLATE_RESOLUTION",
+    "description": "Return to Timber Hearth and locate the Sole Survivor's escape pod.",
+    "thumbnail": "TH_VILLAGE"
+  },
+
+  {
+    "locationModID": "SLF__HN_POD_RESOLUTION",
+    "description": "Return to Timber Hearth and locate the Sole Survivor's escape pod.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__HN_POD_THANKS",
+    "description": "After locating the escape pod, stay for the afterword.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__HN_POD_HN2",
+    "description": "After locating the escape pod, stay for the sequel teaser.",
+    "thumbnail": "TH_VILLAGE"
+  },
+
+  {
+    "locationModID": "SLF__LH_INFO",
+    "description": "Use Interstellar Mode to travel to the Hearth's Neighbor system and discover Lonely Hermit.",
+    "thumbnail": "LONELY_HERMIT_ROOT"
+  },
+  {
+    "locationModID": "SLF__LH_ELEVATOR",
+    "description": "Ride any of the elevators on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_PLANT_NO_ENTRY",
+    "description": "Visit the Ghost Matter Structure on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_PLANT_INFO",
+    "description": "Find the mural outside the Ghost Matter Structure on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_VOLCANO_ELEVATOR",
+    "description": "Enter the elevator in the Extinct Volcano on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_WASTELAND_ELEVATOR",
+    "description": "Enter the elevator in the Northern Wasteland on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_LAKE_ELEVATOR",
+    "description": "Enter the elevator in the Dead Lake hangar on Lonely Hermit.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LH_LAKE_SATELLITE",
+    "description": "Inside the Dead Lake hangar is a room broadcasting a signal. Find the switch to open it inside Lake Shrine, then come back and enter the room.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_BUTTONS",
+    "description": "Take the elevator to Lava Core and use the buttons to exit the first room.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_SIGNAL",
+    "description": "Scan any of the signals in Lava Core.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_FIRST_BUTTON_INFO",
+    "description": "Find the Structure On A Cliff in Lava Core.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_SECOND_BUTTON_INFO",
+    "description": "Find the Structure By Pillars in Lava Core.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_THIRD_BUTTON_INFO",
+    "description": "Find the Old Abandoned Town in Lava Core.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_SHRINE_ENTRY",
+    "description": "After pressing enough buttons to open the Lava Shrine, fall through the fake floor just inside.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LV_SHRINE_MURALS",
+    "description": "After pressing enough buttons to open the Lava Shrine, reach the room with the mural.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_RAFT",
+    "description": "Take the elevator to Lake Core and find the raft dock on the first island.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_MAZE_GAZEBO",
+    "description": "Maze Island lies just southwest of Lake Core's elevator island. Guide the raft through the water maze to reach climbable terrain leading to a gazebo.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_SHRINE_ENTRY",
+    "description": "Use the hint from the gazebo to find the underwater entrance to the Lake Shrine at the north pole of Lake Core.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_SHRINE_STATION",
+    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core and reach the room at the top.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_SHRINE_LEVER",
+    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then flip the switch and return to the Dead Lake hangar to see what it opens.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_SHRINE_MURAL",
+    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the mural inside.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LK_SHRINE_POSTER",
+    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the poster near the switch.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__AC_RED_HOUSE",
+    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__AC_RED_MURAL",
+    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a mural.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__AC_CODE",
+    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a strange code.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_ENTRY",
+    "description": "Use the Neighbor's Distress Signal Frequency and the code from Alpine Core to find the Derelict Ship.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_BARRIER",
+    "description": "On the Derelict Ship, look at the barrier and its combination lock.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_INFO",
+    "description": "Use the code from Alpine Core to open the Derelict Ship's barrier, then avoid the ghost matter inside.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_CRYO",
+    "description": "Find the cryogenic sleep pods inside the Derelict Ship.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_COCKPIT",
+    "description": "Navigate around the ghost matter and through a fake wall to find the cockpit of the Derelict Ship.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_DAMAGE",
+    "description": "In the Derelict Ship cockpit is a report on the ship's status.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_HOPE",
+    "description": "In the Derelict Ship cockpit is a console about the one escape pod that got away.",
+    "thumbnail": "TH_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DS_ENDING",
+    "description": "Return to Hearth's Neighbor after finding the Sole Survivor's escape pod on Timber Hearth.",
+    "thumbnail": "TH_VILLAGE"
+  }
+]

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -34,6 +35,7 @@ public class APChecklistMode : ShipLogMode
 
     private Material selectorMaterial;
     private Dictionary<string, GameObject> icons;
+    private Image modLogoImage;
     private GameObject selectorInfo;
     private GameObject missionGroup;
     private Text missionStatement;
@@ -65,6 +67,7 @@ public class APChecklistMode : ShipLogMode
         ("The Outer Wilds", TrackerCategory.OuterWilds),
         ("The Stranger", TrackerCategory.Stranger),
         ("Dreamworld", TrackerCategory.Dreamworld),
+        ("Hearth's Neighbor", TrackerCategory.HearthsNeighbor),
     };
     private List<ShipLogDisplayItem> optionsList;
     private List<TrackerCategory> displayedCategories = null;
@@ -285,6 +288,8 @@ public class APChecklistMode : ShipLogMode
                     if (!(category == TrackerCategory.Stranger || category == TrackerCategory.Dreamworld) && !info.isDLCOnly)
                         continue;
 
+                if (category == TrackerCategory.HearthsNeighbor && !(APRandomizer.SlotData.ContainsKey("enable_hn1_mod") && (long)APRandomizer.SlotData["enable_hn1_mod"] > 0)) continue;
+
                 // TODO add hints and confirmation of checked locations
                 if (Enum.TryParse<Location>(info.locationModID, out Location loc))
                 {
@@ -334,6 +339,7 @@ public class APChecklistMode : ShipLogMode
         { TrackerCategory.OuterWilds, "OW" },
         { TrackerCategory.Stranger, "ST" },
         { TrackerCategory.Dreamworld, "DW" },
+        { TrackerCategory.HearthsNeighbor, "HN1" },
     };
 
     private string GetTrackerInfoFilename(TrackerCategory category)
@@ -368,11 +374,15 @@ public class APChecklistMode : ShipLogMode
         rect.anchoredPosition = Vector3.zero;
         rect.anchoredPosition3D = Vector3.zero;
 
+        var planetHolder = selectorInfo.transform.Find("Tracker/PlanetHolder");
         icons = new();
-        foreach (Transform child in selectorInfo.transform.Find("Tracker/PlanetHolder"))
-        {
+        foreach (Transform child in planetHolder)
             icons.Add(child.name, child.gameObject);
-        }
+        GameObject modLogo = new GameObject("APRandomizer_ModLogo");
+        modLogo.transform.SetParent(planetHolder, false);
+        modLogo.transform.localScale = new Vector3(2, 2, 2); // there must be a better way to adjust image size, but nothing else has worked yet
+        modLogoImage = modLogo.AddComponent<Image>();
+
         missionGroup = selectorInfo.transform.Find("Tracker/MissionText").gameObject;
         missionStatement = missionGroup.transform.Find("MissionStatement").GetComponent<Text>();
         missionStatement.text = victoryCondition;
@@ -384,6 +394,7 @@ public class APChecklistMode : ShipLogMode
         locationsAccessible = bodyGroup.transform.Find("LocationsAccessible").GetComponent<Text>();
         moreToExplore = bodyGroup.transform.Find("MoreToExplore").GetComponent<Text>();
         selectorMaterial = icons["PlanetTH"].GetComponent<Image>().material;
+        modLogoImage.material = selectorMaterial;
     }
 
     private void OpenSelectionMode()
@@ -437,10 +448,16 @@ public class APChecklistMode : ShipLogMode
     {
         TrackerCategory category = displayedCategories[index];
 
-        string iconToShow = categoryToIcon[category];
+        string iconToShow = categoryToIcon.ContainsKey(category) ? categoryToIcon[category] : null;
         foreach (var (name, go) in icons)
             go.SetActive(name == iconToShow);
-        // TODO: story mod logos?
+
+        modLogoImage.enabled = (category == TrackerCategory.HearthsNeighbor);
+        if (modLogoImage.sprite == null)
+        {
+            var sprite = TrackerManager.GetSprite("LonelyHermitIcon");
+            modLogoImage.sprite = sprite;
+        }
 
         if (index == 0)
         {
@@ -488,6 +505,7 @@ public class APChecklistMode : ShipLogMode
             case TrackerCategory.OuterWilds: return "The Outer Wilds";
             case TrackerCategory.Stranger: return "The Stranger";
             case TrackerCategory.Dreamworld: return "Dreamworld";
+            case TrackerCategory.HearthsNeighbor: return "Hearth's Neighbor";
         }
         return "NULL";
     }
