@@ -230,6 +230,12 @@ public class APRandomizer : ModBehaviour
             ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
                 $"but <color=red>the DLC is not installed</color>.");
         }
+        bool hn1_mod = (APRandomizer.SlotData.ContainsKey("enable_hn1_mod") && (long)APRandomizer.SlotData["enable_hn1_mod"] > 0);
+        if (hn1_mod && !Instance.ModHelper.Interaction.ModExists("GameWyrm.HearthsNeighbor"))
+        {
+            ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_hn1_mod: true, " +
+                $"but <color=red>the Hearth's Neighbor mod is not installed</color>.");
+        }
         if (SlotData.ContainsKey("apworld_version"))
         {
             var apworld_version = (string)SlotData["apworld_version"];
