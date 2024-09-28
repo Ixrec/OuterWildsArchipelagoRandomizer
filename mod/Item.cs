@@ -101,6 +101,9 @@ public enum Item
 
 public static class ItemNames
 {
+    // If we add any "custom items" for story mods, this will need an update
+    public static bool IsStoryModFrequency(Item item) => item >= Item.FrequencyNeighborDistress;
+
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -38,7 +39,6 @@ public class APInventoryDescriptions
                 infos.Add("You have not obtained this yet.");
         }
 
-        // We currently only have one Inventory entry that doesn't correspond to an AP item: the OWV frequency
         if (itemEntry.ApItem == null)
         {
             switch (itemEntry.ID)
@@ -52,6 +52,12 @@ public class APInventoryDescriptions
                     infos.Add($"[{((inventory[Item.SignalRiebeck] > 0) ? 'X' : ' ')}] Riebeck's Banjo");
                     infos.Add($"[{((inventory[Item.SignalGabbro] > 0) ? 'X' : ' ')}] Gabbro's Flute");
                     infos.Add($"[{((inventory[Item.SignalFeldspar] > 0) ? 'X' : ' ')}] Feldspar's Harmonica");
+                    break;
+                case "StoryModFrequencies":
+                    infos.Add("Many story mods add their own frequencies for the Signalscope, which work the same as the vanilla frequency items: Getting a frequency item allows you to scan signals on that frequency.");
+                    infos.Add("We chose not to create individual signal items for story mods, so these frequency items will also immediately allow you to locate and follow all signal sources on that frequency.");
+                    foreach (var kv in inventory.Where(kv => ItemNames.IsStoryModFrequency(kv.Key)))
+                        infos.Add($"[{((kv.Value > 0) ? 'X' : ' ')}] {ItemNames.itemNames[kv.Key]}");
                     break;
                 default:
                     return GetErrorDescription(itemID);

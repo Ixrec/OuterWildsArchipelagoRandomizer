@@ -67,6 +67,7 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"),
         new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
         new InventoryItemEntry(Item.FrequencyDSR, "Frequency: Deep Space Radio"),
+        new InventoryItemEntry("StoryModFrequencies", "Story Mod Frequencies"),
 
         // Non-progression ship and equipment upgrades
         new InventoryItemEntry(Item.Autopilot, "Autopilot"),
@@ -170,7 +171,6 @@ public class APInventoryMode : ShipLogMode
         InventoryItemEntry entry = VisibleItemEntries.ElementAt(index).Value;
         string itemID = entry.ID;
         Sprite sprite = TrackerManager.GetSprite(itemID);
-        // Only item that doesn't exist is the FrequencyOWV which we want to show as obtained regardless
         if (entry.HasOneOrMore() || (entry.ApItem == Item.Translator && APRandomizer.SlotEnabledSplitTranslator()))
         {
             if (sprite != null)
@@ -225,6 +225,17 @@ public class APInventoryMode : ShipLogMode
                 string itemName = "[X] Frequency: Outer Wilds Ventures";
                 inventoryDisplayItems.Add(new InventoryDisplayItem(itemName, false, item.ItemIsNew, false));
             }
+            else if (item.ID == "StoryModFrequencies")
+            {
+                var storyModFrequencies = items.Where(kv => ItemNames.IsStoryModFrequency(kv.Key));
+                var status = " ";
+                // technically wrong if you enable some but not all story mods, but I don't think anyone cares that much
+                if (storyModFrequencies.All(kv => kv.Value > 0)) status = "X";
+                else if (storyModFrequencies.Any(kv => kv.Value > 0)) status = "-";
+
+                string itemName = $"[{status}] Story Mod Frequencies";
+                inventoryDisplayItems.Add(new InventoryDisplayItem(itemName, false, item.ItemIsNew, false));
+            }
             else
             {
                 APRandomizer.OWMLModConsole.WriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
@@ -253,7 +264,10 @@ public class APInventoryMode : ShipLogMode
             if (sf == "Traveler")
                 frequency = "FrequencyOWV";
             else if (ItemNames.frequencyToItem.TryGetValue(sf, out var frequencyItem))
-                frequency = frequencyItem.ToString();
+                if (ItemNames.IsStoryModFrequency(frequencyItem))
+                    frequency = "StoryModFrequencies";
+                else
+                    frequency = frequencyItem.ToString();
 
             if (frequency == "" || !ItemEntries.ContainsKey(frequency))
             {
@@ -282,6 +296,8 @@ public class APInventoryMode : ShipLogMode
 
         ItemNames.archipelagoIdToItem.TryGetValue(hint.ItemId, out Item item);
         string itemName = item.ToString();
+        if (ItemNames.IsStoryModFrequency(item))
+            itemName = "StoryModFrequencies";
         // We don't need to track hints for items that aren't on the tracker
         if (!ItemEntries.ContainsKey(itemName))
         {
