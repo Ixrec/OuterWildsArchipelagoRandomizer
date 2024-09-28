@@ -2,52 +2,52 @@
   {
     "locationModID": "HN1_LH_ELEVATOR",
     "description": "Ride any of the elevators on Lonely Hermit.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LONELY_HERMIT_ROOT"
   },
   {
     "locationModID": "HN1_LH_GM_PLANT",
     "description": "Visit the Ghost Matter Structure on Lonely Hermit.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LH_POWER_PLANT_FACT"
   },
   {
     "locationModID": "HN1_LAVA_SHRINE_SYMBOL",
     "description": "After pressing enough buttons to open the Lava Shrine, fall through the fake floor just inside.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_SHRINE_FACT"
   },
   {
     "locationModID": "HN1_LAVA_SHRINE_MURAL",
     "description": "After pressing enough buttons to open the Lava Shrine, reach the room with the mural.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_SHRINE_FACT"
   },
   {
     "locationModID": "HN1_LAKE_GAZEBO",
     "description": "Maze Island lies just southwest of Lake Core's elevator island. Guide the raft through the water maze to reach climbable terrain leading to a gazebo.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LK_MAZE_FACT"
   },
   {
     "locationModID": "HN1_LAKE_SHRINE_MURAL",
     "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the mural inside.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LK_SHRINE_FACT"
   },
   {
     "locationModID": "HN1_ALPINE_CODE",
     "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a strange code.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "AC_CODE_FACT"
   },
   {
     "locationModID": "HN1_ALPINE_HOUSE_MURAL",
     "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a mural.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "AC_ROOT"
   },
   {
     "locationModID": "HN1_SHIP_ENTER",
     "description": "Use the Neighbor's Distress Signal Frequency and the code from Alpine Core to enter the Derelict Ship.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "DERELICT_SHIP_ROOT"
   },
   {
     "locationModID": "HN1_SHIP_COCKPIT",
     "description": "Avoid the ghost matter inside the Derelict Ship and reach the cockpit.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "DERELICT_SHIP_ROOT"
   },
   {
     "locationModID": "HN1_SURVIVOR_POD",
@@ -57,42 +57,42 @@
   {
     "locationModID": "HN1_SIGNAL_NDS_SHIP",
     "description": "Scan the beacon on the Derelict Ship's landing platform.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "DERELICT_SHIP_ROOT"
   },
   {
     "locationModID": "HN1_SIGNAL_NDS_LAKE_DISH",
     "description": "Use the switch in Lake Shrine to open the Satellite Room, then scan the beacon inside.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LH_DEAD_LAKE_FACT"
   },
   {
     "locationModID": "HN1_SIGNAL_LCS_ENTRANCE",
     "description": "Use the Lava Core Signals Frequency to scan the small cube building near the elevator. This doesn't require opening it.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LAVA_CORE_ROOT"
   },
   {
     "locationModID": "HN1_SIGNAL_LCS_SHRINE",
     "description": "Use the Lava Core Signals Frequency to scan the Lava Shrine itself. This doesn't require getting inside.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_SHRINE_FACT"
   },
   {
     "locationModID": "HN1_SIGNAL_LCS_CLIFF",
     "description": "Use the Lava Core Signals Frequency to scan the small cube building by a cliff. This doesn't require opening it.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_FIRST_BUTTON_FACT"
   },
   {
     "locationModID": "HN1_SIGNAL_LCS_PILLARS",
     "description": "Use the Lava Core Signals Frequency to scan the small cube building by some pillars. This doesn't require opening it.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_SECOND_BUTTON_FACT"
   },
   {
     "locationModID": "HN1_SIGNAL_LCS_TOWN",
     "description": "Use the Lava Core Signals Frequency to scan one of the small cube buildings in the old abandoned town. This doesn't require opening them.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "LV_THIRD_BUTTON_FACT"
   },
   {
     "locationModID": "HN1_SIGNAL_GC_COCKPIT",
     "description": "In the Derelict Ship's cockpit, press a tiny green button and scan the signal it activates.",
-    "thumbnail": "TH_VILLAGE"
+    "thumbnail": "DERELICT_SHIP_ROOT"
   },
   {
     "locationModID": "HN1_SIGNAL_GC_SURVIVOR",
