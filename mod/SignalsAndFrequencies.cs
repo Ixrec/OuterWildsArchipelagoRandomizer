@@ -132,16 +132,16 @@ internal class SignalsAndFrequencies
         return false; // skip vanilla implementation
     }
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsMultipleFrequencies))]
+    [HarmonyPriority(Priority.Low)] // run this *after* the New Horizons patch for KnowsMultipleFrequencies, so our __result overrides NH's
     public static bool PlayerData_KnowsMultipleFrequencies_Prefix(ref bool __result)
     {
-        // The SignalFrequency enum has 8 values. 3 of them are AP items/locations, 1 (Radio / Deep Space Radio) is not yet but will be
-        // when we support the EotE DLC, 1 (Traveler / Outer Wilds Ventures) the player always has, and the last 3 are never used.
-        // Therefore, the player "knows" at least two frequencies if they have either acquired one of the AP frequency items, making it "usable",
-        // or if they've scanned the Deep Space radio frequency.
+        // The Outer Wilds Ventures frequency the Signalscope starts with is the only frequency we haven't itemized,
+        // so the player "knows" at least two frequencies if they have acquired any one of the AP frequency items.
 
-        __result = usableFrequencies.Count > 0 || PlayerData.KnowsFrequency(SignalFrequency.Radio); // override return value
+        __result = usableFrequencies.Count > 0; // override return value
         return false; // skip vanilla implementation
     }
+    // no priority tag on KnowsSignal because we've chosen not to itemize any of the story mod *signals*; only the frequencies have AP items
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
