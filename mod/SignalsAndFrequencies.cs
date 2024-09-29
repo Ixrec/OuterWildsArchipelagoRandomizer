@@ -223,8 +223,15 @@ internal class SignalsAndFrequencies
                 if (!APRandomizer.SaveData.locationsChecked[frequencyLocation])
                     LocationTriggers.CheckLocation(frequencyLocation);
 
-        if (APRandomizer.SaveData.locationsChecked[signalLocation])
-            return false; // skip vanilla implementation
+        // For similar reasons, we have to call IdentifyFrequency() ourselves or else the game ends up displaying
+        // "Unidentified" in the UI forever. In practice this only seems to happen with New Horizons frequencies.
+        var freqStr = AudioSignal.FrequencyToString(__instance.GetFrequency());
+        if (freqStr == UITextLibrary.GetString(UITextType.SignalFreqUnidentified))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"AudioSignal_IdentifySignal_Prefix for {signal} calling " +
+                $"IdentifyFrequency for {__instance.GetFrequency()} since OW/NH believe it to be unidentified");
+            __instance.IdentifyFrequency();
+        }
 
         return true;
     }
