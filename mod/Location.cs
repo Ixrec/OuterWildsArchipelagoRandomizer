@@ -600,24 +600,32 @@ public static class LocationNames
 {
     public static bool IsDefaultLocation(Location location) =>
         location >= Location.SS && location <= Location.SATELLITE_TR;
+    public static bool IsBaseGameLogsanityLocation(Location location) =>
+        location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
     public static bool IsDLCDefaultLocation(Location location) =>
         location >= Location.RL_WORKSHOP && location <= Location.SL_VAULT;
-    public static bool IsLogsanityLocation(Location location) =>
-        location >= Location.SLF__S_SUNSTATION_X1 && location <= Location.SLF__QM_SIXTH_LOCATION_X6;
     public static bool IsDLCLogsanityLocation(Location location) =>
         location >= Location.SLF__TH_RADIO_TOWER_X1 && location <= Location.SLF__IP_DREAM_3_RULE_X1;
+    public static bool IsHN1DefaultLocation(Location location) =>
+        location >= Location.HN1_LH_ELEVATOR && location <= Location.HN1_SIGNAL_GC_SURVIVOR;
+    public static bool IsHN1LogsanityLocation(Location location) =>
+        location >= Location.SLF__HN_MUSEUM_PLATE_DETAILS && location <= Location.SLF__DS_ENDING;
 
-    // When story mods are added, these methods will have to consider those options too
     public static bool IsLocationActive(Location loc)
     {
         if (loc == Location.SLF__TH_VILLAGE_X3) return false;
 
         bool logsanityIsOn = APRandomizer.SlotEnabledLogsanity();
         bool dlcIsOn = APRandomizer.SlotEnabledEotEDLC();
+        bool hn1IsOn = (APRandomizer.SlotData.ContainsKey("enable_hn1_mod") && (long)APRandomizer.SlotData["enable_hn1_mod"] > 0);
 
-        if (IsLogsanityLocation(loc) && !logsanityIsOn) return false;
+        if (IsBaseGameLogsanityLocation(loc) && !logsanityIsOn) return false;
+
         if (IsDLCDefaultLocation(loc) && !dlcIsOn) return false;
         if (IsDLCLogsanityLocation(loc) && (!logsanityIsOn || !dlcIsOn)) return false;
+
+        if (IsHN1DefaultLocation(loc) && !hn1IsOn) return false;
+        if (IsHN1LogsanityLocation(loc) && (!logsanityIsOn || !hn1IsOn)) return false;
 
         return true;
     }
