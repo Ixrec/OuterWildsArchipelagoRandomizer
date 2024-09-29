@@ -72,6 +72,7 @@ Outer Wilds:
     # 
     # `any` will randomly select one of these items that's relevant to your spawn (especially useful with `spawn: random`).
     # For base game spawns it will choose Translator, NWC or LC, and for stranger spawns it will choose LC or SLM.
+    # If split_translator is also on, then "Translator" means the one for your spawn planet.
     # 
     # Recommended for games with non-vanilla spawns, especially async games.
     # In addition, without this AP seems to almost always put Launch Codes in sphere 1, so `any` also helps increase variety.
@@ -169,5 +170,17 @@ Outer Wilds:
     # Puts the spacesuit into the Archipelago item pool, forcing you to play suitless until it's found.
     # 
     # This option is incompatible with non-vanilla spawns (i.e. generation will fail), since those imply playing "shipless" at first, and almost nothing can be done both shipless and suitless.
+    'false': 50
+    'true': 0
+
+  split_translator:
+    # Splits the "Translator" item into 6 items: 5 for the main planets and their satellites, plus a
+    # "Translator (Other)" for smaller parts of the vanilla system and systems added by story mods.
+    'false': 50
+    'true': 0
+
+  enable_hn1_mod:
+    # Incorporates Hearth's Neighbor story mod content into the randomizer with an additional 3 items and 20 locations.
+    # If logsanity is enabled, that will add another 41 locations, for a total of 61 HN1 locations.
     'false': 50
     'true': 0
