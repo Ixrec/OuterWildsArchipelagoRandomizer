@@ -148,6 +148,7 @@ internal class WarpPlatforms
     }
 
     private static Dictionary<WarpPlatform, NomaiWarpPlatform> warpEnumToInGamePlatform = new();
+    private static HashSet<NomaiWarpPlatform> manualWarpPlatforms = new();
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
@@ -194,6 +195,8 @@ internal class WarpPlatforms
             WarpPlatform.SunTower,
             at.transform.Find("Sector_TowerTwin/Sector_Tower_SS").GetComponentInChildren<NomaiWarpTransmitter>()
         );
+
+        manualWarpPlatforms = new HashSet<NomaiWarpPlatform>(warpEnumToInGamePlatform.Values);
     }
 
     static List<InteractReceiver> interactReceivers = new();
@@ -281,6 +284,12 @@ internal class WarpPlatforms
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpTransmitter), nameof(NomaiWarpTransmitter.FixedUpdate))]
     public static bool NomaiWarpTransmitter_FixedUpdate_Prefix(NomaiWarpTransmitter __instance)
     {
+        // Also, we only want to disable auto-warp on alignment for the vanilla warp platforms this AP item is designed for.
+        // To avoid breaking story mods (Astral Codec) that rely on warp platforms' normal behavior, we return early on any other platform.
+        var isManualPlatform = manualWarpPlatforms.Contains(__instance);
+        if (!isManualPlatform)
+            return true;
+
         if (__instance.IsBlackHoleOpen())
         {
             return true;
