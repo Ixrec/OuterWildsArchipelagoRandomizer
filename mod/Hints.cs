@@ -159,6 +159,8 @@ internal class Hints
     [HarmonyPostfix, HarmonyPatch(typeof(CharacterDialogueTree), nameof(CharacterDialogueTree.StartConversation))]
     public static void CharacterDialogueTree_StartConversation_Postfix(CharacterDialogueTree __instance)
     {
+        if (LoadManager.GetCurrentScene() == OWScene.EyeOfTheUniverse) return;
+
         //APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_StartConversation_Postfix {__instance._characterName}");
         if (!characterToQuestionNodes.ContainsKey(__instance._characterName))
             return; // not a character that provides hints
