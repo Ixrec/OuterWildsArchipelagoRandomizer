@@ -583,6 +583,8 @@ public enum Location
     SLF__AC_RED_HOUSE,
     SLF__AC_RED_MURAL,
     SLF__AC_CODE,
+    SLF__AC_SECRET_INFO,
+    SLF__AC_SECRET_MAP,
 
     SLF__DS_ENTRY,
     SLF__DS_BARRIER,
@@ -1087,6 +1089,8 @@ public static class LocationNames
         { Location.SLF__AC_RED_HOUSE, "HN1 Ship Log: Alpine Core 1 - Building" },
         { Location.SLF__AC_RED_MURAL, "HN1 Ship Log: Alpine Core 2 - Mural" },
         { Location.SLF__AC_CODE, "HN1 Ship Log: Odd Code" },
+        { Location.SLF__AC_SECRET_INFO, "HN1 Ship Log: Blue House 1 - Visit" },
+        { Location.SLF__AC_SECRET_MAP, "HN1 Ship Log: Blue House 2 - Map" },
 
         { Location.SLF__DS_ENTRY, "HN1 Ship Log: Derelict Ship 1 - Edge" },
         { Location.SLF__DS_BARRIER, "HN1 Ship Log: Derelict Ship 2 - Barrier" },

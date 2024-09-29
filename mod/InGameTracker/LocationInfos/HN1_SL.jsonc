@@ -143,18 +143,28 @@
   },
   {
     "locationModID": "SLF__AC_RED_HOUSE",
-    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole.",
+    "description": "Reach the red house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole.",
     "thumbnail": "AC_ROOT"
   },
   {
     "locationModID": "SLF__AC_RED_MURAL",
-    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a mural.",
+    "description": "Reach the red house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a mural.",
     "thumbnail": "AC_ROOT"
   },
   {
     "locationModID": "SLF__AC_CODE",
-    "description": "Reach the house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a strange code.",
+    "description": "Reach the red house in Alpine Core either by jetpacking between the platforms, or by slingshotting yourself around the black hole. Inside is a strange code.",
     "thumbnail": "AC_CODE_FACT"
+  },
+  {
+    "locationModID": "SLF__AC_SECRET_INFO",
+    "description": "Reach the secret blue house in Alpine Core by slingshotting yourself around the black hole to an isolated platform.",
+    "thumbnail": "AC_SECRET"
+  },
+  {
+    "locationModID": "SLF__AC_SECRET_MAP",
+    "description": "Reach the secret blue house in Alpine Core by slingshotting yourself around the black hole to an isolated platform. Inside is a map.",
+    "thumbnail": "AC_SECRET"
   },
   {
     "locationModID": "SLF__DS_ENTRY",
