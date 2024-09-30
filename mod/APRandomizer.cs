@@ -383,6 +383,13 @@ public class APRandomizer : ModBehaviour
         }
 
         var item = ItemNames.archipelagoIdToItem[itemId];
+
+        // It is technically possible to generate with apworld vX+1 to get X+1-only items, then play on mod vX to get a save file
+        // without them, then upgrade to mod vX+1 and suddenly the mod recognizes the item but it's missing from the save file.
+        // This works around that corner case by explicitly adding a 0 if it happens.
+        if (!SaveData.itemsAcquired.ContainsKey(item))
+            SaveData.itemsAcquired[item] = 0;
+
         var itemCountSoFar = APSession.Items.AllItemsReceived.Where(i => i.ItemId == itemId).Count();
 
         var savedCount = APRandomizer.SaveData.itemsAcquired[item];
