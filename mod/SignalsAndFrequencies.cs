@@ -52,6 +52,13 @@ internal class SignalsAndFrequencies
         { "OLD ABANDONED TOWN", "Lava Core Signals" },
         { "DERELICT SHIP COCKPIT", "GALACTIC COMMUNICATION" },
         { "SOLE SURVIVOR", "GALACTIC COMMUNICATION" },
+
+        // The Outsider has no signals
+
+        // Astral Codec
+        { "Chime Transmitter", "Astral Codec" },
+        { "Translation Probe Cinder", "Astral Codec" },
+        { "Translation Probe Thicket", "Astral Codec" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -100,6 +107,15 @@ internal class SignalsAndFrequencies
         { "GALACTIC COMMUNICATION", new HashSet<string>{
             "DERELICT SHIP COCKPIT",
             "SOLE SURVIVOR",
+        } },
+
+        // The Outsider has no signals
+
+        // Astral Codec
+        { "Astral Codec", new HashSet<string>{
+            "Chime Transmitter",
+            "Translation Probe Cinder",
+            "Translation Probe Thicket",
         } },
     };
 

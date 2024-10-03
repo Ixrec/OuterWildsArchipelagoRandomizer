@@ -124,6 +124,60 @@ internal class LocationTriggers
         { "DS_INFO", Location.HN1_SHIP_ENTER },
         { "DS_COCKPIT", Location.HN1_SHIP_COCKPIT },
         { "HN_POD_RESOLUTION", Location.HN1_SURVIVOR_POD },
+
+        // The Outsider default locations
+        { "PS_POWER_STATION_X3", Location.TO_POWER_STATION_SWITCH },
+        { "PS_POWER_STATION_X4", Location.TO_POWER_STATION_SCOUT },
+
+        { "DB_BRAMBLE_VILLAGE_X3", Location.TO_VILLAGE_DATURA_SCROLL },
+        { "DB_BRAMBLE_VILLAGE_X4", Location.TO_VILLAGE_FRIEND_SCROLL },
+        { "DB_SECRET_ROOM_X1", Location.TO_VILLAGE_SECRET_PAINTING },
+        { "DB_SECRET_ROOM_X2", Location.TO_VILLAGE_SECRET_SCROLL },
+
+        { "DB_SIMULATION_HOUSE_X1", Location.TO_SECLUDED_OUTSIDE },
+        { "DB_SIMULATION_HOUSE_INSIDE_X5", Location.TO_SECLUDED_INSIDE },
+        { "IP_DREAM_HOME_X1", Location.TO_CLIFFSIDE },
+        { "IP_DREAM_HOME_X4", Location.TO_CLIFFSIDE_DECAY },
+
+        { "DB_STUDY_TOWER_X2", Location.TO_TOWER_MEETING },
+        { "DB_STUDY_TOWER_TOP_X1", Location.TO_TOWER_TOP },
+
+        { "DB_PROJECTION_POOL_HOUSE_X1", Location.TO_POOL_BH_STONE },
+        { "DB_PROJECTION_POOL_HOUSE_X3", Location.TO_POOL_AT_STONE },
+
+        { "DB_HUNTING_BLIND_X1", Location.TO_BLIND_WALL_SCROLL },
+        { "DB_HUNTING_BLIND_X3", Location.TO_BLIND_FISH_SCROLL },
+
+        { "DB_SHUTTLE_CRUSHER_X1", Location.TO_CRUSHER },
+        { "DB_INITIAL_CAMP_X2", Location.TO_INITIAL_CAMP_TR },
+
+        { "DB_NORTHERN_OBSERVATORY_X1", Location.TO_OBSERVATORY_BODY },
+        { "DB_NORTHERN_OBSERVATORY_X3", Location.TO_OBSERVATORY_OUTCOME },
+
+        // Astral Codec default locations
+        { "codex_projection_projection_fact", Location.AC_PTM_ANOMALY_VORTEX },
+        { "codex_projection_text_fact", Location.AC_PTM_ANOMALY_LOCATION },
+
+        { "codex_lingering_chime_tesseract", Location.AC_LC_TESSERACT },
+        { "codex_lingering_chime_water", Location.AC_LC_UD },
+        { "codex_lingering_chime_spacecraft_fact", Location.AC_LC_ICONS },
+        { "codex_lingering_chime_population_fact", Location.AC_LC_TALLIES },
+        { "codex_lingering_chime_no_sun_fact", Location.AC_LC_CIRCLE },
+
+        { "codex_ember_memorial", Location.AC_ET_MEMORIAL },
+        { "codex_ember_matter", Location.AC_ET_DUPLICATE },
+        { "codex_ember_hologram", Location.AC_ET_HOLOGRAM },
+
+        { "codex_interloper_recorder_warning", Location.AC_IL_CORE },
+
+        { "codex_bramble_station", Location.AC_DB_STATION },
+        { "codex_bramble_research", Location.AC_DB_POCKET },
+        { "codex_bramble_hologram", Location.AC_DB_HOLOGRAM },
+
+        { "codex_lingering_chime_spacecraft_complete", Location.AC_LC_ICONS_SOLUTION },
+        { "codex_lingering_chime_population_complete", Location.AC_LC_TALLIES_SOLUTION },
+        { "codex_lingering_chime_no_sun_complete", Location.AC_LC_CIRCLE_SOLUTION },
+        { "codex_astral_codex_fact", Location.AC_LC_ASTRAL_CODEC },
     };
 
     // manual scrolls

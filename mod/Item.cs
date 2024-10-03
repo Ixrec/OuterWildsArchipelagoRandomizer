@@ -97,6 +97,11 @@ public enum Item
     FrequencyNeighborDistress,
     FrequencyLavaCore,
     FrequencyGalacticCommunication,
+
+    // The Outsider has no signal frequencies or custom items
+
+    // Astral Codec items
+    FrequencyAstralCodec,
 };
 
 public static class ItemNames
@@ -190,6 +195,11 @@ public static class ItemNames
         { Item.FrequencyNeighborDistress, "Neighbor's Distress Signal Frequency" },
         { Item.FrequencyLavaCore, "Lava Core Signals Frequency" },
         { Item.FrequencyGalacticCommunication, "Galactic Communication Frequency" },
+
+        // The Outsider has no signal frequencies or custom items
+
+        // Astral Codec items
+        { Item.FrequencyAstralCodec, "Astral Codec Frequency" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -207,7 +217,12 @@ public static class ItemNames
         // Hearth's Neighbor frequency items
         { "NEIGHBOR'S DISTRESS SIGNAL", Item.FrequencyNeighborDistress },
         { "Lava Core Signals", Item.FrequencyLavaCore },
-        { "GALACTIC COMMUNICATION", Item.FrequencyGalacticCommunication }
+        { "GALACTIC COMMUNICATION", Item.FrequencyGalacticCommunication },
+
+        // The Outsider has no signal frequencies
+
+        // Astral Codec frequency items
+        { "Astral Codec", Item.FrequencyAstralCodec },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

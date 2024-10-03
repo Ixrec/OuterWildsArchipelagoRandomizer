@@ -594,6 +594,153 @@ public enum Location
     SLF__DS_DAMAGE,
     SLF__DS_HOPE,
     SLF__DS_ENDING,
+
+    // The Outsider locations
+    TO_POWER_STATION_SWITCH,
+    TO_POWER_STATION_SCOUT,
+    TO_VILLAGE_DATURA_SCROLL,
+    TO_VILLAGE_FRIEND_SCROLL,
+    TO_VILLAGE_SECRET_PAINTING,
+    TO_VILLAGE_SECRET_SCROLL,
+    TO_SECLUDED_OUTSIDE,
+    TO_SECLUDED_INSIDE,
+    TO_CLIFFSIDE,
+    TO_CLIFFSIDE_DECAY,
+    TO_TOWER_MEETING,
+    TO_TOWER_TOP,
+    TO_POOL_BH_STONE,
+    TO_POOL_AT_STONE,
+    TO_BLIND_WALL_SCROLL,
+    TO_BLIND_FISH_SCROLL,
+    TO_CRUSHER,
+    TO_INITIAL_CAMP_TR,
+    TO_INITIAL_CAMP_TANK,
+    TO_OBSERVATORY_BODY,
+    TO_OBSERVATORY_OUTCOME,
+
+    SLF__PS_POWER_STATION_X1,
+    SLF__PS_POWER_STATION_X2,
+    SLF__PS_POWER_STATION_X3,
+    SLF__PS_POWER_STATION_X4,
+
+    SLF__DB_BRAMBLE_VILLAGE_X1,
+    SLF__DB_BRAMBLE_VILLAGE_X2,
+    SLF__DB_BRAMBLE_VILLAGE_X3,
+    SLF__DB_BRAMBLE_VILLAGE_X4,
+    SLF__DB_BRAMBLE_VILLAGE_X5,
+    SLF__DB_SECRET_ROOM_X1,
+    SLF__DB_SECRET_ROOM_X2,
+
+    SLF__DB_SIMULATION_HOUSE_X1,
+    SLF__DB_SIMULATION_HOUSE_X2,
+    SLF__DB_SIMULATION_HOUSE_INSIDE_X1,
+    SLF__DB_SIMULATION_HOUSE_INSIDE_X2,
+    SLF__DB_SIMULATION_HOUSE_INSIDE_X3,
+    SLF__DB_SIMULATION_HOUSE_INSIDE_X4,
+    SLF__DB_SIMULATION_HOUSE_INSIDE_X5,
+    SLF__IP_DREAM_HOME_X1,
+    SLF__IP_DREAM_HOME_X2,
+    SLF__IP_DREAM_HOME_X3,
+    SLF__IP_DREAM_HOME_X4,
+
+    SLF__DB_STUDY_TOWER_X1,
+    SLF__DB_STUDY_TOWER_X2,
+    SLF__DB_STUDY_TOWER_X3,
+    SLF__DB_STUDY_TOWER_TOP_X1,
+
+    SLF__DB_PROJECTION_POOL_HOUSE_X1,
+    SLF__DB_PROJECTION_POOL_HOUSE_X2,
+    SLF__DB_PROJECTION_POOL_HOUSE_X3,
+    SLF__DB_PROJECTION_POOL_HOUSE_X4,
+
+    SLF__DB_HUNTING_BLIND_X1,
+    SLF__DB_HUNTING_BLIND_X2A,
+    SLF__DB_HUNTING_BLIND_X2B,
+    SLF__DB_HUNTING_BLIND_X3,
+
+    SLF__DB_SHUTTLE_CRUSHER_X1,
+    SLF__DB_SHUTTLE_CRUSHER_X2,
+    SLF__DB_SHUTTLE_CRUSHER_X3,
+    SLF__DB_SHUTTLE_CRUSHER_X4,
+    SLF__DB_INITIAL_CAMP_X1,
+    SLF__DB_INITIAL_CAMP_X2,
+
+    SLF__DB_NORTHERN_OBSERVATORY_X1,
+    SLF__DB_NORTHERN_OBSERVATORY_X3,
+    SLF__DB_NORTHERN_OBSERVATORY_X4,
+    SLF__DB_DRIFTING_DEATH_X1,
+
+    // Astral Codec locations
+    AC_PTM_ANOMALY_VORTEX,
+    AC_PTM_ANOMALY_LOCATION,
+
+    AC_LC_TESSERACT,
+    AC_LC_UD,
+    AC_LC_CHIME,
+    AC_LC_ICONS,
+    AC_LC_TALLIES,
+    AC_LC_CIRCLE,
+
+    AC_ET_MEMORIAL,
+    AC_ET_SIGNAL,
+    AC_ET_DUPLICATE,
+    AC_ET_HOLOGRAM,
+
+    AC_IL_CORE,
+
+    AC_DB_STATION,
+    AC_DB_SIGNAL,
+    AC_DB_POCKET,
+    AC_DB_HOLOGRAM,
+
+    AC_LC_ICONS_SOLUTION,
+    AC_LC_TALLIES_SOLUTION,
+    AC_LC_CIRCLE_SOLUTION,
+    AC_LC_ASTRAL_CODEC,
+
+    SLF__codex_flashback_fact,
+    SLF__codex_projection_fact,
+    SLF__codex_projection_projection_fact,
+    SLF__codex_projection_text_fact,
+    SLF__codex_anomaly_fact,
+    SLF__codex_lingering_chime_tesseract,
+
+    SLF__codex_lingering_chime_fact,
+    SLF__codex_lingering_chime_material,
+    SLF__codex_lingering_chime_water,
+    SLF__codex_lingering_chime_antenna,
+    SLF__codex_lingering_chime_signal,
+    SLF__codex_lingering_chime_trails_activator,
+    SLF__codex_lingering_chime_spacecraft_fact,
+    SLF__codex_lingering_chime_spacecraft_trails,
+    SLF__codex_lingering_chime_spacecraft_complete,
+    SLF__codex_lingering_chime_population_fact,
+    SLF__codex_lingering_chime_population_trails,
+    SLF__codex_lingering_chime_population_complete,
+    SLF__codex_lingering_chime_no_sun_fact,
+    SLF__codex_lingering_chime_no_sun_complete,
+    SLF__codex_lingering_chime_lower,
+
+    SLF__codex_ember_memorial,
+    SLF__codex_ember_matter,
+    SLF__codex_ember_cairns,
+    SLF__codex_ember_cairns_safeguards,
+    SLF__codex_ember_cairns_safeguard_archivist,
+    SLF__codex_ember_symbols,
+    SLF__codex_ember_hologram,
+
+    SLF__codex_interloper_recorder_warning,
+
+    SLF__codex_bramble_station,
+    SLF__codex_bramble_research,
+    SLF__codex_bramble_scroll,
+    SLF__codex_bramble_symbols,
+    SLF__codex_bramble_hologram,
+
+    SLF__codex_astral_codex_galaxy,
+    SLF__codex_astral_codex_species,
+    SLF__codex_astral_codex_environments,
+    SLF__codex_astral_codex_fact,
 };
 
 public static class LocationNames
@@ -1108,6 +1255,160 @@ public static class LocationNames
         { Location.SLF__DS_DAMAGE, "HN1 Ship Log: Derelict Ship 6 - Report" },
         { Location.SLF__DS_HOPE, "HN1 Ship Log: Derelict Ship 7 - Signal" },
         { Location.SLF__DS_ENDING, "HN1 Ship Log: Escape Pod Signal" },
+
+        // The Outsider locations
+        { Location.TO_POWER_STATION_SWITCH, "TO: Power Station Switch" },
+        { Location.TO_POWER_STATION_SCOUT, "TO: Power Station Scout Photos" },
+
+        { Location.TO_VILLAGE_DATURA_SCROLL, "TO: Pessimistic Village Scroll" },
+        { Location.TO_VILLAGE_FRIEND_SCROLL, "TO: Optimistic Village Scroll" },
+        { Location.TO_VILLAGE_SECRET_PAINTING, "TO: Jellyfish Painting Path" },
+        { Location.TO_VILLAGE_SECRET_SCROLL, "TO: Shared Village Scroll" },
+
+        { Location.TO_SECLUDED_OUTSIDE, "TO: Secluded Structure (Outside Text Wheel)" },
+        { Location.TO_SECLUDED_INSIDE, "TO: Secluded Structure (Inside 2nd Text Wheel)" },
+        { Location.TO_CLIFFSIDE, "TO: Explore the Cliffside Home" },
+        { Location.TO_CLIFFSIDE_DECAY, "TO: Cliffside Home Explanation (Text Wall)" },
+
+        { Location.TO_TOWER_MEETING, "TO: Study Tower (2nd Scroll)" },
+        { Location.TO_TOWER_TOP, "TO: Top of the Tower (Text Wall)" },
+
+        { Location.TO_POOL_BH_STONE, "TO: Projection Pool House (BH Stone Text)" },
+        { Location.TO_POOL_AT_STONE, "TO: Projection Pool House (AT Stone Text)" },
+
+        { Location.TO_BLIND_WALL_SCROLL, "TO: Hunting Blind (Text Wall)" },
+        { Location.TO_BLIND_FISH_SCROLL, "TO: Hunting Blind (Fish Scroll)" },
+
+        { Location.TO_CRUSHER, "TO: Shuttle Crusher Effects (Text Wall)" },
+        { Location.TO_INITIAL_CAMP_TR, "TO: Feldspar's Initial Camp Recorder" },
+        { Location.TO_INITIAL_CAMP_TANK, "TO: Feldspar's Initial Camp Fuel Tank" },
+
+        { Location.TO_OBSERVATORY_BODY, "TO: Northern Observatory Center" },
+        { Location.TO_OBSERVATORY_OUTCOME, "TO: Northern Observatory (Final Text Wheel)" },
+
+        { Location.SLF__PS_POWER_STATION_X1, "TO Ship Log: Power Station 1 - Seeds" },
+        { Location.SLF__PS_POWER_STATION_X2, "TO Ship Log: Power Station 2 - Stability" },
+        { Location.SLF__PS_POWER_STATION_X3, "TO Ship Log: Power Station 3 - Switch" },
+        { Location.SLF__PS_POWER_STATION_X4, "TO Ship Log: Power Station 4 - Scout" },
+
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X1, "TO Ship Log: Bramble Village 1 - Teaching" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X2, "TO Ship Log: Bramble Village 2 - Argument" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X3, "TO Ship Log: Bramble Village 3 - Pessimistic" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X4, "TO Ship Log: Bramble Village 4 - Optimistic" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X5, "TO Ship Log: Bramble Village 5 - Painting" },
+        { Location.SLF__DB_SECRET_ROOM_X1, "TO Ship Log: Secret Room 1 - Jellyfish" },
+        { Location.SLF__DB_SECRET_ROOM_X2, "TO Ship Log: Secret Room 2 - Discussion" },
+
+        { Location.SLF__DB_SIMULATION_HOUSE_X1, "TO Ship Log: Secluded Structure 1 - Explosion" },
+        { Location.SLF__DB_SIMULATION_HOUSE_X2, "TO Ship Log: Secluded Structure 2 - HUD" },
+        { Location.SLF__DB_SIMULATION_HOUSE_INSIDE_X1, "TO Ship Log: Inside The Structure 1 - Green Fire" },
+        { Location.SLF__DB_SIMULATION_HOUSE_INSIDE_X2, "TO Ship Log: Inside The Structure 2 - Curious" },
+        { Location.SLF__DB_SIMULATION_HOUSE_INSIDE_X3, "TO Ship Log: Inside The Structure 3 - Alarm" },
+        { Location.SLF__DB_SIMULATION_HOUSE_INSIDE_X4, "TO Ship Log: Inside The Structure 4 - Awoken" },
+        { Location.SLF__DB_SIMULATION_HOUSE_INSIDE_X5, "TO Ship Log: Inside The Structure 5 - Sealed" },
+        { Location.SLF__IP_DREAM_HOME_X1, "TO Ship Log: Cliffside Home 1 - Friend" },
+        { Location.SLF__IP_DREAM_HOME_X2, "TO Ship Log: Cliffside Home 2 - Security" },
+        { Location.SLF__IP_DREAM_HOME_X3, "TO Ship Log: Cliffside Home 3 - Released" },
+        { Location.SLF__IP_DREAM_HOME_X4, "TO Ship Log: Cliffside Home 4 - Decayed" },
+
+        { Location.SLF__DB_STUDY_TOWER_X1, "TO Ship Log: Study Tower 1 - Flickering" },
+        { Location.SLF__DB_STUDY_TOWER_X2, "TO Ship Log: Study Tower 2 - Meeting" },
+        { Location.SLF__DB_STUDY_TOWER_X3, "TO Ship Log: Study Tower 3 - Observatory" },
+        { Location.SLF__DB_STUDY_TOWER_TOP_X1, "TO Ship Log: Top of the Tower" },
+
+        { Location.SLF__DB_PROJECTION_POOL_HOUSE_X1, "TO Ship Log: Projection Pool House 1 - Leave" },
+        { Location.SLF__DB_PROJECTION_POOL_HOUSE_X2, "TO Ship Log: Projection Pool House 2 - Soon" },
+        { Location.SLF__DB_PROJECTION_POOL_HOUSE_X3, "TO Ship Log: Projection Pool House 3 - Warn" },
+        { Location.SLF__DB_PROJECTION_POOL_HOUSE_X4, "TO Ship Log: Projection Pool House 4 - Plans" },
+
+        { Location.SLF__DB_HUNTING_BLIND_X1, "TO Ship Log: Hunting Blind 1 - Food" },
+        { Location.SLF__DB_HUNTING_BLIND_X2A, "TO Ship Log: Hunting Blind 2 - Blind" },
+        { Location.SLF__DB_HUNTING_BLIND_X2B, "TO Ship Log: Hunting Blind 3 - Argument" },
+        { Location.SLF__DB_HUNTING_BLIND_X3, "TO Ship Log: Hunting Blind 4 - Leader" },
+
+        { Location.SLF__DB_SHUTTLE_CRUSHER_X1, "TO Ship Log: Shuttle Crusher 1 - Exploded" },
+        { Location.SLF__DB_SHUTTLE_CRUSHER_X2, "TO Ship Log: Shuttle Crusher 2 - Remembered" },
+        { Location.SLF__DB_SHUTTLE_CRUSHER_X3, "TO Ship Log: Shuttle Crusher 3 - Switch" },
+        { Location.SLF__DB_SHUTTLE_CRUSHER_X4, "TO Ship Log: Shuttle Crusher 4 - Crash" },
+        { Location.SLF__DB_INITIAL_CAMP_X1, "TO Ship Log: Initial Campsite 1 - Identify" },
+        { Location.SLF__DB_INITIAL_CAMP_X2, "TO Ship Log: Initial Campsite 2 - Ideas" },
+
+        { Location.SLF__DB_NORTHERN_OBSERVATORY_X1, "TO Ship Log: Northern Observatory 1 - Body" },
+        { Location.SLF__DB_NORTHERN_OBSERVATORY_X3, "TO Ship Log: Northern Observatory 2 - Warn" },
+        { Location.SLF__DB_NORTHERN_OBSERVATORY_X4, "TO Ship Log: Northern Observatory 3 - Sixth Location" },
+        { Location.SLF__DB_DRIFTING_DEATH_X1, "TO Ship Log: The Collector Mural" },
+
+        // Astral Codec locations
+        { Location.AC_PTM_ANOMALY_VORTEX, "AC: PTM Anomaly Vortex" }, // SLF__codex_projection_projection_fact
+        { Location.AC_PTM_ANOMALY_LOCATION, "AC: PTM Anomaly Location" }, // SLF__codex_projection_text_fact
+
+        { Location.AC_LC_TESSERACT, "AC: Enter The Tesseract" }, // SLF__codex_lingering_chime_tesseract
+        { Location.AC_LC_UD, "AC: LC Upper Deck" }, // SLF__codex_lingering_chime_water essentially for entering LC
+        { Location.AC_LC_CHIME, "AC: Scan Chime Transmitter Signal" }, // also reveals SLF__codex_lingering_chime_signal
+        { Location.AC_LC_ICONS, "AC: LC Icons Display" }, // SLF__codex_lingering_chime_spacecraft_fact
+        { Location.AC_LC_TALLIES, "AC: LC Tally Display" }, // SLF__codex_lingering_chime_population_fact
+        { Location.AC_LC_CIRCLE, "AC: LC Circular Display" }, // SLF__codex_lingering_chime_no_sun_fact
+
+        { Location.AC_ET_MEMORIAL, "AC: Reunion Memorial" }, // SLF__codex_ember_memorial
+        { Location.AC_ET_SIGNAL, "AC: Scan Translation Probe Cinder Signal" },
+        { Location.AC_ET_DUPLICATE, "AC: Reunion Memorial (Floor Text)" }, // SLF__codex_ember_matter, is this the endgame hint?
+        { Location.AC_ET_HOLOGRAM, "AC: Reunion Memorial (Trigger Hologram)" }, // SLF__codex_ember_hologram
+
+        { Location.AC_IL_CORE, "AC: Missing Fuel Geode" }, // SLF__codex_interloper_recorder_warning
+
+        { Location.AC_DB_STATION, "AC: Research Station" }, // SLF__codex_bramble_station
+        { Location.AC_DB_SIGNAL, "AC: Scan Translation Probe Thicket Signal" },
+        { Location.AC_DB_POCKET, "AC: Research Station (Scroll Inside Building)" }, // SLF__codex_bramble_research
+        { Location.AC_DB_HOLOGRAM, "AC: Research Station (Trigger Hologram)" }, // SLF__codex_bramble_hologram
+
+        { Location.AC_LC_ICONS_SOLUTION, "AC: LC Icons Solved" }, // SLF__codex_lingering_chime_spacecraft_complete
+        { Location.AC_LC_TALLIES_SOLUTION, "AC: LC Tallies Solved" }, // SLF__codex_lingering_chime_population_complete
+        { Location.AC_LC_CIRCLE_SOLUTION, "AC: LC Circle Solved" }, // SLF__codex_lingering_chime_no_sun_complete
+        { Location.AC_LC_ASTRAL_CODEC, "AC: The Astral Codec" }, // SLF__codex_astral_codex_fact
+
+        { Location.SLF__codex_flashback_fact, "AC Ship Log: Flashback Vision" },
+        { Location.SLF__codex_projection_fact, "AC Ship Log: Anomaly Recording 1 - Probe" },
+        { Location.SLF__codex_projection_projection_fact, "AC Ship Log: Anomaly Recording 2 - Vortex" },
+        { Location.SLF__codex_projection_text_fact, "AC Ship Log: Anomaly Recording 3 - Location" },
+        { Location.SLF__codex_anomaly_fact, "AC Ship Log: Anomalous Body 1 - Anomaly" },
+        { Location.SLF__codex_lingering_chime_tesseract, "AC Ship Log: Anomalous Body 2 - Revealed" },
+
+        { Location.SLF__codex_lingering_chime_fact, "AC Ship Log: Lingering Chime 1 - Invisible" },
+        { Location.SLF__codex_lingering_chime_material, "AC Ship Log: Lingering Chime 2 - Material" },
+        { Location.SLF__codex_lingering_chime_water, "AC Ship Log: Upper Deck 1 - Water" },
+        { Location.SLF__codex_lingering_chime_antenna, "AC Ship Log: Upper Deck 2 - Antenna" },
+        { Location.SLF__codex_lingering_chime_signal, "AC Ship Log: Upper Deck 3 - Chiming" },
+        { Location.SLF__codex_lingering_chime_trails_activator, "AC Ship Log: Upper Deck 4 - Wires" },
+        { Location.SLF__codex_lingering_chime_spacecraft_fact, "AC Ship Log: Icons Display 1 - Icons" },
+        { Location.SLF__codex_lingering_chime_spacecraft_trails, "AC Ship Log: Icons Display 2 - Purple" },
+        { Location.SLF__codex_lingering_chime_spacecraft_complete, "AC Ship Log: Icons Display 3 - Solution" },
+        { Location.SLF__codex_lingering_chime_population_fact, "AC Ship Log: Tally Display 1 - Tallies" },
+        { Location.SLF__codex_lingering_chime_population_trails, "AC Ship Log: Tally Display 2 - Green" },
+        { Location.SLF__codex_lingering_chime_population_complete, "AC Ship Log: Tally Display 3 - Solution" },
+        { Location.SLF__codex_lingering_chime_no_sun_fact, "AC Ship Log: Circular Display 1 - Circle" },
+        { Location.SLF__codex_lingering_chime_no_sun_complete, "AC Ship Log: Circular Display 2 - Solution" },
+        { Location.SLF__codex_lingering_chime_lower, "AC Ship Log: Lower Deck" },
+
+        { Location.SLF__codex_ember_memorial, "AC Ship Log: Reunion Memorial 1 - Visit" },
+        { Location.SLF__codex_ember_matter, "AC Ship Log: Reunion Memorial 2 - Duplicate" },
+        { Location.SLF__codex_ember_cairns, "AC Ship Log: Reunion Memorial 3 - Scientist" },
+        { Location.SLF__codex_ember_cairns_safeguards, "AC Ship Log: Reunion Memorial 4 - Safeguards" },
+        { Location.SLF__codex_ember_cairns_safeguard_archivist, "AC Ship Log: Reunion Memorial 5 - Archivist" },
+        { Location.SLF__codex_ember_symbols, "AC Ship Log: Reunion Memorial 6 - Symbols" },
+        { Location.SLF__codex_ember_hologram, "AC Ship Log: Reunion Memorial 7 - Hologram" },
+
+        { Location.SLF__codex_interloper_recorder_warning, "AC Ship Log: Missing Fuel Geode" },
+
+        { Location.SLF__codex_bramble_station, "AC Ship Log: Research Station 1 - Visit" },
+        { Location.SLF__codex_bramble_research, "AC Ship Log: Research Station 2 - Pocket" },
+        { Location.SLF__codex_bramble_scroll, "AC Ship Log: Research Station 3 - Explorer" },
+        { Location.SLF__codex_bramble_symbols, "AC Ship Log: Research Station 4 - Symbols" },
+        { Location.SLF__codex_bramble_hologram, "AC Ship Log: Research Station 5 - Hologram" },
+
+        { Location.SLF__codex_astral_codex_galaxy, "AC Ship Log: Astral Codec 1 - Transmitting" },
+        { Location.SLF__codex_astral_codex_species, "AC Ship Log: Astral Codec 2 - Stories" },
+        { Location.SLF__codex_astral_codex_environments, "AC Ship Log: Astral Codec 3 - Hope" },
+        { Location.SLF__codex_astral_codex_fact, "AC Ship Log: Astral Codec 4 - Onwards" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
@@ -1155,6 +1456,13 @@ public static class LocationNames
         { "OLD ABANDONED TOWN", Location.HN1_SIGNAL_LCS_TOWN },
         { "DERELICT SHIP COCKPIT", Location.HN1_SIGNAL_GC_COCKPIT },
         { "SOLE SURVIVOR", Location.HN1_SIGNAL_GC_SURVIVOR },
+
+        // The Outsider has no signals
+
+        // Astral Codec signals
+        { "Chime Transmitter", Location.AC_LC_CHIME },
+        { "Translation Probe Cinder", Location.AC_ET_SIGNAL },
+        { "Translation Probe Thicket", Location.AC_DB_SIGNAL },
     };
     public static Dictionary<Location, string> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
 
