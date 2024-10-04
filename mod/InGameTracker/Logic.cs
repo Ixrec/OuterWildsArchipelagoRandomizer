@@ -8,6 +8,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -547,9 +548,30 @@ public class Logic
 
         return "<color=grey>" +
             (includeLocationName ? $"\"{data.name}\" " : "") +
-            "Location Logic: " +
-            string.Join(" <color=lime>AND</color> ", locationLogic) +
+            "Location Logic: " + AndJoin(locationLogic) +
             "</color>";
+    }
+
+    // A ship log description line is about 75 visible characters. Color markup can more than double that. A cutoff of 100 seems to look good in practice.
+    private string AndJoin(IEnumerable<string> list)
+    {
+        if (list.Count() > 2 && list.Any(str => str.Length > 100))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"AndJoin using newlines on {string.Join("|", list)}", OWML.Common.MessageType.Warning);
+            return string.Join("\n<color=lime>AND</color> ", list);
+        }
+        else
+            return string.Join(" <color=lime>AND</color> ", list);
+    }
+
+    private string OrJoin(IEnumerable<string> list) {
+        if (list.Count() > 2 && list.Any(str => str.Length > 100))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"OrJoin using newlines on {string.Join("|", list)}", OWML.Common.MessageType.Warning);
+            return string.Join("\n<color=orange>OR</color> ", list);
+        }
+        else
+            return string.Join(" <color=orange>OR</color> ", list);
     }
 
     private string GetRegionLogicString(TrackerRegionData data)
@@ -561,16 +583,15 @@ public class Logic
             {
                 CanAccessRegion.TryGetValue(connection.from, out bool canAccessRegion);
 
-                string connectionLogicString = (canAccessRegion ? "<color=green>" : "<color=maroon>") +
+                string regionString = (canAccessRegion ? "<color=green>" : "<color=maroon>") +
                     $"(Can Access: {connection.from})</color>";
 
+                var connectionLogicString = regionString;
                 if (connection.requires != null && connection.requires.Count > 0)
                 {
-                    connectionLogicString += " <color=lime>AND</color> ";
-                    connectionLogicString += string.Join(
-                        " <color=lime>AND</color> ",
-                        GetLogicRequirementsStrings(connection.requires)
-                    );
+                    List<string> logicStrings = [regionString];
+                    logicStrings.AddRange(GetLogicRequirementsStrings(connection.requires));
+                    connectionLogicString = AndJoin(logicStrings);
 
                     // if we have multiple connections to OR together *and* this connection has multiple parts being ANDed,
                     // then we need an extra set of parentheses around this connection.
@@ -584,10 +605,7 @@ public class Logic
         }
 
         string logicString = $"<color=grey>\"{data.name}\" Region Logic: ";
-        logicString += string.Join(
-            " <color=orange>OR</color> ",
-            connectionLogicStrings
-        );
+        logicString += OrJoin(connectionLogicStrings);
         logicString += "</color>";
         return logicString;
     }
@@ -630,10 +648,7 @@ public class Logic
             }
             else if (req.anyOf != null && req.anyOf.Count > 0)
             {
-                string reqStr = string.Join(
-                    " <color=orange>OR</color> ",
-                    GetLogicRequirementsStrings(req.anyOf)
-                );
+                string reqStr = OrJoin(GetLogicRequirementsStrings(req.anyOf));
                 if (req.anyOf.Count > 1)
                 {
                     reqStr = "(" + reqStr + ")";
