@@ -30,6 +30,7 @@ public class StoryModMetadata
         modManagerUniqueName = "SBtT.TheOutsider",
         slotDataOption = "enable_outsider_mod",
         logicCategory = "to",
+        // copy-pasted from https://github.com/StreetlightsBehindTheTrees/Outer-Wilds-The-Outsider/blob/main/TheOutsiderFixes/assets/TheOutsiderLogo.png
         trackerCategoryImageFile = "OutsiderLogo",
         trackerLocationInfosFilePrefix = "TO",
     };
@@ -39,6 +40,7 @@ public class StoryModMetadata
         modManagerUniqueName = "Walker.AstralCodex",
         slotDataOption = "enable_ac_mod",
         logicCategory = "ac",
+        // copy-pasted from https://github.com/2walker2/Astral-Codex/blob/main/Walker.AstralCodex/planets/ship_log/images/lingering_chime_map.png
         trackerCategoryImageFile = "lingering_chime_map",
         trackerLocationInfosFilePrefix = "AC",
     };
