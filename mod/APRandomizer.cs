@@ -449,7 +449,7 @@ public class APRandomizer : ModBehaviour
             Tornadoes.OnCompleteSceneLoad(scene, loadScene);
             QuantumImaging.OnCompleteSceneLoad(scene, loadScene);
             Jellyfish.OnCompleteSceneLoad(scene, loadScene);
-            GhostMatter.OnCompleteSceneLoad(scene, loadScene);
+            GhostMatterWavelength.OnCompleteSceneLoad(scene, loadScene);
             Victory.OnCompleteSceneLoad(scene, loadScene);
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
@@ -521,7 +521,7 @@ public class APRandomizer : ModBehaviour
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();
         SuitResources.ModSettingsChanged(config);
-        GhostMatter.ModSettingsChanged(config);
+        GhostMatterPlacement.ModSettingsChanged(config);
     }
 
 }

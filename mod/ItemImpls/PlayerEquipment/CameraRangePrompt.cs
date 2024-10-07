@@ -21,12 +21,12 @@ internal class CameraRangePrompt
     public static void ToolModeUI_Update_Postfix()
     {
         var text = "Camera EM Range: Visible";
-        if (GhostMatter.hasGhostMatterKnowledge) text += " & Ghost Matter";
+        if (GhostMatterWavelength.hasGhostMatterKnowledge) text += " & Ghost Matter";
         if (QuantumImaging.hasImagingKnowledge) text += " & Quantum";
         cameraEMRangePrompt.SetText(text);
 
         cameraEMRangePrompt.SetVisibility(
-            (GhostMatter.hasGhostMatterKnowledge || QuantumImaging.hasImagingKnowledge) &&
+            (GhostMatterWavelength.hasGhostMatterKnowledge || QuantumImaging.hasImagingKnowledge) &&
             (OWInput.IsInputMode(InputMode.Character) || OWInput.IsInputMode(InputMode.ShipCockpit)) &&
             Locator.GetToolModeSwapper().IsInToolMode(ToolMode.Probe)
         );

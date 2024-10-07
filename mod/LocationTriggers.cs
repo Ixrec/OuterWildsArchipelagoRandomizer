@@ -299,7 +299,7 @@ internal class LocationTriggers
             case Item.TranslatorOther: Translator.hasOtherTranslator = (count > 0); break;
             case Item.Signalscope: SignalscopeManager.hasSignalscope = (count > 0); break;
             case Item.Scout: Scout.hasScout = (count > 0); break;
-            case Item.CameraGM: GhostMatter.hasGhostMatterKnowledge = (count > 0); break;
+            case Item.CameraGM: GhostMatterWavelength.hasGhostMatterKnowledge = (count > 0); break;
             case Item.CameraQuantum: QuantumImaging.hasImagingKnowledge = (count > 0); break;
             case Item.WarpPlatformCodes: WarpPlatforms.hasNomaiWarpCodes = (count > 0); break;
             case Item.WarpCoreManual: WarpCoreManual.hasWarpCoreManual = (count > 0); break;
