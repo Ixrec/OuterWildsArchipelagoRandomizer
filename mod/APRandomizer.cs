@@ -235,7 +235,7 @@ public class APRandomizer : ModBehaviour
             var option = mod.slotDataOption;
             bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
             if (modEnabled && !Instance.ModHelper.Interaction.ModExists(mod.modManagerUniqueName))
-                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with {option}: true, " +
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP world was generated with {option}: true, " +
                     $"but <color=red>the mod {mod.modManagerUniqueName} is not installed</color>.");
         }
         if (SlotData.ContainsKey("apworld_version"))
