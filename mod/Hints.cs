@@ -110,8 +110,14 @@ internal class Hints
         var relevantScouts = LocationScouter.ScoutedLocations.Where(kv => uncheckedRelevantLocations.Contains(kv.Key));
         if (relevantScouts.Count() != uncheckedRelevantLocations.Count())
         {
-            APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_InputDialogueOption only found {relevantScouts.Count()} relevant scouts for {uncheckedRelevantLocations.Count()} uncheckedRelevantLocations, aborting hint generation", OWML.Common.MessageType.Error);
-            return;
+            var scoutsOnly = relevantScouts.Where(scout => !uncheckedRelevantLocations.Contains(scout.Key));
+            var uncheckedOnly = uncheckedRelevantLocations.Where(loc => !relevantScouts.Any(scout => scout.Key == loc));
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"CharacterDialogueTree_InputDialogueOption only found {relevantScouts.Count()} relevant scouts for {uncheckedRelevantLocations.Count()} uncheckedRelevantLocations.\n" +
+                $"relevantScouts had {string.Join(", ", scoutsOnly.Select(kv => kv.Key))} which uncheckedRelevantLocations did not.\n" +
+                $"uncheckedRelevantLocations had {string.Join(", ", uncheckedOnly)} which relevantScouts did not.",
+                OWML.Common.MessageType.Warning
+            );
         }
 
         var progression = relevantScouts.Where(kv => kv.Value.Flags.HasFlag(ItemFlags.Advancement)).ToList();
