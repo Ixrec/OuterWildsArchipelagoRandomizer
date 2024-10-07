@@ -113,6 +113,23 @@ internal class SimulationTotems
         }
         return true; // let vanilla implementation handle it
     }
+    // DreamRaftProjector is a subclass of DreamObjectProjector, but its FU() logic is just different enough it needs a unique patch
+    [HarmonyPrefix, HarmonyPatch(typeof(DreamRaftProjector), nameof(DreamRaftProjector.FixedUpdate))]
+    public static bool DreamRaftProjector_FixedUpdate(DreamRaftProjector __instance)
+    {
+        if (!_hasTotemPatch)
+        {
+            // this line is copy-pasted from the vanilla impl
+            if (__instance._lightSensor.IsIlluminated())
+            {
+                if (!getNoTotemPatchPrompt().IsVisible())
+                    APRandomizer.OWMLModConsole.WriteLine($"DreamRaftProjector_FixedUpdate blocked attempt to (re)spawn the dream raft");
+                showNoTotemPatchPrompt();
+                return false; // skip the vanilla code calling SetLit(true)
+            }
+        }
+        return true; // let vanilla implementation handle it
+    }
 
     [HarmonyPrefix, HarmonyPatch(typeof(DreamObjectProjector), nameof(DreamObjectProjector.OnPressInteract))]
     public static bool DreamObjectProjector_OnPressInteract(DreamObjectProjector __instance)
