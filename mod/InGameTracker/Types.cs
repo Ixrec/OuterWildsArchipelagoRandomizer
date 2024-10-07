@@ -16,6 +16,7 @@ public enum TrackerCategory
     OuterWilds,
     Stranger,
     Dreamworld,
+    // story mod categories start here
     HearthsNeighbor,
 }
 

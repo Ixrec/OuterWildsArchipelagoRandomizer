@@ -138,7 +138,7 @@ public class Logic
     private Dictionary<string, TrackerChecklistData> GoalLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> StrangerLocationChecklistData;
     private Dictionary<string, TrackerChecklistData> DWLocationChecklistData;
-    private Dictionary<string, TrackerChecklistData> HN1LocationChecklistData;
+    private Dictionary<string, Dictionary<string, TrackerChecklistData>> StoryModLocationChecklistData;
 
     // Ember Twin, Ash Twin, Cave Twin, Tower Twin
     private readonly static string[] HGTPrefixes = ["ET", "AT", "CT", "TT"];
@@ -153,7 +153,6 @@ public class Logic
     private readonly static string GoalPrefix = "Victory - ";
     private readonly static string[] StrangerPrefixes = ["EotE"];
     private readonly static string[] DWPrefixes = ["DW"];
-    private readonly static string[] HN1Prefixes = ["HN1"];
 
     /// <summary>
     /// Populates all the (prefix)Locations dictionaries in Tracker Manager
@@ -173,12 +172,11 @@ public class Logic
         GoalLocationChecklistData = new();
         StrangerLocationChecklistData = new();
         DWLocationChecklistData = new();
-        HN1LocationChecklistData = new();
+        StoryModLocationChecklistData = new();
 
         bool logsanity = APRandomizer.SlotEnabledLogsanity();
         bool enable_eote_dlc = APRandomizer.SlotEnabledEotEDLC();
         bool dlc_only = APRandomizer.SlotEnabledDLCOnly();
-        bool hn1_mod = (APRandomizer.SlotData.ContainsKey("enable_hn1_mod") && (long)APRandomizer.SlotData["enable_hn1_mod"] > 0);
 
         var DLCPrefixes = StrangerPrefixes.Concat(DWPrefixes);
         foreach (TrackerLocationData loc in TrackerLocations.Values)
@@ -190,22 +188,38 @@ public class Logic
             if (!enable_eote_dlc && (loc.category == "dlc")) continue;
             if (dlc_only && (loc.category == "base")) continue;
             if ((!enable_eote_dlc || dlc_only) && (loc.category == "base+dlc")) continue; // only used on some victory events, but may as well
-            if (!hn1_mod && (loc.category == "hn1")) continue;
+
+            StoryModMetadata.ModMetadata mod = null;
+            if (loc.category != null && StoryModMetadata.LogicCategoryToModMetadata.ContainsKey(loc.category))
+            {
+                mod = StoryModMetadata.LogicCategoryToModMetadata[loc.category];
+                var option = mod.slotDataOption;
+                bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+                if (!modEnabled) continue; // skip processing this location at all, since it wasn't generated
+            }
 
             TrackerChecklistData data = new(false, false, "");
             LocationChecklistData.Add(name, data);
 
-            if (HGTPrefixes.Any(p => name.StartsWith(p))) HGTLocationChecklistData.Add(name, data);
-            else if (THPrefixes.Any(p => name.StartsWith(p))) THLocationChecklistData.Add(name, data);
-            else if (BHPrefixes.Any(p => name.StartsWith(p))) BHLocationChecklistData.Add(name, data);
-            else if (GDPrefixes.Any(p => name.StartsWith(p))) GDLocationChecklistData.Add(name, data);
-            else if (DBPrefixes.Any(p => name.StartsWith(p))) DBLocationChecklistData.Add(name, data);
-            else if (StrangerPrefixes.Any(p => name.StartsWith(p))) StrangerLocationChecklistData.Add(name, data);
-            else if (DWPrefixes.Any(p => name.StartsWith(p))) DWLocationChecklistData.Add(name, data);
-            else if (HN1Prefixes.Any(p => name.StartsWith(p))) HN1LocationChecklistData.Add(name, data);
-            else if (name.StartsWith(GoalPrefix)) GoalLocationChecklistData.Add(name, data);
-            // "The Outer Wilds" is the catch-all category for base game locations lacking a special prefix
-            else OWLocationChecklistData.Add(name, data);
+            if (mod != null)
+            {
+                if (StoryModLocationChecklistData[mod.logicCategory] == null)
+                    StoryModLocationChecklistData[mod.logicCategory] = new();
+                StoryModLocationChecklistData[mod.logicCategory].Add(name, data);
+            }
+            else
+            {
+                if (HGTPrefixes.Any(p => name.StartsWith(p))) HGTLocationChecklistData.Add(name, data);
+                else if (THPrefixes.Any(p => name.StartsWith(p))) THLocationChecklistData.Add(name, data);
+                else if (BHPrefixes.Any(p => name.StartsWith(p))) BHLocationChecklistData.Add(name, data);
+                else if (GDPrefixes.Any(p => name.StartsWith(p))) GDLocationChecklistData.Add(name, data);
+                else if (DBPrefixes.Any(p => name.StartsWith(p))) DBLocationChecklistData.Add(name, data);
+                else if (StrangerPrefixes.Any(p => name.StartsWith(p))) StrangerLocationChecklistData.Add(name, data);
+                else if (DWPrefixes.Any(p => name.StartsWith(p))) DWLocationChecklistData.Add(name, data);
+                else if (name.StartsWith(GoalPrefix)) GoalLocationChecklistData.Add(name, data);
+                // "The Outer Wilds" is the catch-all category for base game locations lacking a special prefix
+                else OWLocationChecklistData.Add(name, data);
+            }
         }
         DetermineAllAccessibility();
     }
@@ -223,10 +237,9 @@ public class Logic
             case TrackerCategory.OuterWilds: return OWLocationChecklistData;
             case TrackerCategory.Stranger: return StrangerLocationChecklistData;
             case TrackerCategory.Dreamworld: return DWLocationChecklistData;
-            case TrackerCategory.HearthsNeighbor: return HN1LocationChecklistData;
             case TrackerCategory.All: return LocationChecklistData;
+            default: return StoryModLocationChecklistData[StoryModMetadata.TrackerCategoryToModMetadata[category].logicCategory];
         }
-        return null;
     }
 
     /// <summary>

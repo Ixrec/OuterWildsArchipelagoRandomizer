@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -56,7 +53,7 @@ public class APChecklistMode : ShipLogMode
     private const string completed = "#82BD8E";
     private const string noAccessible = "red";
 
-    private readonly (string, TrackerCategory)[] optionsEntries =
+    private readonly (string, TrackerCategory)[] staticChecklistCategories =
     {
         ("Mission", TrackerCategory.Goal),
         ("Hourglass Twins", TrackerCategory.HourglassTwins),
@@ -69,7 +66,7 @@ public class APChecklistMode : ShipLogMode
         ("Dreamworld", TrackerCategory.Dreamworld),
         ("Hearth's Neighbor", TrackerCategory.HearthsNeighbor),
     };
-    private List<ShipLogDisplayItem> optionsList;
+    private List<ShipLogDisplayItem> checklistCategoryItems;
     private List<TrackerCategory> displayedCategories = null;
 
     private static Dictionary<Victory.GoalSetting, (string, string, string)> goalDisplayMetadata = new Dictionary<Victory.GoalSetting, (string, string, string)> {
@@ -339,11 +336,12 @@ public class APChecklistMode : ShipLogMode
         { TrackerCategory.OuterWilds, "OW" },
         { TrackerCategory.Stranger, "ST" },
         { TrackerCategory.Dreamworld, "DW" },
-        { TrackerCategory.HearthsNeighbor, "HN1" },
     };
 
     private string GetTrackerInfoFilename(TrackerCategory category)
     {
+        if (category > TrackerCategory.Dreamworld)
+            return StoryModMetadata.TrackerCategoryToModMetadata[category].trackerLocationInfosFilePrefix;
         if (categoryToFilenamePrefix.TryGetValue(category, out var filenamePrefix))
             return filenamePrefix;
         else
@@ -403,9 +401,14 @@ public class APChecklistMode : ShipLogMode
 
     private void OpenSelectionMode()
     {
-        optionsList = new();
+        checklistCategoryItems = new();
         displayedCategories = new();
-        foreach (var (text, category) in optionsEntries)
+
+        List<(string, TrackerCategory)> checklistCategories = staticChecklistCategories.ToList();
+        foreach (var (category, mod) in StoryModMetadata.TrackerCategoryToModMetadata)
+            checklistCategories.Add((mod.trackerCategoryName, category));
+
+        foreach (var (text, category) in checklistCategories)
         {
             // this is how we hide categories with 0 locations
             if (Tracker.logic.GetTotalCount(category) == 0) continue;
@@ -423,12 +426,12 @@ public class APChecklistMode : ShipLogMode
                 hasAvailableChecks = Tracker.logic.GetAccessibleCount(category) - Tracker.logic.GetCheckedCount(category) > 0;
                 hasHint = Tracker.logic.GetHasHint(category);
             }
-            optionsList.Add(new(text, false, hasAvailableChecks, hasHint));
+            checklistCategoryItems.Add(new(text, false, hasAvailableChecks, hasHint));
         }
 
         SelectionWrapper.Open();
         SelectionWrapper.SetName("AP Tracker");
-        SelectionWrapper.SetItems(optionsList);
+        SelectionWrapper.SetItems(checklistCategoryItems);
         SelectionWrapper.SetSelectedIndex(0);
         SelectionWrapper.UpdateList();
         SelectionRootObject.name = "ArchipelagoSelectorMode";
@@ -456,12 +459,9 @@ public class APChecklistMode : ShipLogMode
         foreach (var (name, go) in icons)
             go.SetActive(name == iconToShow);
 
-        modLogoImage.enabled = (category == TrackerCategory.HearthsNeighbor);
-        if (modLogoImage.sprite == null)
-        {
-            var sprite = TrackerManager.GetSprite("LonelyHermitIcon");
-            modLogoImage.sprite = sprite;
-        }
+        modLogoImage.enabled = (category > TrackerCategory.Dreamworld);
+        if (modLogoImage.enabled)
+            modLogoImage.sprite = TrackerManager.GetSprite(StoryModMetadata.TrackerCategoryToModMetadata[category].trackerCategoryImageFile);
 
         if (index == 0)
         {
@@ -509,9 +509,8 @@ public class APChecklistMode : ShipLogMode
             case TrackerCategory.OuterWilds: return "The Outer Wilds";
             case TrackerCategory.Stranger: return "The Stranger";
             case TrackerCategory.Dreamworld: return "Dreamworld";
-            case TrackerCategory.HearthsNeighbor: return "Hearth's Neighbor";
+            default: return StoryModMetadata.TrackerCategoryToModMetadata[category].trackerCategoryName;
         }
-        return "NULL";
     }
 
     private string CategoryToLongName(TrackerCategory category)
