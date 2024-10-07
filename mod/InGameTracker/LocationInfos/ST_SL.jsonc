@@ -1,7 +1,7 @@
 ﻿[
   {
     "locationModID": "SLF__IP_RING_WORLD_X1",
-    "description": "The randomizer gives you this ship log automatically so you can fly directly to The Stranger as soon as you have Launch Codes.",
+    "description": "The randomizer gives you this ship log automatically so you can fly directly to The Stranger as soon as you have the Launch Codes.",
     "thumbnail": "IP_RING_WORLD"
   },
   {
@@ -101,7 +101,7 @@
   },
   {
     "locationModID": "SLF__IP_ZONE_4_STORY_X2",
-    "description": "Scroll through enough of the Reservoid slide reel to see a burned slide.",
+    "description": "Scroll through enough of the Reservoir slide reel to see a burned slide.",
     "thumbnail": "IP_ZONE_4_STORY"
   },
   {
