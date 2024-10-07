@@ -203,7 +203,7 @@ public class Logic
 
             if (mod != null)
             {
-                if (StoryModLocationChecklistData[mod.logicCategory] == null)
+                if (!StoryModLocationChecklistData.ContainsKey(mod.logicCategory))
                     StoryModLocationChecklistData[mod.logicCategory] = new();
                 StoryModLocationChecklistData[mod.logicCategory].Add(name, data);
             }
@@ -238,7 +238,12 @@ public class Logic
             case TrackerCategory.Stranger: return StrangerLocationChecklistData;
             case TrackerCategory.Dreamworld: return DWLocationChecklistData;
             case TrackerCategory.All: return LocationChecklistData;
-            default: return StoryModLocationChecklistData[StoryModMetadata.TrackerCategoryToModMetadata[category].logicCategory];
+            default:
+                var cat = StoryModMetadata.TrackerCategoryToModMetadata[category].logicCategory;
+                if (StoryModLocationChecklistData.ContainsKey(cat)) // was this AP slot generated with this story mod's locations?
+                    return StoryModLocationChecklistData[cat];
+                else
+                    return new();
         }
     }
 

@@ -64,7 +64,6 @@ public class APChecklistMode : ShipLogMode
         ("The Outer Wilds", TrackerCategory.OuterWilds),
         ("The Stranger", TrackerCategory.Stranger),
         ("Dreamworld", TrackerCategory.Dreamworld),
-        ("Hearth's Neighbor", TrackerCategory.HearthsNeighbor),
     };
     private List<ShipLogDisplayItem> checklistCategoryItems;
     private List<TrackerCategory> displayedCategories = null;
