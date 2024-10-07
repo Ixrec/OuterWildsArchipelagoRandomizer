@@ -1,9 +1,6 @@
 ﻿using ArchipelagoRandomizer.InGameTracker;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer;
 
@@ -27,15 +24,37 @@ public class StoryModMetadata
         trackerCategoryImageFile = "LonelyHermitIcon",
         trackerLocationInfosFilePrefix = "HN1",
     };
+    private static ModMetadata OutsiderMetadata = new ModMetadata
+    {
+        trackerCategoryName = "The Outsider",
+        modManagerUniqueName = "SBtT.TheOutsider",
+        slotDataOption = "enable_outsider_mod",
+        logicCategory = "to",
+        trackerCategoryImageFile = "OutsiderLogo",
+        trackerLocationInfosFilePrefix = "TO",
+    };
+    private static ModMetadata ACMetadata = new ModMetadata
+    {
+        trackerCategoryName = "Astral Codec",
+        modManagerUniqueName = "Walker.AstralCodex",
+        slotDataOption = "enable_ac_mod",
+        logicCategory = "ac",
+        trackerCategoryImageFile = "lingering_chime_map",
+        trackerLocationInfosFilePrefix = "AC",
+    };
 
     public static ModMetadata[] AllStoryMods = {
-        HN1Metadata
+        HN1Metadata,
+        OutsiderMetadata,
+        ACMetadata
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
     public static Dictionary<TrackerCategory, ModMetadata> TrackerCategoryToModMetadata = new Dictionary<TrackerCategory, ModMetadata>
     {
         { TrackerCategory.HearthsNeighbor, HN1Metadata },
+        { TrackerCategory.TheOutsider, OutsiderMetadata },
+        { TrackerCategory.AstralCodec, ACMetadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);

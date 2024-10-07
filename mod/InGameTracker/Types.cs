@@ -18,6 +18,8 @@ public enum TrackerCategory
     Dreamworld,
     // story mod categories start here
     HearthsNeighbor,
+    TheOutsider,
+    AstralCodec,
 }
 
 public class TrackerRequirement
