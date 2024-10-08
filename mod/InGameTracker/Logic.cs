@@ -565,7 +565,7 @@ public class Logic
 
         return "<color=grey>" +
             (includeLocationName ? $"\"{data.name}\" " : "") +
-            "Location Logic: " +
+            "Location Logic:\n" +
             string.Join(" <color=lime>AND</color> ", locationLogic) +
             "</color>";
     }
@@ -601,7 +601,7 @@ public class Logic
             }
         }
 
-        string logicString = $"<color=grey>\"{data.name}\" Region Logic: ";
+        string logicString = $"<color=grey>\"{data.name}\" Region Logic:\n";
         logicString += string.Join(
             " <color=orange>OR</color> ",
             connectionLogicStrings
