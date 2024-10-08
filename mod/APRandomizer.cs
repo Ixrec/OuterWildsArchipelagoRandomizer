@@ -293,8 +293,9 @@ public class APRandomizer : ModBehaviour
         var locallyCheckedLocationIds = SaveData.locationsChecked
             .Where(kv => kv.Value && LocationNames.locationToArchipelagoId.ContainsKey(kv.Key))
             .Select(kv => (long)LocationNames.locationToArchipelagoId[kv.Key]);
-        var apServerCheckedLocationIds = APSession.Locations.AllLocationsChecked;
-        var locationIdsMissedByServer = locallyCheckedLocationIds.Where(id => !apServerCheckedLocationIds.Contains(id));
+        var locationIdsMissedByServer = locallyCheckedLocationIds.Where(id =>
+            APSession.Locations.AllLocations.Contains(id) &&
+            !APSession.Locations.AllLocationsChecked.Contains(id));
         if (locationIdsMissedByServer.Any())
         {
             ArchConsoleManager.WakeupConsoleMessages.Add($"{locationIdsMissedByServer.Count()} locations you've previously checked were not marked as checked on the AP server:\n" +
