@@ -249,6 +249,9 @@ internal class SignalsAndFrequencies
             __instance.IdentifyFrequency();
         }
 
+        if (APRandomizer.SaveData.locationsChecked[signalLocation])
+            return false; // skip vanilla implementation
+
         return true;
     }
 
