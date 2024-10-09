@@ -320,6 +320,18 @@ internal class SignalsAndFrequencies
     {
         // APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger {signal.GetName()}");
         nearbyUnscannedSignal = signal;
+
+        // Work around an unfortunate compatibility issue between The Outsider and Astral Codec
+        if (
+            signal.GetName().ToString() == "Translation Probe Thicket" &&
+            SignalscopeManager.hasSignalscope &&
+            usableFrequencies.Contains("Astral Codec") &&
+            APRandomizer.Instance.ModHelper.Interaction.ModExists("SBtT.TheOutsider")
+        )
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Signalscope_OnEnterSignalDetectionTrigger working around TO+AC compat issue by marking location AC_DB_SIGNAL as checked");
+            LocationTriggers.CheckLocation(Location.AC_DB_SIGNAL);
+        }
     }
     [HarmonyPostfix, HarmonyPatch(typeof(Signalscope), nameof(Signalscope.OnExitSignalDetectionTrigger))]
     public static void Signalscope_OnExitSignalDetectionTrigger(AudioSignalDetectionTrigger __instance, AudioSignal signal)
@@ -328,8 +340,40 @@ internal class SignalsAndFrequencies
         nearbyUnscannedSignal = null;
     }
 
-    // Last but not least, this patch ensures that any signal you have not yet received the AP item for
-    // will not show up in the Signalscope's UI, and not make any sound when holding the Signalscope.
+    // Also warn the player about the unfortunate compatibility issue between The Outsider and Astral Codec
+    // at most once per session, and only after it's likely to be relevant to them: either when they
+    // first arrive at DB Research Station, or when they first set their Signalscope to the AC frequency.
+    private static bool compatWarningNeeded = true;
+
+    private static void ShowProbeThicketCompatWarning()
+    {
+        compatWarningNeeded = false;
+        if (
+            APRandomizer.Instance.ModHelper.Interaction.ModExists("SBtT.TheOutsider") &&
+            APRandomizer.Instance.ModHelper.Interaction.ModExists("Walker.AstralCodex")
+        )
+            APRandomizer.InGameAPConsole.AddText("<color='orange'>Known Compatibility Issue:</color> When The Outsider and Astral Codec are both installed " +
+            "Translation Probe Thicket, its signal, and the nearby scroll may be invisible. You can still check their AP locations " +
+            "by walking up to where the probe should be, as well as picking up the invisible scroll.");
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(SignalscopeUI), nameof(SignalscopeUI.UpdateLabels))]
+    public static void SignalscopeUI_UpdateLabels(SignalscopeUI __instance)
+    {
+        if (!compatWarningNeeded) return;
+        if (__instance._currentFreq.ToString() == "Astral Codec")
+            ShowProbeThicketCompatWarning();
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.RevealFact))]
+    public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
+    {
+        if (!compatWarningNeeded) return;
+        if (id == "codex_bramble_station")
+            ShowProbeThicketCompatWarning();
+    }
+
+    // This patch ensures that any signal you have not yet received the AP item for will not
+    // show up in the Signalscope's UI, and not make any sound when holding the Signalscope.
 
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.UpdateSignalStrength))]
     public static bool AudioSignal_UpdateSignalStrength_Prefix(AudioSignal __instance, Signalscope scope, float distToClosestScopeObstruction)
