@@ -1,7 +1,201 @@
 [
-    {
-        "locationModID": "",
-        "description": "",
-        "thumbnail": ""
-    }
+  {
+    "locationModID": "SLF__codex_flashback_fact",
+    "description": "In death a new mystery will be revealed.",
+    "thumbnail": "codex_flashback"
+  },
+  {
+    "locationModID": "SLF__codex_projection_fact",
+    "description": "Inside the Probe Tracking Module, translate the floating text wheels by the Nomai statue.",
+    "thumbnail": "codex_projection"
+  },
+  {
+    "locationModID": "SLF__codex_projection_projection_fact",
+    "description": "Inside the Probe Tracking Module, use the Secondary Probe projection stone in the projection pool to see where the probe ended up.",
+    "thumbnail": "codex_projection"
+  },
+  {
+    "locationModID": "SLF__codex_projection_text_fact",
+    "description": "Inside the Probe Tracking Module, translate the Secondary Probe projection stone text.",
+    "thumbnail": "codex_projection"
+  },
+  {
+    "locationModID": "SLF__codex_anomaly_fact",
+    "description": "Fly to a point 35 km 'below' the sun to find the anomaly.",
+    "thumbnail": "codex_anomaly"
+  },
+
+  {
+    "locationModID": "SLF__codex_lingering_chime_tesseract",
+    "description": "Once you find the anomaly, land on it, exit your ship, and walk through the tesseract to reveal the Lingering Chime.",
+    "thumbnail": "codex_lingering_chime"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_fact",
+    "description": "Walk through the tesseract to reveal the Lingering Chime.",
+    "thumbnail": "codex_lingering_chime"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_material",
+    "description": "Walk through the tesseract to reveal the Lingering Chime.",
+    "thumbnail": "codex_lingering_chime"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_water",
+    "description": "After walking through the tesseract to reveal the Lingering Chime, enter it through an opening on the opposite side.",
+    "thumbnail": "codex_lingering_chime_upper"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_antenna",
+    "description": "After walking through the tesseract to reveal the Lingering Chime, enter it through an opening on the opposite side.",
+    "thumbnail": "codex_lingering_chime_upper"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_signal",
+    "description": "Inside the Lingering Chime, use the floating sphere of water to safely scan the Chime Transmitter signal.",
+    "thumbnail": "codex_lingering_chime_upper"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_trails_activator",
+    "description": "Inside the Lingering Chime, approach the -;[} )&]& pad.",
+    "thumbnail": "codex_lingering_chime_upper"
+  },
+
+  {
+    "locationModID": "SLF__codex_lingering_chime_spacecraft_fact",
+    "description": "Inside the Lingering Chime, approach the {+;*&*];(} pad.",
+    "thumbnail": "codex_lingering_chime_spacecraft"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_spacecraft_trails",
+    "description": "Inside the Lingering Chime, stand on the -;[} )&]& pad until you see purple trails.",
+    "thumbnail": "codex_lingering_chime_spacecraft"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_spacecraft_complete",
+    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines.",
+    "thumbnail": "codex_lingering_chime_spacecraft"
+  },
+
+  {
+    "locationModID": "SLF__codex_lingering_chime_population_fact",
+    "description": "Inside the Lingering Chime, approach the +?+.|;}[?/ pad.",
+    "thumbnail": "codex_lingering_chime_population"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_population_trails",
+    "description": "Inside the Lingering Chime, stand on the -;[} )&]& pad until you see green trails.",
+    "thumbnail": "codex_lingering_chime_population"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_population_complete",
+    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime.",
+    "thumbnail": "codex_lingering_chime_population"
+  },
+
+  {
+    "locationModID": "SLF__codex_lingering_chime_no_sun_fact",
+    "description": "Inside the Lingering Chime, approach the &*|[+{& pad.",
+    "thumbnail": "codex_lingering_chime_no_sun"
+  },
+  {
+    "locationModID": "SLF__codex_lingering_chime_no_sun_complete",
+    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime.",
+    "thumbnail": "codex_lingering_chime_no_sun"
+  },
+
+  {
+    "locationModID": "SLF__codex_lingering_chime_lower",
+    "description": "Visit the Lower Deck of the Lingering Chime by simply falling through the water.",
+    "thumbnail": "codex_lingering_chime_lower"
+  },
+
+  {
+    "locationModID": "SLF__codex_ember_memorial",
+    "description": "Find the Reunion Memorial on Ember Twin, near the Gravity Cannon.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_matter",
+    "description": "At the Reunion Memorial, translate the Nomai text on the ground.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_cairns",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_cairns_safeguards",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_cairns_safeguard_archivist",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_symbols",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
+    "locationModID": "SLF__codex_ember_hologram",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms.",
+    "thumbnail": "codex_ember_signal"
+  },
+
+  {
+    "locationModID": "SLF__codex_interloper_recorder_warning",
+    "description": "In the Interloper core, translate the Nomai text wheel left by the Astral Codec systems (not the one left by the Nomai).",
+    "thumbnail": "codex_interloper"
+  },
+
+  {
+    "locationModID": "SLF__codex_bramble_station",
+    "description": "Find the Research Station on the outside of Dark Bramble.",
+    "thumbnail": "codex_bramble_signal"
+  },
+  {
+    "locationModID": "SLF__codex_bramble_research",
+    "description": "At the Dark Bramble Research Station, translate the scroll inside the building. To get inside, shoot your Scout at the warp transmitter, then find the corresponding receiver near Escape Pod 3.",
+    "thumbnail": "codex_bramble_signal"
+  },
+  {
+    "locationModID": "SLF__codex_bramble_scroll",
+    "description": "At the Dark Bramble Research Station, translate the scroll sitting on a bench outside.",
+    "thumbnail": "codex_bramble_signal"
+  },
+  {
+    "locationModID": "SLF__codex_bramble_symbols",
+    "description": "At the Dark Bramble Research Station, translate the scroll sitting on a bench outside.",
+    "thumbnail": "codex_bramble_signal"
+  },
+  {
+    "locationModID": "SLF__codex_bramble_hologram",
+    "description": "At the Dark Bramble Research Station, pick up the scroll sitting on a bench outside, which causes Translation Probe Thicket to start showing holograms.",
+    "thumbnail": "codex_bramble_signal"
+  },
+
+  {
+    "locationModID": "SLF__codex_astral_codex_galaxy",
+    "description": "After releasing the {+;*&*];(} safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "thumbnail": "codex_astral_codex"
+  },
+  {
+    "locationModID": "SLF__codex_astral_codex_species",
+    "description": "After releasing the +?+.|;}[?/ safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "thumbnail": "codex_astral_codex"
+  },
+  {
+    "locationModID": "SLF__codex_astral_codex_environments",
+    "description": "After releasing the &*|[+{& safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "thumbnail": "codex_astral_codex"
+  },
+  {
+    "locationModID": "SLF__codex_astral_codex_fact",
+    "description": "Release all three safeguards at the same time by duplicating yourself in the ATP, parking your ship on Ash Twin, warping to Timber Hearth, shooting your Scout into the Dark Bramble seed, then return to the Lingering Chime through the black hole near the mines. Activate the codec by translating the text wheels in the center of the Lower Deck, then add your own story and download it to your Scout.",
+    "thumbnail": "codex_astral_codex"
+  }
 ]
