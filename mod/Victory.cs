@@ -119,7 +119,7 @@ public class Victory
     {
         APRandomizer.OWMLModConsole.WriteLine($"Goal {goalSetting} completed! Notifying AP server.", OWML.Common.MessageType.Success);
 
-        APRandomizer.InGameAPConsole.AddText("<color='green'>Goal completed!</green> Notifying AP server.");
+        APRandomizer.InGameAPConsole.AddText("<color='green'>Goal completed!</color> Notifying AP server.");
 
         APRandomizer.APSession.SetGoalAchieved();
     }
