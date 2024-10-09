@@ -625,9 +625,9 @@ public enum Location
 
     SLF__DB_BRAMBLE_VILLAGE_X1,
     SLF__DB_BRAMBLE_VILLAGE_X2,
-    SLF__DB_BRAMBLE_VILLAGE_X3,
+    SLF__DB_BRAMBLE_VILLAGE_X3A,
+    SLF__DB_BRAMBLE_VILLAGE_X3B,
     SLF__DB_BRAMBLE_VILLAGE_X4,
-    SLF__DB_BRAMBLE_VILLAGE_X5,
     SLF__DB_SECRET_ROOM_X1,
     SLF__DB_SECRET_ROOM_X2,
 
@@ -1293,9 +1293,9 @@ public static class LocationNames
 
         { Location.SLF__DB_BRAMBLE_VILLAGE_X1, "TO Ship Log: Bramble Village 1 - Teaching" },
         { Location.SLF__DB_BRAMBLE_VILLAGE_X2, "TO Ship Log: Bramble Village 2 - Argument" },
-        { Location.SLF__DB_BRAMBLE_VILLAGE_X3, "TO Ship Log: Bramble Village 3 - Pessimistic" },
-        { Location.SLF__DB_BRAMBLE_VILLAGE_X4, "TO Ship Log: Bramble Village 4 - Optimistic" },
-        { Location.SLF__DB_BRAMBLE_VILLAGE_X5, "TO Ship Log: Bramble Village 5 - Painting" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X3A, "TO Ship Log: Bramble Village 3 - Pessimistic" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X3B, "TO Ship Log: Bramble Village 4 - Optimistic" },
+        { Location.SLF__DB_BRAMBLE_VILLAGE_X4, "TO Ship Log: Bramble Village 5 - Painting" },
         { Location.SLF__DB_SECRET_ROOM_X1, "TO Ship Log: Secret Room 1 - Jellyfish" },
         { Location.SLF__DB_SECRET_ROOM_X2, "TO Ship Log: Secret Room 2 - Discussion" },
 
