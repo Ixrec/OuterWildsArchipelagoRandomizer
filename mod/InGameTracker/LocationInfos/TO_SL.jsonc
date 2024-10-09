@@ -1,7 +1,228 @@
 [
-    {
-        "locationModID": "",
-        "description": "",
-        "thumbnail": ""
-    }
+  {
+    "locationModID": "SLF__PS_POWER_STATION_X1",
+    "description": "On the power station orbiting Dark Bramble, translate the text on the floor explaining what the seeds do.",
+    "thumbnail": "PS_POWER_STATION"
+  },
+  {
+    "locationModID": "SLF__PS_POWER_STATION_X2",
+    "description": "On the power station orbiting Dark Bramble, translate the floating text wheels about gravitational stability.",
+    "thumbnail": "PS_POWER_STATION"
+  },
+  {
+    "locationModID": "SLF__PS_POWER_STATION_X3",
+    "description": "On the power station orbiting Dark Bramble, move any of the orbs to see what they do.",
+    "thumbnail": "PS_POWER_STATION"
+  },
+  {
+    "locationModID": "SLF__PS_POWER_STATION_X4",
+    "description": "On the power station orbiting Dark Bramble, fire your Scout into any of the bramble seeds.",
+    "thumbnail": "PS_POWER_STATION"
+  },
+  {
+    "locationModID": "SLF__DB_BRAMBLE_VILLAGE_X1",
+    "description": "Translate the Nomai text on the floor of Bramble Village's Art House.",
+    "thumbnail": "DB_BRAMBLE_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DB_BRAMBLE_VILLAGE_X2",
+    "description": "Translate the text wheel in the large Nomai house in Bramble Village.",
+    "thumbnail": "DB_BRAMBLE_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DB_BRAMBLE_VILLAGE_X3A",
+    "description": "The large Nomai house in Bramble Village has a scroll on a bed. Take it to the Eye Shack to translate.",
+    "thumbnail": "DB_BRAMBLE_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DB_BRAMBLE_VILLAGE_X3B",
+    "description": "Friend's house in Bramble Village has a scroll upstairs. Take it to the Eye Shack to translate.",
+    "thumbnail": "DB_BRAMBLE_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DB_BRAMBLE_VILLAGE_X4",
+    "description": "Navigate around the ghost matter in Friend's house in Bramble Village to reach a familiar painting.",
+    "thumbnail": "DB_BRAMBLE_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__DB_SECRET_ROOM_X1",
+    "description": "Turn off the power to Bramble Village to open the secret room in Friend's house. Then use the lantern to reveal a secret path in the jellyfish painting.",
+    "thumbnail": "DB_SECRET_ROOM"
+  },
+  {
+    "locationModID": "SLF__DB_SECRET_ROOM_X2",
+    "description": "Turn off the power to Bramble Village to open the secret room in Friend's house. Then take the scroll inside to the Eye Shack to translate.",
+    "thumbnail": "DB_SECRET_ROOM"
+  },
+
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_X1",
+    "description": "Follow the secret path from the jellyfish painting to find the Secluded Structure. Then translate the text wheel by the door.",
+    "thumbnail": "DB_SIMULATION_HOUSE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_X2",
+    "description": "Follow the secret path from the jellyfish painting to find the Secluded Structure. Then walk up to the door.",
+    "thumbnail": "DB_SIMULATION_HOUSE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_INSIDE_X1",
+    "description": "Break into the Secluded Structure by landing your ship near the front door after using the Shuttle Crusher on it.",
+    "thumbnail": "DB_SIMULATION_HOUSE_INSIDE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_INSIDE_X2",
+    "description": "Inside the Secluded Structure, translate the text wheel on the floor left by Datura.",
+    "thumbnail": "DB_SIMULATION_HOUSE_INSIDE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_INSIDE_X3",
+    "description": "Inside the Secluded Structure, translate the text wheel on the floor left by Datura.",
+    "thumbnail": "DB_SIMULATION_HOUSE_INSIDE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_INSIDE_X4",
+    "description": "Inside the Secluded Structure, translate the text wheel on the floor left by Datura.",
+    "thumbnail": "DB_SIMULATION_HOUSE_INSIDE"
+  },
+  {
+    "locationModID": "SLF__DB_SIMULATION_HOUSE_INSIDE_X5",
+    "description": "Inside the Secluded Structure, translate the text wheel left by Friend.",
+    "thumbnail": "DB_SIMULATION_HOUSE_INSIDE"
+  },
+  {
+    "locationModID": "SLF__IP_DREAM_HOME_X1",
+    "description": "Get an Artifact from the Stranger, use it on the green fire inside the Secluded Structure to reach Cliffside Home, then talk to its inhabitant.",
+    "thumbnail": "IP_DREAM_HOME"
+  },
+  {
+    "locationModID": "SLF__IP_DREAM_HOME_X2",
+    "description": "Ask the Cliffside Home's inhabitant about yourself and Datura.",
+    "thumbnail": "IP_DREAM_HOME"
+  },
+  {
+    "locationModID": "SLF__IP_DREAM_HOME_X3",
+    "description": "Ask the Cliffside Home's inhabitant to explain the Prisoner.",
+    "thumbnail": "IP_DREAM_HOME"
+  },
+  {
+    "locationModID": "SLF__IP_DREAM_HOME_X4",
+    "description": "Ask the Cliffside Home's inhabitant to explain either yourself or the Prisoner.",
+    "thumbnail": "IP_DREAM_HOME"
+  },
+
+  {
+    "locationModID": "SLF__DB_STUDY_TOWER_X1",
+    "description": "Translate the text wall on the ground floor of the study tower.",
+    "thumbnail": "DB_STUDY_TOWER"
+  },
+  {
+    "locationModID": "SLF__DB_STUDY_TOWER_X2",
+    "description": "Translate the second scroll on the ground floor of the study tower.",
+    "thumbnail": "DB_STUDY_TOWER"
+  },
+  {
+    "locationModID": "SLF__DB_STUDY_TOWER_X3",
+    "description": "Translate the floor text on the ground floor of the study tower.",
+    "thumbnail": "DB_STUDY_TOWER"
+  },
+  {
+    "locationModID": "SLF__DB_STUDY_TOWER_TOP_X1",
+    "description": "Translate the text wall on the top floor of the study tower, after waiting for Giant's Deep to yank the tower into zero-g at the end of the loop.",
+    "thumbnail": "DB_STUDY_TOWER"
+  },
+
+  {
+    "locationModID": "SLF__DB_PROJECTION_POOL_HOUSE_X1",
+    "description": "Locate the Projection Pool House deep inside Dark Bramble by using the corresponding Power Station seed to send your Scout in first. Once inside, translate the Brittle Hollow projection stone text.",
+    "thumbnail": "DB_PROJECTION_POOL_HOUSE"
+  },
+  {
+    "locationModID": "SLF__DB_PROJECTION_POOL_HOUSE_X2",
+    "description": "Locate the Projection Pool House deep inside Dark Bramble by using the corresponding Power Station seed to send your Scout in first. Once inside, translate the Brittle Hollow projection stone text.",
+    "thumbnail": "DB_PROJECTION_POOL_HOUSE"
+  },
+  {
+    "locationModID": "SLF__DB_PROJECTION_POOL_HOUSE_X3",
+    "description": "Locate the Projection Pool House deep inside Dark Bramble by using the corresponding Power Station seed to send your Scout in first. Once inside, translate the Ash Twin projection stone text.",
+    "thumbnail": "DB_PROJECTION_POOL_HOUSE"
+  },
+  {
+    "locationModID": "SLF__DB_PROJECTION_POOL_HOUSE_X4",
+    "description": "Locate the Projection Pool House deep inside Dark Bramble by using the corresponding Power Station seed to send your Scout in first. Once inside, translate the Ember Twin projection stone text.",
+    "thumbnail": "DB_PROJECTION_POOL_HOUSE"
+  },
+
+  {
+    "locationModID": "SLF__DB_HUNTING_BLIND_X1",
+    "description": "Translate the text wall in the hunting blind.",
+    "thumbnail": "DB_HUNTING_BLIND"
+  },
+  {
+    "locationModID": "SLF__DB_HUNTING_BLIND_X2A",
+    "description": "Translate the text wall in the hunting blind.",
+    "thumbnail": "DB_HUNTING_BLIND"
+  },
+  {
+    "locationModID": "SLF__DB_HUNTING_BLIND_X2B",
+    "description": "Translate the scroll in the back of the hunting blind.",
+    "thumbnail": "DB_HUNTING_BLIND"
+  },
+  {
+    "locationModID": "SLF__DB_HUNTING_BLIND_X3",
+    "description": "Translate the scroll inside the dead anglerfish's mouth in the hunting blind.",
+    "thumbnail": "DB_HUNTING_BLIND"
+  },
+
+  {
+    "locationModID": "SLF__DB_SHUTTLE_CRUSHER_X1",
+    "description": "Translate the text walls just outside the building controlling the Shuttle Crusher.",
+    "thumbnail": "DB_SHUTTLE_CRUSHER"
+  },
+  {
+    "locationModID": "SLF__DB_SHUTTLE_CRUSHER_X2",
+    "description": "Translate the floor text inside the building controlling the Shuttle Crusher.",
+    "thumbnail": "DB_SHUTTLE_CRUSHER"
+  },
+  {
+    "locationModID": "SLF__DB_SHUTTLE_CRUSHER_X3",
+    "description": "Move the orb to activate the Shuttle Crusher.",
+    "thumbnail": "DB_SHUTTLE_CRUSHER"
+  },
+  {
+    "locationModID": "SLF__DB_SHUTTLE_CRUSHER_X4",
+    "description": "Translate the text wheel inside the crushed Nomai shuttle.",
+    "thumbnail": "DB_SHUTTLE_CRUSHER"
+  },
+  {
+    "locationModID": "SLF__DB_INITIAL_CAMP_X1",
+    "description": "Translate the floor text inside the broken Nomai building near the Shuttle Crusher.",
+    "thumbnail": "DB_INITIAL_CAMP"
+  },
+  {
+    "locationModID": "SLF__DB_INITIAL_CAMP_X2",
+    "description": "Listen to Feldspar's tape recorder at their initial campsite near the Shuttle Crusher.",
+    "thumbnail": "DB_INITIAL_CAMP"
+  },
+
+  {
+    "locationModID": "SLF__DB_NORTHERN_OBSERVATORY_X1",
+    "description": "Enter the Northern Observatory by walking backwards through the front door after leaving your ship somewhere else (like the Power Station). Find the Nomai body inside.",
+    "thumbnail": "DB_NORTHERN_OBSERVATORY"
+  },
+  {
+    "locationModID": "SLF__DB_NORTHERN_OBSERVATORY_X3",
+    "description": "Inside the Northern Observatory, translate the second text wheel you find on a bed.",
+    "thumbnail": "DB_NORTHERN_OBSERVATORY"
+  },
+  {
+    "locationModID": "SLF__DB_NORTHERN_OBSERVATORY_X4",
+    "description": "Inside the Northern Observatory, translate the last text wheel you find by the Nomai body.",
+    "thumbnail": "DB_NORTHERN_OBSERVATORY"
+  },
+  {
+    "locationModID": "SLF__DB_DRIFTING_DEATH_X1",
+    "description": "Inside the Northern Observatory, translate the first text wheel you find on a bed.",
+    "thumbnail": "DB_DRIFTING_DEATH"
+  }
 ]
