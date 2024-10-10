@@ -332,8 +332,8 @@ internal class SignalsAndFrequencies
     // only when they first arrive at DB Research Station, since that's where it's noticeable.
     private static bool compatWarningNeeded = true;
 
-    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.RevealFact))]
-    public static void ShipLogManager_RevealFact_Prefix(string id, bool saveGame, bool showNotification)
+    [HarmonyPostfix, HarmonyPatch(typeof(ShipLogManager), nameof(ShipLogManager.RevealFact))]
+    public static void ShipLogManager_RevealFact_Postfix(string id, bool saveGame, bool showNotification)
     {
         if (!compatWarningNeeded) return;
         if (id == "codex_bramble_station")
