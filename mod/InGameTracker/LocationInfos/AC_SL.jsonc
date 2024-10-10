@@ -169,12 +169,12 @@
   },
   {
     "locationModID": "SLF__codex_bramble_symbols",
-    "description": "At the Dark Bramble Research Station, translate the scroll sitting on a bench outside.",
+    "description": "At the Dark Bramble Research Station, translate the scroll sitting on a bench outside. Note that the scroll will be invisible if you haven't entered the Lingering Chime tesseract yet.",
     "thumbnail": "codex_bramble_signal"
   },
   {
     "locationModID": "SLF__codex_bramble_hologram",
-    "description": "At the Dark Bramble Research Station, pick up the scroll sitting on a bench outside, which causes Translation Probe Thicket to start showing holograms.",
+    "description": "At the Dark Bramble Research Station, pick up the scroll sitting on a bench outside, which causes Translation Probe Thicket to start showing holograms. Note that the scroll will be invisible if you haven't entered the Lingering Chime tesseract yet.",
     "thumbnail": "codex_bramble_signal"
   },
 
