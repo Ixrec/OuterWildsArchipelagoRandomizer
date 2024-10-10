@@ -36,6 +36,7 @@ public class TrackerRequirement
 /// </summary>
 public class TrackerConnectionData
 {
+    public string? category;
     public string from;
     public string to;
     public List<TrackerRequirement> requires;

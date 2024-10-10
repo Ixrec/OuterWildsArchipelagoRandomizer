@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -92,6 +91,16 @@ public class Logic
 
     public void AddConnection(Dictionary<string, TrackerRegionData> regions, TrackerConnectionData connection)
     {
+        if (connection.category != null)
+        {
+            var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(connection.category, out var mod);
+            if (!found) return; // this is for a story mod we haven't integrated yet, so ignore it
+
+            var option = mod.slotDataOption;
+            bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+            if (!modEnabled) return; // skip this connection (and its regions), since this mod's content wasn't generated
+        }
+
         if (!regions.ContainsKey(connection.from)) regions.Add(connection.from, new(connection.from));
         if (!regions.ContainsKey(connection.to)) regions.Add(connection.to, new(connection.to));
         regions[connection.from].toConnections.Add(connection);
