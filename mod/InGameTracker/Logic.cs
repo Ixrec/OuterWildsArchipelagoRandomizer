@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
@@ -414,6 +413,20 @@ public class Logic
         }
     }
 
+    private bool IsConnectionActive(TrackerConnectionData connection)
+    {
+        if (connection.category == null)
+            return true;
+
+        var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(connection.category, out var mod);
+        if (!found)
+            return false; // this is for a story mod we haven't integrated yet, so ignore it
+
+        var option = mod.slotDataOption;
+        bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+        return modEnabled; // only use this connection (and its regions) if it was used when generating this slot
+    }
+
     /// <summary>
     /// Determines which regions you can access
     /// </summary>
@@ -424,6 +437,9 @@ public class Logic
         TrackerRegionData region = TrackerRegions[regionName];
         foreach (TrackerConnectionData connection in region.toConnections)
         {
+            if (!IsConnectionActive(connection))
+                continue;
+
             string to = connection.to;
             if (!CanAccessRegion.ContainsKey(to)) CanAccessRegion.Add(to, false);
             // We don't need to calculate this connection if the target region is already accessible
@@ -534,6 +550,9 @@ public class Logic
 
             foreach (TrackerConnectionData connection in regionData.fromConnections)
             {
+                if (!IsConnectionActive(connection))
+                    continue;
+
                 var otherRegionName = connection.from;
                 if (!regionNameToLogicDisplayString.ContainsKey(otherRegionName))
                     unexplainedRegions.Add(otherRegionName);
@@ -577,6 +596,9 @@ public class Logic
         {
             foreach (TrackerConnectionData connection in data.fromConnections)
             {
+                if (!IsConnectionActive(connection))
+                    continue;
+
                 CanAccessRegion.TryGetValue(connection.from, out bool canAccessRegion);
 
                 string connectionLogicString = (canAccessRegion ? "<color=green>" : "<color=maroon>") +
