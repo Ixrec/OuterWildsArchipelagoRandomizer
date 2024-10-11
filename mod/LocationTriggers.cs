@@ -422,8 +422,9 @@ internal class LocationTriggers
 
         // The only non-tank recovery point I know of is the ship's medkit, which has instanceName=PlayerRecoveryPoint and parentName=Systems_Supplies.
         // This has to be StartsWith() instead of == because Esker's tank is "Prefab_HEA_FuelTank (1)"
+        // Also The Outsider's tank uses the name Prefab_JetpackFuel for some reason.
         var instanceName = __instance?.name ?? "";
-        var isFuelTank = instanceName.StartsWith("Prefab_HEA_FuelTank");
+        var isFuelTank = instanceName.StartsWith("Prefab_HEA_FuelTank") || instanceName == "Prefab_JetpackFuel";
         if (!isFuelTank) return;
 
         switch (parentName)
@@ -441,6 +442,10 @@ internal class LocationTriggers
                     CheckLocation(Location.AR_ICE_TANK);
                 else if (instanceName == "Prefab_HEA_FuelTank (1)")
                     CheckLocation(Location.AR_ESKER_TANK);
+                break;
+            case "Campsite":
+                if (__instance?.gameObject?.transform?.parent?.parent?.name == "SectorDB_ShuttleCrusher")
+                    CheckLocation(Location.TO_INITIAL_CAMP_TANK);
                 break;
         }
     }
