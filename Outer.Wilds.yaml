@@ -184,3 +184,21 @@ Outer Wilds:
     # If logsanity is enabled, that will add another 41 locations, for a total of 61 HN1 locations.
     'false': 50
     'true': 0
+
+  enable_outsider_mod:
+    # Incorporates The Outsider story mod content into the randomizer with an additional 21 locations.
+    # If logsanity is enabled, that will add another 44 locations, for a total of 65 TO (The Outsider) locations.
+    #
+    # split_translator is highly recommended with this mod, since it adds a lot of Translator checks to Dark Bramble.
+    #
+    # If randomize_orbits is true, this option forces GD and DB to be in their vanilla "lanes" and have the same orbit angle.
+    'false': 50
+    'true': 0
+
+  enable_ac_mod:
+    # Incorporates Astral Codec story mod content into the randomizer with an additional 1 item and 21 locations.
+    # If logsanity is enabled, that will add another 39 locations, for a total of 60 AC locations.
+    #
+    # If randomize_warp_platforms is true, this option will ensure there's a warp from the Hourglass Twins to Timber Hearth.
+    'false': 50
+    'true': 0
