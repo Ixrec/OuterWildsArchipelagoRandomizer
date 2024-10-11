@@ -30,8 +30,9 @@ public class StoryModMetadata
         modManagerUniqueName = "SBtT.TheOutsider",
         slotDataOption = "enable_outsider_mod",
         logicCategory = "to",
-        // copy-pasted from https://github.com/StreetlightsBehindTheTrees/Outer-Wilds-The-Outsider/blob/main/TheOutsiderFixes/assets/TheOutsiderLogo.png
-        trackerCategoryImageFile = "OutsiderLogo",
+        // copy-pasted https://github.com/StreetlightsBehindTheTrees/Outer-Wilds-The-Outsider/blob/main/TheOutsiderFixes/assets/TheOutsiderLogo.png
+        // and combined it with the vanilla DB ship log image
+        trackerCategoryImageFile = "TheOutsider",
         trackerLocationInfosFilePrefix = "TO",
     };
     private static ModMetadata ACMetadata = new ModMetadata
