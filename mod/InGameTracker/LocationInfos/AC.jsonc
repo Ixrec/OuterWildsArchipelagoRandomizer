@@ -58,7 +58,7 @@
   },
   {
     "locationModID": "AC_ET_HOLOGRAM",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
 

@@ -127,27 +127,27 @@
   },
   {
     "locationModID": "SLF__codex_ember_cairns",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
   {
     "locationModID": "SLF__codex_ember_cairns_safeguards",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
   {
     "locationModID": "SLF__codex_ember_cairns_safeguard_archivist",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
   {
     "locationModID": "SLF__codex_ember_symbols",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
   {
     "locationModID": "SLF__codex_ember_hologram",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
     "thumbnail": "codex_ember_signal"
   },
 
