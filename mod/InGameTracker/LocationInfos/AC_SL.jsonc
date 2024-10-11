@@ -121,6 +121,11 @@
     "thumbnail": "codex_ember_signal"
   },
   {
+    "locationModID": "SLF__codex_ember_shuttle",
+    "description": "On the narrow ledge between the Gravity Cannon and the Reunion Memorial, translate the Nomai text on the ground.",
+    "thumbnail": "codex_ember_signal"
+  },
+  {
     "locationModID": "SLF__codex_ember_cairns",
     "description": "At the Reunion Memorial, translate the Nomai text on the cairns.",
     "thumbnail": "codex_ember_signal"

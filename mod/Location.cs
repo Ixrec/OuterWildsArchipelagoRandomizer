@@ -723,6 +723,7 @@ public enum Location
 
     SLF__codex_ember_memorial,
     SLF__codex_ember_matter,
+    SLF__codex_ember_shuttle,
     SLF__codex_ember_cairns,
     SLF__codex_ember_cairns_safeguards,
     SLF__codex_ember_cairns_safeguard_archivist,
@@ -1391,11 +1392,12 @@ public static class LocationNames
 
         { Location.SLF__codex_ember_memorial, "AC Ship Log: Reunion Memorial 1 - Visit" },
         { Location.SLF__codex_ember_matter, "AC Ship Log: Reunion Memorial 2 - Duplicate" },
-        { Location.SLF__codex_ember_cairns, "AC Ship Log: Reunion Memorial 3 - Scientist" },
-        { Location.SLF__codex_ember_cairns_safeguards, "AC Ship Log: Reunion Memorial 4 - Safeguards" },
-        { Location.SLF__codex_ember_cairns_safeguard_archivist, "AC Ship Log: Reunion Memorial 5 - Archivist" },
-        { Location.SLF__codex_ember_symbols, "AC Ship Log: Reunion Memorial 6 - Symbols" },
-        { Location.SLF__codex_ember_hologram, "AC Ship Log: Reunion Memorial 7 - Hologram" },
+        { Location.SLF__codex_ember_shuttle, "AC Ship Log: Reunion Memorial 3 - Shuttle" },
+        { Location.SLF__codex_ember_cairns, "AC Ship Log: Reunion Memorial 4 - Scientist" },
+        { Location.SLF__codex_ember_cairns_safeguards, "AC Ship Log: Reunion Memorial 5 - Safeguards" },
+        { Location.SLF__codex_ember_cairns_safeguard_archivist, "AC Ship Log: Reunion Memorial 6 - Archivist" },
+        { Location.SLF__codex_ember_symbols, "AC Ship Log: Reunion Memorial 7 - Symbols" },
+        { Location.SLF__codex_ember_hologram, "AC Ship Log: Reunion Memorial 8 - Hologram" },
 
         { Location.SLF__codex_interloper_recorder_warning, "AC Ship Log: Missing Fuel Geode" },
 
