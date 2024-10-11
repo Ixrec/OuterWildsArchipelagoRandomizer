@@ -48,7 +48,7 @@
   },
   {
     "locationModID": "AC_ET_SIGNAL",
-    "description": "At the Reunion Memorial, scan the Translation Probe Cinder signal.",
+    "description": "At the Reunion Memorial, scan the Translation Probe Cinder signal. Note that the probe will be invisible if you haven't entered the Lingering Chime tesseract yet.",
     "thumbnail": "codex_ember_signal"
   },
   {
