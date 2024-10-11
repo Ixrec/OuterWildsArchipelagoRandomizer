@@ -298,9 +298,14 @@ public class APInventoryMode : ShipLogMode
         if (hint.Found) return;
 
         ItemNames.archipelagoIdToItem.TryGetValue(hint.ItemId, out Item item);
+
+        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
+            item = Item.Translator;
+
         string itemName = item.ToString();
         if (ItemNames.IsStoryModFrequency(item))
             itemName = "StoryModFrequencies";
+
         // We don't need to track hints for items that aren't on the tracker
         if (!ItemEntries.ContainsKey(itemName))
         {
