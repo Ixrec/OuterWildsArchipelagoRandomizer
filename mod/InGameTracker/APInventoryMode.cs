@@ -255,6 +255,9 @@ public class APInventoryMode : ShipLogMode
         if (item == Item.BurntMarshmallow || item == Item.PerfectMarshmallow)
             item = Item.Marshmallow;
 
+        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
+            item = Item.Translator;
+
         string itemID = item.ToString();
         TrackerManager tracker = APRandomizer.Tracker;
         if (ItemNames.itemToSignal.ContainsKey(item))
