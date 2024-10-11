@@ -91,17 +91,17 @@
 
   {
     "locationModID": "AC_LC_ICONS_SOLUTION",
-    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines.",
+    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_spacecraft"
   },
   {
     "locationModID": "AC_LC_TALLIES_SOLUTION",
-    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime.",
+    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_population"
   },
   {
     "locationModID": "AC_LC_CIRCLE_SOLUTION",
-    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime.",
+    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_no_sun"
   },
   {

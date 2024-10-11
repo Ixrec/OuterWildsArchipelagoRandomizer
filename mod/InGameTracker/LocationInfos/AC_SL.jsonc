@@ -73,7 +73,7 @@
   },
   {
     "locationModID": "SLF__codex_lingering_chime_spacecraft_complete",
-    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines.",
+    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_spacecraft"
   },
 
@@ -89,7 +89,7 @@
   },
   {
     "locationModID": "SLF__codex_lingering_chime_population_complete",
-    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime.",
+    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_population"
   },
 
@@ -100,7 +100,7 @@
   },
   {
     "locationModID": "SLF__codex_lingering_chime_no_sun_complete",
-    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime.",
+    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_lingering_chime_no_sun"
   },
 
@@ -185,17 +185,17 @@
 
   {
     "locationModID": "SLF__codex_astral_codex_galaxy",
-    "description": "After releasing the {+;*&*];(} safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "description": "Release the {+;*&*];(} safeguard by parking your spaceship on Ash Twin, then return to the Lingering Chime through the black hole near Timber Hearth's mines and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_astral_codex"
   },
   {
     "locationModID": "SLF__codex_astral_codex_species",
-    "description": "After releasing the +?+.|;}[?/ safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "description": "Release the +?+.|;}[?/ safeguard by duplicating yourself with the ATP, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_astral_codex"
   },
   {
     "locationModID": "SLF__codex_astral_codex_environments",
-    "description": "After releasing the &*|[+{& safeguard, translate the corresponding text wheels on the Lingering Chime's Lower Deck.",
+    "description": "Release the &*|[+{& safeguard by shooting your Scout into Dark Bramble, then return to the Lingering Chime and translate the corresponding Lower Deck text wheels.",
     "thumbnail": "codex_astral_codex"
   },
   {
