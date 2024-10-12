@@ -474,25 +474,20 @@ public class APRandomizer : ModBehaviour
 
         Application.quitting += () => OnSessionClosed(APSession, false);
 
-        // TODO: only do this on spawn-editing NH mods, only HN2 is planned
         StartCoroutine(DisableNHSpawn());
     }
     System.Collections.IEnumerator DisableNHSpawn()
     {
-        OWMLModConsole.WriteLine($"DisableNHSpawn() waiting one frame before calling SetDefaultSystem");
         yield return new WaitForEndOfFrame();
-        OWMLModConsole.WriteLine($"DisableNHSpawn() calling TryGetModApi");
+
         var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
         if (newHorizonsAPI is null)
-        {
-            OWMLModConsole.WriteLine($"DisableNHSpawn() early returning because TryGetModApi returned null for xen.NewHorizons");
-        }
-        else
-        {
-            OWMLModConsole.WriteLine($"DisableNHSpawn() calling SetDefaultSystem");
-            newHorizonsAPI?.SetDefaultSystem("SolarSystem");
-            OWMLModConsole.WriteLine($"DisableNHSpawn() complete");
-        }
+            yield break;
+
+        // There's no way to ask what the default system currently is, so if NH is running at all
+        // then we have to assume it needs overriding.
+        OWMLModConsole.WriteLine($"DisableNHSpawn() calling SetDefaultSystem(\"SolarSystem\")");
+        newHorizonsAPI?.SetDefaultSystem("SolarSystem");
     }
 
     public override void SetupTitleMenu(ITitleMenuManager titleManager) => MainMenu.SetupTitleMenu(titleManager);
