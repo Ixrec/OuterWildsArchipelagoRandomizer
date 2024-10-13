@@ -112,8 +112,14 @@ public enum Item
 
 public static class ItemNames
 {
-    public static bool IsStoryModFrequency(Item item) =>
-        item >= Item.FrequencyNeighborDistress && item <= Item.FrequencyAstralCodec;
+    // Used to help the Inventory Tracker show a single "Story Mod Frequencies" entry for all of these similar items
+    private static Item[] StoryModFrequencies = {
+        Item.FrequencyNeighborDistress,
+        Item.FrequencyLavaCore,
+        Item.FrequencyGalacticCommunication,
+        Item.FrequencyAstralCodec,
+    };
+    public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
