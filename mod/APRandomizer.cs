@@ -15,6 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer;
 
@@ -475,6 +476,17 @@ public class APRandomizer : ModBehaviour
         Application.quitting += () => OnSessionClosed(APSession, false);
 
         StartCoroutine(DisableNHSpawn());
+
+        var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
+        if (newHorizonsAPI != null)
+            newHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
+            {
+                // Hearth's Neighbor 2: Magistarium custom item impls
+                if (system == "Jam3")
+                {
+                    MagistariumAccessCodes.OnCompleteSceneLoad();
+                }
+            });
     }
     System.Collections.IEnumerator DisableNHSpawn()
     {

@@ -105,6 +105,9 @@ public enum Item
 
     // Hearth's Neighbor 2: Magistarium items
     MemoryCubeInterface,
+    MagistariumLibraryAccessCode,
+    MagistariumDormitoryAccessCode,
+    MagistariumEngineAccessCode,
 };
 
 public static class ItemNames
@@ -206,6 +209,9 @@ public static class ItemNames
 
         // Hearth's Neighbor 2: Magistarium items
         { Item.MemoryCubeInterface, "Memory Cube Interface" },
+        { Item.MagistariumLibraryAccessCode, "Magistarium Library Access Code" },
+        { Item.MagistariumDormitoryAccessCode, "Magistarium Dormitory Access Code" },
+        { Item.MagistariumEngineAccessCode, "Magistarium Engine Access Code" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
