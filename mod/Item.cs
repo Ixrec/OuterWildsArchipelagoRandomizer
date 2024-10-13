@@ -102,12 +102,15 @@ public enum Item
 
     // Astral Codec items
     FrequencyAstralCodec,
+
+    // Hearth's Neighbor 2: Magistarium items
+    MemoryCubeInterface,
 };
 
 public static class ItemNames
 {
-    // If we add any "custom items" for story mods, this will need an update
-    public static bool IsStoryModFrequency(Item item) => item >= Item.FrequencyNeighborDistress;
+    public static bool IsStoryModFrequency(Item item) =>
+        item >= Item.FrequencyNeighborDistress && item <= Item.FrequencyAstralCodec;
 
     public static Dictionary<Item, string> itemNames = new Dictionary<Item, string> {
         { Item.LaunchCodes, "Launch Codes" },
@@ -200,6 +203,9 @@ public static class ItemNames
 
         // Astral Codec items
         { Item.FrequencyAstralCodec, "Astral Codec Frequency" },
+
+        // Hearth's Neighbor 2: Magistarium items
+        { Item.MemoryCubeInterface, "Memory Cube Interface" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
