@@ -178,6 +178,18 @@ public class APInventoryDescriptions
                     infos.Add("However, it will not protect you from strong current from electrical wires, a damaged space ship, or jellyfish tentacles.");
                     infos.Add("Did you know a jellyfish's fluffier inner tentacles are actually called 'oral arms'? I can't forget that, so now you can't either.");
                     break;
+                case Item.MemoryCubeInterface:
+                    infos.Add("You figured out how to interface with the strange 'memory cubes' in the Magistarium without getting nauseous. Turns out they're voice-activated, and they understand Hearthian, so you just talk to them.");
+                    break;
+                case Item.MagistariumLibraryAccessCode:
+                    infos.Add("Opens the door in the Magistarium Grand Chamber leading up to the Library.");
+                    break;
+                case Item.MagistariumDormitoryAccessCode:
+                    infos.Add("Opens the door in the Magistarium Grand Chamber leading to the Dormitories.");
+                    break;
+                case Item.MagistariumEngineAccessCode:
+                    infos.Add("Opens the door in the Magistarium Grand Chamber leading down to the Engine Room.");
+                    break;
                 case Item.Autopilot:
                     infos.Add("You fixed the faulty wiring between the autopilot module and your spaceship controls.");
                     break;

@@ -136,6 +136,7 @@ public class InventoryItemEntry
     /// </summary>
     public List<InventoryItemHint> Hints = new();
     public bool IsDLCOnly = false;
+    public string? StoryModOption = null;
 
     public InventoryItemEntry(string id, string name, Item? apItem, bool itemIsNew = false)
     {
@@ -152,12 +153,13 @@ public class InventoryItemEntry
         ApItem = null;
     }
 
-    public InventoryItemEntry(Item apItem, string name, bool isDLCOnly = false)
+    public InventoryItemEntry(Item apItem, string name, bool isDLCOnly = false, string storyModOption = null)
     {
         ID = apItem.ToString();
         Name = name;
         ApItem = apItem;
         IsDLCOnly = isDLCOnly;
+        StoryModOption = storyModOption;
     }
 
     public bool HasOneOrMore()

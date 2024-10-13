@@ -69,6 +69,12 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.FrequencyDSR, "Frequency: Deep Space Radio"),
         new InventoryItemEntry("StoryModFrequencies", "Story Mod Frequencies"),
 
+        // Hearth's Neighbor 2: Magistarium custom items
+        new InventoryItemEntry(Item.MemoryCubeInterface, "HN2: Memory Cube Interface", false, "enable_hn2_mod"),
+        new InventoryItemEntry(Item.MagistariumLibraryAccessCode, "HN2: Magistarium Library Access Code", false, "enable_hn2_mod"),
+        new InventoryItemEntry(Item.MagistariumDormitoryAccessCode, "HN2: Magistarium Dormitory Access Code", false, "enable_hn2_mod"),
+        new InventoryItemEntry(Item.MagistariumEngineAccessCode, "HN2: Magistarium Engine Access Code", false, "enable_hn2_mod"),
+
         // Non-progression ship and equipment upgrades
         new InventoryItemEntry(Item.Autopilot, "Autopilot"),
         new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),
@@ -200,8 +206,11 @@ public class APInventoryMode : ShipLogMode
         List<InventoryDisplayItem> inventoryDisplayItems = [];
         foreach (var (name, item) in ItemEntries)
         {
-            if (item.IsDLCOnly && !APRandomizer.SlotEnabledEotEDLC()) // DLC is the only option that changes which items exist
+            if (item.IsDLCOnly && !APRandomizer.SlotEnabledEotEDLC())
                 continue;
+            if (item.StoryModOption != null && !(APRandomizer.SlotData.ContainsKey(item.StoryModOption) && (long)APRandomizer.SlotData[item.StoryModOption] > 0))
+                continue;
+
             VisibleItemEntries.Add(name, item);
 
             if (Enum.TryParse(item.ID, out Item subject))
