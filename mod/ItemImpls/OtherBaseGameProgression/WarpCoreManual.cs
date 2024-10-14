@@ -87,7 +87,7 @@ internal class WarpCoreManual
             OWItem item = null;
             if (newState == ItemTool.PromptState.SOCKET)
                 item = __instance._heldItem;
-            else if (newState == ItemTool.PromptState.SOCKET)
+            else if (newState == ItemTool.PromptState.UNSOCKET)
                 item = firstPersonManipulator.GetFocusedItemSocket().GetSocketedItem();
             else if (newState == ItemTool.PromptState.PICK_UP)
                 item = firstPersonManipulator.GetFocusedOWItem();
