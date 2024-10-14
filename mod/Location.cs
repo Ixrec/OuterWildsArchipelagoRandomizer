@@ -908,7 +908,7 @@ public static class LocationNames
         { Location.CI_SYMBOL_ROOM, "EotE: Symbol Room Temple Code" },
         { Location.TEMPLE_ENTER, "EotE: Abandoned Temple" },
         { Location.TEMPLE_SR, "EotE: Abandoned Temple Slide Reel" },
-        { Location.TEMPLE_MAPS, "EotE: Map Projections" },
+        { Location.TEMPLE_MAPS, "EotE: Temple Map Projections" },
         { Location.RL_SECRET_SR, "EotE: River Lowlands Secret Slide Reel" },
         { Location.CI_SECRET_SR, "EotE: Cinder Isles Secret Slide Reel" },
         { Location.HG_SECRET_SR, "EotE: Hidden Gorge Secret Slide Reel" },
