@@ -149,7 +149,11 @@ public static class Coordinates
     [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Start))]
     public static void EyeCoordinatePromptTrigger_Start_Postfix(EyeCoordinatePromptTrigger __instance)
     {
-        if (promptCoordsSprite == null && correctCoordinates != null)
+        // vanilla / unrandomized coords, so nothing to do here
+        if (correctCoordinates == null)
+            return;
+
+        if (promptCoordsSprite == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"EyeCoordinatePromptTrigger_Start_Postfix drawing prompt coordinates sprite");
             promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
