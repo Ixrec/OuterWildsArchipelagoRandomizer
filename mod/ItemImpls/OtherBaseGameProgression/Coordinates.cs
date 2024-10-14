@@ -31,6 +31,7 @@ public static class Coordinates
         if (coordsSlotData is string coordsString && coordsString == "vanilla")
         {
             // leaving vanilla coordinates unchanged
+            correctCoordinates = null;
         }
         else if (coordsSlotData is JArray coords)
         {
