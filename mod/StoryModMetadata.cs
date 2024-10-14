@@ -45,19 +45,31 @@ public class StoryModMetadata
         trackerCategoryImageFile = "lingering_chime_map",
         trackerLocationInfosFilePrefix = "AC",
     };
+    private static ModMetadata HN2Metadata = new ModMetadata
+    {
+        trackerCategoryName = "Hearth's Neighbor 2: Magistarium",
+        modManagerUniqueName = "GameWyrm.HearthsNeighbor2",
+        slotDataOption = "enable_hn2_mod",
+        logicCategory = "hn2",
+        // copy-pasted from https://github.com/GameWyrm/hearths-neighbor-2/blob/master/HearthsNeighbor2/planets/magistarium.png
+        trackerCategoryImageFile = "magistarium",
+        trackerLocationInfosFilePrefix = "HN2",
+    };
 
     public static ModMetadata[] AllStoryMods = {
-        HN1Metadata,
         OutsiderMetadata,
-        ACMetadata
+        ACMetadata,
+        HN1Metadata,
+        HN2Metadata,
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
     public static Dictionary<TrackerCategory, ModMetadata> TrackerCategoryToModMetadata = new Dictionary<TrackerCategory, ModMetadata>
     {
-        { TrackerCategory.HearthsNeighbor, HN1Metadata },
         { TrackerCategory.TheOutsider, OutsiderMetadata },
         { TrackerCategory.AstralCodec, ACMetadata },
+        { TrackerCategory.HearthsNeighbor, HN1Metadata },
+        { TrackerCategory.HearthsNeighbor2Magistarium, HN2Metadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);

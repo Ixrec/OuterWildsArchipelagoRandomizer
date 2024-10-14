@@ -20,6 +20,7 @@ public enum TrackerCategory
     HearthsNeighbor,
     TheOutsider,
     AstralCodec,
+    HearthsNeighbor2Magistarium,
 }
 
 public class TrackerRequirement
