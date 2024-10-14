@@ -458,6 +458,8 @@ public class APRandomizer : ModBehaviour
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
             Spawn.OnCompleteSceneLoad(scene, loadScene);
+            // Hearth's Neighbor 2: Magistarium custom item impls
+            MemoryCubeInterface.OnCompleteSceneLoad();
         };
 
         // update the Nomai text setting before any can be created
@@ -484,7 +486,7 @@ public class APRandomizer : ModBehaviour
                 // Hearth's Neighbor 2: Magistarium custom item impls
                 if (system == "Jam3")
                 {
-                    MagistariumAccessCodes.OnCompleteSceneLoad();
+                    MagistariumAccessCodes.OnJam3StarSystemLoadedEvent();
                 }
             });
     }

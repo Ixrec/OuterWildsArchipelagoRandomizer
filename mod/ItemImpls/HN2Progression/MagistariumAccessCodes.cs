@@ -15,7 +15,7 @@ internal class MagistariumAccessCodes
             if (_hasLibraryAccess != value)
             {
                 _hasLibraryAccess = value;
-                LibraryDoor.SetActive(!value);
+                LibraryDoor?.SetActive(!value);
             }
         }
     }
@@ -29,7 +29,7 @@ internal class MagistariumAccessCodes
             if (_hasDormitoriesAccess != value)
             {
                 _hasDormitoriesAccess = value;
-                DormitoryDoor.SetActive(!value);
+                DormitoryDoor?.SetActive(!value);
             }
         }
     }
@@ -43,7 +43,7 @@ internal class MagistariumAccessCodes
             if (_hasEngineAccess != value)
             {
                 _hasEngineAccess = value;
-                EngineDoor.SetActive(!value);
+                EngineDoor?.SetActive(!value);
             }
         }
     }
@@ -56,18 +56,28 @@ internal class MagistariumAccessCodes
     private static InteractReceiver DormitoryDoorIR = null;
     private static InteractReceiver EngineDoorIR = null;
 
-    public static void OnCompleteSceneLoad()
+    public static void OnJam3StarSystemLoadedEvent()
     {
+        // make sure we aren't hanging on to any stale references
+        LibraryDoor = null;
+        DormitoryDoor = null;
+        EngineDoor = null;
+
+        LibraryDoorIR = null;
+        DormitoryDoorIR = null;
+        EngineDoorIR = null;
+
+        // stop here unless we're in the HN2 system
         if (APRandomizer.NewHorizonsAPI == null) return;
         if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam3") return;
 
-        var door = GameObject.Find("MAGISTARIUM_Body/Sector/Magistration/MagistariumSector/Sectors/GrandChamber/HorrorDoor");
+        var grandChamber = GameObject.Find("MAGISTARIUM_Body/Sector/Magistration/MagistariumSector/Sectors/GrandChamber");
+        var door = grandChamber.transform.Find("HorrorDoor").gameObject;
 
-        var grandChamber = door.transform.parent;
-
+        // library door
         LibraryDoor = UnityEngine.Object.Instantiate(door);
         LibraryDoor.name = "APRandomizer_HN2_LibraryDoor";
-        LibraryDoor.transform.SetParent(grandChamber, false);
+        LibraryDoor.transform.SetParent(grandChamber.transform, false);
         var lp = LibraryDoor.transform.localPosition; LibraryDoor.transform.localPosition = new Vector3(lp.x, lp.y, 42);
         LibraryDoor.transform.eulerAngles = new Vector3(0, 33, 0);
 
@@ -76,24 +86,34 @@ internal class MagistariumAccessCodes
         var libraryBox = libraryDoorCollision.AddComponent<BoxCollider>();
         LibraryDoorIR = libraryDoorCollision.AddComponent<InteractReceiver>();
 
+        // dormitory door
         DormitoryDoor = UnityEngine.Object.Instantiate(door);
         DormitoryDoor.name = "APRandomizer_HN2_DormitoryDoor";
-        DormitoryDoor.transform.SetParent(grandChamber, false);
+        DormitoryDoor.transform.SetParent(grandChamber.transform, false);
         lp = DormitoryDoor.transform.localPosition; DormitoryDoor.transform.localPosition = new Vector3(-30, lp.y, lp.z);
         DormitoryDoor.transform.eulerAngles = new Vector3(0, 215, 0);
 
-        GameObject dormDoorPrompt = new GameObject("APRandomizer_HN2_DormitoryDoor_Prompt");
-        dormDoorPrompt.transform.SetParent(DormitoryDoor.transform, false);
-        var dormDoorPromptBox = dormDoorPrompt.AddComponent<BoxCollider>();
-        DormitoryDoorIR = dormDoorPrompt.AddComponent<InteractReceiver>();
+        GameObject dormDoorCollision = new GameObject("APRandomizer_HN2_DormitoryDoor_ColliderAndPrompt");
+        dormDoorCollision.transform.SetParent(DormitoryDoor.transform, false);
+        var dormDoorPromptBox = dormDoorCollision.AddComponent<BoxCollider>();
+        DormitoryDoorIR = dormDoorCollision.AddComponent<InteractReceiver>();
 
+        // engine door
         EngineDoor = UnityEngine.Object.Instantiate(door);
         EngineDoor.name = "APRandomizer_HN2_EngineDoor";
-        EngineDoor.transform.SetParent(grandChamber, false);
+        EngineDoor.transform.SetParent(grandChamber.transform, false);
         lp = EngineDoor.transform.localPosition; EngineDoor.transform.localPosition = new Vector3(-30, lp.y, 42);
         EngineDoor.transform.eulerAngles = new Vector3(0, 144, 0);
-        var engineBox = EngineDoor.AddComponent<BoxCollider>();
-        EngineDoorIR = EngineDoor.AddComponent<InteractReceiver>();
+
+        GameObject engineDoorCollision = new GameObject("APRandomizer_HN2_EngineDoor_ColliderAndPrompt");
+        engineDoorCollision.transform.SetParent(EngineDoor.transform, false);
+        var engineDoorPromptBox = engineDoorCollision.AddComponent<BoxCollider>();
+        EngineDoorIR = engineDoorCollision.AddComponent<InteractReceiver>();
+
+        // finally, apply current game state
+        LibraryDoor?.SetActive(!hasLibraryAccess);
+        DormitoryDoor?.SetActive(!hasDormitoriesAccess);
+        EngineDoor?.SetActive(!hasEngineAccess);
     }
 
     // Unfortunately IR.ChangePrompt() explodes if called in OnCompleteSceneLoad, so we have to do hacky stuff to delay it

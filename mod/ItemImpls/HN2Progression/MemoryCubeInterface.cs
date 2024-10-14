@@ -18,8 +18,10 @@ internal class MemoryCubeInterface
             if (_hasMemoryCubeInterface != value)
             {
                 _hasMemoryCubeInterface = value;
-                foreach (var ir in MemoryCubeIRs)
-                    ApplyMCIFlagToIR(_hasMemoryCubeInterface, ir);
+
+                if (MemoryCubeIRs != null)
+                    foreach (var ir in MemoryCubeIRs)
+                        ApplyMCIFlagToIR(_hasMemoryCubeInterface, ir);
             }
         }
     }
@@ -27,9 +29,16 @@ internal class MemoryCubeInterface
     private static List<InteractReceiver> MemoryCubeIRs = null;
     private static List<GameObject> MemoryCubeInteractableGOs = null;
 
+    public static void OnCompleteSceneLoad()
+    {
+        // reset these so we don't hang onto stale references, and we remember to redo this on subsequent loads
+        MemoryCubeIRs = null;
+        MemoryCubeInteractableGOs = null;
+    }
+
     [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]
     public static void PlayerSectorDetector_OnAddSector(PlayerSectorDetector __instance) {
-        // we only need to do this once
+        // we only need to do this once per scene
         if (MemoryCubeIRs != null) return;
 
         // and only if we're in the NH2 system
@@ -73,13 +82,13 @@ internal class MemoryCubeInterface
     {
         if (hasMCI)
         {
-            ir.ChangePrompt("Talk to Memory Cube");
-            ir.SetKeyCommandVisible(true);
+            ir?.ChangePrompt("Talk to Memory Cube");
+            ir?.SetKeyCommandVisible(true);
         }
         else
         {
-            ir.ChangePrompt("Requires Memory Cube Interface");
-            ir.SetKeyCommandVisible(false);
+            ir?.ChangePrompt("Requires Memory Cube Interface");
+            ir?.SetKeyCommandVisible(false);
         }
     }
 }

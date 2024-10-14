@@ -11,13 +11,13 @@
   },
   {
     "locationModID": "HN2_BOOK_CAMPFIRE",
-    "description": "Pick up the book by the campfire in a small room connected to the Grand Chamber.",
+    "description": "Pick up the 'Coordinates Crash' book by the campfire in a small room connected to the Grand Chamber.",
     "thumbnail": "HN2_GC"
   },
 
   {
     "locationModID": "HN2_BOOK_LAMP",
-    "description": "Climb on top of the artificial sun lamp in the library to pick up a book. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity.",
+    "description": "Climb on top of the artificial sun lamp in the library to pick up the 'Asteroid Arcade' book. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity.",
     "thumbnail": "HN2_LB"
   },
   {
@@ -33,7 +33,7 @@
 
   {
     "locationModID": "HN2_BOOK_DORM",
-    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and pick up the book on the shelf.",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and pick up the 'Secret Legends' book on the shelf.",
     "thumbnail": "HN2_DM"
   },
   {
