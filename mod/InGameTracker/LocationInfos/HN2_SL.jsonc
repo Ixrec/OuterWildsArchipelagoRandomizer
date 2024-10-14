@@ -1,0 +1,158 @@
+﻿[
+  {
+    "locationModID": "SLF__HN2_Intro1",
+    "description": "Approach the Magistarium.",
+    "thumbnail": "HN2_Intro"
+  },
+  {
+    "locationModID": "SLF__HN2_Intro2",
+    "description": "Talk to the memory cube in the hallway between the landing bay and the Grand Chamber, where you can hear the air rushing out into space.",
+    "thumbnail": "HN2_Intro"
+  },
+  {
+    "locationModID": "SLF__HN2_Intro3",
+    "description": "Be inside the Magistarium when it switches to low power (6 minutes into the loop).",
+    "thumbnail": "HN2_Intro"
+  },
+  {
+    "locationModID": "SLF__HN2_Intro4",
+    "description": "Be inside the Magistarium when it cuts oxygen and switches to emergency power (17 minutes into the loop).",
+    "thumbnail": "HN2_Intro"
+  },
+  {
+    "locationModID": "SLF__HN2_Intro5",
+    "description": "Be inside the Magistarium when it shuts down completely (20 minutes into the loop).",
+    "thumbnail": "HN2_Intro"
+  },
+
+  {
+    "locationModID": "SLF__HN2_GC1",
+    "description": "Enter the Grand Chamber.",
+    "thumbnail": "HN2_GC"
+  },
+  {
+    "locationModID": "SLF__HN2_GC2",
+    "description": "Pick up the book by the campfire in a small room connected to the Grand Chamber.",
+    "thumbnail": "HN2_GC"
+  },
+
+  {
+    "locationModID": "SLF__HN2_EG1",
+    "description": "Walk down the ramp from the Grand Chamber to the Engine Room.",
+    "thumbnail": "HN2_EG"
+  },
+  {
+    "locationModID": "SLF__HN2_EG2",
+    "description": "Talk to the Memory Cube just outside the Engine Room.",
+    "thumbnail": "HN2_EG"
+  },
+
+  {
+    "locationModID": "SLF__HN2_LB1",
+    "description": "Walk down the ramp from the Grand Chamber to the Library.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "SLF__HN2_LB2",
+    "description": "Talk to the Memory Cube just outside the Reading Room, by the book return tray.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "SLF__HN2_LB3",
+    "description": "Climb on top of the artificial sun lamp in the library to pick up a book. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "SLF__HN2_LB4",
+    "description": "In the library is a small art gallery in a ring of several tall bookshelves. Talk to the Memory Cube there.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "SLF__HN2_LB5",
+    "description": "In the library is a small art gallery in a ring of several tall bookshelves. Talk to the Memory Cube there.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "SLF__HN2_LB6",
+    "description": "In the library is a small art gallery in a ring of several tall bookshelves. Interact with the disco ball there.",
+    "thumbnail": "HN2_LB"
+  },
+
+  {
+    "locationModID": "SLF__HN2_DM1",
+    "description": "Walk through the hallway from the Grand Chamber to the Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM2",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and pick up the book on the shelf.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM3",
+    "description": "Enter Acquarius' Room (3rd from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM4",
+    "description": "Talk to the Memory Cube at the far right of the Dormitories, in front of the door to the Magister's Room.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM5",
+    "description": "Enter Roja's Room (5th from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM6",
+    "description": "Enter Vespa's Room (2nd from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM7",
+    "description": "Enter Quartz's Room (6th from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM8",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "SLF__HN2_DM9",
+    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+
+  {
+    "locationModID": "SLF__HN2_MG1",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room.",
+    "thumbnail": "HN2_MG"
+  },
+  {
+    "locationModID": "SLF__HN2_MG2",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the rightmost Memory Cube on the middle shelf.",
+    "thumbnail": "HN2_MG"
+  },
+  {
+    "locationModID": "SLF__HN2_MG3",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the rightmost Memory Cube on the top shelf.",
+    "thumbnail": "HN2_MG"
+  },
+
+  {
+    "locationModID": "SLF__HN2_Device1",
+    "description": "In order to activate the Device you must: go to the Magister's Room to close the hatch, grab a spare battery from Acquarius' Room, return to your ship to take off your spacesuit, then carry the battery onto The Device.",
+    "thumbnail": "HN2_DEVICE"
+  },
+  {
+    "locationModID": "SLF__HN2_Device2",
+    "description": "After activating The Device, ask the Magister 'What happens now?'",
+    "thumbnail": "HN2_DEVICE"
+  },
+  {
+    "locationModID": "SLF__HN2_Device3",
+    "description": "After activating The Device, ask the Magister 'What happens now?'",
+    "thumbnail": "HN2_DEVICE"
+  }
+]

@@ -178,6 +178,29 @@ internal class LocationTriggers
         { "codex_lingering_chime_population_complete", Location.AC_LC_TALLIES_SOLUTION },
         { "codex_lingering_chime_no_sun_complete", Location.AC_LC_CIRCLE_SOLUTION },
         { "codex_astral_codex_fact", Location.AC_LC_ASTRAL_CODEC },
+
+        // Hearth's Neighbor 2: Magistarium default locations
+        { "HN2_Intro1", Location.HN2_MAGI},
+        { "HN2_Device_RumorChamber", Location.HN2_DEVICE_MC },
+        { "HN2_GC2", Location.HN2_BOOK_CAMPFIRE },
+
+        { "HN2_LB3", Location.HN2_BOOK_LAMP },
+        { "HN2_LB6", Location.HN2_BALL },
+        { "HN2_Device_RumorLibrary", Location.HN2_READING_ROOM_MC },
+
+        { "HN2_DM2", Location.HN2_BOOK_DORM },
+        { "HN2_DM6", Location.HN2_ROOM_VESPA },
+        { "HN2_DM3", Location.HN2_ROOM_ACQUARIUS },
+        { "HN2_DM5", Location.HN2_ROOM_ROJA },
+        { "HN2_DM7", Location.HN2_ROOM_QUARTZ },
+
+        { "HN2_MG3", Location.HN2_LIE },
+        { "HN2_Device_RumorMagi", Location.HN2_HATCH },
+
+        { "HN2_EG1", Location.HN2_ENGINE },
+        { "HN2_Device_RumorEngine", Location.HN2_BATTERIES },
+
+        { "HN2_Device1", Location.HN2_ASCEND },
     };
 
     // manual scrolls
@@ -401,6 +424,9 @@ internal class LocationTriggers
             case "Riebeck_Journal_1": CheckLocation(Location.BH_CAMPSITE_NOTE); break;
             case "Chert_QuantumMoonLocatorNotes": CheckLocation(Location.ET_QML_TR); break;
             case "Gabbro_SatelliteNote": CheckLocation(Location.SATELLITE_TR); break;
+            // Hearth's Neighbor 2: Magistarium memory cubes with no associated ship log
+            case "FoxleSecretCube": CheckLocation(Location.HN2_ROOM_VULTOS_MC); break;
+            case "NomaiCube": CheckLocation(Location.HN2_ROOM_LILY_MC); break;
         }
     }
 

@@ -742,6 +742,68 @@ public enum Location
     SLF__codex_astral_codex_species,
     SLF__codex_astral_codex_environments,
     SLF__codex_astral_codex_fact,
+
+    // Hearth's Neighbor 2: Magistarium locations
+    HN2_MAGI,
+    HN2_DEVICE_MC,
+    HN2_BOOK_CAMPFIRE,
+
+    HN2_BOOK_LAMP,
+    HN2_BALL,
+    HN2_READING_ROOM_MC,
+
+    HN2_BOOK_DORM,
+    HN2_ROOM_VULTOS_MC,
+    HN2_ROOM_VESPA,
+    HN2_ROOM_ACQUARIUS,
+    HN2_ROOM_LILY_MC,
+    HN2_ROOM_ROJA,
+    HN2_ROOM_QUARTZ,
+
+    HN2_LIE,
+    HN2_HATCH,
+
+    HN2_ENGINE,
+    HN2_BATTERIES,
+
+    HN2_ASCEND,
+
+    SLF__HN2_Intro1,
+    SLF__HN2_Intro2,
+    SLF__HN2_Intro3,
+    SLF__HN2_Intro4,
+    SLF__HN2_Intro5,
+
+    SLF__HN2_GC1,
+    SLF__HN2_GC2,
+
+    SLF__HN2_EG1,
+    SLF__HN2_EG2,
+
+    SLF__HN2_LB1,
+    SLF__HN2_LB2,
+    SLF__HN2_LB3,
+    SLF__HN2_LB4,
+    SLF__HN2_LB5,
+    SLF__HN2_LB6,
+
+    SLF__HN2_DM1,
+    SLF__HN2_DM2,
+    SLF__HN2_DM3,
+    SLF__HN2_DM4,
+    SLF__HN2_DM5,
+    SLF__HN2_DM6,
+    SLF__HN2_DM7,
+    SLF__HN2_DM8,
+    SLF__HN2_DM9,
+
+    SLF__HN2_MG1,
+    SLF__HN2_MG2,
+    SLF__HN2_MG3,
+
+    SLF__HN2_Device1,
+    SLF__HN2_Device2,
+    SLF__HN2_Device3,
 };
 
 public static class LocationNames
@@ -1411,6 +1473,68 @@ public static class LocationNames
         { Location.SLF__codex_astral_codex_species, "AC Ship Log: Astral Codec 2 - Stories" },
         { Location.SLF__codex_astral_codex_environments, "AC Ship Log: Astral Codec 3 - Hope" },
         { Location.SLF__codex_astral_codex_fact, "AC Ship Log: Astral Codec 4 - Onwards" },
+
+        // Hearth's Neighbor 2: Magistarium locations
+        { Location.HN2_MAGI, "HN2: The Magistarium" },
+        { Location.HN2_DEVICE_MC, "HN2: The Device (Memory Cube)" },
+        { Location.HN2_BOOK_CAMPFIRE, "HN2: Campfire Book" },
+
+        { Location.HN2_BOOK_LAMP, "HN2: Lamp Book" },
+        { Location.HN2_BALL, "HN2: Disco Ball" },
+        { Location.HN2_READING_ROOM_MC, "HN2: Reading Room (Memory Cube)" },
+
+        { Location.HN2_BOOK_DORM, "HN2: Dormitory Book" },
+        { Location.HN2_ROOM_VULTOS_MC, "HN2: Vultos' Room (Hidden Memory Cube)" },
+        { Location.HN2_ROOM_VESPA, "HN2: Vespa's Room" },
+        { Location.HN2_ROOM_ACQUARIUS, "HN2: Acquarius' Room" },
+        { Location.HN2_ROOM_LILY_MC, "HN2: Lily's Room (Memory Cube)" },
+        { Location.HN2_ROOM_ROJA, "HN2: Roja's Room" },
+        { Location.HN2_ROOM_QUARTZ, "HN2: Quartz's Room" },
+
+        { Location.HN2_LIE, "HN2: The Lie (Memory Cube)" },
+        { Location.HN2_HATCH, "HN2: Closing the Hatch (Memory Cube)" },
+
+        { Location.HN2_ENGINE, "HN2: Engine Room" },
+        { Location.HN2_BATTERIES, "HN2: Spare Batteries (Memory Cube)" },
+
+        { Location.HN2_ASCEND, "HN2: Activate The Device" },
+
+        { Location.SLF__HN2_Intro1, "HN2 Ship Log: The Magistarium 1 - Visit" },
+        { Location.SLF__HN2_Intro2, "HN2 Ship Log: The Magistarium 2 - Oxygen" },
+        { Location.SLF__HN2_Intro3, "HN2 Ship Log: The Magistarium 3 - Power" },
+        { Location.SLF__HN2_Intro4, "HN2 Ship Log: The Magistarium 4 - Emergency" },
+        { Location.SLF__HN2_Intro5, "HN2 Ship Log: The Magistarium 5 - Dies" },
+
+        { Location.SLF__HN2_GC1, "HN2 Ship Log: Grand Chamber 1 - Hub" },
+        { Location.SLF__HN2_GC2, "HN2 Ship Log: Grand Chamber 2 - Book" },
+
+        { Location.SLF__HN2_EG1, "HN2 Ship Log: Engine Room 1 - Generator" },
+        { Location.SLF__HN2_EG2, "HN2 Ship Log: Engine Room 2 - Breaker" },
+
+        { Location.SLF__HN2_LB1, "HN2 Ship Log: Library 1 - Top Floor" },
+        { Location.SLF__HN2_LB2, "HN2 Ship Log: Library 2 - Overdue" },
+        { Location.SLF__HN2_LB3, "HN2 Ship Log: Library 3 - Lamp" },
+        { Location.SLF__HN2_LB4, "HN2 Ship Log: Library 4 - Red" },
+        { Location.SLF__HN2_LB5, "HN2 Ship Log: Library 5 - Paintings" },
+        { Location.SLF__HN2_LB6, "HN2 Ship Log: Library 6 - Ball" },
+
+        { Location.SLF__HN2_DM1, "HN2 Ship Log: Dormitories 1 - Culture" },
+        { Location.SLF__HN2_DM2, "HN2 Ship Log: Dormitories 2 - Book" },
+        { Location.SLF__HN2_DM3, "HN2 Ship Log: Dormitories 3 - Pool" },
+        { Location.SLF__HN2_DM4, "HN2 Ship Log: Dormitories 4 - Sealed" },
+        { Location.SLF__HN2_DM5, "HN2 Ship Log: Dormitories 5 - Paintings" },
+        { Location.SLF__HN2_DM6, "HN2 Ship Log: Dormitories 6 - Inhabitant" },
+        { Location.SLF__HN2_DM7, "HN2 Ship Log: Dormitories 7 - Fuel" },
+        { Location.SLF__HN2_DM8, "HN2 Ship Log: Dormitories 8 - Symbol" },
+        { Location.SLF__HN2_DM9, "HN2 Ship Log: Dormitories 9 - Writing" },
+
+        { Location.SLF__HN2_MG1, "HN2 Ship Log: Magister's Room 1 - Hidden" },
+        { Location.SLF__HN2_MG2, "HN2 Ship Log: Magister's Room 2 - Lifespans" },
+        { Location.SLF__HN2_MG3, "HN2 Ship Log: Magister's Room 3 - The Lie" },
+
+        { Location.SLF__HN2_Device1, "HN2 Ship Log: The Device 1 - Fire" },
+        { Location.SLF__HN2_Device2, "HN2 Ship Log: The Device 2 - Explore" },
+        { Location.SLF__HN2_Device3, "HN2 Ship Log: The Device 3 - Creators" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);

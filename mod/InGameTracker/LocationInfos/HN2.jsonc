@@ -1,0 +1,97 @@
+﻿[
+  {
+    "locationModID": "HN2_MAGI",
+    "description": "Approach the Magistarium.",
+    "thumbnail": "HN2_Intro"
+  },
+  {
+    "locationModID": "HN2_DEVICE_MC",
+    "description": "Talk to the Memory Cube in the Grand Chamber just in front of The Device.",
+    "thumbnail": "HN2_GC"
+  },
+  {
+    "locationModID": "HN2_BOOK_CAMPFIRE",
+    "description": "Pick up the book by the campfire in a small room connected to the Grand Chamber.",
+    "thumbnail": "HN2_GC"
+  },
+
+  {
+    "locationModID": "HN2_BOOK_LAMP",
+    "description": "Climb on top of the artificial sun lamp in the library to pick up a book. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "HN2_BALL",
+    "description": "In the library is a small art gallery in a ring of several tall bookshelves. Interact with the disco ball there.",
+    "thumbnail": "HN2_LB"
+  },
+  {
+    "locationModID": "HN2_READING_ROOM_MC",
+    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the mural inside.",
+    "thumbnail": "HN2_LB"
+  },
+
+  {
+    "locationModID": "HN2_BOOK_DORM",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and pick up the book on the shelf.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_VULTOS_MC",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and find the second, hidden memory cube behind a fake ceiling panel. You should recognize the symbol on it if you've played Hearth's Neighbor 1.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_VESPA",
+    "description": "Enter Vespa's Room (2nd from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_ACQUARIUS",
+    "description": "Enter Acquarius' Room (3rd from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_LILY_MC",
+    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories and talk to the memory cube.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_ROJA",
+    "description": "Enter Roja's Room (5th from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+  {
+    "locationModID": "HN2_ROOM_QUARTZ",
+    "description": "Enter Quartz's Room (6th from the left) in the Magistarium Dormitories.",
+    "thumbnail": "HN2_DM"
+  },
+
+  {
+    "locationModID": "HN2_LIE",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the rightmost Memory Cube on the top shelf.",
+    "thumbnail": "HN2_MG"
+  },
+  {
+    "locationModID": "HN2_HATCH",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the Memory Cube on the far side to close the hatch.",
+    "thumbnail": "HN2_MG"
+  },
+
+  {
+    "locationModID": "HN2_ENGINE",
+    "description": "Walk down the ramp from the Grand Chamber to the Engine Room.",
+    "thumbnail": "HN2_EG"
+  },
+  {
+    "locationModID": "HN2_BATTERIES",
+    "description": "After the Magistarium power completely dies, go to the center of the Engine Room and talk to the Memory Cube there.",
+    "thumbnail": "HN2_EG"
+  },
+
+  {
+    "locationModID": "HN2_ASCEND",
+    "description": "In order to activate the Device you must: go to the Magister's Room to close the hatch, grab a spare battery from Acquarius' Room, return to your ship to take off your spacesuit, then carry the battery onto The Device.",
+    "thumbnail": "HN2_DEVICE"
+  }
+]
