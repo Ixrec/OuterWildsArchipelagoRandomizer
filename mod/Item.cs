@@ -108,6 +108,9 @@ public enum Item
     MagistariumLibraryAccessCode,
     MagistariumDormitoryAccessCode,
     MagistariumEngineAccessCode,
+
+    // Fret's Quest items
+    FrequencyHearthianRadio,
 };
 
 public static class ItemNames
@@ -218,6 +221,9 @@ public static class ItemNames
         { Item.MagistariumLibraryAccessCode, "Magistarium Library Access Code" },
         { Item.MagistariumDormitoryAccessCode, "Magistarium Dormitory Access Code" },
         { Item.MagistariumEngineAccessCode, "Magistarium Engine Access Code" },
+
+        // Fret's Quest items
+        { Item.FrequencyHearthianRadio, "Hearthian Radio Frequency" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
