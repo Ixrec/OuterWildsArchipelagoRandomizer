@@ -64,7 +64,7 @@ public class StoryModMetadata
         // copy-pasted https://github.com/Samster68OW/fretsquest/blob/main/old_subtitle.png and put it on top of
         // https://github.com/Samster68OW/fretsquest/blob/main/planets/ShipLogs/icons/UI_Magic_Banjo.png
         trackerCategoryImageFile = "FretsQuest",
-        trackerLocationInfosFilePrefix = "TODO",
+        trackerLocationInfosFilePrefix = "FQ",
     };
 
     public static ModMetadata[] AllStoryMods = {
