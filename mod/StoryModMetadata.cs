@@ -55,12 +55,22 @@ public class StoryModMetadata
         trackerCategoryImageFile = "magistarium",
         trackerLocationInfosFilePrefix = "HN2",
     };
+    private static ModMetadata FQMetadata = new ModMetadata
+    {
+        trackerCategoryName = "Fret's Quest",
+        modManagerUniqueName = "Samster68.FretsQuest",
+        slotDataOption = "enable_fq_mod",
+        logicCategory = "fq",
+        trackerCategoryImageFile = "TODO",
+        trackerLocationInfosFilePrefix = "TODO",
+    };
 
     public static ModMetadata[] AllStoryMods = {
         OutsiderMetadata,
         ACMetadata,
         HN1Metadata,
         HN2Metadata,
+        FQMetadata
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
@@ -70,6 +80,7 @@ public class StoryModMetadata
         { TrackerCategory.AstralCodec, ACMetadata },
         { TrackerCategory.HearthsNeighbor, HN1Metadata },
         { TrackerCategory.HearthsNeighbor2Magistarium, HN2Metadata },
+        { TrackerCategory.FretsQuest, FQMetadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);
