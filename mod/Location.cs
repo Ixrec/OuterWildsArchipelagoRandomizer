@@ -804,6 +804,84 @@ public enum Location
     SLF__HN2_Device1,
     SLF__HN2_Device2,
     SLF__HN2_Device3,
+
+    // Fret's Quest locations
+    FQ_SIGNAL_HR_GNEISS,
+
+    FQ_SIGNAL_HR_RIM,
+    FQ_SIGNAL_HR_BRIDGE,
+    FQ_SIGNAL_HR_RESON,
+    FQ_RITUAL,
+
+    FQ_SIGNAL_HR_RESON_2,
+    FQ_NEW_GALAXY,
+
+    FQ_LYRICS_LS,
+    FQ_LYRICS_DT,
+    FQ_LYRICS_BR,
+    FQ_LYRICS_GB,
+    FQ_LYRICS_DONE,
+
+    FQ_SIGNAL_HR_RIM_2,
+    FQ_ERNESTO,
+
+    FQ_STRUM_DIARY,
+
+    FQ_SKELETON_SCROLL,
+    FQ_BRIDGE_SCROLL,
+
+    FQ_BANJO_SCROLL,
+
+    SLF__BACKSTORY_FROM_FRET,
+    SLF__BACKSTORY_FROM_FRET_2,
+    SLF__RADIO_LISTENED_TO,
+    SLF__REPORTED_TO_FRET,
+    SLF__TUNER_GRAVE_FOUND,
+
+    SLF__RIM_RECORDER,
+    SLF__BRIDGE_RECORDER,
+    SLF__RESON_RECORDER,
+    SLF__RITUAL_RECORDER,
+
+    SLF__RESON_NEW_GALAXY,
+    SLF__RESON_BACKSTORY,
+    SLF__RESON_BANJO_MISSING,
+    SLF__LOST_STRINGS_RECORDER,
+    SLF__LOST_STRINGS_LYRICS,
+
+    SLF__TALKING_SKELETONS,
+    SLF__DRIED_TEARS_RECORDER,
+
+    SLF__READ_SKELETON_SCROLL_START,
+    SLF__READ_SKELETON_SCROLL_BRIDGE,
+    SLF__READ_SKELETON_SCROLL_RIM,
+    SLF__READ_SKELETON_SCROLL_FRET,
+
+    SLF__TALK_TO_STRUM,
+    SLF__TALK_TO_STRUM_PART_TWO,
+    SLF__BRACKETS_REST_LYRIC,
+
+    SLF__READ_STRUMS_DIARY_BANJO,
+    SLF__READ_STRUMS_DIARY,
+
+    SLF__LANTERN_HOUSE_RECORDER,
+    SLF__CLIFF_HOUSE_RECORDER,
+    SLF__TALL_HOUSE_RECORDER,
+    SLF__LOST_VILLAGE_LYRICS,
+
+    SLF__TALK_TO_RIM,
+    SLF__ASK_ABOUT_ICE,
+
+    SLF__TALK_TO_ERNESTO,
+
+    SLF__TALK_TO_TUNER,
+    SLF__TUNERS_REQUEST,
+    SLF__TUNERS_QUEST_COMPLETE,
+
+    SLF__READ_BRIDGE_SCROLL_BANJO,
+    SLF__READ_BRIDGE_SCROLL_ARGUMENT,
+
+    SLF__READ_BANJO_SCROLL,
 };
 
 public static class LocationNames
@@ -1535,6 +1613,83 @@ public static class LocationNames
         { Location.SLF__HN2_Device1, "HN2 Ship Log: The Device 1 - Fire" },
         { Location.SLF__HN2_Device2, "HN2 Ship Log: The Device 2 - Explore" },
         { Location.SLF__HN2_Device3, "HN2 Ship Log: The Device 3 - Creators" },
+
+        // Fret's Quest locations
+        { Location.FQ_SIGNAL_HR_GNEISS, "FQ: Scan Gneiss's Radio Signal" },
+        { Location.FQ_SIGNAL_HR_RIM, "FQ: Scan Rim's Radio Signal" },
+        { Location.FQ_SIGNAL_HR_BRIDGE, "FQ: Scan Bridge's Radio Signal" },
+        { Location.FQ_SIGNAL_HR_RESON, "FQ: Scan Reson's Radio Signal" },
+        { Location.FQ_RITUAL, "FQ: The Ritual (Text Wheel)" },
+
+        { Location.FQ_SIGNAL_HR_RESON_2, "FQ: Scan Reson's Second Radio Signal" },
+        { Location.FQ_NEW_GALAXY, "FQ: Ask About New Planet" },
+
+        { Location.FQ_LYRICS_LS, "FQ: Lost Strings Lyric" },
+        { Location.FQ_LYRICS_DT, "FQ: Dried Tears Lyric" },
+        { Location.FQ_LYRICS_BR, "FQ: Bracket's Rest Lyric" },
+        { Location.FQ_LYRICS_GB, "FQ: Green Base Lyric" },
+        { Location.FQ_LYRICS_DONE, "FQ: Tuner's Song" },
+
+        { Location.FQ_SIGNAL_HR_RIM_2, "FQ: Scan Rim's Second Radio Signal" },
+        { Location.FQ_ERNESTO, "FQ: Talk to Ernesto" },
+
+        { Location.FQ_STRUM_DIARY, "FQ: Strum's House Notes" },
+
+        { Location.FQ_SKELETON_SCROLL, "FQ: Skeleton Scroll" },
+        { Location.FQ_BRIDGE_SCROLL, "FQ: Bridge's Scroll" },
+
+        { Location.FQ_BANJO_SCROLL, "FQ: Corrupted Scroll" },
+
+        { Location.SLF__BACKSTORY_FROM_FRET, "FQ Ship Log: Fret's Quest 1 - Stolen" },
+        { Location.SLF__BACKSTORY_FROM_FRET_2, "FQ Ship Log: Fret's Quest 2 - Not Here" },
+        { Location.SLF__RADIO_LISTENED_TO, "FQ Ship Log: Fret's Quest 3 - Signal" },
+        { Location.SLF__REPORTED_TO_FRET, "FQ Ship Log: Fret's Quest 4 - Reported" },
+        { Location.SLF__TUNER_GRAVE_FOUND, "FQ Ship Log: Grave" },
+
+        { Location.SLF__RIM_RECORDER, "FQ Ship Log: Rim's Camp" },
+        { Location.SLF__BRIDGE_RECORDER, "FQ Ship Log: Bridge's Camp" },
+        { Location.SLF__RESON_RECORDER, "FQ Ship Log: Reson's Camp" },
+        { Location.SLF__RITUAL_RECORDER, "FQ Ship Log: The Ritual" },
+
+        { Location.SLF__RESON_NEW_GALAXY, "FQ Ship Log: Reson 1 - New" },
+        { Location.SLF__RESON_BACKSTORY, "FQ Ship Log: Reson 2 - Power" },
+        { Location.SLF__RESON_BANJO_MISSING, "FQ Ship Log: Reson 3 - Disappeared" },
+        { Location.SLF__LOST_STRINGS_RECORDER, "FQ Ship Log: Nomai Wall 1 - Recording" },
+        { Location.SLF__LOST_STRINGS_LYRICS, "FQ Ship Log: Nomai Wall 2 - Lyrics" },
+
+        { Location.SLF__TALKING_SKELETONS, "FQ Ship Log: Anglerfish Skeletons 1 - Directions" },
+        { Location.SLF__DRIED_TEARS_RECORDER, "FQ Ship Log: Anglerfish Skeletons 2 - Ice" },
+
+        { Location.SLF__READ_SKELETON_SCROLL_START, "FQ Ship Log: Skeleton Scroll 1 - Frozen" },
+        { Location.SLF__READ_SKELETON_SCROLL_BRIDGE, "FQ Ship Log: Skeleton Scroll 2 - Antlers" },
+        { Location.SLF__READ_SKELETON_SCROLL_RIM, "FQ Ship Log: Skeleton Scroll 3 - Volunteered" },
+        { Location.SLF__READ_SKELETON_SCROLL_FRET, "FQ Ship Log: Skeleton Scroll 4 - Contradiction" },
+
+        { Location.SLF__TALK_TO_STRUM, "FQ Ship Log: Strum 1 - Life" },
+        { Location.SLF__TALK_TO_STRUM_PART_TWO, "FQ Ship Log: Strum 2 - Discouraged" },
+        { Location.SLF__BRACKETS_REST_LYRIC, "FQ Ship Log: Strum 3 - Work" },
+
+        { Location.SLF__READ_STRUMS_DIARY_BANJO, "FQ Ship Log: Strum's House 1 - Scrolls" },
+        { Location.SLF__READ_STRUMS_DIARY, "FQ Ship Log: Strum's House 2 - Mocked" },
+
+        { Location.SLF__LANTERN_HOUSE_RECORDER, "FQ Ship Log: Lost Village 1 - Board Game" },
+        { Location.SLF__CLIFF_HOUSE_RECORDER, "FQ Ship Log: Lost Village 2 - Kidnapping" },
+        { Location.SLF__TALL_HOUSE_RECORDER, "FQ Ship Log: Lost Village 3 - Evacuate" },
+        { Location.SLF__LOST_VILLAGE_LYRICS, "FQ Ship Log: Lost Village 4 - Lyrics" },
+
+        { Location.SLF__TALK_TO_RIM, "FQ Ship Log: Ice Spire 1 - Alive" },
+        { Location.SLF__ASK_ABOUT_ICE, "FQ Ship Log: Ice Spire 2 - Consistency" },
+
+        { Location.SLF__TALK_TO_ERNESTO, "FQ Ship Log: Ernesto" },
+
+        { Location.SLF__TALK_TO_TUNER, "FQ Ship Log: Tuner's Song 1 - Tuner" },
+        { Location.SLF__TUNERS_REQUEST, "FQ Ship Log: Tuner's Song 2 - Lyrics" },
+        { Location.SLF__TUNERS_QUEST_COMPLETE, "FQ Ship Log: Tuner's Song 3 - Helped" },
+
+        { Location.SLF__READ_BRIDGE_SCROLL_BANJO, "FQ Ship Log: Bridge's Scroll 1 - Undamaged" },
+        { Location.SLF__READ_BRIDGE_SCROLL_ARGUMENT, "FQ Ship Log: Bridge's Scroll 2 - Argued" },
+
+        { Location.SLF__READ_BANJO_SCROLL, "FQ Ship Log: Corrupted Scroll" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);
