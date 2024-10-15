@@ -201,6 +201,26 @@ internal class LocationTriggers
         { "HN2_Device_RumorEngine", Location.HN2_BATTERIES },
 
         { "HN2_Device1", Location.HN2_ASCEND },
+
+        // Fret's Quest default locations
+        { "RITUAL_RECORDER", Location.FQ_RITUAL },
+        { "RESON_NEW_GALAXY", Location.FQ_NEW_GALAXY },
+
+        { "LOST_STRINGS_LYRICS", Location.FQ_LYRICS_LS },
+        { "DRIED_TEARS_RECORDER", Location.FQ_LYRICS_DT },
+        { "BRACKETS_REST_LYRIC", Location.FQ_LYRICS_BR },
+        { "LOST_VILLAGE_LYRICS", Location.FQ_LYRICS_GB },
+        { "TUNERS_QUEST_COMPLETE", Location.FQ_LYRICS_DONE },
+
+        { "TALK_TO_ERNESTO", Location.FQ_ERNESTO },
+
+        // let either note trigger the location
+        { "READ_STRUMS_DIARY_BANJO", Location.FQ_STRUM_DIARY },
+        { "READ_STRUMS_DIARY", Location.FQ_STRUM_DIARY },
+
+        { "READ_SKELETON_SCROLL_START", Location.FQ_SKELETON_SCROLL },
+        { "READ_BRIDGE_SCROLL_BANJO", Location.FQ_BRIDGE_SCROLL },
+        { "READ_BANJO_SCROLL", Location.FQ_BANJO_SCROLL },
     };
 
     // manual scrolls
