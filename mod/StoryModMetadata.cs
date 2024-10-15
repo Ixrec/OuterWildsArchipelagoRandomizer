@@ -61,7 +61,9 @@ public class StoryModMetadata
         modManagerUniqueName = "Samster68.FretsQuest",
         slotDataOption = "enable_fq_mod",
         logicCategory = "fq",
-        trackerCategoryImageFile = "TODO",
+        // copy-pasted https://github.com/Samster68OW/fretsquest/blob/main/old_subtitle.png and put it on top of
+        // https://github.com/Samster68OW/fretsquest/blob/main/planets/ShipLogs/icons/UI_Magic_Banjo.png
+        trackerCategoryImageFile = "FretsQuest",
         trackerLocationInfosFilePrefix = "TODO",
     };
 
