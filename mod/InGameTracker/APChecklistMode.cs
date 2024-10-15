@@ -268,9 +268,9 @@ public class APChecklistMode : ShipLogMode
             foreach (TrackerInfo info in trackerInfos)
                 trackerInfosInCategory.Add(info);
 
-            if (APRandomizer.SlotEnabledLogsanity() && File.Exists(filepath + "_SL.jsonc"))
+            if (APRandomizer.SlotEnabledLogsanity() && File.Exists(filepath + "_SLF.jsonc"))
             {
-                trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SL.jsonc"));
+                trackerInfos = JsonConvert.DeserializeObject<List<TrackerInfo>>(File.ReadAllText(filepath + "_SLF.jsonc"));
                 foreach (TrackerInfo info in trackerInfos)
                     trackerInfosInCategory.Add(info);
             }

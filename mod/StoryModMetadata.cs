@@ -13,7 +13,7 @@ public class StoryModMetadata
         public string slotDataOption; // the one you added to Options.py and __init__.py
         public string logicCategory;  // the one you used in items.jsonc, locations.jsonc and connections.jsonc
         public string trackerCategoryImageFile;       // $"/mod/InGameTracker/Icons/{...}.png"
-        public string trackerLocationInfosFilePrefix; // $"/mod/InGameTracker/LocationInfos/{...}.jsonc" and "{...}_SL.jsonc"
+        public string trackerLocationInfosFilePrefix; // $"/mod/InGameTracker/LocationInfos/{...}.jsonc" and "{...}_SLF.jsonc"
     };
 
     private static ModMetadata HN1Metadata = new ModMetadata {

@@ -74,7 +74,7 @@ Thus, when naming a location, it should include the relevant prefix.
 
 ## Making the Location Show Up in the Tracker
 
-To add a location to the Tracker, open the .jsonc file within the LocationInfos file that corresponds to the correct prefix, and if the location is a Ship Log location, you'll need to open the version of the file that ends in `_SL`.
+To add a location to the Tracker, open the .jsonc file within the LocationInfos file that corresponds to the correct prefix, and if the location is a Ship Log location, you'll need to open the version of the file that ends in `_SLF`.
 Create a new entry with the following format:
 
 ```json
