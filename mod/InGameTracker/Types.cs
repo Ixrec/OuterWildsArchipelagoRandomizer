@@ -21,6 +21,7 @@ public enum TrackerCategory
     TheOutsider,
     AstralCodec,
     HearthsNeighbor2Magistarium,
+    FretsQuest,
 }
 
 public class TrackerRequirement
