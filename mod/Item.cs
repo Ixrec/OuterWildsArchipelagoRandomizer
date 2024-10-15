@@ -121,6 +121,7 @@ public static class ItemNames
         Item.FrequencyLavaCore,
         Item.FrequencyGalacticCommunication,
         Item.FrequencyAstralCodec,
+        Item.FrequencyHearthianRadio,
     };
     public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
@@ -247,6 +248,9 @@ public static class ItemNames
 
         // Astral Codec frequency items
         { "Astral Codec", Item.FrequencyAstralCodec },
+
+        // Fret's Quest frequency items
+        { "Hearthian Radio", Item.FrequencyHearthianRadio },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

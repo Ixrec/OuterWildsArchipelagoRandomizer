@@ -59,6 +59,14 @@ internal class SignalsAndFrequencies
         { "Chime Transmitter", "Astral Codec" },
         { "Translation Probe Cinder", "Astral Codec" },
         { "Translation Probe Thicket", "Astral Codec" },
+
+        // Fret's Quest
+        { "Gneiss's Radio", "Hearthian Radio" },
+        { "Rim's Radio", "Hearthian Radio" },
+        { "Bridge's Radio", "Hearthian Radio" },
+        { "Reson's Radio", "Hearthian Radio" },
+        { "Reson's Second Radio", "Hearthian Radio" },
+        { "Rim's Second Radio", "Hearthian Radio" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -116,6 +124,16 @@ internal class SignalsAndFrequencies
             "Chime Transmitter",
             "Translation Probe Cinder",
             "Translation Probe Thicket",
+        } },
+
+        // Fret's Quest
+        { "Hearthian Radio", new HashSet<string>{
+            "Gneiss's Radio",
+            "Rim's Radio",
+            "Bridge's Radio",
+            "Reson's Radio",
+            "Reson's Second Radio",
+            "Rim's Second Radio",
         } },
     };
 

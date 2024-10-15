@@ -1744,6 +1744,14 @@ public static class LocationNames
         { "Chime Transmitter", Location.AC_LC_CHIME },
         { "Translation Probe Cinder", Location.AC_ET_SIGNAL },
         { "Translation Probe Thicket", Location.AC_DB_SIGNAL },
+
+        // Fret's Quest signals
+        { "Gneiss's Radio", Location.FQ_SIGNAL_HR_GNEISS },
+        { "Rim's Radio", Location.FQ_SIGNAL_HR_RIM },
+        { "Bridge's Radio", Location.FQ_SIGNAL_HR_BRIDGE },
+        { "Reson's Radio", Location.FQ_SIGNAL_HR_RESON },
+        { "Reson's Second Radio", Location.FQ_SIGNAL_HR_RESON_2 },
+        { "Rim's Second Radio", Location.FQ_SIGNAL_HR_RIM_2 },
     };
     public static Dictionary<Location, string> locationToSignal = signalToLocation.ToDictionary(stl => stl.Value, stl => stl.Key);
 
