@@ -87,9 +87,13 @@ internal class Hints
 
         APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_InputDialogueOption generating hints for {character}");
 
+        // Since there are no "hint characters" for DLC or story mods, logsanity
+        // is the only option affecting which locations are relevant.
         var prefixes = characterToLocationPrefixes[character];
-        var relevantLocations = LocationNames.ActiveLocations()
+        var relevantLocations = LocationNames.locationNames.Keys
             .Where(loc => prefixes.Any(p => LocationNames.locationNames[loc].StartsWith(p)));
+        if (!APRandomizer.SlotEnabledLogsanity())
+            relevantLocations = relevantLocations.Where(loc => !loc.ToString().StartsWith("SLF__"));
 
         var allChecked = APRandomizer.APSession.Locations.AllLocationsChecked;
         var uncheckedRelevantLocations = relevantLocations.Where(loc => {

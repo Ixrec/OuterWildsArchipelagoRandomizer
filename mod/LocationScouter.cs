@@ -38,7 +38,7 @@ namespace ArchipelagoRandomizer
         {
             ScoutedLocations = new();
             List<long> locationIDs = new List<long>();
-            foreach (Location loc in LocationNames.ActiveLocations())
+            foreach (Location loc in LocationNames.locationNames.Keys)
                 locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
 
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
