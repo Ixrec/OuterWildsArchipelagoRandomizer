@@ -1,0 +1,206 @@
+[
+  {
+    "locationModID": "SLF__BACKSTORY_FROM_FRET",
+    "description": "Talk to Fret in the middle of Timber Hearth Village.",
+    "thumbnail": "FRETS_QUEST"
+  },
+  {
+    "locationModID": "SLF__BACKSTORY_FROM_FRET_2",
+    "description": "Talk to Fret in the middle of Timber Hearth Village.",
+    "thumbnail": "FRETS_QUEST"
+  },
+  {
+    "locationModID": "SLF__RADIO_LISTENED_TO",
+    "description": "Scan Gneiss's Radio in Timber Hearth Village. It's right next to Fret.",
+    "thumbnail": "FRETS_QUEST"
+  },
+  {
+    "locationModID": "SLF__REPORTED_TO_FRET",
+    "description": "Talk to Fret again after translating the Nomai recorder in Coleus' Cave.",
+    "thumbnail": "FRETS_QUEST"
+  },
+
+  {
+    "locationModID": "SLF__TUNER_GRAVE_FOUND",
+    "description": "Locate Tuner's grave in the mountains west of Timber Hearth Village.",
+    "thumbnail": "TUNER_GRAVE"
+  },
+
+  {
+    "locationModID": "SLF__RIM_RECORDER",
+    "description": "Translate the text wheel next to Rim's Radio in a random crater on Attlerock.",
+    "thumbnail": "RIM_CAMP"
+  },
+  {
+    "locationModID": "SLF__BRIDGE_RECORDER",
+    "description": "Translate the text wheel next to Bridge's Radio on Brittle Hollow's Northern Glacier.",
+    "thumbnail": "BRIDGE_CAMP"
+  },
+  {
+    "locationModID": "SLF__RESON_RECORDER",
+    "description": "Translate the text wheel next to Reson's Radio near the center of the coral forest inside the core of Giant's Deep.",
+    "thumbnail": "RESON_CAMP"
+  },
+  {
+    "locationModID": "SLF__RITUAL_RECORDER",
+    "description": "Inside Coleus' Cave on Ember Twin is the aftermath of a ritual, and a Nomai recorder.",
+    "thumbnail": "RITUAL_PORTAL"
+  },
+
+  {
+    "locationModID": "SLF__RESON_NEW_GALAXY",
+    "description": "Ask Reson where you are.",
+    "thumbnail": "RESON"
+  },
+  {
+    "locationModID": "SLF__RESON_BACKSTORY",
+    "description": "Ask Reson about himself.",
+    "thumbnail": "RESON"
+  },
+  {
+    "locationModID": "SLF__RESON_BANJO_MISSING",
+    "description": "Ask Reson about the banjo.",
+    "thumbnail": "RESON"
+  },
+
+  {
+    "locationModID": "SLF__LOST_STRINGS_RECORDER",
+    "description": "Translate the Nomai text wheel behind the empty text wall on the south pole of Lost Strings.",
+    "thumbnail": "NOMAI_WALL"
+  },
+  {
+    "locationModID": "SLF__LOST_STRINGS_LYRICS",
+    "description": "Translate the Nomai text wheel behind the empty text wall on the south pole of Lost Strings.",
+    "thumbnail": "NOMAI_WALL"
+  },
+
+  {
+    "locationModID": "SLF__TALKING_SKELETONS",
+    "description": "Talk to the skeleton on the north pole of Dried Tears to get directions.",
+    "thumbnail": "ANGLERFISH_SKELETONS"
+  },
+  {
+    "locationModID": "SLF__DRIED_TEARS_RECORDER",
+    "description": "Translate the Nomai text wheel inside the last Anglerfish skeleton after following the directions at the north pole.",
+    "thumbnail": "ANGLERFISH_SKELETONS"
+  },
+
+  {
+    "locationModID": "SLF__READ_SKELETON_SCROLL_START",
+    "description": "Find the scoll held by a Nomai skeleton on Dried Tears, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "SKELETON_SCROLL"
+  },
+  {
+    "locationModID": "SLF__READ_SKELETON_SCROLL_BRIDGE",
+    "description": "Find the scoll held by a Nomai skeleton on Dried Tears, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "SKELETON_SCROLL"
+  },
+  {
+    "locationModID": "SLF__READ_SKELETON_SCROLL_RIM",
+    "description": "Find the scoll held by a Nomai skeleton on Dried Tears, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "SKELETON_SCROLL"
+  },
+  {
+    "locationModID": "SLF__READ_SKELETON_SCROLL_FRET",
+    "description": "Find the scoll held by a Nomai skeleton on Dried Tears, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "SKELETON_SCROLL"
+  },
+
+  {
+    "locationModID": "SLF__TALK_TO_STRUM",
+    "description": "Talk to Strum on Bracket's Rest.",
+    "thumbnail": "STRUM"
+  },
+  {
+    "locationModID": "SLF__TALK_TO_STRUM_PART_TWO",
+    "description": "Talk to Strum on Bracket's Rest.",
+    "thumbnail": "STRUM"
+  },
+  {
+    "locationModID": "SLF__BRACKETS_REST_LYRIC",
+    "description": "Talk to Strum on Bracket's Rest.",
+    "thumbnail": "STRUM"
+  },
+
+  {
+    "locationModID": "SLF__READ_STRUMS_DIARY_BANJO",
+    "description": "Find what's left of Strum's House on Green Base, then read the note on the floor.",
+    "thumbnail": "STRUMS_HOUSE"
+  },
+  {
+    "locationModID": "SLF__READ_STRUMS_DIARY",
+    "description": "Find what's left of Strum's House on Green Base, then read the note on the wall.",
+    "thumbnail": "STRUMS_HOUSE"
+  },
+
+  {
+    "locationModID": "SLF__LANTERN_HOUSE_RECORDER",
+    "description": "At the Lost Village on Green Base's north pole, translate the text wheel inside one of the houses near Tuner.",
+    "thumbnail": "LOST_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__CLIFF_HOUSE_RECORDER",
+    "description": "At the Lost Village on Green Base's north pole, translate the text wheel inside the house with a light sensor door.",
+    "thumbnail": "LOST_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__TALL_HOUSE_RECORDER",
+    "description": "At the Lost Village on Green Base's north pole, translate the text wheel inside the tallest house.",
+    "thumbnail": "LOST_VILLAGE"
+  },
+  {
+    "locationModID": "SLF__LOST_VILLAGE_LYRICS",
+    "description": "At the Lost Village on Green Base's north pole, translate the text wheel inside the tallest house.",
+    "thumbnail": "LOST_VILLAGE"
+  },
+
+  {
+    "locationModID": "SLF__TALK_TO_RIM",
+    "description": "Find Rim on Green Base next to the Ice Spire, and ask him about himself.",
+    "thumbnail": "ICE_SPIRE"
+  },
+  {
+    "locationModID": "SLF__ASK_ABOUT_ICE",
+    "description": "Find Rim on Green Base next to the Ice Spire, and ask him about the ice.",
+    "thumbnail": "ICE_SPIRE"
+  },
+
+  {
+    "locationModID": "SLF__TALK_TO_ERNESTO",
+    "description": "Talk to Ernesto near the south pole of Green Base.",
+    "thumbnail": "ERNESTO"
+  },
+
+  {
+    "locationModID": "SLF__TALK_TO_TUNER",
+    "description": "Talk to Tuner on Green Base and ask about Riebeck.",
+    "thumbnail": "TUNERS_SONG"
+  },
+  {
+    "locationModID": "SLF__TUNERS_REQUEST",
+    "description": "Talk to Tuner on Green Base and ask about their song.",
+    "thumbnail": "TUNERS_SONG"
+  },
+  {
+    "locationModID": "SLF__TUNERS_QUEST_COMPLETE",
+    "description": "Talk to Tuner on Green Base after finding all four lyrics in the Banjo Galaxy.",
+    "thumbnail": "TUNERS_SONG"
+  },
+
+  {
+    "locationModID": "SLF__READ_BRIDGE_SCROLL_BANJO",
+    "description": "Find the scoll held by a Nomai skeleton in the Lost Village, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "BRIDGE_SCROLL"
+  },
+  {
+    "locationModID": "SLF__READ_BRIDGE_SCROLL_ARGUMENT",
+    "description": "Find the scoll held by a Nomai skeleton in the Lost Village, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "BRIDGE_SCROLL"
+  },
+
+  {
+    "locationModID": "SLF__READ_BANJO_SCROLL",
+    "description": "Find the scoll floating inside the Magic Banjo (lock-on shows where exactly), then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "BANJO_SCROLL"
+  }
+]

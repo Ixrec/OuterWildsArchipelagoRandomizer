@@ -1,0 +1,98 @@
+[
+  {
+    "locationModID": "FQ_SIGNAL_HR_GNEISS",
+    "description": "Scan Gneiss's Radio in Timber Hearth Village. It's right next to Fret.",
+    "thumbnail": "FRETS_QUEST"
+  },
+  {
+    "locationModID": "FQ_SIGNAL_HR_RIM",
+    "description": "Scan Rim's Radio in a random crater on Attlerock.",
+    "thumbnail": "RIM_CAMP"
+  },
+  {
+    "locationModID": "FQ_SIGNAL_HR_BRIDGE",
+    "description": "Scan Bridge's Radio on Brittle Hollow's Northern Glacier.",
+    "thumbnail": "BRIDGE_CAMP"
+  },
+  {
+    "locationModID": "FQ_SIGNAL_HR_RESON",
+    "description": "Scan Reson's Radio near the center of the coral forest inside the core of Giant's Deep.",
+    "thumbnail": "RESON_CAMP"
+  },
+  {
+    "locationModID": "FQ_RITUAL",
+    "description": "Inside Coleus' Cave on Ember Twin is the aftermath of a ritual, and a Nomai recorder.",
+    "thumbnail": "RITUAL_PORTAL"
+  },
+
+  {
+    "locationModID": "FQ_SIGNAL_HR_RESON_2",
+    "description": "Scan Reson's Radio on the surface of Lost Strings.",
+    "thumbnail": "RESON"
+  },
+  {
+    "locationModID": "FQ_NEW_GALAXY",
+    "description": "Ask Reson where you are.",
+    "thumbnail": "RESON"
+  },
+
+  {
+    "locationModID": "FQ_LYRICS_LS",
+    "description": "Translate the Nomai text wheel behind the empty text wall on the south pole of Lost Strings.",
+    "thumbnail": "NOMAI_WALL"
+  },
+  {
+    "locationModID": "FQ_LYRICS_DT",
+    "description": "Translate the Nomai text wheel inside the last Anglerfish skeleton after following the directions at the north pole.",
+    "thumbnail": "ANGLERFISH_SKELETONS"
+  },
+  {
+    "locationModID": "FQ_LYRICS_BR",
+    "description": "Talk to Strum on Bracket's Rest.",
+    "thumbnail": "STRUM"
+  },
+  {
+    "locationModID": "FQ_LYRICS_GB",
+    "description": "At the Lost Village on Green Base's north pole, translate the text wheel inside the tallest house.",
+    "thumbnail": "LOST_VILLAGE"
+  },
+  {
+    "locationModID": "FQ_LYRICS_DONE",
+    "description": "Talk to Tuner on Green Base after finding all four lyrics in the Banjo Galaxy.",
+    "thumbnail": "TUNERS_SONG"
+  },
+
+  {
+    "locationModID": "FQ_SIGNAL_HR_RIM_2",
+    "description": "Scan Reson's Radio on the surface of Green Base next to the Ice Spire.",
+    "thumbnail": "ICE_SPIRE"
+  },
+  {
+    "locationModID": "FQ_ERNESTO",
+    "description": "Talk to Ernesto near the south pole of Green Base.",
+    "thumbnail": "ERNESTO"
+  },
+
+  {
+    "locationModID": "FQ_STRUM_DIARY",
+    "description": "Find what's left of Strum's House on Green Base, then read either of the notes inside.",
+    "thumbnail": "STRUMS_HOUSE"
+  },
+
+  {
+    "locationModID": "FQ_SKELETON_SCROLL",
+    "description": "Find the scoll held by a Nomai skeleton on Dried Tears, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "SKELETON_SCROLL"
+  },
+  {
+    "locationModID": "FQ_BRIDGE_SCROLL",
+    "description": "Find the scoll held by a Nomai skeleton in the Lost Village, then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "BRIDGE_SCROLL"
+  },
+
+  {
+    "locationModID": "FQ_BANJO_SCROLL",
+    "description": "Find the scoll floating inside the Magic Banjo (lock-on shows where exactly), then take it to the Lost Strings text wall for translation.",
+    "thumbnail": "BANJO_SCROLL"
+  }
+]

@@ -108,6 +108,9 @@ public enum Item
     MagistariumLibraryAccessCode,
     MagistariumDormitoryAccessCode,
     MagistariumEngineAccessCode,
+
+    // Fret's Quest items
+    FrequencyHearthianRadio,
 };
 
 public static class ItemNames
@@ -118,6 +121,7 @@ public static class ItemNames
         Item.FrequencyLavaCore,
         Item.FrequencyGalacticCommunication,
         Item.FrequencyAstralCodec,
+        Item.FrequencyHearthianRadio,
     };
     public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
@@ -218,6 +222,9 @@ public static class ItemNames
         { Item.MagistariumLibraryAccessCode, "Magistarium Library Access Code" },
         { Item.MagistariumDormitoryAccessCode, "Magistarium Dormitory Access Code" },
         { Item.MagistariumEngineAccessCode, "Magistarium Engine Access Code" },
+
+        // Fret's Quest items
+        { Item.FrequencyHearthianRadio, "Hearthian Radio Frequency" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -241,6 +248,9 @@ public static class ItemNames
 
         // Astral Codec frequency items
         { "Astral Codec", Item.FrequencyAstralCodec },
+
+        // Fret's Quest frequency items
+        { "Hearthian Radio", Item.FrequencyHearthianRadio },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 
