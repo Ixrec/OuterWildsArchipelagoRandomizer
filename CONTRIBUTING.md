@@ -1,6 +1,6 @@
 ## Contribution Policy
 
-Genearally speaking, contributions are welcome. But since there's always the possibility I'd end up rejecting a change, please talk to me if you're unsure before investing significant effort.
+Contributions are welcome. But randomizers do involve a lot of interdependent parts, so there's always the possibility I'd have to reject a change that doesn't fit well with the rest of the project, so if you're not sure please talk to me about your change before investing significant effort.
 
 ### Bugfixes
 
@@ -16,7 +16,7 @@ Most [open issues](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/issu
 
 ## Story Mod Integrations
 
-This is the specific kind of contribution I've gone out of my way to make as easy as possible, since more high-quality Outer Wilds story mods keep coming out and most of them should need little to no "custom" code to integrate.
+This is the specific kind of contribution I've tried to make as easy as possible, since more high-quality Outer Wilds story mods keep coming out and most of them should need little to no "custom" code to integrate.
 
 First, if you haven't already, actually play the randomizer at least once. You should have a solid grasp on the concepts of an "Archipelago item", an "Archipelago location" and "logic" before continuing, as well as the randomizer's existing items so you can write logic rules using them. Most of the work to integrate a new story mod is filling in a bunch of metadata for each AP location in that mod.
 
@@ -91,7 +91,7 @@ If all of this makes sense so far, then "just" open two similar pull requests fo
 - AP item names, AP location names, AP options and option values should **avoid all Outer Wilds spoilers** because they can be seen and will be discussed by non-Outer Wilds players.
   - Consider the location name `"QM: Explore the Sixth Location"`. A clearer name might be `"QM: Meet Solanum"`, but that's a spoiler.
   - For the "option names and values" part, consider `goal`. The values are e.g. `song_of_five` and `song_of_the_nomai` to avoid spoilers about Solanum or the Prisoner. But the *descriptions* of those values do mention Solanum and the Prisoner.
-- AP option *descriptions* should **avoid story mod spoilers** because they will be read only by Outer Wilds randomizer players, by that includes OW players who haven't played any story mods.
+- AP option *descriptions* should **avoid story mod spoilers** because they will be read only by Outer Wilds randomizer players, but that includes OW players who haven't played any story mods.
   - Consider the `enable_ac_mod` description. I do have to document that it's compatible with `randomize_warp_platforms`, but I avoid mentioning *why* Astral Codec cares about warp platforms.
 - In-game tracker descriptions should **use spoilers liberally** because they will only be seen by players who opted into that content (DLC or story mod), and thus should have already played it unrandomized. Their main purpose is to remind a veteran player about details they've likely forgotten, so they shouldn't mince words.
   - Taking the Sixth Location example from before: that location's tracker descriptions make it clear you're supposed to talk to someone to get this AP location. And if logsanity is on, the descriptions for the other Sixth Location logs even tell you which symbols to combine to get each log fact from her.
