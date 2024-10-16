@@ -28,12 +28,12 @@
 
   {
     "locationModID": "SLF__RIM_RECORDER",
-    "description": "Translate the text wheel next to Rim's Radio in a random crater on Attlerock.",
+    "description": "Translate the text wheel next to Rim's Radio in a crater on Attlerock near the old Hearthian shipwreck.",
     "thumbnail": "RIM_CAMP"
   },
   {
     "locationModID": "SLF__BRIDGE_RECORDER",
-    "description": "Translate the text wheel next to Bridge's Radio on Brittle Hollow's Northern Glacier.",
+    "description": "Translate the text wheel next to Bridge's Radio on Brittle Hollow's Northern Glacier, on the edge opposite the warp platform.",
     "thumbnail": "BRIDGE_CAMP"
   },
   {

@@ -6,12 +6,12 @@
   },
   {
     "locationModID": "FQ_SIGNAL_HR_RIM",
-    "description": "Scan Rim's Radio in a random crater on Attlerock.",
+    "description": "Scan Rim's Radio in a crater on Attlerock near the old Hearthian shipwreck.",
     "thumbnail": "RIM_CAMP"
   },
   {
     "locationModID": "FQ_SIGNAL_HR_BRIDGE",
-    "description": "Scan Bridge's Radio on Brittle Hollow's Northern Glacier.",
+    "description": "Scan Bridge's Radio on Brittle Hollow's Northern Glacier, on the edge opposite the warp platform.",
     "thumbnail": "BRIDGE_CAMP"
   },
   {
