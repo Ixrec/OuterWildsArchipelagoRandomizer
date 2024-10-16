@@ -305,7 +305,7 @@ internal class LocationTriggers
         }
         else
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Location {location} appears to be an 'event location', so not sending anything to the AP server");
+            APRandomizer.OWMLModConsole.WriteLine($"Location {location} is missing an AP id, so not sending anything to the AP server");
         }
     }
 

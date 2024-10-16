@@ -211,7 +211,7 @@ internal class Orbits
     {
         if (loadScene != OWScene.SolarSystem) return;
 
-        APRandomizer.OWMLModConsole.WriteLine($"resetting oplcDebrisSwitched to false, was {oplcDebrisSwitched}");
+        //APRandomizer.OWMLModConsole.WriteLine($"resetting oplcDebrisSwitched to false, was {oplcDebrisSwitched}");
         oplcDebrisSwitched = false;
     }
 
@@ -243,7 +243,7 @@ internal class Orbits
                 }
 
                 oplcDebrisSwitched = true;
-                APRandomizer.OWMLModConsole.WriteLine($"OrbitalProbeLaunchController_FixedUpdate_Postfix switched from fake OPC debris to real OPC debris because the vanilla code did not");
+                //APRandomizer.OWMLModConsole.WriteLine($"OrbitalProbeLaunchController_FixedUpdate_Postfix switched from fake OPC debris to real OPC debris because the vanilla code did not");
             }
         }
     }

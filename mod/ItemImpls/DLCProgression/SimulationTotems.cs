@@ -86,7 +86,7 @@ internal class SimulationTotems
 
     private static void ApplyTotemPatchFlag(bool hasTotemPatch)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"ApplyTotemPatchFlag {hasTotemPatch} for {projectorIRs.Count} IRs");
+        //APRandomizer.OWMLModConsole.WriteLine($"ApplyTotemPatchFlag {hasTotemPatch} for {projectorIRs.Count} IRs");
         foreach (var ir in projectorIRs)
             ApplyTotemPatchFlagToIR(hasTotemPatch, ir);
     }

@@ -94,7 +94,7 @@ public static class Coordinates
     {
         logManager = __instance;
 
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates", OWML.Common.MessageType.Debug);
+        //APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates");
     }
 
     // thestrangepie and I have both experienced a rare, unreproducible native crash leaving no OWML logs when acquiring the Coordinates item.
@@ -111,7 +111,7 @@ public static class Coordinates
     {
         if (correctCoordinates == null) return;
 
-        APRandomizer.OWMLModConsole.WriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
+        //APRandomizer.OWMLModConsole.WriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
 
         if (logManager != null)
         {

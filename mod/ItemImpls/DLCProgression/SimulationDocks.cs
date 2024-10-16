@@ -36,7 +36,7 @@ internal class SimulationDocks
     {
         if (_hasDocksPatch)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"DreamWorldController_EnterDreamWorld calling ApplyDockPatches()");
+            //APRandomizer.OWMLModConsole.WriteLine($"DreamWorldController_EnterDreamWorld calling ApplyDockPatches()");
             ApplyDockPatches();
         }
     }

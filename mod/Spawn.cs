@@ -39,7 +39,7 @@ internal class Spawn
 
         if (spawnChoice != SpawnChoice.Vanilla)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"Spawn::OnCompleteSceneLoad() ensuring that the time loop has started and the player will spawn in their suit");
+            //APRandomizer.OWMLModConsole.WriteLine($"Spawn::OnCompleteSceneLoad() ensuring that the time loop has started and the player will spawn in their suit");
 
             spawnInSuitNextUpdate = true;
 
@@ -80,7 +80,7 @@ internal class Spawn
     {
         if (spawnInSuitNextUpdate)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"executing instant SuitUp() due to spawnInSuitNextUpdate");
+            //APRandomizer.OWMLModConsole.WriteLine($"executing instant SuitUp() due to spawnInSuitNextUpdate");
             Locator.GetPlayerSuit().SuitUp(isTrainingSuit: false, instantSuitUp: true, putOnHelmet: true);
             spawnInSuitNextUpdate = false;
 
@@ -94,7 +94,7 @@ internal class Spawn
     {
         if (spawnInSuitNextUpdate)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"skipping AlignPlayerWithForce::OnSuitUp() call so the player wakes up facing the sky despite wearing the spacesuit");
+            //APRandomizer.OWMLModConsole.WriteLine($"skipping AlignPlayerWithForce::OnSuitUp() call so the player wakes up facing the sky despite wearing the spacesuit");
             return false;
         }
         //APRandomizer.OWMLModConsole.WriteLine($"normal AlignPlayerWithForce::OnSuitUp() call");
@@ -210,7 +210,7 @@ internal class Spawn
     {
         if (spawnChoice != SpawnChoice.Vanilla && spawnChoice != SpawnChoice.TimberHearth)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"VillageMusicVolume_Awake_Postfix() calling this.Deactivate() since we aren't spawning on TH");
+            //APRandomizer.OWMLModConsole.WriteLine($"VillageMusicVolume_Awake_Postfix() calling this.Deactivate() since we aren't spawning on TH");
             __instance.Deactivate();
         }
     }

@@ -36,7 +36,7 @@ internal class Spacesuit
     // This is public so that it can also be called from Spawn.cs when we spawn already in our spacesuit
     public static void SetSpacesuitVisible(bool spacesuitVisible)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) called");
+        //APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) called");
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship != null)
         {

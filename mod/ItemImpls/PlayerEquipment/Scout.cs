@@ -27,7 +27,7 @@ internal class Scout
     {
         if (mode == ToolMode.Probe && !hasScout)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"deactivating Scout model in player launcher since they don't have the Scout item yet");
+            //APRandomizer.OWMLModConsole.WriteLine($"deactivating Scout model in player launcher since they don't have the Scout item yet");
             getScoutInPlayerLauncher()?.SetActive(false);
         }
     }
@@ -47,7 +47,7 @@ internal class Scout
     {
         if (!hasScout)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"putting the Scout Launcher in photo mode since we don't have the Scout yet");
+            //APRandomizer.OWMLModConsole.WriteLine($"putting the Scout Launcher in photo mode since we don't have the Scout yet");
             __instance._photoMode = true;
         }
     }

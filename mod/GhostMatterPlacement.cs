@@ -32,7 +32,7 @@ internal class GhostMatterPlacement
         var changeCometTunnelGM = prng.Next(0, 2);
         if (changeCometTunnelGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet tunnel");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet tunnel");
 
             var cometLeftTunnelPSR = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Effects_CometInterior/Effects_GM_AuroraWisps"); // no number
             var cometLeftTunnelDMV = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Interactables_CometInterior/DarkMatterVolume"); // no number
@@ -44,7 +44,7 @@ internal class GhostMatterPlacement
         var changeCometSlalomFirstGateGM = prng.Next(0, 2);
         if (changeCometSlalomFirstGateGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet slalom first gate");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet slalom first gate");
 
             var cometSlalomFirstLeftPSR = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Effects_CometInterior/Effects_GM_AuroraWisps (6)");
             var cometSlalomFirstLeftDMV = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Interactables_CometInterior/DarkMatter_KillVolumes/DarkMatterVolume (3)");
@@ -57,7 +57,7 @@ internal class GhostMatterPlacement
         var changeCometSlalomSecondGateGM = prng.Next(0, 2);
         if (changeCometSlalomSecondGateGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet slalom second gate");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing comet slalom second gate");
 
             var cometSlalomSecondRightPSR = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Effects_CometInterior/Effects_GM_AuroraWisps (5)");
             var cometSlalomSecondRightDMV = GameObject.Find("Comet_Body/Sector_CO/Sector_CometInterior/Interactables_CometInterior/DarkMatter_KillVolumes/DarkMatterVolume (5)");
@@ -70,7 +70,7 @@ internal class GhostMatterPlacement
         var changeBrambleIslandRootGM = prng.Next(0, 2);
         if (changeBrambleIslandRootGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island roots");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island roots");
 
             var brambleIslandRightRootPSR = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(3).Find("Effects_GM_AuroraWisps");
             var brambleIslandRightRootDMV1 = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(3).GetChild(2);
@@ -84,7 +84,7 @@ internal class GhostMatterPlacement
         var changeBrambleIslandIceGM = prng.Next(0, 3);
         if (changeBrambleIslandIceGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island ice so the middle path is safe");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island ice so the middle path is safe");
 
             var brambleIslandMiddlePSR = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(4).Find("Effects_GM_AuroraWisps (2)");
             var brambleIslandMiddleDMV = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(4).GetChild(0);
@@ -95,7 +95,7 @@ internal class GhostMatterPlacement
         }
         else if (changeBrambleIslandIceGM == 2)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island ice so the right path is safe");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing bramble island ice so the right path is safe");
 
             var brambleIslandRightPSR = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(4).Find("Effects_GM_AuroraWisps (1)");
             var brambleIslandRightDMV = GameObject.Find("BrambleIsland_Body/Sector_BrambleIsland/Interactables_BrambleIsland").transform.GetChild(4).GetChild(1);
@@ -110,7 +110,7 @@ internal class GhostMatterPlacement
         var changeEyeShrineFloorGM = prng.Next(0, 2);
         if (changeEyeShrineFloorGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine floor GM up to the ceiling");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine floor GM up to the ceiling");
 
             var eyeShrineFloorPSR = eyeShrineGMParent.transform.Find("Effects_GM_AuroraWisps (1)");
             var eyeShrineFloorDMV = eyeShrineGMParent.transform.Find("DarkMatterVolume");
@@ -123,7 +123,7 @@ internal class GhostMatterPlacement
         var changeEyeShrineEntranceGM = prng.Next(0, 2);
         if (changeEyeShrineEntranceGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine entrance GM onto one of the ledges");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine entrance GM onto one of the ledges");
 
             var eyeShrineEntrancePSR = eyeShrineGMParent.transform.Find("Effects_GM_AuroraWisps (3)");
             var eyeShrineEntranceDMV = eyeShrineGMParent.transform.Find("DarkMatterVolume (2)");
@@ -134,7 +134,7 @@ internal class GhostMatterPlacement
         var changeEyeShrineBackCornerGM = prng.Next(0, 2);
         if (changeEyeShrineBackCornerGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine back corner GM onto one of the ledges");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() moving eye shrine back corner GM onto one of the ledges");
 
             var eyeShrineBackCornerPSR = eyeShrineGMParent.transform.Find("Effects_GM_AuroraWisps (2)");
             var eyeShrineBackCornerDMV = eyeShrineGMParent.transform.Find("DarkMatterVolume (1)");
@@ -150,7 +150,7 @@ internal class GhostMatterPlacement
         var changeRLWorkshopGM = prng.Next(0, 2);
         if (changeRLWorkshopGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing river lowlands workshop");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing river lowlands workshop");
 
             var workshopEntranceDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone1/Interactables_Zone1/GhostMatter_Submergible/DarkMatterVolume (3)");
             var workshopEntrancePSR = workshopEntranceDMV.transform.Find("Effects_GM_AuroraWisps (1)");
@@ -167,7 +167,7 @@ internal class GhostMatterPlacement
         var changeTemplePathFirstTreeGM = prng.Next(0, 2);
         if (changeTemplePathFirstTreeGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing first tree on path to Abandoned Temple");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing first tree on path to Abandoned Temple");
 
             var firstTreeDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/DarkMatterVolume"); // no number
             var firstTreePSR = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/Effects_GM_AuroraWisps (1)");
@@ -180,7 +180,7 @@ internal class GhostMatterPlacement
         var changeTemplePathSecondTreeGM = prng.Next(0, 2);
         if (changeTemplePathSecondTreeGM == 1)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing second tree on path to Abandoned Temple");
+            //APRandomizer.OWMLModConsole.WriteLine($"RandomlyEditGhostMatterPlacement() changing second tree on path to Abandoned Temple");
 
             var secondTreeDMV = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/DarkMatterVolume (1)");
             var secondTreePSR = GameObject.Find("RingWorld_Body/Sector_RingInterior/Sector_Zone3/Interactables_Zone3/GhostMatter_CanyonPath/Effects_GM_AuroraWisps (2)");
