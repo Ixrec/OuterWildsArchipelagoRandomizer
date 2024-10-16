@@ -417,6 +417,10 @@ public class Logic
     {
         if (connection.category == null)
             return true;
+        if (connection.category == "dlc")
+            return APRandomizer.SlotEnabledEotEDLC();
+        if (connection.category == "base")
+            return !APRandomizer.SlotEnabledDLCOnly();
 
         var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(connection.category, out var mod);
         if (!found)
