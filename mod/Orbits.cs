@@ -27,6 +27,16 @@ internal class Orbits
 
     public static void ApplySlotData(object planetOrderSlotData, object orbitAnglesSlotData, object rotationAxesSlotData)
     {
+        PlanetOrder = null;
+        OrbitAngles = null;
+        RotationAxes = null;
+
+        ApplyOrbitLanesAndAngles(planetOrderSlotData, orbitAnglesSlotData);
+        ApplyPlanetRotationAxes(rotationAxesSlotData);
+    }
+
+    public static void ApplyOrbitLanesAndAngles(object planetOrderSlotData, object orbitAnglesSlotData)
+    {
         if (planetOrderSlotData is string coordsString && coordsString == "vanilla")
             // leaving vanilla orbits unchanged
             return;
@@ -41,11 +51,6 @@ internal class Orbits
             APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla orbits unchanged because slot_data['orbit_angles'] was invalid: {orbitAnglesSlotData}", OWML.Common.MessageType.Error);
             return;
         }
-        if (rotationAxesSlotData is not JObject rotationAxesObject)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla orbits unchanged because slot_data['rotation_axes'] was invalid: {rotationAxesSlotData}", OWML.Common.MessageType.Error);
-            return;
-        }
 
         PlanetOrder = new();
         foreach (JToken planetId in planetOrderArray)
@@ -54,6 +59,21 @@ internal class Orbits
         OrbitAngles = new();
         foreach (var (objectId, angleToken) in orbitAnglesObject)
             OrbitAngles[objectId] = (long)angleToken;
+    }
+
+    public static void ApplyPlanetRotationAxes(object rotationAxesSlotData)
+    {
+        if (rotationAxesSlotData is string rotationString && rotationString == "vanilla")
+        {
+            // leaving vanilla rotations unchanged
+            return;
+        }
+
+        if (rotationAxesSlotData is not JObject rotationAxesObject)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Leaving vanilla planet rotations unchanged because slot_data['rotation_axes'] was invalid: {rotationAxesSlotData}", OWML.Common.MessageType.Error);
+            return;
+        }
 
         RotationAxes = new();
         foreach (var (objectId, direction) in rotationAxesObject)
@@ -119,18 +139,19 @@ internal class Orbits
             { "BrittleHollow_Body", "BH" },
         };
 
-        if (rotatingGONameToSlotDataId.TryGetValue(__instance.name, out var rotatingId))
-            if (RotationAxes.TryGetValue(rotatingId, out var axis))
-            {
-                //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
-                __instance._rotationAxis = axis;
+        if (RotationAxes != null)
+            if (rotatingGONameToSlotDataId.TryGetValue(__instance.name, out var rotatingId))
+                if (RotationAxes.TryGetValue(rotatingId, out var axis))
+                {
+                    //APRandomizer.OWMLModConsole.WriteLine($"setting {__instance}'s InitialMotion._rotationAxis to {axis}");
+                    __instance._rotationAxis = axis;
 
-                // Inside the ATP, the cables to the warp core are part of AT, but the ring you walk on is a separate TimeLoopRing object.
-                // If only AT's rotation is changed, this allows the cables to crush the player to death anywhere in the ATP, including
-                // on the warp platform as they arrive. So we want them to remain at least a little in sync, to keep the danger reasonable.
-                if (rotatingId == "AT")
-                    GameObject.Find("TimeLoopRing_Body").GetComponent<InitialMotion>()._rotationAxis = -axis;
-            }
+                    // Inside the ATP, the cables to the warp core are part of AT, but the ring you walk on is a separate TimeLoopRing object.
+                    // If only AT's rotation is changed, this allows the cables to crush the player to death anywhere in the ATP, including
+                    // on the warp platform as they arrive. So we want them to remain at least a little in sync, to keep the danger reasonable.
+                    if (rotatingId == "AT")
+                        GameObject.Find("TimeLoopRing_Body").GetComponent<InitialMotion>()._rotationAxis = -axis;
+                }
 
         // arbitrarily choose one Awake() call to do planet order changes in
         if (__instance.name == "TimberHearth_Body")
