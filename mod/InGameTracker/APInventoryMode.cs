@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
+using static NomaiWarpPlatform;
+
 // Tuples: name, green arrow, green exclamation point, orange asterisk
 using InventoryDisplayItem = Tuple<string, bool, bool, bool>;
 
@@ -268,6 +270,10 @@ public class APInventoryMode : ShipLogMode
             item = Item.Translator;
 
         string itemID = item.ToString();
+
+        if (ItemNames.IsStoryModFrequency(item))
+            itemID = "StoryModFrequencies";
+
         TrackerManager tracker = APRandomizer.Tracker;
         if (ItemNames.itemToSignal.ContainsKey(item))
         {
