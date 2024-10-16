@@ -22,6 +22,8 @@ First, if you haven't already, actually play the randomizer at least once. You s
 
 Second, if you haven't already, make sure you can [run the mod from source](#running-from-source).
 
+### Scope of a "Typical" Story Mod Integration
+
 The randomizer mod and these docs are designed to make it as easy as possible to integrate new story mods, provided the items and locations you want them to have fit into these well-understood categories:
 - AP locations for ship log facts
 - AP items for Signalscope frequencies
@@ -36,9 +38,33 @@ Less common but still easy to do (because LocationTrigger.cs already has code fo
 
 Anything else would be considered a "custom" item or location. Custom items/locations are certainly possible, but I can't offer as much guidance on them here, and they may not be worth the effort, especially for a first draft/prototype of a new story mod integration. It's likely worth talking to me in person if you're unsure whether you need or want a custom item/location, or unsure how to implement one.
 
+### Default vs Logsanity Locations
+
 The one other randomizer feature you need to be familiar with now is the `logsanity` option, which adds locations for every non-rumor ship log fact. Many randomizers have options to change how many locations are produced, and this is the main one for Outer Wilds. The locations you normally get for the base game and (if enabled) DLC and story mods even when `logsanity` is `false` are called "default locations". Importantly, a default location might be triggered by anything. The locations that get added when `logsanity` is `true` are naturally called "logsanity locations", but these have a strict one-to-one mapping to ship log fact ids (as you'll soon see in the code) and can't be triggerd by anything else.
 
 It's entirely up to you what the default locations for your story mod should be, but the goal should be to choose locations that will have a variety of logic rules / blocking items, so that randomizing your story mod multiple times won't make players go through the content the same way each time. The logsanity locations should cover all of that mod's ship log facts, but even that isn't a strict requirement and you may skip some (for example, the HN2 integration ignores the bonus ship logs for playing HN1 first). You could even choose not to offer any logsanity locations at first. As a general rule of thumb, a story mod's default location count should be roughly half of its logsanity location / ship log fact count.
+
+### The Two Parts of an Archipelago Integration
+
+If you're the maintainer of the story mod you want to integrate, you may be wondering why you have to edit the randomizer's code, instead of the randomizer "talking to the story mod" through `.TryGetModApi<IMyOWMod>("me.MyOWMod")`. The short answer is that no mod-to-mod communication can help with item/location metadata, because that metadata is needed *at generation time*, i.e. before anyone is running Outer Wilds or any of its mods. This separation of generation time from runtime is one reason the Archipelago system can scale to hundreds of games and thousands of slots/players in a single multiworld. That said, a mod interface may still be helpful for custom item/location implementations.
+
+The Outer Wilds-specific code that runs during multiworld generation is in the `outer_wilds.apworld` file, which is just a glorified ZIP archive of some Python scripts. What you need to know is that the .apworld code takes the player's .yaml options and decides which items and locations that player's slot will have in the final multiworld (among other things like random orbits, random warps, etc).
+
+The other part of an AP integration is the "AP client", which is what connects to the AP server hosting the multiworld when the player actually plays their randomized game. For Outer Wilds, the AP client is simply part of the randomizer mod, but for other AP games it may be a separate program for various technical reasons. The AP client is primarily responsible for updating the game state whenever an AP item is received, and for notifying the AP server whenever the player checks an AP location in the game.
+
+With all of that in mind, it should be no surprise that a story mod integration requires two pull requests: One for [the repository with the .apworld code](https://github.com/Ixrec/Archipelago) (which for unrelated reasons is a fork of the main AP repo), and another for [the repository with the Ixrec.ArchipelagoRandomizer mod code](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/pull/30).
+
+If you're interested in Archipelago integrations in general, check out [the Archipelago documentation on adding new games](https://github.com/ArchipelagoMW/Archipelago/blob/main/docs/adding%20games.md) and the many other docs it links to. But you won't need any of that for just adding a new story mod to this OW randomizer.
+
+### shared_static_logic
+
+The last thing I want to highlight before showing you example PRs is the `shared_static_logic` folder inside the .apworld, and the `items.jsonc`, `locations.jsonc` and `connections.jsonc` files in it. If you haven't seen "jsonc" before, that stands for "JSON with Comments".
+
+These files are "shared" by both the .apworld and the mod. Both codebases deserialize them at runtime before using their data. The source of truth is the .apworld repo, but the mod repo uses a git submodule to make it easy to pull the latest copies of these files. Unfortunately getting submodules to work with branches is more trouble than it's worth, so for dev testing I suggest simply copy-pasting these .jsonc files from one local clone to the submodule in the other.
+
+These files are "static" in the sense that the data in them does not depend on player options, so it will always be the same if it gets used at all. Most of the "dynamic" logic in the Outer Wilds randomizer is for alternate spawns and warp randomization, which is why you won't see those connections in `connections.jsonc`.
+
+### Example Pull Requests for Fret's Quest Integration
 
 Conceptually, each AP location needs:
 - an id number
@@ -54,13 +80,11 @@ Similarly, each frequency AP item needs:
 - to be in the logic for scanning the corresponding signal locations
 - entries in the mod's frequency/signal lists/maps
 
-To demonstrate exactly how this is all done in practice, study these two example pull requests for integrating the Fret's Quest story mod:
-- TODO
-- TODO
+These two pull requests show how all of that works in practice for the Fret's Quest story mod:
+- https://github.com/Ixrec/Archipelago/pull/4 for the .apworld part
+- https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/pull/30 for the mod part
 
 If all of this makes sense so far, then "just" open two similar pull requests for your mod, and I'll take a look at them.
-
-If you're the maintainer of the story mod you want to integrate, you may be wondering why you have to edit the randomizer's code, instead of the randomizer "talking to the story mod" through `.TryGetModApi<IMyOWMod>("me.MyOWMod")`. The short answer is that no mod-to-mod communication can help with item/location metadata, because that metadata is needed *at generation time*, i.e. before anyone is running Outer Wilds or any of its mods. This separation of generation time from runtime is one reason the Archipelago system can scale to hundreds of games and thousands of slots/players in a single multiworld. That said, a mod interface may still be helpful for custom item/location implementations.
 
 ### Spoiler Policy
 
