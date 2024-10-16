@@ -109,7 +109,14 @@ Outer Wilds:
     # Randomizes:
     # - The order of the five planets (the Hourglass Twins as a whole, Timber Hearth, Brittle Hollow, Giant's Deep, Dark Bramble), i.e. which ones are closer or farther from the sun
     # - The orbit angles of the five planets, as well as four satellites (Sun Station, Attlerock, Hollow's Lantern, and the Orbital Probe Cannon)
-    # - The axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow. This often causes the Hourglass Twins' sand pillar to pass through different areas, or structures inside the ATP to move differently.
+    'false': 0
+    'true': 50
+
+  randomize_rotations:
+    # Randomizes the axes of rotation for Ember Twin, Ash Twin, Timber Hearth and Brittle Hollow.
+    # 
+    # This often causes the Hourglass Twins' sand pillar to pass through different areas,
+    # and structures inside the ATP to move differently (becoming a hazard for the player).
     'false': 0
     'true': 50
 
@@ -200,5 +207,17 @@ Outer Wilds:
     # If logsanity is enabled, that will add another 39 locations, for a total of 60 AC locations.
     #
     # If randomize_warp_platforms is true, this option will ensure there's a warp from the Hourglass Twins to Timber Hearth.
+    'false': 50
+    'true': 0
+
+  enable_hn2_mod:
+    # Incorporates Hearth's Neighbor 2: Magistarium story mod content into the randomizer with an additional 4 items and 18 locations.
+    # If logsanity is enabled, that will add another 30 locations, for a total of 48 HN2 locations.
+    'false': 50
+    'true': 0
+
+  enable_fq_mod:
+    # Incorporates Fret's Quest story mod content into the randomizer with an additional 1 item and 18 locations.
+    # If logsanity is enabled, that will add another 38 locations, for a total of 56 FQ locations.
     'false': 50
     'true': 0
