@@ -91,6 +91,7 @@ internal class Hints
         // is the only option affecting which locations are relevant.
         var prefixes = characterToLocationPrefixes[character];
         var relevantLocations = LocationNames.locationNames.Keys
+            .Where(loc => LocationNames.locationToArchipelagoId.ContainsKey(loc))
             .Where(loc => prefixes.Any(p => LocationNames.locationNames[loc].StartsWith(p)));
         if (!APRandomizer.SlotEnabledLogsanity())
             relevantLocations = relevantLocations.Where(loc => !loc.ToString().StartsWith("SLF__"));

@@ -39,7 +39,8 @@ namespace ArchipelagoRandomizer
             ScoutedLocations = new();
             List<long> locationIDs = new List<long>();
             foreach (Location loc in LocationNames.locationNames.Keys)
-                locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
+                if (LocationNames.locationToArchipelagoId.ContainsKey(loc))
+                    locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
 
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
             var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
