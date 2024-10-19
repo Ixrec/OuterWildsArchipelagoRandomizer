@@ -42,13 +42,37 @@ internal class Scout
         return true;
     }
 
+    // Many OW players never realized "photo mode" exists, so default to that when they don't have the Scout
     [HarmonyPostfix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.Start))]
     public static void ProbeLauncher_Start_Postfix(ProbeLauncher __instance)
     {
         if (!hasScout)
         {
-            //APRandomizer.OWMLModConsole.WriteLine($"putting the Scout Launcher in photo mode since we don't have the Scout yet");
+            APRandomizer.OWMLModConsole.WriteLine($"putting the Scout Launcher in photo mode since we don't have the Scout yet");
             __instance._photoMode = true;
+        }
+    }
+
+    // The above patch also causes "ship photo mode" to be a thing, with inconsistent UI prompts, only until you have Scout.
+    // So these two patches allow the ship to properly toggle between photo and launch modes just like you can on foot
+    // even after you get Scout, effectively promoting ship photo mode to an intended quality-of-life feature.
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.AllowPhotoMode))]
+    public static bool ProbeLauncher_AllowPhotoMode(ProbeLauncher __instance, ref bool __result)
+    {
+        __result = true;
+        return false;
+    }
+    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.UpdatePreLaunch))]
+    public static void ProbeLauncher_UpdatePreLaunch(ProbeLauncher __instance)
+    {
+        // copy-pasted from vanilla impl, with the first == changed to !=, so this is effectively:
+        // "if the vanilla UpdatePreLaunch is about to ignore a tool left/right press only because
+        // this is the ship's scout launcher, then don't ignore it"
+        if (__instance._name != ProbeLauncher.Name.Player && (OWInput.IsNewlyPressed(InputLibrary.toolOptionLeft, InputMode.All) || OWInput.IsNewlyPressed(InputLibrary.toolOptionRight, InputMode.All)))
+        {
+            __instance._photoMode = !__instance._photoMode;
+            __instance._effects.PlayChangeModeClip();
+            return;
         }
     }
 
