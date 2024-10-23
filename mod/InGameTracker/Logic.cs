@@ -520,6 +520,12 @@ public class Logic
         throw new ArgumentException($"CanAccess called with invalid TrackerRequirement: {requirement}");
     }
 
+    public IEnumerable<string> GetAllRegionsInRequirements(IEnumerable<TrackerRequirement> requires)
+    {
+        return requires.Where(req => req.region != null).Select(req => req.region)
+            .Concat(requires.Where(req => req.anyOf != null).SelectMany(req => GetAllRegionsInRequirements(req.anyOf)));
+    }
+
     public List<string> GetLogicDisplayStrings(TrackerLocationData data, bool includeLocationName = false)
     {
         // When recursing "up" through the regions needed to reach a certain location, these are
@@ -539,7 +545,7 @@ public class Logic
         ];
 
         List<string> unexplainedRegions = new List<string> { data.region };
-        unexplainedRegions.AddRange(data.requires.Where(req => req.region != null).Select(req => req.region));
+        unexplainedRegions.AddRange(GetAllRegionsInRequirements(data.requires));
 
         Dictionary<string, string> regionNameToLogicDisplayString = new();
 
