@@ -153,7 +153,7 @@
 
   {
     "locationModID": "SLF__codex_interloper_recorder_warning",
-    "description": "In the Interloper core, translate the Nomai text wheel left by the Astral Codec systems (not the one left by the Nomai).",
+    "description": "In the Interloper core, translate the Nomai text wheel left by the Astral Codec systems (not the one left by the Nomai). This requires passing through the Lingering Chime tesseract to make the GM text wheel visible.",
     "thumbnail": "codex_interloper"
   },
 
