@@ -150,7 +150,7 @@ internal class Hints
             other.RemoveAt(index);
         }
 
-        TextIDToDisplayText[textId1] = $"The best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[stuffToHint[0].Key]}'.";
+        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[stuffToHint[0].Key]}'.";
         APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[stuffToHint[0].Key]]);
 
         var flags = stuffToHint[1].Value.Flags;
