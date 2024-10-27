@@ -69,12 +69,12 @@
 
   {
     "locationModID": "HN2_LIE",
-    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the rightmost Memory Cube on the top shelf.",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity. Then talk to the rightmost Memory Cube on the top shelf.",
     "thumbnail": "HN2_MG"
   },
   {
     "locationModID": "HN2_HATCH",
-    "description": "Use the vent from Roja's Room to enter the Magister's Room. Then talk to the Memory Cube on the far side to close the hatch.",
+    "description": "Use the vent from Roja's Room to enter the Magister's Room. If your jetpack boost is low, you may have to wait for the Magistarium to switch to low gravity. Then talk to the Memory Cube on the far side to close the hatch.",
     "thumbnail": "HN2_MG"
   },
 
