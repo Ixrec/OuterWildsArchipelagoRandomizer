@@ -11,8 +11,9 @@ Outer Wilds:
   # In addition to the "Everything" and "Everywhere" name groups that all AP games come with,
   # the following name groups are provided by Outer Wilds:
 
-  # item name groups: "progression", "useful", "filler", "trap", "Frequencies", "Signals", "Tools",
-  # "Base Progression", "DLC Progression", "Quantum Rules", "Patches", and dozens of single-item aliases
+  # item name groups: "progression", "useful", "filler", "trap", "Frequencies", "Signals", "Ship Upgrades",
+  # "Translators", "Tools", "Base Progression", "DLC Progression", "Quantum Rules", "Patches",
+  # and dozens of single-item aliases
   # location name groups: "Frequencies", "Signals", "Ship Logs", "Ember Twin", "Ash Twin", "Hourglass Twins",
   # "Timber Hearth", "Attlerock", "Brittle Hollow", "Giant's Deep", "Dark Bramble", "Quantum Moon",
   # "Interloper", "Sun Station", "WHS", "The Stranger", "Dreamworld"
