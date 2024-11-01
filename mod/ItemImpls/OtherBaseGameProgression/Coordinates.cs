@@ -58,13 +58,14 @@ public static class Coordinates
     [HarmonyPrefix, HarmonyPatch(typeof(OrbitalCannonHologramProjector), nameof(OrbitalCannonHologramProjector.OnSlotActivated))]
     public static void OrbitalCannonHologramProjector_OnSlotActivated_Prefix(OrbitalCannonHologramProjector __instance, NomaiInterfaceSlot slot)
     {
-        if (correctCoordinates == null) return;
-
         var activeIndex = __instance.GetSlotIndex(slot);
         var hologram = __instance._holograms[activeIndex];
         if (hologram.name == "Hologram_EyeCoordinates")
         {
             LocationTriggers.CheckLocation(Location.GD_COORDINATES);
+
+            // If coordinates aren't randomized, then checking the location is all we want to do
+            if (correctCoordinates == null) return;
 
             var hologramMeshGO = hologram.GetComponentInChildren<MeshRenderer>().gameObject;
 
