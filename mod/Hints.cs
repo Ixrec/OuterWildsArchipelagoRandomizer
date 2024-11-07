@@ -3,6 +3,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ArchipelagoRandomizer;
 
@@ -150,8 +151,16 @@ internal class Hints
             other.RemoveAt(index);
         }
 
-        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[stuffToHint[0].Key]}'.";
-        APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[stuffToHint[0].Key]]);
+        var apIdToScout = LocationNames.locationToArchipelagoId[stuffToHint[0].Key];
+        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{apIdToScout}'.";
+
+        var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [apIdToScout]));
+        if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(2)))
+        {
+            var msg = $"AP server timed out when we tried to tell it about your hint for location '{LocationNames.locationNames[stuffToHint[0].Key]}'. Did the connection go down?";
+            APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
+            APRandomizer.InGameAPConsole.AddText($"<color='orange'>{msg}</color>");
+        }
 
         var flags = stuffToHint[1].Value.Flags;
         if (!flags.HasFlag(ItemFlags.Advancement) && !flags.HasFlag(ItemFlags.NeverExclude))
