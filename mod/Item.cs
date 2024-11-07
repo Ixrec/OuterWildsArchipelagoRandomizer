@@ -284,6 +284,12 @@ public static class ItemNames
         { Item.LaunchCodes,          "HAS_AP_ITEM_LAUNCH_CODES" },
         { Item.Spacesuit,            "HAS_AP_ITEM_SPACESUIT" },
         { Item.Translator,           "HAS_AP_ITEM_TRANSLATOR" },
+        { Item.TranslatorHGT,        "HAS_AP_ITEM_TRANSLATOR_HOURGLASS_TWINS" },
+        { Item.TranslatorTH,         "HAS_AP_ITEM_TRANSLATOR_TIMBER_HEARTH" },
+        { Item.TranslatorBH,         "HAS_AP_ITEM_TRANSLATOR_BRITTLE_HOLLOW" },
+        { Item.TranslatorGD,         "HAS_AP_ITEM_TRANSLATOR_GIANTS_DEEP" },
+        { Item.TranslatorDB,         "HAS_AP_ITEM_TRANSLATOR_DARK_BRAMBLE" },
+        { Item.TranslatorOther,      "HAS_AP_ITEM_TRANSLATOR_OTHER" },
         { Item.Signalscope,          "HAS_AP_ITEM_SIGNALSCOPE" },
         { Item.Scout,                "HAS_AP_ITEM_SCOUT" },
         { Item.CameraGM,             "HAS_AP_ITEM_GHOST_MATTER_WAVELENGTH" },
@@ -313,6 +319,16 @@ public static class ItemNames
         { Item.LimboWarpPatch,       "HAS_AP_ITEM_RAFT_LIMBO_PATCH" },
         { Item.ProjectionRangePatch, "HAS_AP_ITEM_PROJECTION_RANGE_PATCH" },
         { Item.AlarmBypassPatch,     "HAS_AP_ITEM_ALARM_BYPASS_PATCH" },
+        // story mod progression items
+        { Item.FrequencyNeighborDistress,      "HAS_AP_ITEM_HN1_NEIGHBORS_DISTRESS_SIGNAL_FREQUENCY" },
+        { Item.FrequencyLavaCore,              "HAS_AP_ITEM_HN1_LAVA_CORE_SIGNALS_FREQUENCY" },
+        { Item.FrequencyGalacticCommunication, "HAS_AP_ITEM_HN1_GALACTIC_COMMUNICATION_FREQUENCY" },
+        { Item.FrequencyAstralCodec,           "HAS_AP_ITEM_AC_ASTRAL_CODEC_FREQUENCY" },
+        { Item.MemoryCubeInterface,            "HAS_AP_ITEM_HN2_MEMORY_CUBE_INTERFACE" },
+        { Item.MagistariumLibraryAccessCode,   "HAS_AP_ITEM_HN2_LIBRARY_ACCESS_CODE" },
+        { Item.MagistariumDormitoryAccessCode, "HAS_AP_ITEM_HN2_DORMITORY_ACCESS_CODE" },
+        { Item.MagistariumEngineAccessCode,    "HAS_AP_ITEM_HN2_ENGINE_ACCESS_CODE" },
+        { Item.FrequencyHearthianRadio,        "HAS_AP_ITEM_FQ_HEARTHIAN_RADIO_FREQUENCY" },
     };
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
