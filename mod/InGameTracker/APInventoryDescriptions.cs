@@ -277,15 +277,15 @@ public class APInventoryDescriptions
                     infos.Add("Normally none of these docks can be used without first using the corresponding green flame to unlock the dock. But this patch allows you to use any one Painting Code to reach all three areas.");
                     break;
                 case Item.LimboWarpPatch:
-                    infos.Add("After the Stranger's inhabitants discoverd they could fall below the simulation world by jumping off a raft, they developed a 'temporary' hack that simply kills anyone who tries it.");
+                    infos.Add("After the Stranger's inhabitants discovered they could fall below the simulation world by jumping off a raft, they developed a 'temporary' hack that simply kills anyone who tries it.");
                     infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to reach the center of Subterranean Lake.");
                     break;
                 case Item.ProjectionRangePatch:
-                    infos.Add("After the Stranger's inhabitants discoverd they could walk beyond the simulation artifact's projection radius, they developed a 'temporary' hack that simply teleports you back to the artifact if you get out of range.");
+                    infos.Add("After the Stranger's inhabitants discovered they could walk beyond the simulation artifact's projection radius, they developed a 'temporary' hack that simply teleports you back to the artifact if you get out of range.");
                     infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to see parts of the simulation hidden by the projection.");
                     break;
                 case Item.AlarmBypassPatch:
-                    infos.Add("After the Stranger's inhabitants discoverd the simulation's alarm bells don't work on the deceased, they developed a 'temporary' hack that simply refuses to import your brainwaves if no heartbeat is detected.");
+                    infos.Add("After the Stranger's inhabitants discovered the simulation's alarm bells don't work on the deceased, they developed a 'temporary' hack that simply refuses to import your brainwaves if no heartbeat is detected.");
                     infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to bypass alarm bells in the simulation.");
                     break;
                 default:
