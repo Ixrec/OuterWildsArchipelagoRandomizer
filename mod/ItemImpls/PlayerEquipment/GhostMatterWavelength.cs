@@ -78,7 +78,7 @@ internal class GhostMatterWavelength
     [HarmonyPostfix, HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.GetDisplayDangerMarker))]
     public static void HazardDetector_GetDisplayDangerMarker_Postfix(HazardDetector __instance, ref bool __result)
     {
-        if (__instance._activeVolumes.All(av => av is HazardVolume && (av as HazardVolume).GetHazardType() == HazardVolume.HazardType.DARKMATTER))
+        if (!hasGhostMatterKnowledge && __instance._activeVolumes.All(av => av is HazardVolume && (av as HazardVolume).GetHazardType() == HazardVolume.HazardType.DARKMATTER))
             __result = false;
     }
 
@@ -88,7 +88,7 @@ internal class GhostMatterWavelength
     {
         HazardVolume hazardVolume = eVolume as HazardVolume;
         HazardVolume.HazardType hazardType = hazardVolume.GetHazardType();
-        if (__instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
+        if (!hasGhostMatterKnowledge && __instance.GetName() == Detector.Name.Probe && hazardType == HazardVolume.HazardType.DARKMATTER)
             __instance._darkMatterEntryEffect = null;
     }
 
@@ -102,7 +102,7 @@ internal class GhostMatterWavelength
         // This prevents the scout from being added to the DMV's _trackedDetectors list,
         // which is what it uses to emit the trail of WillOWisp particles as an object
         // moves through ghost matter.
-        if (detector.GetName() == Detector.Name.Probe)
+        if (!hasGhostMatterKnowledge && detector.GetName() == Detector.Name.Probe)
             return false;
 
         return true;
