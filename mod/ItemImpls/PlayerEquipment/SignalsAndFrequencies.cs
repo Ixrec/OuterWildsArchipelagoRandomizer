@@ -350,6 +350,8 @@ internal class SignalsAndFrequencies
     // will not show up in the Signalscope's UI, and not make any sound when holding the Signalscope.
 
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.UpdateSignalStrength))]
+    [HarmonyPriority(Priority.Low)] // run this *after* the New Horizons patch for UpdateSignalStrength, because
+                                    // otherwise NH's special code for custom QM signals unhides the vanilla QM signal
     public static bool AudioSignal_UpdateSignalStrength_Prefix(AudioSignal __instance, Signalscope scope, float distToClosestScopeObstruction)
     {
         if (usableSignals.Contains(__instance.GetName().ToString()))
