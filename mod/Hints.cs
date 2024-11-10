@@ -31,7 +31,8 @@ internal class Hints
 
     private const string Placeholder = "HINT_NOT_YET_GENERATED";
 
-    private static Dictionary<string, string> TextIDToDisplayText = new Dictionary<string, string>
+    private static Dictionary<string, string> TextIDToDisplayText = InitialTextIDToDisplayText();
+    private static Dictionary<string, string> InitialTextIDToDisplayText() => new Dictionary<string, string>
     {
         { HintOptionTextId, "[Archipelago Hints] Where should I explore here?" },
         { "APRandomizer_Chert_HintsNode_TextPage1", Placeholder },
@@ -45,6 +46,13 @@ internal class Hints
         { "APRandomizer_Feldspar_HintsNode_TextPage1", Placeholder },
         { "APRandomizer_Feldspar_HintsNode_TextPage2", Placeholder },
     };
+
+    // Cache invalidation, so we don't mistakenly use one slot's hints on another slot
+    public static void OnCompleteSceneLoad()
+    {
+        TextIDToDisplayText = InitialTextIDToDisplayText();
+    }
+
     [HarmonyPrefix, HarmonyPatch(typeof(TextTranslation), nameof(TextTranslation.Translate))]
     public static bool TextTranslation_Translate(TextTranslation __instance, string key, ref string __result)
     {

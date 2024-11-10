@@ -458,6 +458,7 @@ public class APRandomizer : ModBehaviour
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
             Spawn.OnCompleteSceneLoad(scene, loadScene);
+            Hints.OnCompleteSceneLoad();
             // Hearth's Neighbor 2: Magistarium custom item impls
             MemoryCubeInterface.OnCompleteSceneLoad();
         };
