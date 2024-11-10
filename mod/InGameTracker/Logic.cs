@@ -395,7 +395,8 @@ public class Logic
 
         // Build region logic recursively from Menu region
         CanAccessRegion = new();
-        BuildRegionLogic("Menu");
+        PopulateCanAccessRegion("Menu");
+        IterateOnCanAccessRegion();
 
         // Determine location logic
         Dictionary<string, TrackerChecklistData> datas = GetLocationChecklist(TrackerCategory.All);
@@ -452,7 +453,7 @@ public class Logic
     /// Determines which regions you can access
     /// </summary>
     /// <param name="regionName"></param>
-    public void BuildRegionLogic(string regionName)
+    public void PopulateCanAccessRegion(string regionName)
     {
         if (!CanAccessRegion.ContainsKey(regionName)) CanAccessRegion.Add(regionName, true);
         TrackerRegionData region = TrackerRegions[regionName];
@@ -468,8 +469,42 @@ public class Logic
             if (CanAccessAll(connection.requires))
             {
                 CanAccessRegion[to] = true;
-                BuildRegionLogic(to);
+                PopulateCanAccessRegion(to);
             }
+        }
+    }
+
+    // This fixed point iteration is necessary because of "indirect connections",
+    // i.e. connection.requires containing a .region requirement
+    private void IterateOnCanAccessRegion()
+    {
+        HashSet<string> outdatedRegions = new HashSet<string>();
+        foreach (var (regionName, canAccess) in CanAccessRegion)
+        {
+            if (canAccess) continue;
+
+            TrackerRegionData region = TrackerRegions[regionName];
+            foreach (TrackerConnectionData connection in region.fromConnections)
+            {
+                if (!IsConnectionActive(connection))
+                    continue;
+
+                string from = connection.from;
+                if (CanAccessRegion[from] && CanAccessAll(connection.requires))
+                {
+                    outdatedRegions.Add(regionName);
+                    APRandomizer.OWMLModConsole.WriteLine($"IterateOnCanAccessRegion found {regionName} was reachable yet false, will iterate again");
+                }
+            }
+        }
+
+        if (outdatedRegions.Any())
+        {
+            foreach (var regionName in outdatedRegions)
+                CanAccessRegion[regionName] = true;
+
+            APRandomizer.OWMLModConsole.WriteLine($"IterateOnCanAccessRegion calling IterateOnCanAccessRegion()");
+            IterateOnCanAccessRegion();
         }
     }
 
