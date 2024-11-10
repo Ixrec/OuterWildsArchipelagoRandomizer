@@ -566,6 +566,9 @@ public class Logic
                 var otherRegionName = connection.from;
                 if (!regionNameToLogicDisplayString.ContainsKey(otherRegionName))
                     unexplainedRegions.Add(otherRegionName);
+                foreach (string region in GetAllRegionsInRequirements(connection.requires))
+                    if (!regionNameToLogicDisplayString.ContainsKey(region))
+                        unexplainedRegions.Add(region);
             }
         }
 
