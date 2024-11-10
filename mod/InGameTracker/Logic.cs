@@ -417,18 +417,35 @@ public class Logic
     {
         if (connection.category == null)
             return true;
-        if (connection.category == "dlc")
-            return APRandomizer.SlotEnabledEotEDLC();
-        if (connection.category == "base")
-            return !APRandomizer.SlotEnabledDLCOnly();
 
-        var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(connection.category, out var mod);
-        if (!found)
-            return false; // this is for a story mod we haven't integrated yet, so ignore it
+        // we have one 'x&y' category in connections.jsonc, but no 'x|y's, so here we only worry about & for now
+        HashSet<string> categories = new();
+        if (connection.category.Contains("&"))
+            foreach (var category in connection.category.Split('&'))
+                categories.Add(category);
+        else
+            categories.Add(connection.category);
 
-        var option = mod.slotDataOption;
-        bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
-        return modEnabled; // only use this connection (and its regions) if it was used when generating this slot
+        // only use this connection (and its regions) if all the relevant dlcs/story mods were enabled when generating this slot
+        bool allContentEnabled = true;
+        foreach (var category in categories)
+        {
+            if (category == "dlc")
+                allContentEnabled &= APRandomizer.SlotEnabledEotEDLC();
+            else if (connection.category == "base")
+                allContentEnabled &= !APRandomizer.SlotEnabledDLCOnly();
+            else {
+                var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(category, out var mod);
+                if (!found)
+                {
+                    APRandomizer.OWMLModConsole.WriteLine($"IsConnectionActive early returning false for {connection.from}->{connection.to} because {category} (in {connection.category}) was not recognized", OWML.Common.MessageType.Error);
+                    return false; // this is for a story mod we haven't integrated yet, so ignore it
+                }
+                var option = mod.slotDataOption;
+                allContentEnabled &= (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+            }
+        }
+        return allContentEnabled;
     }
 
     /// <summary>
