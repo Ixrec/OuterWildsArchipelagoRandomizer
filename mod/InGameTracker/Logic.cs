@@ -482,6 +482,7 @@ public class Logic
         foreach (var (regionName, canAccess) in CanAccessRegion)
         {
             if (canAccess) continue;
+            if (!TrackerRegions.ContainsKey(regionName)) continue;
 
             TrackerRegionData region = TrackerRegions[regionName];
             foreach (TrackerConnectionData connection in region.fromConnections)
@@ -490,7 +491,7 @@ public class Logic
                     continue;
 
                 string from = connection.from;
-                if (CanAccessRegion[from] && CanAccessAll(connection.requires))
+                if (CanAccessRegion.GetValueOrDefault(from, false) && CanAccessAll(connection.requires))
                 {
                     outdatedRegions.Add(regionName);
                     APRandomizer.OWMLModConsole.WriteLine($"IterateOnCanAccessRegion found {regionName} was reachable yet false, will iterate again");
