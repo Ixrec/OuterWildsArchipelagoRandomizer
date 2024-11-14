@@ -454,6 +454,7 @@ public class APRandomizer : ModBehaviour
             QuantumImaging.OnCompleteSceneLoad(scene, loadScene);
             Jellyfish.OnCompleteSceneLoad(scene, loadScene);
             GhostMatterWavelength.OnCompleteSceneLoad(scene, loadScene);
+            GhostMatterPlacement.OnCompleteSceneLoad(scene, loadScene);
             Victory.OnCompleteSceneLoad(scene, loadScene);
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
