@@ -61,7 +61,7 @@
   },
   {
     "locationModID": "CI_SYMBOL_ROOM",
-    "description": "In the upper room of the Cinder Isles tower is another hidden room containing the 5-symbol code to the Abandoned Temple. The door to it will only open when specific candles have been blown out in the equivalent room in Starlit Cove.",
+    "description": "In the upper room of the Cinder Isles tower is another hidden room containing the 5-symbol code to the Abandoned Temple. The door to it will only open when specific candles have been blown out in the equivalent room in Starlit Cove. If you enabled certain story mods, note that one adds a Dreamworld entrance that can't be used here because it involves losing your ship; that's why the logic requires one of the Painting Codes for a regular Dreamworld entrance.",
     "thumbnail": "IP_ZONE_2_CODE"
   },
   {
