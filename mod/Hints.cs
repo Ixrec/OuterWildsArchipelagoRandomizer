@@ -159,10 +159,10 @@ internal class Hints
             other.RemoveAt(index);
         }
 
-        var apIdToScout = LocationNames.locationToArchipelagoId[stuffToHint[0].Key];
-        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{apIdToScout}'.";
+        var locationToScout = stuffToHint[0].Key;
+        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[locationToScout]}'.";
 
-        var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [apIdToScout]));
+        var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[locationToScout]]));
         if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(2)))
         {
             var msg = $"AP server timed out when we tried to tell it about your hint for location '{LocationNames.locationNames[stuffToHint[0].Key]}'. Did the connection go down?";
