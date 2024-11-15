@@ -12,7 +12,7 @@
 
   {
     "locationModID": "AC_LC_TESSERACT",
-    "description": "Once you find the anomaly, land on it, exit your ship, and walk through the tesseract to reveal the Lingering Chime.",
+    "description": "Once you find the anomaly, land on it, exit your ship, and walk through the tesseract to reveal the Lingering Chime. Recall that the LC is 35 km 'below' the sun, i.e. at an angle of 270 degrees from the vanilla orbital plane. If random orbits are making the direction unclear, use either the map satellite or the fact that the Interloper and white hole remain on the vanilla orbital plane.",
     "thumbnail": "codex_lingering_chime"
   },
   {
