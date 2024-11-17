@@ -62,8 +62,8 @@ Complete lists and descriptions of all the items and locations in the randomizer
 ### Archipelago tools setup
 
 - Go to your Archipelago installation folder. Typically that will be `C:\ProgramData\Archipelago`.
-- Put the `outer_wilds.apworld` file in `Archipelago\custom_worlds\`.
 - Put the `Outer.Wilds.yaml` file in `Archipelago\Players`. You may leave the `.yaml` unchanged to play on default settings, or use your favorite text editor to read and change the settings in it.
+- Double click on the `outer_wilds.apworld` file. Archipelago should display a popup saying it installed the apworld. Optionally, you can double-check that there's now an `outer_wilds.apworld` file in `Archipelago\custom_worlds\`.
 
 #### I've never used Archipelago before. How do I generate a multiworld?
 
