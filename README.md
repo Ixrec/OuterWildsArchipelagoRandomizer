@@ -56,7 +56,7 @@ Complete lists and descriptions of all the items and locations in the randomizer
 
 - Make sure you have Outer Wilds installed
 - Install the [Outer Wilds Mod Manager](https://outerwildsmods.com/mod-manager/)
-- Install the [core Archipelago tools](https://github.com/ArchipelagoMW/Archipelago/releases) (at least version 0.5.0)
+- Install the core Archipelago tools (at least version 0.5.0, but preferably the latest version) from [Archipelago's Github Releases page](https://github.com/ArchipelagoMW/Archipelago/releases). On that page, scroll down to the "Assets" section for the release you want, click on the appropriate installer for your system to start downloading it (for most Windows users, that will be the file called `Setup.Archipelago.X.Y.Z.exe`), then run it.
 - Go to [the Releases page](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/releases) of this repository and look at the latest release. There should be three files: A .zip, an .apworld and a .yaml. Download the .apworld and the .yaml.
 
 ### Archipelago tools setup
