@@ -27,7 +27,6 @@ public class APChecklistMode : ShipLogMode
 
     public bool IsInChecklist = false;
 
-    private GameObject shipLogPanRoot;
     Dictionary<string, TrackerChecklistData> LocationNameToChecklistData;
 
     private Material selectorMaterial;
@@ -348,15 +347,16 @@ public class APChecklistMode : ShipLogMode
         return "";
     }
     
-    // gets the ship log image for the associated fact
-    private Sprite GetShipLogImage(string fact)
+    // gets the ship log image for the associated entry ID
+    private Sprite GetShipLogImage(string entryId)
     {
-        if (string.IsNullOrEmpty(fact))
+        if (string.IsNullOrEmpty(entryId))
         {
             return TrackerManager.GetSprite("PLACEHOLDER");
         }
-        if (shipLogPanRoot == null) shipLogPanRoot = Locator.GetShipBody().gameObject.transform.Find("Module_Cabin/Systems_Cabin/ShipLogPivot/ShipLog/ShipLogPivot/ShipLogCanvas/DetectiveMode/ScaleRoot/PanRoot").gameObject;
-        Sprite sprite = shipLogPanRoot.transform.Find($"{fact}/EntryCardRoot/EntryCardBackground/PhotoImage")?.GetComponent<Image>()?.sprite;
+
+        Sprite sprite = Locator.GetShipLogManager().GetEntry(entryId)?.GetSprite();
+
         if (!sprite)
         {
             return TrackerManager.GetSprite("OTHER_SYSTEM_PLACEHOLDER");
