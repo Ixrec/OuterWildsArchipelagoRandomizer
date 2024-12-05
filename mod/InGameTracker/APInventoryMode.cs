@@ -212,6 +212,12 @@ public class APInventoryMode : ShipLogMode
                 continue;
             if (item.StoryModOption != null && !(APRandomizer.SlotData.ContainsKey(item.StoryModOption) && (long)APRandomizer.SlotData[item.StoryModOption] > 0))
                 continue;
+            if (item.ID == "StoryModFrequencies")
+            {
+                var anyStoryModEnabled = StoryModMetadata.AllStoryMods.Any(sm => APRandomizer.SlotData.ContainsKey(sm.slotDataOption) && (long)APRandomizer.SlotData[sm.slotDataOption] > 0);
+                if (!anyStoryModEnabled)
+                    continue;
+            }
 
             VisibleItemEntries.Add(name, item);
 
