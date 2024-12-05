@@ -51,6 +51,10 @@ internal class Translator
             // This is BH's Tower of Quantum Knowledge, because you're expected to translate it after it moves from BH to WH(S).
             if (sector.GetName() == Sector.Name.Unnamed && sector.gameObject.name == "Sector_QuantumFragment")
                 return TranslatorSector.BrittleHollow;
+            // The Old Settlement also has text you can translate and is split into several fragments, so might as well include them all.
+            if (sector.GetName() == Sector.Name.Unnamed && sector.gameObject.name.Contains("Fragment OldSettlement"))
+                return TranslatorSector.BrittleHollow;
+            // There are sectors for the White Hole and WHS, but they're both so large they cover BH fragments and the WHS, so they're useless here.
 
             // This covers both of the Nomai shuttles, since both are normally in "Other" (Interloper and Quantum Moon)
             // and for logic simplicity we want the same translator to work on them if recalled to the ET/BH cannons.
