@@ -166,8 +166,15 @@ internal class Hints
             return;
         }
 
+        // Some AP item/location names contain brackets, and Unity's rich text uses angle brackets for markup, which can break hint display.
+        // Unity does not appear to support &lt;/&gt; or \ escaping or <</>> escaping. Various Unicode angle brackets fail to render at all. Even adding spaces doesn't work.
+        // So with no viable workaround to actually display an angle bracket safely, we just have to delete them, as that's less harmful than all the hint text getting deleted.
+        Func<string, string> removeOpeningAngleBrackets = (text) => text.Replace("<", "");
+
         var locationToScout = stuffToHint[0].Key;
-        TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[locationToScout]}'.";
+        var itemName = stuffToHint[0].Value.ItemName;
+        var locationName = LocationNames.locationNames[locationToScout];
+        TextIDToDisplayText[textId1] = removeOpeningAngleBrackets($"Ignoring everywhere you've already been, the best item I know of is '{itemName}' at '{locationName}'.");
 
         var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[locationToScout]]));
         if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(2)))
@@ -189,7 +196,8 @@ internal class Hints
         else
         {
             var adjective = flags.HasFlag(ItemFlags.Advancement) ? "important" : "useful";
-            TextIDToDisplayText[textId2] = $"There's also something {adjective} at '{LocationNames.locationNames[stuffToHint[1].Key]}', but I'm not sure what.";
+            var locationName2 = LocationNames.locationNames[stuffToHint[1].Key];
+            TextIDToDisplayText[textId2] = removeOpeningAngleBrackets($"There's also something {adjective} at '{locationName2}', but I'm not sure what.");
         }
 
         if (APRandomizer.SaveData.hintsGenerated == null) APRandomizer.SaveData.hintsGenerated = new();
