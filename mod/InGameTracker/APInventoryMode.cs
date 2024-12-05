@@ -215,7 +215,33 @@ public class APInventoryMode : ShipLogMode
 
             VisibleItemEntries.Add(name, item);
 
-            if (Enum.TryParse(item.ID, out Item subject))
+            if (item.ApItem == Item.Translator)
+            {
+                string countText;
+                if (APRandomizer.SlotEnabledSplitTranslator())
+                {
+                    uint quantity = 0;
+                    var allTLs = new List<Item> { Item.TranslatorHGT, Item.TranslatorTH, Item.TranslatorBH, Item.TranslatorGD, Item.TranslatorDB, Item.TranslatorOther };
+                    foreach (var tl in allTLs)
+                        if (items.ContainsKey(tl) && items[tl] > 0)
+                            quantity += 1;
+
+                    if (quantity == 0)
+                        countText = " ";
+                    else if (quantity == allTLs.Count)
+                        countText = "X";
+                    else
+                        countText = "-";
+                }
+                else
+                {
+                    uint quantity = items.ContainsKey(Item.Translator) ? items[Item.Translator] : 0;
+                    countText = (quantity != 0 ? "X" : " ");
+                }
+
+                inventoryDisplayItems.Add(new InventoryDisplayItem($"[{countText}] {item.Name}", false, item.ItemIsNew, item.Hints.Any()));
+            }
+            else if (Enum.TryParse(item.ID, out Item subject))
             {
                 uint quantity = items.ContainsKey(subject) ? items[subject] : 0;
 
