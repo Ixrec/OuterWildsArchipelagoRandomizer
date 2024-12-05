@@ -8,7 +8,7 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 public class DeathLinkManager
 {
-    public enum DeathLinkSetting: long
+    public enum DeathLinkSetting : long
     {
         Off = 0,
         Default = 1,
@@ -271,6 +271,67 @@ public class DeathLinkManager
         var messagesForDeathType = deathMessages.ContainsKey(deathType) ? deathMessages[deathType] : deathMessages[DeathType.Default];
         var deathLinkMessage = APRandomizer.SaveData.apConnectionData.slotName + messagesForDeathType[prng.Next(0, messagesForDeathType.Count)];
         APRandomizer.InGameAPConsole.AddText($"Because death link is set to {effectiveSetting}, sending this {deathType} death to other players with the message: \"{deathLinkMessage}\"");
+        service.SendDeathLink(new DeathLink(APRandomizer.SaveData.apConnectionData.slotName, deathLinkMessage));
+    }
+
+    // This second collection of death link messages is for death_link: all "deaths" due to waking up from the dreamworld,
+    // that even the base game doesn't consider a type of "death".
+    private static Dictionary<DreamWakeType, List<string>> wakeMessages = new Dictionary<DreamWakeType, List<string>> {
+        { DreamWakeType.LanternBlownOut, new List<string>
+        {
+            " got owlk'd.",
+            " almost got ate.",
+        } },
+        { DreamWakeType.LanternSubmerged, new List<string>
+        {
+            " should've brought a waterproof lantern.",
+            " forgot how to swim.",
+        } },
+        { DreamWakeType.Alarm, new List<string>
+        {
+            " is late for work.",
+            " can't get 8 hours of sleep.",
+        } },
+        { DreamWakeType.CampfireExtinguished, new List<string>
+        {
+            " overslept.",
+            " messed up their routing.",
+        } },
+    };
+
+    // Exiting the dreamworld "normally" by extinguishing your lantern never calls KillPlayer / is not considered any kind of "death" by the base game,
+    // but that's not what we want for death_link: all players.
+    [HarmonyPrefix, HarmonyPatch(typeof(DreamWorldController), nameof(DreamWorldController.ExitDreamWorld), [typeof(DreamWakeType)])]
+    public static void DreamWorldController_ExitDreamWorld(DreamWorldController __instance, DreamWakeType wakeType)
+    {
+        if (PlayerState.IsResurrected())
+            return; // ignore because this will call KillPlayer
+        if (__instance._exitingDream)
+            return; // ignore because this method was already called for this DW exit
+
+        // Several "wake types" would have already resulted in a KillPlayer call, so we ignore those to avoid sending a duplicate death link.
+        // These should be exactly the DreamWakeTypes *not* in wakeMessages.
+        /*
+            DreamWakeType.Impact,
+            DreamWakeType.Default, // should mean gradual damage from hazards, most likely impacts
+            DreamWakeType.NeckSnapped,
+            DreamWakeType.Asphyxiation,
+            DreamWakeType.CrushedByElevator,
+            DreamWakeType.BurnedByFire,
+        */
+        if (!wakeMessages.ContainsKey(wakeType))
+            return;
+
+        if (effectiveSetting != DeathLinkSetting.AllDeaths)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"DreamWorldController.ExitDreamWorld patch ignoring {wakeType} wake-up since death_link is {effectiveSetting}, not AllDeaths");
+            return;
+        }
+
+        APRandomizer.OWMLModConsole.WriteLine($"DreamWorldController.ExitDreamWorld detected a {wakeType} wake-up, sending to AP server");
+        var messagesForWakeType = wakeMessages[wakeType];
+        var deathLinkMessage = APRandomizer.SaveData.apConnectionData.slotName + messagesForWakeType[prng.Next(0, messagesForWakeType.Count)];
+        APRandomizer.InGameAPConsole.AddText($"Because death link is set to {effectiveSetting}, sending this {wakeType} wake-up 'death' to other players with the message: \"{deathLinkMessage}\"");
         service.SendDeathLink(new DeathLink(APRandomizer.SaveData.apConnectionData.slotName, deathLinkMessage));
     }
 }
