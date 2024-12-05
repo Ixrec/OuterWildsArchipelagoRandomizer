@@ -159,6 +159,13 @@ internal class Hints
             other.RemoveAt(index);
         }
 
+        if (stuffToHint.Count == 0)
+        {
+            TextIDToDisplayText[textId1] = "You've already explored everything here.";
+            TextIDToDisplayText[textId2] = "I have no hints to give you.";
+            return;
+        }
+
         var locationToScout = stuffToHint[0].Key;
         TextIDToDisplayText[textId1] = $"Ignoring everywhere you've already been, the best item I know of is '{stuffToHint[0].Value.ItemName}' at '{LocationNames.locationNames[locationToScout]}'.";
 
@@ -168,6 +175,12 @@ internal class Hints
             var msg = $"AP server timed out when we tried to tell it about your hint for location '{LocationNames.locationNames[stuffToHint[0].Key]}'. Did the connection go down?";
             APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
             APRandomizer.InGameAPConsole.AddText($"<color='orange'>{msg}</color>");
+        }
+
+        if (stuffToHint.Count == 1)
+        {
+            TextIDToDisplayText[textId2] = "You've already explored everything else here.";
+            return;
         }
 
         var flags = stuffToHint[1].Value.Flags;
