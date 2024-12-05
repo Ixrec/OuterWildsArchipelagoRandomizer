@@ -17,23 +17,33 @@ public class TrackerManager : MonoBehaviour
 {
     public Logic logic;
 
-    private ICustomShipLogModesAPI api;
-    private APInventoryMode inventoryMode;
+    private ICustomShipLogModesAPI shipApi;
+    private ISuitLogAPI suitApi;
+    private APInventoryMode shipInventoryMode;
+    private APInventoryMode suitInventoryMode;
     //private TrackerSelectionMode selectionMode;
-    private APChecklistMode checklistMode;
+    private APChecklistMode shipChecklistMode;
+    private APChecklistMode suitChecklistMode;
     private ArchipelagoSession session;
 
     private void Awake()
     {
-        api = APRandomizer.Instance.ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
-        if (api == null)
+        shipApi = APRandomizer.Instance.ModHelper.Interaction.TryGetModApi<ICustomShipLogModesAPI>("dgarro.CustomShipLogModes");
+        if (shipApi == null)
         {
             APRandomizer.OWMLModConsole.WriteLine("Custom Ship Log Modes API not found! Make sure the mod is correctly installed. Tracker will not function.", OWML.Common.MessageType.Error);
             return;
         }
 
-        inventoryMode = gameObject.AddComponent<APInventoryMode>();
-        checklistMode = gameObject.AddComponent <APChecklistMode>();
+        shipInventoryMode = gameObject.AddComponent<APInventoryMode>();
+        shipChecklistMode = gameObject.AddComponent<APChecklistMode>();
+
+        // Optional dependency on SuitLog
+        suitApi = APRandomizer.Instance.ModHelper.Interaction.TryGetModApi<ISuitLogAPI>("dgarro.SuitLog");
+        if (suitApi != null) {
+            suitInventoryMode = gameObject.AddComponent<APInventoryMode>();
+            suitChecklistMode = gameObject.AddComponent<APChecklistMode>();
+        }
 
         LoadManager.OnCompleteSceneLoad += (scene, loadScene) =>
         {
@@ -69,27 +79,53 @@ public class TrackerManager : MonoBehaviour
     /// </summary>
     public void AddModes()
     {
-        api.AddMode(inventoryMode, () => true, () => "AP Inventory");
-        api.ItemListMake(true, true, itemList =>
+        shipApi.AddMode(shipInventoryMode, () => true, () => "AP Inventory");
+        shipApi.ItemListMake(true, true, itemList =>
         {
-            inventoryMode.Wrapper = new(api, itemList);
-            inventoryMode.RootObject = itemList.gameObject;
+            shipInventoryMode.Wrapper = new ShipLogItemListWrapper(shipApi, itemList);
+            shipInventoryMode.RootObject = itemList.gameObject;
         });
-        inventoryMode.Tracker = this;
+        shipInventoryMode.Tracker = this;
 
-        api.AddMode(checklistMode, () => true, () => "AP Checklist");
-        api.ItemListMake(false, false, itemList =>
+        shipApi.AddMode(shipChecklistMode, () => true, () => "AP Checklist");
+        shipApi.ItemListMake(false, false, itemList =>
         {
-            checklistMode.SelectionWrapper = new ItemListWrapper(api, itemList);
-            checklistMode.SelectionRootObject = itemList.gameObject;
+            shipChecklistMode.SelectionWrapper = new ShipLogItemListWrapper(shipApi, itemList);
+            shipChecklistMode.SelectionRootObject = itemList.gameObject;
         });
-        api.ItemListMake(true, true, itemList =>
+        shipApi.ItemListMake(true, true, itemList =>
         {
-            checklistMode.ChecklistWrapper = new ItemListWrapper(api, itemList);
-            checklistMode.ChecklistRootObject = itemList.gameObject;
+            shipChecklistMode.ChecklistWrapper = new ShipLogItemListWrapper(shipApi, itemList);
+            shipChecklistMode.ChecklistRootObject = itemList.gameObject;
         });
-        checklistMode.Tracker = this;
+        shipChecklistMode.Tracker = this;
 
+        if (suitApi != null) {
+            suitApi.AddMode(suitInventoryMode, () => true, () => "AP Inventory");
+            suitApi.ItemListMake(itemList =>
+            {
+                SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
+                wrapper.DescriptionFieldOpen();
+                suitInventoryMode.Wrapper = wrapper;
+                suitInventoryMode.RootObject = itemList.gameObject;
+            });
+            suitInventoryMode.Tracker = this;
+
+            suitApi.AddMode(suitChecklistMode, () => true, () => "AP Checklist");
+            suitApi.ItemListMake(itemList =>
+            {
+                suitChecklistMode.SelectionWrapper = new SuitLogItemListWrapper(suitApi, itemList);
+                suitChecklistMode.SelectionRootObject = itemList.gameObject;
+            });
+            suitApi.ItemListMake(itemList =>
+            {
+                SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
+                wrapper.DescriptionFieldOpen();
+                suitChecklistMode.ChecklistWrapper = wrapper;
+                suitChecklistMode.ChecklistRootObject = itemList.gameObject;
+            });
+            suitChecklistMode.Tracker = this;
+        }
     }
 
     // Reads hints from the AP server
