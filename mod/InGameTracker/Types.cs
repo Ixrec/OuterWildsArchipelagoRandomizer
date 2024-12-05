@@ -113,6 +113,11 @@ public class InventoryItemHint
     /// The player/slot whose world the item is in
     /// </summary>
     public string World;
+    /// <summary>
+    /// The item name the hint is for, if the hint should show a name instead of just "this item" when displayed to the user.
+    /// This is most useful when an inventory entry covers multiple items, e.g. the Translator entry when split_translator is enabled.
+    /// </summary>
+    public string? ItemName = null;
 }
 
 public class InventoryItemEntry
@@ -183,11 +188,11 @@ public class InventoryItemEntry
         ItemIsNew = isNew;
     }
 
-    public void AddHint(string location, string world, string entrance = "")
+    public void AddHint(string location, string world, string entrance, string? itemName = null)
     {
         if (Hints.Any(h => h.Location == location && h.World == world))
             return; // we've received this hint before, don't duplicate it
 
-        Hints.Add(new InventoryItemHint { Location = location, World = world, Entrance = entrance });
+        Hints.Add(new InventoryItemHint { Location = location, World = world, Entrance = entrance, ItemName = itemName });
     }
 }

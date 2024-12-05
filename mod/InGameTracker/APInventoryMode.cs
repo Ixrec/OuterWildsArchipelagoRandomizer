@@ -346,10 +346,13 @@ public class APInventoryMode : ShipLogMode
 
         ItemNames.archipelagoIdToItem.TryGetValue(hint.ItemId, out Item item);
 
-        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
-            item = Item.Translator;
-
         string itemName = item.ToString();
+        string? itemDisplayName = null;
+        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
+        {
+            itemName = Item.Translator.ToString();
+            itemDisplayName = ItemNames.ItemToName(item);
+        }
         if (ItemNames.IsStoryModFrequency(item))
             itemName = "StoryModFrequencies";
 
@@ -363,7 +366,7 @@ public class APInventoryMode : ShipLogMode
         string hintedLocation = session.Locations.GetLocationNameFromId(hint.LocationId, findingGame);
         string hintedWorld = session.Players.GetPlayerName(hint.FindingPlayer);
         string hintedEntrance = hint.Entrance;
-        ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance);
+        ItemEntries[itemName].AddHint(hintedLocation, hintedWorld, hintedEntrance, itemDisplayName);
     }
 
     public static void ClearAllHints()

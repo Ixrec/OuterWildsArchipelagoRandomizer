@@ -295,7 +295,8 @@ public class APInventoryDescriptions
 
         foreach (var hint in itemEntry.Hints)
         {
-            infos.Add($"It looks like this item can be found at <color=#00FF7F>{hint.Location}</color> in <color=#FAFAD2>{hint.World}</color>'s world" +
+            infos.Add($"It looks like {hint.ItemName ?? "this item"} can be found at <color=#00FF7F>{hint.Location}</color> " +
+                $"in <color=#FAFAD2>{hint.World}</color>'s world" +
                 $"{(hint.Entrance == "" ? "" : $" at <color=#6291E4>{hint.Entrance}</color>")}.");
         }
 
