@@ -6,11 +6,11 @@ An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [t
 
 ## Status
 
-Feature Complete / Maintenance Mode (as of October 2024).
+Feature Complete / Maintenance Mode (since October 2024).
 
 All features I wanted to implement have been shipped, including a full in-game tracker, alternate spawns, DLC integration, and multiple story mod integrations. It's been extensively playtested, and all known bugs with the randomizer itself have been fixed (the remaining problems are all believed to be base game bugs, especially the infamous "end-of-loop crash").
 
-I will now be moving on to other projects as my primary focus, but I still intend to be responsive to any PRs opened here, or inquiries about contributing to this randomizer.
+I will now be moving on to other projects as my primary focus, but I still intend to be responsive to any bug reports, PRs opened here, or inquiries about contributing to this randomizer.
 
 ## Contact
 
