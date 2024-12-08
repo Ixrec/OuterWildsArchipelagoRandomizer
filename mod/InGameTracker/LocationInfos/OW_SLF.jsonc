@@ -6,12 +6,12 @@
     },
     {
         "locationModID": "SLF__S_SUNSTATION_X2",
-        "description": "A projection stone in the Sun Station reports the results of the station.",
+        "description": "A projection stone in the Sun Station reports the results of the station. It can only be translated at Brittle Hollow's north pole.",
         "thumbnail": "S_SUNSTATION"
     },
     {
         "locationModID": "SLF__S_SUNSTATION_X3",
-        "description": "A projection stone in the Sun Station mentions that comet has recently appeared.",
+        "description": "A projection stone in the Sun Station mentions that comet has recently appeared. It can only be translated at Brittle Hollow's north pole.",
         "thumbnail": "S_SUNSTATION"
     },
     {
