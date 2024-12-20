@@ -144,24 +144,20 @@ public static class Coordinates
         }
     }
 
-    // The prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
+    // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size
     private static Texture2D promptCoordsTexture = new Texture2D(600, 200, TextureFormat.ARGB32, false);
     private static Sprite promptCoordsSprite = null;
 
-    // Unfortunately the EyeCoordinatePromptTrigger that triggers the vanilla Eye Coordinates prompt has proven glitchy enough
-    // that we simply need to reimplement the prompt ourselves to make it show up more consistently.
-    private static ScreenPrompt coordinatesReimplPrompt = null;
-    private static ScreenPrompt coordinatesNotAvailablePrompt = null;
-    private static bool nomaiCoordinateInterfaceRaised = false;
-
-    [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.SetPillarRaised), [typeof(bool)])]
-    public static void NomaiCoordinateInterface_SetPillarRaised(NomaiCoordinateInterface __instance, bool raised)
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Start))]
+    public static void EyeCoordinatePromptTrigger_Start_Postfix(EyeCoordinatePromptTrigger __instance)
     {
-        nomaiCoordinateInterfaceRaised = raised;
+        // vanilla / unrandomized coords, so nothing to do here
+        if (correctCoordinates == null)
+            return;
 
         if (promptCoordsSprite == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"NomaiCoordinateInterface_SetPillarRaised drawing prompt coordinates sprite");
+            APRandomizer.OWMLModConsole.WriteLine($"EyeCoordinatePromptTrigger_Start_Postfix drawing prompt coordinates sprite");
             promptCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
                 promptCoordsTexture,
                 correctCoordinates,
@@ -169,12 +165,17 @@ public static class Coordinates
                 doKerning: true
             );
         }
-        if (coordinatesReimplPrompt == null)
-        {
-            // Due to silly base game hacks, the magic placeholder "<EYE>" is required to get the coords sprite on the *right* side of the text, instead of the left.
-            coordinatesReimplPrompt = new(UITextLibrary.GetString(UITextType.EyeCoordinates) + "<EYE>", promptCoordsSprite, 0);
-            Locator.GetPromptManager().AddScreenPrompt(coordinatesReimplPrompt, PromptPosition.LowerLeft, false);
-        }
+
+        // No need to change _eyeCoordinatesSprite because it's only used in KIPC.Awake() to
+        // construct _eyeCoordinatesPrompt, and we have to reset this every loop anyway.
+        __instance._promptController._eyeCoordinatesPrompt._customSprite = promptCoordsSprite;
+    }
+
+    private static ScreenPrompt coordinatesNotAvailablePrompt = null;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.OnEntry))]
+    public static void EyeCoordinatePromptTrigger_OnEntry_Postfix(EyeCoordinatePromptTrigger __instance)
+    {
         if (coordinatesNotAvailablePrompt == null)
         {
             coordinatesNotAvailablePrompt = new ScreenPrompt("Coordinates Not Available", 0);
@@ -182,27 +183,25 @@ public static class Coordinates
         }
     }
 
-    [HarmonyPostfix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
-    public static void ToolModeUI_Update_Postfix()
-    {
-        if (nomaiCoordinateInterfaceRaised && Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.VesselDimension))
-        {
-            coordinatesNotAvailablePrompt?.SetVisibility(!_hasCoordinates && OWInput.IsInputMode(InputMode.Character));
-            coordinatesReimplPrompt?.SetVisibility(_hasCoordinates && OWInput.IsInputMode(InputMode.Character));
-        }
-        else
-        {
-            coordinatesNotAvailablePrompt?.SetVisibility(false);
-            coordinatesReimplPrompt?.SetVisibility(false);
-        }
-    }
-
-    // Disable the glitchy vanilla prompt
     [HarmonyPrefix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.Update))]
     public static bool EyeCoordinatePromptTrigger_Update_Prefix(EyeCoordinatePromptTrigger __instance)
     {
-        __instance._promptController.SetEyeCoordinatesVisibility(false);
+        coordinatesNotAvailablePrompt.SetVisibility(
+            !_hasCoordinates &&
+            OWInput.IsInputMode(InputMode.Character)
+        );
+        __instance._promptController.SetEyeCoordinatesVisibility(
+            _hasCoordinates &&
+            OWInput.IsInputMode(InputMode.Character) // the vanilla implementation doesn't have this check, but I think it should,
+                                                     // and it's more annoying for this mod because of the in-game pause console
+        );
         return false; // skip vanilla implementation
+    }
+
+    [HarmonyPostfix, HarmonyPatch(typeof(EyeCoordinatePromptTrigger), nameof(EyeCoordinatePromptTrigger.OnExit))]
+    public static void EyeCoordinatePromptTrigger_OnExit_Postfix(EyeCoordinatePromptTrigger __instance)
+    {
+        coordinatesNotAvailablePrompt.SetVisibility(false);
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(NomaiCoordinateInterface), nameof(NomaiCoordinateInterface.CheckEyeCoordinates))]
