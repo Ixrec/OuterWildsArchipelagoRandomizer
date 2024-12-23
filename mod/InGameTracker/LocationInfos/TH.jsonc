@@ -62,7 +62,7 @@
   {
     "locationModID": "TH_GROVE_PLAQUE",
     "description": "Chert has made some interesting observations and recorded them on a plaque near the Quantum Grove. Check a tall tree in a connected grove.",
-    "thumbnail": "TH_QUANTUM_SHARD"
+    "thumbnail": "grove_plaque.png"
   },
   {
     "locationModID": "AR_WHISTLE",

@@ -188,7 +188,9 @@ public class TrackerManager : MonoBehaviour
     {
         try
         {
-            string path = Path.Combine([APRandomizer.Instance.ModHelper.Manifest.ModFolderPath, "InGameTracker", "Icons", filename + ".png"]);
+            if (!filename.EndsWith(".png"))
+                filename = filename + ".png";
+            string path = Path.Combine([APRandomizer.Instance.ModHelper.Manifest.ModFolderPath, "InGameTracker", "Icons", filename]);
 
             byte[] data = null;
             if (File.Exists(path))

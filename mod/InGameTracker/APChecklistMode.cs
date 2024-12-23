@@ -350,6 +350,11 @@ public class APChecklistMode : ShipLogMode
     // gets the ship log image for the associated entry ID
     private Sprite GetShipLogImage(string entryId)
     {
+        if (entryId.EndsWith(".png"))
+        {
+            return TrackerManager.GetSprite(entryId);
+        }
+
         if (string.IsNullOrEmpty(entryId))
         {
             return TrackerManager.GetSprite("PLACEHOLDER");
