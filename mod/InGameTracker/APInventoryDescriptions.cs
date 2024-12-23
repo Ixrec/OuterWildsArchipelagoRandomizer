@@ -113,7 +113,8 @@ public class APInventoryDescriptions
 
                 case Item.Coordinates:
                     infos.Add("These are the coordinates of the Eye of the Universe.");
-                    infos.Add("They will show in the bottom left corner when you're ready to input them.");
+                    infos.Add("Once you have this AP item, the actual coordinates can be viewed here, or in the 'Mission' entry of the AP Checklist, " +
+                        "in addition to the coordinates prompt that appears in the Vessel when you're ready to input them.");
                     break;
                 case Item.Spacesuit:
                     infos.Add("The spacesuit that enables breathing in outer space, displays various useful information on its HUD, and most importantly, lets you fly around with a jetpack.");

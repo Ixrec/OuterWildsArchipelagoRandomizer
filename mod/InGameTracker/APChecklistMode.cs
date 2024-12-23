@@ -209,19 +209,32 @@ public class APChecklistMode : ShipLogMode
     {
         TrackerInfo info = ChecklistState.ElementAt(index).Item1;
         TrackerLocationData data = null;
-        if (info.locationModID != null)
+        Image image = ChecklistWrapper.GetPhoto();
+        bool isGoalItem = (info.locationModID == null);
+        if (!isGoalItem)
+        {
             data = Tracker.logic.GetLocationDataByInfo(info);
+            image.sprite = GetShipLogImage(info.thumbnail);
+        }
         else
         {
             string goalLocation = goalDisplayMetadata[Victory.goalSetting].Item1;
             data = Tracker.logic.TrackerLocations[goalLocation];
+
+            bool hasCoords = APRandomizer.SaveData.itemsAcquired.ContainsKey(Item.Coordinates) && APRandomizer.SaveData.itemsAcquired[Item.Coordinates] > 0;
+            if (hasCoords && Coordinates.shipLogCoordsSprite != null)
+                image.sprite = Coordinates.shipLogCoordsSprite;
+            else
+                image.sprite = GetShipLogImage(info.thumbnail);
         }
+        image.gameObject.SetActive(true);
         TrackerChecklistData locData = LocationNameToChecklistData[data.name];
-        ChecklistWrapper.GetPhoto().sprite = GetShipLogImage(info.thumbnail);
-        ChecklistWrapper.GetPhoto().gameObject.SetActive(true);
         ChecklistWrapper.GetQuestionMark().gameObject.SetActive(false);
         ChecklistWrapper.DescriptionFieldClear();
         ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(info.description);
+        if (isGoalItem)
+            ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText("Once you have the 'Coordinates' AP item, the actual coordinates can be viewed here, " +
+                "or in the 'Eye of the Universe Coordinates' entry of the AP Inventory, in addition to the coordinates prompt that appears in the Vessel.");
         if (locData.hintText != "" && !locData.hasBeenChecked)
             ChecklistWrapper.DescriptionFieldGetNextItem().DisplayText(locData.hintText);
         if (info.locationModID != null)

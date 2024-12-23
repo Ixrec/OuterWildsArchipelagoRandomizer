@@ -179,7 +179,14 @@ public class APInventoryMode : ShipLogMode
         InventoryItemEntry entry = VisibleItemEntries.ElementAt(index).Value;
         string itemID = entry.ID;
         Sprite sprite = TrackerManager.GetSprite(itemID);
-        if (entry.HasOneOrMore() || (entry.ApItem == Item.Translator && APRandomizer.SlotEnabledSplitTranslator()))
+
+        bool hasCoords = APRandomizer.SaveData.itemsAcquired.ContainsKey(Item.Coordinates) && APRandomizer.SaveData.itemsAcquired[Item.Coordinates] > 0;
+        if (entry.ApItem == Item.Coordinates && hasCoords && Coordinates.shipLogCoordsSprite != null)
+        {
+            Icon.sprite = Coordinates.shipLogCoordsSprite;
+            Icon.gameObject.SetActive(true);
+        }
+        else if (entry.HasOneOrMore() || (entry.ApItem == Item.Translator && APRandomizer.SlotEnabledSplitTranslator()))
         {
             if (sprite != null)
             {

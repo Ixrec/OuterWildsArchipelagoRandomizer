@@ -106,6 +106,9 @@ public static class Coordinates
     private static Texture2D shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
     private static Texture2D shipLogBlankTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
 
+    // public so this can be used in APChecklistMode.cs for the "Mission" entry
+    public static Sprite shipLogCoordsSprite = null;
+
     // wait until the player accesses the ship log to update its sprites
     [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
     public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
@@ -124,9 +127,9 @@ public static class Coordinates
             if (_hasCoordinates)
             {
                 // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-                var s = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
+                shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
 
-                ptmGeneratedEntry?.SetAltSprite(s);
+                ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
             }
             else
             {
