@@ -6,12 +6,12 @@
     },
     {
         "locationModID": "SLF__S_SUNSTATION_X2",
-        "description": "A projection stone in the Sun Station reports the results of the station. It can only be translated at Brittle Hollow's north pole.",
+        "description": "A projection stone in the Sun Station reports the results of the station.",
         "thumbnail": "S_SUNSTATION"
     },
     {
         "locationModID": "SLF__S_SUNSTATION_X3",
-        "description": "A projection stone in the Sun Station mentions that comet has recently appeared. It can only be translated at Brittle Hollow's north pole.",
+        "description": "A projection stone in the Sun Station mentions that comet has recently appeared.",
         "thumbnail": "S_SUNSTATION"
     },
     {
@@ -26,12 +26,12 @@
     },
     {
         "locationModID": "SLF__WHS_X2",
-        "description": "A projection stone that was in the White Hole Station mentioned some odd temporal fluncuations from warping.",
+        "description": "A projection stone that was in the White Hole Station mentioned some odd temporal fluncuations from warping. It can only be translated at Brittle Hollow's north pole.",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
         "locationModID": "SLF__WHS_X3",
-        "description": "A projection stone that was in the White Hole Station mentioned that those who warped arrived at their destination a miniscule amount of time before they left.",
+        "description": "A projection stone that was in the White Hole Station mentioned that those who warped arrived at their destination a miniscule amount of time before they left. It can only be translated at Brittle Hollow's north pole.",
         "thumbnail": "WHITE_HOLE_STATION"
     },
     {
