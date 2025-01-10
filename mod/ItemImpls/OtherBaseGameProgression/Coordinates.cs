@@ -28,6 +28,11 @@ public static class Coordinates
 
     public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
     {
+        // Reset most stuff derived from correctCoordinates so we don't display the wrong profile's coordinates
+        promptCoordsSprite = null;
+        shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
+        shipLogCoordsSprite = null;
+
         if (coordsSlotData is string coordsString && coordsString == "vanilla")
         {
             // leaving vanilla coordinates unchanged
@@ -36,10 +41,6 @@ public static class Coordinates
         else if (coordsSlotData is JArray coords)
         {
             correctCoordinates = coords.Select(coord => (coord as JArray).Select(num => (CoordinateDrawing.CoordinatePoint)(long)num).ToList()).ToList();
-
-            // The UI prompt sprite is the only thing derived from the coordinates which we have to create well before its use ingame, so if we
-            // switch slots then it'll go out of date unless we explicitly reset it before EyeCoordinatePromptTrigger_Start_Postfix runs again.
-            promptCoordsSprite = null;
         }
         else
         {
@@ -106,8 +107,15 @@ public static class Coordinates
     private static Texture2D shipLogCoordsTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
     private static Texture2D shipLogBlankTexture = new Texture2D(600, 600, TextureFormat.ARGB32, false);
 
-    // public so this can be used in APChecklistMode.cs for the "Mission" entry
+    // public so this can be used by the tracker for the "Mission" Checklist entry and the "Eye of the Universe Coordinates" Inventory entry
     public static Sprite shipLogCoordsSprite = null;
+
+    public static void EnsureShipLogCoordsSpriteCreated()
+    {
+        // just recreate it every time we enter ship or suit log to be safe
+        // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
+        shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
+    }
 
     // wait until the player accesses the ship log to update its sprites
     [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
@@ -126,9 +134,7 @@ public static class Coordinates
 
             if (_hasCoordinates)
             {
-                // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-                shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
-
+                EnsureShipLogCoordsSpriteCreated();
                 ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
             }
             else
