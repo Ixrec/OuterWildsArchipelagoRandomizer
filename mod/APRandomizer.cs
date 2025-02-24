@@ -175,7 +175,7 @@ public class APRandomizer : ModBehaviour
             OnSessionClosed(APSession, true);
         }
         APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
-        LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, password: cdata.password, requestSlotData: true);
+        LoginResult result = APSession.TryConnectAndLogin("Outer Wilds (Logic Options Experiment)", cdata.slotName, ItemsHandlingFlags.AllItems, password: cdata.password, requestSlotData: true);
         if (!result.Successful)
             return result;
 
