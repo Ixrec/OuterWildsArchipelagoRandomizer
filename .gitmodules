@@ -1,3 +1,4 @@
 [submodule "Archipelago"]
 	path = Archipelago
 	url = https://github.com/Ixrec/Archipelago
+	branch = outer_wilds_logic_options_experiment

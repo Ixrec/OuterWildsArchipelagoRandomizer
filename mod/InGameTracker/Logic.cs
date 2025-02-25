@@ -435,15 +435,30 @@ public class Logic
                 allContentEnabled &= APRandomizer.SlotEnabledEotEDLC();
             else if (connection.category == "base")
                 allContentEnabled &= !APRandomizer.SlotEnabledDLCOnly();
-            else {
-                var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(category, out var mod);
-                if (!found)
+            else // Story Mod or Logic Rule
+            {
+                var modFound = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(category, out var mod);
+                if (modFound)
+                {
+                    var option = mod.slotDataOption;
+                    allContentEnabled &= (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+                    continue;
+                }
+
+                var logicRuleFound = LogicRuleMetadata.LogicCategories.TryGetValue(category, out var logicRule);
+                if (logicRuleFound)
+                {
+                    var option = logicRule.slotDataOption;
+                    allContentEnabled &= (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+                    continue;
+                }
+
+                if (!logicRuleFound && !modFound)
                 {
                     APRandomizer.OWMLModConsole.WriteLine($"IsConnectionActive early returning false for {connection.from}->{connection.to} because {category} (in {connection.category}) was not recognized", OWML.Common.MessageType.Error);
-                    return false; // this is for a story mod we haven't integrated yet, so ignore it
+                    return false; // this is for a story mod or logic rule we haven't integrated yet, so ignore it
                 }
-                var option = mod.slotDataOption;
-                allContentEnabled &= (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+
             }
         }
         return allContentEnabled;
