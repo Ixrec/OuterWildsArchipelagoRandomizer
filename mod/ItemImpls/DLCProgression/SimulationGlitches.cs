@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ArchipelagoRandomizer;
 
@@ -53,6 +54,7 @@ internal class SimulationGlitches
             {
                 var nd = new NotificationData(NotificationTarget.Player, "SIMULATION HACK SUCCESSFUL. APPLIED HOTFIX TO RE-ENABLE THE PROJECTION RANGE GLITCH.", 10);
                 NotificationManager.SharedInstance.PostNotification(nd, false);
+                if (disabledBridges) EnableInvisibleBridges();
             }
         }
     }
@@ -71,6 +73,57 @@ internal class SimulationGlitches
         // prevent accidental deaths from getting teleported above ground while falling
         var dreamworldVelocity = Locator.GetAstroObject(AstroObject.Name.DreamWorld).GetOWRigidbody().GetVelocity();
         playerRigidBody.SetVelocity(dreamworldVelocity);
+    }
+
+    private static bool disabledBridges = false;
+
+    [HarmonyPostfix, HarmonyPatch(typeof(DreamWorldController), nameof(DreamWorldController.EnterDreamWorld))]
+    public static void DreamWorldController_EnterDreamWorld()
+    {
+        if (!_hasProjectionRangePatch && !disabledBridges)
+        {
+            DisableInvisibleBridges();
+        }
+    }
+
+    private static void DisableInvisibleBridges()
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"DisableInvisibleBridges() called");
+
+        // The bridges controlled by the code totem
+        var vaultBridges = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/IslandsRoot/IslandPivot_A/Island_A/Interactibles_Island_A/InvisibleBridge");
+        vaultBridges.SetActive(false);
+
+        // The bridges leading to the burned vault code in EC forbidden archive
+        var faBridge1 = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/Sector_SecretLibrary_3/Interactibles_SecretLibrary_3/InvisibleBridge/COL_InvisibleBridge");
+        faBridge1.SetActive(false);
+        var faBridge2 = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/Sector_SecretLibrary_3/Interactibles_SecretLibrary_3/InvisibleBridge (1)/COL_InvisibleBridge");
+        faBridge2.SetActive(false);
+
+        // The shortcut bridge in EC leading directly to the elevator
+        var ecBridge = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_DreamZone_3/Structures_DreamZone_3/Invisible_Bridge_Shortcut");
+        ecBridge.SetActive(false);
+        disabledBridges = true;
+    }
+
+    private static void EnableInvisibleBridges()
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"EnableInvisibleBridges() called");
+
+        // The bridges controlled by the code totem
+        var vaultBridges = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/IslandsRoot/IslandPivot_A/Island_A/Interactibles_Island_A/InvisibleBridge");
+        vaultBridges.SetActive(true);
+
+        // The bridges leading to the burned vault code in EC forbidden archive
+        var faBridge1 = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/Sector_SecretLibrary_3/Interactibles_SecretLibrary_3/InvisibleBridge/COL_InvisibleBridge");
+        faBridge1.SetActive(true);
+        var faBridge2 = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_Underground/Sector_SecretLibrary_3/Interactibles_SecretLibrary_3/InvisibleBridge (1)/COL_InvisibleBridge");
+        faBridge2.SetActive(true);
+
+        // The shortcut bridge in EC leading directly to the elevator
+        var ecBridge = GameObject.Find("DreamWorld_Body/Sector_DreamWorld/Sector_DreamZone_3/Structures_DreamZone_3/Invisible_Bridge_Shortcut");
+        ecBridge.SetActive(true);
+        disabledBridges = false;
     }
 
     private static bool _hasAlarmBypassPatch = false;
