@@ -62,7 +62,7 @@ public class Logic
         { SlotDataSpawn.Vanilla, "Timber Hearth Village" },
         { SlotDataSpawn.HourglassTwins, "Hourglass Twins" },
         { SlotDataSpawn.TimberHearth, "Timber Hearth" },
-        { SlotDataSpawn.BrittleHollow, "Brittle Hollow Northern Glacier" },
+        { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
         { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
         { SlotDataSpawn.Stranger, "Stranger Sunside Hangar" },
     };
@@ -76,7 +76,7 @@ public class Logic
         { "ATT", "Hourglass Twins" },
         { "TH", "Timber Hearth" },
         { "THT", "Hourglass Twins" },
-        { "BHNG", "Brittle Hollow Northern Glacier" },
+        { "BHNG", "Brittle Hollow" },
         { "WHS", "White Hole Station" },
         { "BHF", "Hanging City Ceiling" },
         { "BHT", "Hourglass Twins" },
