@@ -338,6 +338,9 @@ public class Logic
             }
         }
 
+        // Hang on to the pertinent warp connections
+        string bhfConnection = null, bhngConnection = null, whsConnection = null;
+        
         foreach (var warpPair in warps)
         {
             var w1 = warpPair[0];
@@ -352,6 +355,31 @@ public class Logic
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
+            }
+
+            // Check for Brittle Hollow warp connections
+            switch (w1)
+            {
+                case "BHF":
+                    bhfConnection = w2;
+                    break;
+                case "BHNG":
+                    bhngConnection = w2;
+                    break;
+                case "WHS":
+                    whsConnection = w2;
+                    break;
+            }
+            switch(w2) {
+                case "BHF":
+                    bhfConnection = w1;
+                    break;
+                case "BHNG":
+                    bhngConnection = w1;
+                    break;
+                case "WHS":
+                    whsConnection = w1;
+                    break;
             }
 
             var requirements = new List<TrackerRequirement>();
@@ -391,6 +419,19 @@ public class Logic
             reverseWarpConnection.to = r1;
             reverseWarpConnection.requires = requirements;
             AddConnection(TrackerRegions, reverseWarpConnection);
+        }
+
+        // Conditionally add warp-based connection to Black Hole Forge
+        List<string> hourglassTwins = ["ET", "ST", "ETT", "ATT", "THT", "BHT", "GDT"];
+        List<string> brittleHollow = ["BHNG", "WHS"];
+        if (brittleHollow.Contains(bhfConnection) || (hourglassTwins.Contains(bhfConnection) && (hourglassTwins.Contains(bhngConnection) || hourglassTwins.Contains(whsConnection))))
+        {
+            AddConnection(TrackerRegions, new()
+            {
+                from = "Hanging City Ceiling",
+                to = "Forge via Warps",
+                requires = [new() { item = "Nomai Warp Codes" }]
+            });
         }
 
         // Build region logic recursively from Menu region
