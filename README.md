@@ -22,11 +22,9 @@ Let's say I'm playing Outer Wilds, and my friend is playing Ocarina of Time. Whe
 
 In essence, a multi-game randomizer system like Archipelago allows a group of friends to each bring whatever games they want (if they have an Archipelago mod) and smush them all together into one big cooperative multiplayer experience.
 
-Some people have even made Youtube videos of their randomizer playthroughs. Of the ones I've seen, Quothe's and Skurry's are the best at demonstrating what a typical Outer Wilds randomizer playthrough is like:
+Some people have even made Youtube videos of their randomizer playthroughs. Of the ones I've seen, Quothe's and Skurry's are the best at demonstrating what a typical Outer Wilds randomizer playthrough is like (without the "multi-game" aspect of Archipelago):
 
-[![Quothe's Outer Wilds Archipelago Randomizer Video](https://img.youtube.com/vi/6SZ-xhBVjq0/hqdefault.jpg)](https://www.youtube.com/watch?v=6SZ-xhBVjq0) [![Skurry's Outer Wilds Archipelago Randomizer Video](https://img.youtube.com/vi/ppsY9X_Mox8/hqdefault.jpg)](https://www.youtube.com/watch?v=ppsY9X_Mox8)
-
-To be clear, these don't demonstrate the multiworld/multigame aspect of Archipelago; they "only" randomized Outer Wilds by itself.
+<img href="https://www.youtube.com/watch?v=6SZ-xhBVjq0" src="https://img.youtube.com/vi/6SZ-xhBVjq0/hqdefault.jpg" width="300"/> <img href="https://www.youtube.com/watch?v=ppsY9X_Mox8" src="https://img.youtube.com/vi/ppsY9X_Mox8/hqdefault.jpg" width="300"/>
 
 ### What This Mod Changes
 
