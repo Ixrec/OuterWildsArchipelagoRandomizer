@@ -24,7 +24,7 @@ In essence, a multi-game randomizer system like Archipelago allows a group of fr
 
 Some people have even made Youtube videos of their randomizer playthroughs. Of the ones I've seen, Quothe's and Skurry's are the best at demonstrating what a typical Outer Wilds randomizer playthrough is like (without the "multi-game" aspect of Archipelago):
 
-<img href="https://www.youtube.com/watch?v=6SZ-xhBVjq0" src="https://img.youtube.com/vi/6SZ-xhBVjq0/hqdefault.jpg" width="300"/> <img href="https://www.youtube.com/watch?v=ppsY9X_Mox8" src="https://img.youtube.com/vi/ppsY9X_Mox8/hqdefault.jpg" width="300"/>
+[<img src="https://img.youtube.com/vi/6SZ-xhBVjq0/hqdefault.jpg" width="300"/>](https://www.youtube.com/watch?v=6SZ-xhBVjq0) [<img src="https://img.youtube.com/vi/ppsY9X_Mox8/hqdefault.jpg" width="300"/>](https://www.youtube.com/watch?v=ppsY9X_Mox8)
 
 ### What This Mod Changes
 
