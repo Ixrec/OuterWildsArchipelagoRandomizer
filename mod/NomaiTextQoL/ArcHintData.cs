@@ -87,40 +87,37 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
             {
                 if (rend.material.name.Contains("TextChild")) IsChildText = true;
             }
+            ItemFlags itemFlags = LocationScouter.ScoutedLocations[loc].Flags;
 
-            switch (LocationScouter.ScoutedLocations[loc].Flags)
+            if (itemFlags.HasFlag(ItemFlags.Advancement))
             {
-                case ItemFlags.None:
-                    DisplayImportance = CheckImportance.Filler;
-                    SetImportance(CheckImportance.Filler);
-                    break;
-                case ItemFlags.NeverExclude:
-                    DisplayImportance = CheckImportance.Useful;
-                    SetImportance(CheckImportance.Useful);
-                    break;
-                case ItemFlags.Advancement:
-                    DisplayImportance = CheckImportance.Progression;
-                    SetImportance(CheckImportance.Progression);
-                    break;
-                case ItemFlags.Trap:
-                    int rnd = Random.Range(0, 3);
-                    switch (rnd)
-                    {
-                        case 0:
-                            DisplayImportance = CheckImportance.Filler;
-                            break;
-                        case 1:
-                            DisplayImportance = CheckImportance.Useful;
-                            break;
-                        default:
-                            DisplayImportance = CheckImportance.Progression;
-                            break;
-                    }
-                    SetImportance(DisplayImportance);
-                    rend.material = IsChildText ? NormalTextMat : ChildTextMat;
-                    break;
+                DisplayImportance = CheckImportance.Progression;
+                SetImportance(CheckImportance.Progression);
+            } 
+            else if (itemFlags.HasFlag(ItemFlags.NeverExclude))
+            {
+                DisplayImportance = CheckImportance.Useful;
+                SetImportance(CheckImportance.Useful);
+            }
+            else if (itemFlags.HasFlag(ItemFlags.Trap))
+            {
+                int rnd = Random.Range(0, 3);
+                DisplayImportance = rnd switch
+                {
+                    0 => CheckImportance.Filler,
+                    1 => CheckImportance.Useful,
+                    _ => CheckImportance.Progression,
+                };
+                SetImportance(DisplayImportance);
+                rend.material = IsChildText ? NormalTextMat : ChildTextMat;
+            }
+            else
+            {
+                DisplayImportance = CheckImportance.Filler;
+                SetImportance(CheckImportance.Filler);
             }
         }
+
     }
 
 }
