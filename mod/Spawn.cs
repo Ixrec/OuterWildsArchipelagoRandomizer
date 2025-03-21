@@ -150,7 +150,7 @@ internal class Spawn
             Locator.GetPlayerCameraController().SetDegreesY(80f);
 
             var offsetFromPlanet = new Vector3(-6, 15, 285);
-            var offsetAngle = new Quaternion(0f, -0.7933533f, 0f, 0.6087614f) // equivalent to Rotate(0, -105, 0)
+            var offsetAngle = new Quaternion(0f, -0.7933533f, 0f, 0.6087614f); // equivalent to Rotate(0, -105, 0)
             var shipPos = brittleHollowOWRB.transform.TransformPoint(offsetFromPlanet);
             shipRigidBody.WarpToPositionRotation(shipPos, riebeckOldCampfireGO.transform.rotation * offsetAngle); 
 
