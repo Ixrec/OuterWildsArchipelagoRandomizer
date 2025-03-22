@@ -360,26 +360,15 @@ public class Logic
             // Check for Brittle Hollow warp connections
             switch (w1)
             {
-                case "BHF":
-                    bhfConnection = w2;
-                    break;
-                case "BHNG":
-                    bhngConnection = w2;
-                    break;
-                case "WHS":
-                    whsConnection = w2;
-                    break;
+                case "BHF": bhfConnection = w2; break;
+                case "BHNG": bhngConnection = w2; break;
+                case "WHS": whsConnection = w2; break;
             }
-            switch(w2) {
-                case "BHF":
-                    bhfConnection = w1;
-                    break;
-                case "BHNG":
-                    bhngConnection = w1;
-                    break;
-                case "WHS":
-                    whsConnection = w1;
-                    break;
+            switch (w2)
+            {
+                case "BHF": bhfConnection = w1; break;
+                case "BHNG": bhngConnection = w1; break;
+                case "WHS": whsConnection = w1; break;
             }
 
             var requirements = new List<TrackerRequirement>();
@@ -424,13 +413,17 @@ public class Logic
         // Conditionally add warp-based connection to Black Hole Forge
         List<string> hourglassTwins = ["ET", "ST", "ETT", "ATT", "THT", "BHT", "GDT"];
         List<string> brittleHollow = ["BHNG", "WHS"];
-        if (brittleHollow.Contains(bhfConnection) || (hourglassTwins.Contains(bhfConnection) && (hourglassTwins.Contains(bhngConnection) || hourglassTwins.Contains(whsConnection))))
+
+        bool hollowDirectlyConnectedToForge = brittleHollow.Contains(bhfConnection);
+        bool hollowAndTwinsConnected = hourglassTwins.Contains(bhngConnection) || hourglassTwins.Contains(whsConnection);
+        bool hollowIndirectlyConnectedToForge = hollowAndTwinsConnected && hourglassTwins.Contains(bhfConnection);
+
+        if (hollowDirectlyConnectedToForge || hollowIndirectlyConnectedToForge)
         {
             AddConnection(TrackerRegions, new()
             {
-                from = "Hanging City Ceiling",
-                to = "Forge via Warps",
-                requires = [new() { item = "Nomai Warp Codes" }]
+                from = "Forge via Warps Only",
+                to = "Black Hole Forge"
             });
         }
 
