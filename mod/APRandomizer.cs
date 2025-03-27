@@ -8,14 +8,13 @@ using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer;
 
@@ -330,28 +329,39 @@ public class APRandomizer : ModBehaviour
         }
     }
 
+    // Here we move received item processing off the websocket thread because this is believed to help prevent crashes
+    private static ConcurrentBag<long> ReceivedItemIds = new();
+    private void Update()
+    {
+        try
+        {
+            bool saveDataChanged = false;
+            while (ReceivedItemIds.TryTake(out var itemId))
+                saveDataChanged = SyncItemCountWithAPServer(itemId);
+
+            if (saveDataChanged)
+                WriteToSaveFile();
+        }
+        catch (Exception ex)
+        {
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Caught error in APSession_ItemReceived: '{ex.Message}'\n" +
+                $"{ex.StackTrace}",
+                MessageType.Error);
+        }
+    }
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
     {
         try
         {
             if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
 
-            bool saveDataChanged = false;
-
-            var receivedItems = new HashSet<long>();
             while (receivedItemsHelper.PeekItem() != null)
             {
                 var itemId = receivedItemsHelper.PeekItem().ItemId;
-                receivedItems.Add(itemId);
+                ReceivedItemIds.Add(itemId);
                 receivedItemsHelper.DequeueItem();
             }
-
-            OWMLModConsole.WriteLine($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
-            foreach (var itemId in receivedItems)
-                saveDataChanged = SyncItemCountWithAPServer(itemId);
-
-            if (saveDataChanged)
-                WriteToSaveFile();
         }
         catch (Exception ex)
         {
