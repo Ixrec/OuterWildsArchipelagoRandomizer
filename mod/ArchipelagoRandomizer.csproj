@@ -15,10 +15,10 @@
   <ItemGroup>
     <!-- remember not to update this without also re-vendoring it from Solution Explorer ->
 	Archipelago.MultiClient.Net.dll -> Properties -> Path to the git repo's mod/ folder -->
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.5.0" />
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
 
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OWML" Version="2.14.0" />
+    <PackageReference Include="OWML" Version="2.15.1" />
     <PackageReference Include="OuterWildsGameLibs" Version="1.1.15.1018" />
   </ItemGroup>
   <ItemGroup>
