@@ -423,7 +423,8 @@ public class Logic
             AddConnection(TrackerRegions, new()
             {
                 from = "Forge via Warps Only",
-                to = "Black Hole Forge"
+                to = "Black Hole Forge",
+                requires = []
             });
         }
 
