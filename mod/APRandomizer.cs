@@ -349,6 +349,9 @@ public class APRandomizer : ModBehaviour
                 $"{ex.StackTrace}",
                 MessageType.Error);
         }
+
+        // Manually invoke Update() methods on any non-Component classes that also want to do the "wait until Update()" workaround
+        DeathLinkManager.Update();
     }
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
     {
