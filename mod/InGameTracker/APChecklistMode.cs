@@ -67,13 +67,13 @@ public class APChecklistMode : ShipLogMode
     private List<ShipLogDisplayItem> checklistCategoryItems;
     private List<TrackerCategory> displayedCategories = null;
 
-    private static Dictionary<Victory.GoalSetting, (string, string, string)> goalDisplayMetadata = new Dictionary<Victory.GoalSetting, (string, string, string)> {
-        { Victory.GoalSetting.SongOfFive, ("Victory - Song of Five", "Reach the Eye", "DB_VESSEL") },
-        { Victory.GoalSetting.SongOfTheNomai, ("Victory - Song of the Nomai", "Reach the Eye after meeting Solanum", "QM_SIXTH_LOCATION") },
-        { Victory.GoalSetting.SongOfTheStranger, ("Victory - Song of the Stranger", "Reach the Eye after meeting the Prisoner", "IP_SARCOPHAGUS") },
-        { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", "DB_VESSEL") },
-        { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", "DB_VESSEL") },
-        { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", "IP_SARCOPHAGUS") },
+    private static Dictionary<Victory.GoalSetting, (string, string, bool, bool, string)> goalDisplayMetadata = new Dictionary<Victory.GoalSetting, (string, string, bool, bool, string)> {
+        { Victory.GoalSetting.SongOfFive, ("Victory - Song of Five", "Reach the Eye", false, false, "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfTheNomai, ("Victory - Song of the Nomai", "Reach the Eye after meeting Solanum", true, false, "QM_SIXTH_LOCATION") },
+        { Victory.GoalSetting.SongOfTheStranger, ("Victory - Song of the Stranger", "Reach the Eye after meeting the Prisoner", false, true, "IP_SARCOPHAGUS") },
+        { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", true, true, "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", true, true, "DB_VESSEL") },
+        { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", false, false, "IP_SARCOPHAGUS") },
     };
 
     // Runs when the mode is created
@@ -254,7 +254,17 @@ public class APChecklistMode : ShipLogMode
             string goalEventName = goalMetadata.Item1;
             TrackerInfo info = new();
             info.description = goalMetadata.Item2;
-            info.thumbnail = goalMetadata.Item3;
+            if (goalMetadata.Item3) // show whether you've met Solanum
+                if (Victory.hasMetSolanum())
+                    info.description += "\n- <color=lime>You have already met Solanum</color>";
+                else
+                    info.description += "\n- <color=red>You have not yet met Solanum</color>";
+            if (goalMetadata.Item4) // show whether you've met Prisoner
+                if (Victory.hasMetPrisoner())
+                    info.description += "\n- <color=lime>You have already met the Prisoner</color>";
+                else
+                    info.description += "\n- <color=red>You have not yet met the Prisoner</color>";
+            info.thumbnail = goalMetadata.Item5;
 
             string displayName = Regex.Replace(goalEventName, "Victory - ", "");
 
