@@ -145,6 +145,12 @@ public class APRandomizer : ModBehaviour
                 {
                     MainMenu.ChangeConnInfoGO?.SetActive(false);
                     MainMenu.ResumeRandomExpeditionGO?.SetActive(false);
+
+                    // warn about overriding a vanilla/story mod profile
+                    OWMLModConsole.WriteLine($"CreateInfoPopup! {profileName}");
+                    var p = ModHelper.MenuHelper.PopupMenuManager.CreateInfoPopup($"The current profile ({profileName}) appears to have save data for a non-randomized expedition. " +
+                        $"Please be aware that using New Random Expedition will delete this existing save data. If you don't want that, create a new profile first.", "OK");
+                    p.EnableMenu(true);
                 }
             }
             else
