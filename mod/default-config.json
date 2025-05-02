@@ -15,6 +15,12 @@
       "tooltip": "In places where the vanilla game and randomizer logic expect you to find a safe path using the camera, this randomizes which path is safe each loop."
     },
 
+    "Randomize Stranger Codes": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "Randomizes the codes for code totems on the Stranger and in the Dreamworld. Only works if randomized coordinates are enabled."
+    },
+
     "Death Link Override": {
       "type": "selector",
       "value": "No Override",
