@@ -24,7 +24,7 @@ public static class Coordinates
         }
     }
 
-    private static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = null;
+    internal static List<List<CoordinateDrawing.CoordinatePoint>> correctCoordinates = null;
 
     public static void SetCorrectCoordinatesFromSlotData(object coordsSlotData)
     {

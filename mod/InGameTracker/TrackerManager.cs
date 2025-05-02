@@ -105,6 +105,7 @@ public class TrackerManager : MonoBehaviour
             suitApi.ItemListMake(itemList =>
             {
                 Coordinates.EnsureShipLogCoordsSpriteCreated();
+                TotemCodes.EnsureCodeSpriteCreated();
                 SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
                 wrapper.DescriptionFieldOpen();
                 suitInventoryMode.Wrapper = wrapper;
@@ -121,6 +122,7 @@ public class TrackerManager : MonoBehaviour
             suitApi.ItemListMake(itemList =>
             {
                 Coordinates.EnsureShipLogCoordsSpriteCreated();
+                TotemCodes.EnsureCodeSpriteCreated();
                 SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
                 wrapper.DescriptionFieldOpen();
                 suitChecklistMode.ChecklistWrapper = wrapper;
