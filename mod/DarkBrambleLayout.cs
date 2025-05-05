@@ -274,20 +274,25 @@ internal class DarkBrambleLayout
                 // Most commonly, the _linkedInnerWarpVolume is one of DB's exits to space.
                 // We don't need to change these, so there's no code for them.
 
-                // Three OFWVs link to the "previous" room, so we need to change those to match our new layout.
-                if (newOFWVLink == RoomToOFWV[DBRoom.SmallNest] || newOFWVLink == RoomToOFWV[DBRoom.EscapePod] || newOFWVLink == RoomToOFWV[DBRoom.Cluster])
+                // Four OFWVs link to a "previous" room (Pioneer goes "two rooms back" in vanilla), so we need to decide what to do with those
+                if (newOFWVLink == RoomToOFWV[DBRoom.SmallNest] || newOFWVLink == RoomToOFWV[DBRoom.EscapePod]
+                    || newOFWVLink == RoomToOFWV[DBRoom.Cluster] || newOFWVLink == RoomToOFWV[DBRoom.Pioneer])
                 {
-                    // Unlike the vanilla layout, it's possible for there to be multiple entrances to one of these rooms,
-                    // but an OFWV can only have one "exit" / linked IFWV. We simply let the last entrance "win".
-                    ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume = ifwv;
-                }
-
-                // The one unique case is Pioneer's OFWV linking "two zones back" to Hub.
-                // I don't think it's worth figuring out what "two zones back" should mean in all possible randomized DB layouts,
-                // so let's just edit this one to also go directly outside.
-                if (newOFWVLink == RoomToOFWV[DBRoom.Pioneer])
-                {
-                    RoomToOFWV[DBRoom.Pioneer]._linkedInnerWarpVolume = EntranceIFVW;
+                    // Unlike the vanilla layout, it's possible for there to be multiple entrances to one of these rooms, but an OFWV can only have one "exit" / linked IFWV,
+                    // so there's no unambiguous "previous room" for us to point these to.
+                    // Since you need to be able to leave and reenter potentially all of DB after shooting your Scout into the Nomai Grave seed,
+                    // we also need to ensure these "exits" can't trap the player in an inescapable warp loop.
+                    // I believe the only safe places for these exits to go to are outer space or the first DB room.
+                    if (room != CurrentDBLayout.entrance)
+                    {
+                        // When we have a choice between first room and outer space, we go with first room
+                        // because it's slightly more interesting and closer to vanilla's behavior.
+                        ifwv._linkedOuterWarpVolume._linkedInnerWarpVolume =
+                            // But we don't really care which IFWV we use for the first room, so just pick whatever's first in our lists.
+                            WarpToIFWVs[WarpsInRoom[CurrentDBLayout.entrance][0]][0];
+                    }
+                    // If we've re-entered this layout's first room, then do nothing.
+                    // It already exits to space and I don't think we want to change that.
                 }
             }
         }

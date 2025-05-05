@@ -28,12 +28,15 @@ public class Victory
             APRandomizer.OWMLModConsole.WriteLine($"{goal} is not a valid goal setting", OWML.Common.MessageType.Error);
     }
 
+    public static bool hasMetSolanum() => PlayerData.GetPersistentCondition("MET_SOLANUM");
+    public static bool hasMetPrisoner() => PlayerData.GetPersistentCondition("MET_PRISONER");
+
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
         if (loadScene != OWScene.EyeOfTheUniverse) return;
 
-        var metSolanum = PlayerData.GetPersistentCondition("MET_SOLANUM");
-        var metPrisoner = PlayerData.GetPersistentCondition("MET_PRISONER");
+        var metSolanum = hasMetSolanum();
+        var metPrisoner = hasMetPrisoner();
 
         APRandomizer.OWMLModConsole.WriteLine($"EyeOfTheUniverse scene loaded.\n" +
             $"MET_SOLANUM: {metSolanum}\n" +

@@ -67,13 +67,16 @@ public class DeathLinkManager
         }
     }
 
+    // Here we move received death link processing off the websocket thread because this is believed to help prevent crashes
+    private static DeathLink? lastDeathLinkObjectReceived = null;
+
     private static void EnableDeathLinkImplHelper()
     {
         if (service == null)
         {
             service = APRandomizer.APSession.CreateDeathLinkService();
             service.EnableDeathLink();
-            service.OnDeathLinkReceived += OnDeathLinkReceived;
+            service.OnDeathLinkReceived += deathLinkObject => lastDeathLinkObjectReceived = deathLinkObject;
         }
     }
 
@@ -87,6 +90,15 @@ public class DeathLinkManager
             OnDeathLinkReceived(new DeathLink("death link test player", "death link test cause"));
         }
     }*/
+
+    public static void Update() {
+        if (lastDeathLinkObjectReceived != null)
+        {
+            var deathLinkObject = lastDeathLinkObjectReceived;
+            lastDeathLinkObjectReceived = null;
+            OnDeathLinkReceived(deathLinkObject);
+        }
+    }
 
     private static void OnDeathLinkReceived(DeathLink deathLinkObject)
     {

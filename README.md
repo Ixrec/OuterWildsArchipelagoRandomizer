@@ -22,6 +22,10 @@ Let's say I'm playing Outer Wilds, and my friend is playing Ocarina of Time. Whe
 
 In essence, a multi-game randomizer system like Archipelago allows a group of friends to each bring whatever games they want (if they have an Archipelago mod) and smush them all together into one big cooperative multiplayer experience.
 
+Some people have even made Youtube videos of their randomizer playthroughs. Of the ones I've seen, Quothe's and Skurry's are the best at demonstrating what a typical Outer Wilds randomizer playthrough is like (without the "multi-game" aspect of Archipelago):
+
+[<img src="https://img.youtube.com/vi/6SZ-xhBVjq0/hqdefault.jpg" width="300"/>](https://www.youtube.com/watch?v=6SZ-xhBVjq0) [<img src="https://img.youtube.com/vi/ppsY9X_Mox8/hqdefault.jpg" width="300"/>](https://www.youtube.com/watch?v=ppsY9X_Mox8)
+
 ### What This Mod Changes
 
 Randomizers in the Archipelago sense—which are sometimes called "Metroidvania-style" or "progression-based" randomizers—rely on the base game having several progression-blocking items you must find in order to complete the game.
@@ -82,7 +86,8 @@ For a more complex multiworld, you'd put one `.yaml` file in the `\Players` fold
 - In the Outer Wilds Mod Manager, click on "Get Mods", search for "Archipelago Randomizer", and once you see this mod listed, click the install button to the right of it (if you were wondering about the .zip file we didn't download earlier, that's what the Mod Manager is installing).
 - (**Optional: Other Mods**) Some other mods that I personally like to play with, and that this randomizer is compatible with, include: "Clock" (exactly what it sounds like), "Cheat and Debug Menu" (for its fast-forward button), and "Suit Log" (access the ship log from your suit).
 - Now click the big green Run Game button. Note that you must launch Outer Wilds through the Mod Manager in order for the mods to be applied; launching from Steam won't work.
-- Once you're at the main menu of Outer Wilds itself, click "New Random Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml` (or used multiple `.yaml`s), your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
+- Once you're at the main menu of Outer Wilds itself, make sure your current profile / save file is one you're fine with overwriting. If you aren't sure: click Switch Profile to see a menu with all of your existing profiles, as well as the option to create a brand new profile. Return to the main menu when you're sure you're on the profile you want.
+- Now click "New Random Expedition", and you will be asked for connection info such as the hostname and port number. Unless you edited `Outer.Wilds.yaml` (or used multiple `.yaml`s), your slot/player name will be "Hearthian1". And by default, archipelago.gg rooms have no password.
 
 #### What if I want to run a pre-release version for testing, or downgrade to an older version of this mod (so I can finish a longer async)?
 

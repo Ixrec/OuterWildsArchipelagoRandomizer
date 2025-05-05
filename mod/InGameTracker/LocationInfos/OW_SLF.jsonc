@@ -126,27 +126,27 @@
     },
     {
         "locationModID": "SLF__QM_SIXTH_LOCATION_X2",
-        "description": "Identify the Quantum Moon to learn about it.",
-        "thumbnail": "QM_SIXTH_LOCATION"
-    },
-    {
-        "locationModID": "SLF__QM_SIXTH_LOCATION_X3",
-        "description": "Identify the Eye to see that the Quantum Moon reflects the Eye.",
-        "thumbnail": "QM_SIXTH_LOCATION"
-    },
-    {
-        "locationModID": "SLF__QM_SIXTH_LOCATION_X4",
-        "description": "Explain the Quantum Moon to learn about the Eye's macroscopic properties.",
-        "thumbnail": "QM_SIXTH_LOCATION"
-    },
-    {
-        "locationModID": "SLF__QM_SIXTH_LOCATION_X5",
         "description": "Explain the Eye to muse on what would happen should a conscious observer enter it.",
         "thumbnail": "QM_SIXTH_LOCATION"
     },
     {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X3",
+        "description": "Identify the Quantum Moon to learn what it is.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X4",
+        "description": "Explain the Eye to learn about its macroscopic properties.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
+        "locationModID": "SLF__QM_SIXTH_LOCATION_X5",
+        "description": "Identify the Eye to learn how the Quantum Moon reflects it.",
+        "thumbnail": "QM_SIXTH_LOCATION"
+    },
+    {
         "locationModID": "SLF__QM_SIXTH_LOCATION_X6",
-        "description": "Combine blue symbols to reveal the lone Nomai's uncertainty.",
+        "description": "Combine 'You' with 'Quantum Moon' to reveal the lone Nomai's uncertainty.",
         "thumbnail": "QM_SIXTH_LOCATION"
     }
 ]

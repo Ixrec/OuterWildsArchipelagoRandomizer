@@ -8,14 +8,13 @@ using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace ArchipelagoRandomizer;
 
@@ -243,7 +242,7 @@ public class APRandomizer : ModBehaviour
         {
             var apworld_version = (string)SlotData["apworld_version"];
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "0.3.11";
+            var mod_version = "0.3.14";
             if (apworld_version != mod_version)
                 ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
@@ -330,28 +329,42 @@ public class APRandomizer : ModBehaviour
         }
     }
 
+    // Here we move received item processing off the websocket thread because this is believed to help prevent crashes
+    private static ConcurrentBag<long> ReceivedItemIds = new();
+    private void Update()
+    {
+        try
+        {
+            bool saveDataChanged = false;
+            while (ReceivedItemIds.TryTake(out var itemId))
+                saveDataChanged = SyncItemCountWithAPServer(itemId);
+
+            if (saveDataChanged)
+                WriteToSaveFile();
+        }
+        catch (Exception ex)
+        {
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Caught error in APSession_ItemReceived: '{ex.Message}'\n" +
+                $"{ex.StackTrace}",
+                MessageType.Error);
+        }
+
+        // Manually invoke Update() methods on any non-Component classes that also want to do the "wait until Update()" workaround
+        DeathLinkManager.Update();
+    }
     private static void APSession_ItemReceived(IReceivedItemsHelper receivedItemsHelper)
     {
         try
         {
             if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
 
-            bool saveDataChanged = false;
-
-            var receivedItems = new HashSet<long>();
             while (receivedItemsHelper.PeekItem() != null)
             {
                 var itemId = receivedItemsHelper.PeekItem().ItemId;
-                receivedItems.Add(itemId);
+                ReceivedItemIds.Add(itemId);
                 receivedItemsHelper.DequeueItem();
             }
-
-            OWMLModConsole.WriteLine($"ItemReceived event with item ids {string.Join(", ", receivedItems)}. Updating these item counts.");
-            foreach (var itemId in receivedItems)
-                saveDataChanged = SyncItemCountWithAPServer(itemId);
-
-            if (saveDataChanged)
-                WriteToSaveFile();
         }
         catch (Exception ex)
         {
