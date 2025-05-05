@@ -1,7 +1,9 @@
 ﻿using HarmonyLib;
 using OWML.Common;
-using System.Drawing;
 using UnityEngine;
+using System.Security.Cryptography;
+using System.Text;
+using System;
 
 namespace ArchipelagoRandomizer;
 
@@ -24,14 +26,10 @@ internal class TotemCodes
     {
         if (loadScene != OWScene.SolarSystem) return;
 
-        if (RandomizeCodes && Coordinates.correctCoordinates != null)
+        if (RandomizeCodes)
         {
-            int seed = 0;
-            for (int i = 0; i < Coordinates.correctCoordinates.Count; i++) // Convert EotU coordinates to a seed for the randomizer, ensuring consistent codes between loops
-                for (int j = 0; j < Coordinates.correctCoordinates[i].Count; j++)
-                    seed += ((int)Coordinates.correctCoordinates[i][j]) * ((6 * i) + j + 1) * 18;
-
-            System.Random codeRng = new System.Random(seed);
+            MD5 hasher = MD5.Create(); // The room seed is a string, so we hash it to get our seed
+            System.Random codeRng = new System.Random(BitConverter.ToInt32(hasher.ComputeHash(Encoding.UTF8.GetBytes(APRandomizer.APSession.RoomState.Seed)), 0));
 
             for (int i = 0; i < 5; i++)
             {
@@ -60,7 +58,7 @@ internal class TotemCodes
     public static void RingWorldController_OnEnterInsideVolume(RingWorldController __instance)
     {
         // If we edit the visible codes too early, they get stuck on a low resolution texture
-        if (RandomizeCodes && Coordinates.correctCoordinates != null)
+        if (RandomizeCodes)
         {
             APRandomizer.OWMLModConsole.WriteLine($"RingWorldController_OnEnterInsideVolume altering totem codes");
             // Change the code paper for the temple code in the code room
@@ -97,7 +95,7 @@ internal class TotemCodes
     [HarmonyPrefix, HarmonyPatch(typeof(DreamWorldController), nameof(DreamWorldController.EnterDreamWorld))]
     public static void DreamWorldController_EnterDreamWorld(DreamWorldController __instance)
     {
-        if (RandomizeCodes && Coordinates.correctCoordinates != null)
+        if (RandomizeCodes)
         {
             // Set the Dreamworld vault codes
             APRandomizer.OWMLModConsole.WriteLine($"DreamWorldController_EnterDreamWorld altering vault codes");
@@ -127,7 +125,7 @@ internal class TotemCodes
 
     public static void EnsureCodeSpriteCreated()
     {
-        if (RandomizeCodes == false || Coordinates.correctCoordinates != null) return;
+        if (RandomizeCodes == false) return;
 
         if (logManager != null)
         {
