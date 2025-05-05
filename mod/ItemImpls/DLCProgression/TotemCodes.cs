@@ -24,7 +24,7 @@ internal class TotemCodes
     {
         if (loadScene != OWScene.SolarSystem) return;
 
-        if (RandomizeCodes)
+        if (RandomizeCodes && Coordinates.correctCoordinates != null)
         {
             int seed = 0;
             for (int i = 0; i < Coordinates.correctCoordinates.Count; i++) // Convert EotU coordinates to a seed for the randomizer, ensuring consistent codes between loops
@@ -59,6 +59,7 @@ internal class TotemCodes
     [HarmonyPrefix, HarmonyPatch(typeof(RingWorldController), nameof(RingWorldController.OnEnterInsideVolume))]
     public static void RingWorldController_OnEnterInsideVolume(RingWorldController __instance)
     {
+        // If we edit the visible codes too early, they get stuck on a low resolution texture
         if (RandomizeCodes && Coordinates.correctCoordinates != null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"RingWorldController_OnEnterInsideVolume altering totem codes");
@@ -116,8 +117,6 @@ internal class TotemCodes
     public static void ShipLogManager_Awake_Prefix(ShipLogManager __instance)
     {
         logManager = __instance;
-
-        //APRandomizer.OWMLModConsole.WriteLine($"ShipLogManager_Awake_Prefix editing ship log entry for EotU coordinates");
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
@@ -128,7 +127,7 @@ internal class TotemCodes
 
     public static void EnsureCodeSpriteCreated()
     {
-        if (RandomizeCodes == false) return;
+        if (RandomizeCodes == false || Coordinates.correctCoordinates != null) return;
 
         if (logManager != null)
         {
