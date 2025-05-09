@@ -129,10 +129,10 @@ internal class TotemCodes
 
         if (logManager != null)
         {
-            ShipLogEntry ptmGeneratedEntry = null;
+            ShipLogEntry templeGeneratedEntry = null;
             var generatedEntryList = logManager.GetEntryList();
             if (generatedEntryList != null)
-                ptmGeneratedEntry = generatedEntryList.Find(entry => entry.GetID() == "IP_ZONE_2_CODE");
+                templeGeneratedEntry = generatedEntryList.Find(entry => entry.GetID() == "IP_ZONE_2_CODE");
 
             var tex = CodeAssets.LoadAsset<Texture2D>("CodeBackground"); // [!] Change to load from the main assetbundle
             var icons = CodeAssets.LoadAsset<Texture2D>("CodeIcons");
@@ -143,7 +143,7 @@ internal class TotemCodes
             tex.Apply();
             templeCodeSprite = Sprite.Create(tex, new Rect(0, 0, 512, 512), new Vector2(0.5f, 0.5f));
 
-            ptmGeneratedEntry?.SetAltSprite(templeCodeSprite);
+            templeGeneratedEntry?.SetAltSprite(templeCodeSprite);
         }
     }
 }
