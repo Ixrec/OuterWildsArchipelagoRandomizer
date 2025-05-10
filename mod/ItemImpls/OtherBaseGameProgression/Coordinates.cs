@@ -117,14 +117,8 @@ public static class Coordinates
         shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
     }
 
-    // wait until the player accesses the ship log to update its sprites
-    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
-    public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
+    public static void EnsureShipLogPTMEntrySpriteEdited()
     {
-        if (correctCoordinates == null) return;
-
-        //APRandomizer.OWMLModConsole.WriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
-
         if (logManager != null)
         {
             ShipLogEntry ptmGeneratedEntry = null;
@@ -151,6 +145,17 @@ public static class Coordinates
                 ptmGeneratedEntry?.SetAltSprite(s);
             }
         }
+    }
+
+    // wait until the player accesses the ship log to update its sprites
+    [HarmonyPrefix, HarmonyPatch(typeof(ShipLogController), nameof(ShipLogController.EnterShipComputer))]
+    public static void ShipLogController_EnterShipComputer_Prefix(ShipLogController __instance)
+    {
+        if (correctCoordinates == null) return;
+
+        //APRandomizer.OWMLModConsole.WriteLine($"ShipLogController_EnterShipComputer_Prefix({_hasCoordinates}) updating ship log entry sprite for EotU coordinates");
+
+        EnsureShipLogPTMEntrySpriteEdited();
     }
 
     // the prompt accepts rectangular sprites without issue, so use our default 600 x 200 size

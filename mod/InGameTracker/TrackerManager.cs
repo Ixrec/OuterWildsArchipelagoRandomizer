@@ -104,7 +104,8 @@ public class TrackerManager : MonoBehaviour
             suitApi.AddMode(suitInventoryMode, () => true, () => "AP Inventory");
             suitApi.ItemListMake(itemList =>
             {
-                Coordinates.EnsureShipLogCoordsSpriteCreated();
+                Coordinates.EnsureShipLogCoordsSpriteCreated(); // in case the player selects the Mission or EotU Coords entries (in AP modes)
+                Coordinates.EnsureShipLogPTMEntrySpriteEdited(); // in case the player selects the PTM entries (vanilla or AP)
                 SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
                 wrapper.DescriptionFieldOpen();
                 suitInventoryMode.Wrapper = wrapper;
@@ -120,7 +121,8 @@ public class TrackerManager : MonoBehaviour
             });
             suitApi.ItemListMake(itemList =>
             {
-                Coordinates.EnsureShipLogCoordsSpriteCreated();
+                Coordinates.EnsureShipLogCoordsSpriteCreated(); // in case the player selects the Mission or EotU Coords entries (in AP modes)
+                Coordinates.EnsureShipLogPTMEntrySpriteEdited(); // in case the player selects the PTM entries (vanilla or AP)
                 SuitLogItemListWrapper wrapper = new SuitLogItemListWrapper(suitApi, itemList);
                 wrapper.DescriptionFieldOpen();
                 suitChecklistMode.ChecklistWrapper = wrapper;
