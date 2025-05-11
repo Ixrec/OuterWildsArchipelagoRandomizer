@@ -454,7 +454,9 @@ public class APRandomizer : ModBehaviour
 
         // Set up the console first so it can be safely used even in the various Setup() methods
         Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
-        TotemCodes.CodeAssets = ModHelper.Assets.LoadBundle("Assets/strangercodeassets"); // [!] This is a temporary assetbundle because I lack the ability to edit the main assetbundle
+        // TODO: combine these two bundles if I ever do get around to learning asset bundle editing,
+        // or else take advantage of the separation by not loading this one when the DLC is unrandomized
+        TotemCodes.CodeAssets = ModHelper.Assets.LoadBundle("Assets/strangercodeassets");
         InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
         Tracker = gameObject.AddComponent<TrackerManager>();

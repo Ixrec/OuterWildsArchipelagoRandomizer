@@ -20,7 +20,7 @@ internal class TotemCodes
 
     private static int[] nullCode = [0, 0, 0, 0, 0];
 
-    internal static AssetBundle CodeAssets; //[!] Ideally, this would be a part of the main assetbundle. I don't have the ability to edit that, so this temporary assetbundle exists instead
+    internal static AssetBundle CodeAssets;
 
     public static void OnCompleteSceneLoad(OWScene scene, OWScene loadScene)
     {
