@@ -258,14 +258,16 @@ public class DeathLinkManager
             return;
         }
 
+        // this condition is copy-pasted from the KillPlayer() method
+        var willCallExitDreamworld = (PlayerState.InDreamWorld() && deathType != DeathType.Dream && deathType != DeathType.DreamExplosion && deathType != DeathType.Supernova && deathType != DeathType.TimeLoop && deathType != DeathType.Meditation);
+
         if (effectiveSetting == DeathLinkSetting.Default) {
             if (deathType == DeathType.Meditation || deathType == DeathType.Supernova || deathType == DeathType.TimeLoop || deathType == DeathType.BigBang)
             {
                 APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is only set to Default");
                 return;
             }
-            // this condition is copy-pasted from the KillPlayer() method
-            if (PlayerState.InDreamWorld() && deathType != DeathType.Dream && deathType != DeathType.DreamExplosion && deathType != DeathType.Supernova && deathType != DeathType.TimeLoop && deathType != DeathType.Meditation)
+            if (willCallExitDreamworld)
             {
                 APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death since death_link is only set to Default, " +
                     $"and this 'death' will merely exit the dreamworld.");
@@ -277,6 +279,13 @@ public class DeathLinkManager
                     $"and this 'death' will merely enter the dreamworld.");
                 return;
             }
+        }
+
+        if (effectiveSetting == DeathLinkSetting.AllDeaths && willCallExitDreamworld && PlayerState.IsResurrected())
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer patch ignoring {deathType} death despite the AllDeaths setting since the player is 'dead irl' " +
+                "and KillPlayer(DeathType.Dream) will be called momentarily. Even on AllDeaths, we don't want to generate 2 death links for 1 death.");
+            return;
         }
 
         APRandomizer.OWMLModConsole.WriteLine($"DeathManager.KillPlayer detected a {deathType} death, sending to AP server");
