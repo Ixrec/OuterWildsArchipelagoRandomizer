@@ -454,6 +454,9 @@ public class APRandomizer : ModBehaviour
 
         // Set up the console first so it can be safely used even in the various Setup() methods
         Assets = ModHelper.Assets.LoadBundle("Assets/archrandoassets");
+        // TODO: combine these two bundles if I ever do get around to learning asset bundle editing,
+        // or else take advantage of the separation by not loading this one when the DLC is unrandomized
+        TotemCodes.CodeAssets = ModHelper.Assets.LoadBundle("Assets/strangercodeassets");
         InGameAPConsole = gameObject.AddComponent<ArchConsoleManager>();
 
         Tracker = gameObject.AddComponent<TrackerManager>();
@@ -468,6 +471,7 @@ public class APRandomizer : ModBehaviour
             Jellyfish.OnCompleteSceneLoad(scene, loadScene);
             GhostMatterWavelength.OnCompleteSceneLoad(scene, loadScene);
             GhostMatterPlacement.OnCompleteSceneLoad(scene, loadScene);
+            TotemCodes.OnCompleteSceneLoad(scene, loadScene);
             Victory.OnCompleteSceneLoad(scene, loadScene);
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
@@ -569,6 +573,7 @@ public class APRandomizer : ModBehaviour
         DeathLinkManager.ApplyOverrideSetting();
         SuitResources.ModSettingsChanged(config);
         GhostMatterPlacement.ModSettingsChanged(config);
+        TotemCodes.ModSettingsChanged(config);
     }
 
 }
