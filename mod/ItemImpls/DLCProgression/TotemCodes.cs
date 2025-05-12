@@ -18,8 +18,6 @@ internal class TotemCodes
     private static int[] jammerCode = [4, 6, 7, 6, 7];
     private static int[] templeCode = [0, 3, 0, 5, 5];
 
-    private static int[] nullCode = [0, 0, 0, 0, 0];
-
     internal static AssetBundle CodeAssets;
 
     public static void OnCompleteSceneLoad(OWScene scene, OWScene loadScene)
@@ -29,8 +27,8 @@ internal class TotemCodes
         if (RandomizeCodes)
         {
             MD5 hasher = MD5.Create(); // The room seed is a string, so we hash it to get our seed
-            System.Random codeRng = new System.Random(BitConverter.ToInt32(hasher.ComputeHash(Encoding.UTF8.GetBytes(APRandomizer.APSession.RoomState.Seed)), 0));
-
+            System.Random codeRng = new System.Random(BitConverter.ToInt32(hasher.ComputeHash(Encoding.UTF8.GetBytes(APRandomizer.APSession.RoomState.Seed)), 0) + APRandomizer.APSession.ConnectionInfo.Slot);
+            
             for (int i = 0; i < 5; i++)
             {
                 vaultCode1[i] = codeRng.Next(8);
@@ -41,11 +39,11 @@ internal class TotemCodes
             }
 
             // If any of the codes would be all 0 (the default input when a player finds a code totem), reset the code to the default
-            jammerCode = jammerCode == nullCode ? [4, 6, 7, 6, 7] : jammerCode;
-            templeCode = templeCode == nullCode ? [0, 3, 0, 5, 5] : templeCode;
-            vaultCode1 = vaultCode1 == nullCode ? [5, 0, 2, 6, 5] : vaultCode1;
-            vaultCode2 = vaultCode2 == nullCode ? [5, 4, 3, 7, 2] : vaultCode2;
-            vaultCode3 = vaultCode3 == nullCode ? [1, 2, 3, 2, 1] : vaultCode3;
+            jammerCode = IsCodeNull(jammerCode) ? [4, 6, 7, 6, 7] : jammerCode;
+            templeCode = IsCodeNull(templeCode) ? [0, 3, 0, 5, 5] : templeCode;
+            vaultCode1 = IsCodeNull(vaultCode1) ? [5, 0, 2, 6, 5] : vaultCode1;
+            vaultCode2 = IsCodeNull(vaultCode2) ? [5, 4, 3, 7, 2] : vaultCode2;
+            vaultCode3 = IsCodeNull(vaultCode3) ? [1, 2, 3, 2, 1] : vaultCode3;
         }
     }
 
@@ -145,5 +143,13 @@ internal class TotemCodes
 
             templeGeneratedEntry?.SetAltSprite(templeCodeSprite);
         }
+    }
+
+    public static bool IsCodeNull(int[] code)
+    {
+        foreach (int number in code)
+            if (number != 0)
+                return true;
+        return false;
     }
 }
