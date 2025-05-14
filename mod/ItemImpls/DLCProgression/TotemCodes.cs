@@ -149,7 +149,7 @@ internal class TotemCodes
     {
         foreach (int number in code)
             if (number != 0)
-                return true;
-        return false;
+                return false;
+        return true;
     }
 }
