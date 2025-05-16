@@ -89,40 +89,61 @@ public static class CoordinateDrawing
 
     private static void drawCoordinates(Texture2D tex, Color foreground, Color background, List<HexagonalCoordinate> coordinates, bool doKerning)
     {
-        var width = tex.width;
-        var textureHeight = tex.height;
-        foreach (var x in Enumerable.Range(0, width))
-            foreach (var y in Enumerable.Range(0, textureHeight))
-                tex.SetPixel(x, y, background);
-
-        // We always draw the coordinates horizontally, so an X by Y texture of N coords
-        // will be split into chunks of width X/N and height Y.
-        var maxWidthPerHexagon = width / coordinates.Count;
-
-        int hexagonRadius = (int)Math.Round(maxWidthPerHexagon * 0.4);
-
-        // how much we reduce the visual width of a coordinate if it doesn't use its
-        // leftmost or rightmost point, as a fraction of the full hexagon width
-        var kerningOffset = doKerning ? 0.20 : 0;
-
-        int totalXOffset = 0;
-        for (var i = 0; i < coordinates.Count; i++)
+        if (tex == null)
         {
-            var coordinate = coordinates[i];
-
-            var hexagonOffset = (maxWidthPerHexagon / 2);
-            if (!coordinate.Contains(CoordinatePoint.Left)) hexagonOffset -= (int)(maxWidthPerHexagon * kerningOffset);
-
-            var center = new Vector2Int(totalXOffset + hexagonOffset, textureHeight / 2);
-            drawCoordinate(tex, center, hexagonRadius, foreground, background, coordinate);
-
-            var hexagonWidth = maxWidthPerHexagon;
-            if (!coordinate.Contains(CoordinatePoint.Left)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
-            if (!coordinate.Contains(CoordinatePoint.Right)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
-            totalXOffset += hexagonWidth;
+            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with a null texture somehow", OWML.Common.MessageType.Error);
+            return;
+        }
+        if (coordinates == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with null coordinates somehow", OWML.Common.MessageType.Error);
+            return;
         }
 
-        tex.Apply();
+        try
+        {
+            var width = tex.width;
+            var textureHeight = tex.height;
+            foreach (var x in Enumerable.Range(0, width))
+                foreach (var y in Enumerable.Range(0, textureHeight))
+                    tex.SetPixel(x, y, background);
+
+            // We always draw the coordinates horizontally, so an X by Y texture of N coords
+            // will be split into chunks of width X/N and height Y.
+            var maxWidthPerHexagon = width / coordinates.Count;
+
+            int hexagonRadius = (int)Math.Round(maxWidthPerHexagon * 0.4);
+
+            // how much we reduce the visual width of a coordinate if it doesn't use its
+            // leftmost or rightmost point, as a fraction of the full hexagon width
+            var kerningOffset = doKerning ? 0.20 : 0;
+
+            int totalXOffset = 0;
+            for (var i = 0; i < coordinates.Count; i++)
+            {
+                var coordinate = coordinates[i];
+
+                var hexagonOffset = (maxWidthPerHexagon / 2);
+                if (!coordinate.Contains(CoordinatePoint.Left)) hexagonOffset -= (int)(maxWidthPerHexagon * kerningOffset);
+
+                var center = new Vector2Int(totalXOffset + hexagonOffset, textureHeight / 2);
+                drawCoordinate(tex, center, hexagonRadius, foreground, background, coordinate);
+
+                var hexagonWidth = maxWidthPerHexagon;
+                if (!coordinate.Contains(CoordinatePoint.Left)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
+                if (!coordinate.Contains(CoordinatePoint.Right)) hexagonWidth -= (int)(maxWidthPerHexagon * kerningOffset);
+                totalXOffset += hexagonWidth;
+            }
+
+            tex.Apply();
+        }
+        catch (Exception ex)
+        {
+            APRandomizer.OWMLModConsole.WriteLine(
+                $"Caught exception in drawCoordinates: '{ex.Message}'\n" +
+                $"{ex.StackTrace}",
+                OWML.Common.MessageType.Error);
+        }
     }
 
     private static void drawCoordinate(Texture2D tex, Vector2Int center, int hexagonRadius, Color color, Color backgroundColor, HexagonalCoordinate coordinate)
