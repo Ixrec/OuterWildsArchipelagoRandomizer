@@ -91,12 +91,12 @@ public static class CoordinateDrawing
     {
         if (tex == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with a null texture somehow", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with a null texture somehow: {new System.Diagnostics.StackTrace(true)}", OWML.Common.MessageType.Error);
             return;
         }
         if (coordinates == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with null coordinates somehow", OWML.Common.MessageType.Error);
+            APRandomizer.OWMLModConsole.WriteLine($"drawCoordinates() called with null coordinates somehow: {new System.Diagnostics.StackTrace(true)}", OWML.Common.MessageType.Error);
             return;
         }
 
