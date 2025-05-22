@@ -5,7 +5,7 @@ namespace ArchipelagoRandomizer
     [HarmonyPatch]
     internal class SuitPunctureTrap
     {
-        public static uint _suitPunctureTraps;
+        private static uint _suitPunctureTraps;
 
         public static uint suitPunctureTraps
         {
