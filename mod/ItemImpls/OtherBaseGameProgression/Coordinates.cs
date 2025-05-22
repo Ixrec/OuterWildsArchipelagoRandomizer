@@ -137,7 +137,8 @@ public static class Coordinates
             if (_hasCoordinates)
             {
                 EnsureShipLogCoordsSpriteCreated();
-                ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
+                if (shipLogCoordsSprite != null)
+                    ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
             }
             else
             {
