@@ -114,7 +114,15 @@ public static class Coordinates
     {
         // just recreate it every time we enter ship or suit log to be safe
         // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-        shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
+        if (correctCoordinates != null)
+        {
+            shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(
+                shipLogCoordsTexture,
+                correctCoordinates,
+                UnityEngine.Color.black,
+                doKerning: false
+            );
+        }
     }
 
     public static void EnsureShipLogPTMEntrySpriteEdited()
