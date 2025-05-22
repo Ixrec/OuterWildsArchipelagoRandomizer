@@ -69,6 +69,7 @@ public enum Item
     ShipDamageTrap,
     AudioTrap,
     NapTrap,
+    SuitPunctureTrap,
     // end of non-unique items
 
     FrequencyDSR,
@@ -184,6 +185,7 @@ public static class ItemNames
         { Item.ShipDamageTrap, "Ship Damage Trap" },
         { Item.AudioTrap, "Audio Trap" },
         { Item.NapTrap, "Nap Trap" },
+        { Item.SuitPunctureTrap, "Suit Puncture Trap" },
 
         { Item.FrequencyDSR, "Deep Space Radio Frequency" },
         { Item.SignalDSRTower, "Radio Tower Signal" },
