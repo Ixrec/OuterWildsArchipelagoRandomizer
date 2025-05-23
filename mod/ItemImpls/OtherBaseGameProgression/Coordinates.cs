@@ -110,40 +110,47 @@ public static class Coordinates
     // public so this can be used by the tracker for the "Mission" Checklist entry and the "Eye of the Universe Coordinates" Inventory entry
     public static Sprite shipLogCoordsSprite = null;
 
-    public static void EnsureShipLogCoordsSpriteCreated()
+    public static void EnsureShipLogCoordsSpriteIsUpToDate()
     {
-        // just recreate it every time we enter ship or suit log to be safe
-        // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
-        shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
+        // just recreate/reset it every time we enter ship or suit log to be safe
+        if (correctCoordinates == null)
+            shipLogCoordsSprite = null;
+        else
+            // some ship log views will stretch this sprite into a square, so we need to draw a square (600 x 600) to avoid distortion
+            shipLogCoordsSprite = CoordinateDrawing.CreateCoordinatesSprite(shipLogCoordsTexture, correctCoordinates, UnityEngine.Color.black, doKerning: false);
     }
 
     public static void EnsureShipLogPTMEntrySpriteEdited()
     {
-        if (logManager != null)
+        if (logManager == null)
+            return;
+
+        // vanilla / unrandomized coords, so nothing to do here
+        if (correctCoordinates == null)
+            return;
+
+        ShipLogEntry ptmGeneratedEntry = null;
+        var generatedEntryList = logManager.GetEntryList();
+        if (generatedEntryList != null)
+            ptmGeneratedEntry = generatedEntryList.Find(entry => entry.GetID() == "OPC_SUNKEN_MODULE");
+
+        if (_hasCoordinates)
         {
-            ShipLogEntry ptmGeneratedEntry = null;
-            var generatedEntryList = logManager.GetEntryList();
-            if (generatedEntryList != null)
-                ptmGeneratedEntry = generatedEntryList.Find(entry => entry.GetID() == "OPC_SUNKEN_MODULE");
+            EnsureShipLogCoordsSpriteIsUpToDate();
+            ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
+        }
+        else
+        {
+            // just show a black square if you don't have the coordinates yet
+            var size = 600;
+            var tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
+            foreach (var x in Enumerable.Range(0, size))
+                foreach (var y in Enumerable.Range(0, size))
+                    tex.SetPixel(x, y, UnityEngine.Color.black);
+            tex.Apply();
 
-            if (_hasCoordinates)
-            {
-                EnsureShipLogCoordsSpriteCreated();
-                ptmGeneratedEntry?.SetAltSprite(shipLogCoordsSprite);
-            }
-            else
-            {
-                // just show a black square if you don't have the coordinates yet
-                var size = 600;
-                var tex = new Texture2D(size, size, TextureFormat.ARGB32, false);
-                foreach (var x in Enumerable.Range(0, size))
-                    foreach (var y in Enumerable.Range(0, size))
-                        tex.SetPixel(x, y, UnityEngine.Color.black);
-                tex.Apply();
-
-                var s = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
-                ptmGeneratedEntry?.SetAltSprite(s);
-            }
+            var s = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
+            ptmGeneratedEntry?.SetAltSprite(s);
         }
     }
 

@@ -119,8 +119,9 @@ public class APChecklistMode : ShipLogMode
     // Runs when the mode is closed
     public override void ExitMode()
     {
-        SelectionWrapper.Close();
-        ChecklistWrapper.Close();
+        // It *should* be impossible for these to be null, but we've had some weird bug reports
+        SelectionWrapper?.Close();
+        ChecklistWrapper?.Close();
     }
 
     // Runs when player enters computer, update info that changes between computer sessions. Runs after EnterMode
@@ -193,12 +194,13 @@ public class APChecklistMode : ShipLogMode
 
         LocationNameToChecklistData = Tracker.logic.GetLocationChecklist(category);
         ChecklistState = PopulateChecklistState(category, LocationNameToChecklistData);
-        SelectionWrapper.Close();
-        ChecklistWrapper.Open();
-        ChecklistWrapper.SetName(CategoryToLongName(category));
-        ChecklistWrapper.SetItems(ChecklistState.Select(trackerAndDisplayInfo => trackerAndDisplayInfo.Item2).ToList());
-        ChecklistWrapper.SetSelectedIndex(0);
-        ChecklistWrapper.UpdateList();
+        // It *should* be impossible for these to be null, but we've had some weird bug reports
+        SelectionWrapper?.Close();
+        ChecklistWrapper?.Open();
+        ChecklistWrapper?.SetName(CategoryToLongName(category));
+        ChecklistWrapper?.SetItems(ChecklistState.Select(trackerAndDisplayInfo => trackerAndDisplayInfo.Item2).ToList());
+        ChecklistWrapper?.SetSelectedIndex(0);
+        ChecklistWrapper?.UpdateList();
         ChecklistRootObject.name = "ArchipelagoChecklistMode";
 
         IsInChecklist = true;
