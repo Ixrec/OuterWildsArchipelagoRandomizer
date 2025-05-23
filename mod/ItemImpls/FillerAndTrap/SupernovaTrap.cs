@@ -24,7 +24,8 @@ namespace ArchipelagoRandomizer
 
         private static void TriggerSupernova()
         {
-            if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
+            //trigger ONLY in the main solar system scene. Supernova while reaching the eye is not a good idea
+            if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)
                 return;
 
             if (triggeredSupernovaInThisLoop)
