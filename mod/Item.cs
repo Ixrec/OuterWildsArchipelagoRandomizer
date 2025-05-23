@@ -72,6 +72,7 @@ public enum Item
     SuitPunctureTrap,
     MapDisableTrap,
     HUDCorruptionTrap,
+    IcePhysicsTrap,
     // end of non-unique items
 
     FrequencyDSR,
@@ -190,6 +191,7 @@ public static class ItemNames
         { Item.SuitPunctureTrap, "Suit Puncture Trap" },
         { Item.MapDisableTrap, "Map Disable Trap" },
         { Item.HUDCorruptionTrap, "HUD Corruption Trap" },
+        { Item.IcePhysicsTrap, "Ice Physics Trap" },
 
         { Item.FrequencyDSR, "Deep Space Radio Frequency" },
         { Item.SignalDSRTower, "Radio Tower Signal" },

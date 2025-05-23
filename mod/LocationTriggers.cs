@@ -366,6 +366,7 @@ internal class LocationTriggers
             case Item.SuitPunctureTrap: SuitPunctureTrap.suitPunctureTraps = count; break;
             case Item.MapDisableTrap: MapDisableTrap.mapDisableTraps = count; break;
             case Item.HUDCorruptionTrap: HUDCorruptionTrap.hudCorruptionTraps = count; break;
+            case Item.IcePhysicsTrap: IcePhysicsTrap.icePhysicsTraps = count; break;
             case Item.LightModulator: StrangerLightModulator.hasLightModulator = (count > 0); break;
             case Item.BreachOverrideCodes: StrangerDoorCodes.hasBreachOverrideCodes = (count > 0); break;
             case Item.RLPaintingCode: StrangerDoorCodes.hasRLPaintingCode = (count > 0); break;
