@@ -100,6 +100,7 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.MapDisableTrap, "Map Disable Trap"),
         new InventoryItemEntry(Item.HUDCorruptionTrap, "HUD Corruption Trap"),
         new InventoryItemEntry(Item.IcePhysicsTrap, "Ice Physics Trap"),
+        new InventoryItemEntry(Item.SupernovaTrap, "Supernova Trap"),
     };
 
     // The ID being both the key and the the first value in the InventoryItemEntry is intentional redundancy in the public API for cleaner client code
