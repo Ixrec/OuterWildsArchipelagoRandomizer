@@ -29,7 +29,8 @@ namespace ArchipelagoRandomizer
             playerResources.ApplySuitPuncture();
 
             //if the player is not wearing the suit (rare unless playing suitless) the oxygen leak sound
-            //will still play. In order for it to not get annoying, we disable it
+            //will still play. In order for it to not get annoying, we disable it.
+            //Upon wearing the suit next, it would have holes in it
             if (!PlayerState.IsWearingSuit())
             {
                 playerResources._playerAudioController.UpdateSuitPunctures(0, PlayerResources._maxSuitPunctures);

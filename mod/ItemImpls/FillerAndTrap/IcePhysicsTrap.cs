@@ -21,9 +21,11 @@ namespace ArchipelagoRandomizer
 
         private static void ApplyIcePhysics()
         {
+            //we're in credits or menus. Ignore.
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
                 return;
 
+            //this call is necessary, otherwise the player is stuck in place and has to jump to have ice physics applied
             characterController.MakeUngrounded();
             icePhysicsApplied = true;
         }
@@ -36,9 +38,11 @@ namespace ArchipelagoRandomizer
         private static void PlayerCharacterController_Awake(PlayerCharacterController __instance)
         {
             characterController = __instance;
-            icePhysicsApplied = false;
+            icePhysicsApplied = false; //resetting this to avoid ice physics carrying over in the next loop
         }
 
+        //CastForGrounded sets the collider and surface type the player is standing on.
+        //using a postfix to override that if we have ice physics applied for the duration of the loop
         [HarmonyPostfix, HarmonyPatch(typeof(PlayerCharacterController), nameof(PlayerCharacterController.CastForGrounded))]
         private static void PlayerCharacterController_CastForGrounded_Postfix()
         {

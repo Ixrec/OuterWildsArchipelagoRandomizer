@@ -28,14 +28,15 @@ namespace ArchipelagoRandomizer
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)
                 return;
 
-            if (triggeredSupernovaInThisLoop)
+            //prevents triggering twice if a supernova is already in progress- whether by this trap of by the timeloop
+            if (triggeredSupernovaInThisLoop || TimeLoop.GetSecondsRemaining() <= 0.0)
                 return;
 
             triggeredSupernovaInThisLoop = true;
             GlobalMessenger.FireEvent("TriggerSupernova");
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(TimeLoop), nameof(TimeLoop.Start))]
-        private static void TimeLoop_Start_Prefix() => triggeredSupernovaInThisLoop = false;
+        [HarmonyPrefix, HarmonyPatch(typeof(TimeLoop), nameof(TimeLoop.Awake))]
+        private static void TimeLoop_Awake_Prefix() => triggeredSupernovaInThisLoop = false;
     }
 }

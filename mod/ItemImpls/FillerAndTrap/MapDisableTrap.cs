@@ -22,9 +22,11 @@ namespace ArchipelagoRandomizer
 
         static void DisableMap()
         {
-            if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
+            //only applicable in the solar system
+            if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)
                 return;
 
+            //simulate the "crashing into the Deep Space Satellite" event by just firing it
             GlobalMessenger.FireEvent("BrokeMapSatellite");
         }
     }
