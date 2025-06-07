@@ -25,6 +25,14 @@ namespace ArchipelagoRandomizer
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
                 return;
 
+            // ice physics are not manageable without the suit's jetpack, so if the player hasn't gotten their suit yet,
+            // tell them we're ignoring the trap on purpose
+            if (!PlayerState.IsWearingSuit())
+            {
+                APRandomizer.InGameAPConsole.AddText($"Ignoring ice physics trap since you aren't wearing the suit yet.");
+                return;
+            }
+
             //this call is necessary, otherwise the player is stuck in place and has to jump to have ice physics applied
             characterController.MakeUngrounded();
             icePhysicsApplied = true;
