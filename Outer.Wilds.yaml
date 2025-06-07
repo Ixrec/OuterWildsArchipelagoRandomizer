@@ -156,8 +156,13 @@ Outer Wilds:
     # If you don't want a specific trap type, set its weight to 0.
     # Setting all weights to 0 is the same as setting trap_chance to 0.
     Audio Trap: 1
+    HUD Corruption Trap: 1
+    Ice Physics Trap: 0
+    Map Disable Trap: 0
     Nap Trap: 2
     Ship Damage Trap: 2
+    Suit Puncture Trap: 1
+    Supernova Trap: 0
 
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
