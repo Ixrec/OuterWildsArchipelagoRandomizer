@@ -165,4 +165,4 @@ In the unlikely event that someone else has to take over OW AP rando releases fo
 
 - Discord updates:
 	- in the "Archipelago" server's "Outer Wilds" thread (https://discord.com/channels/731205301247803413/1178700404637311086), update the pinned messages; typically means this pinning a message about the new release, and unpinning a message about the previous release
-	- forward a message about the new release to #apworld-news
+	- forward a message about the new release to #apworld-news (you'll want to add a `# Outer Wilds vX.Y.Z` header at forwarding time, then delete it afterwards for the pin)
