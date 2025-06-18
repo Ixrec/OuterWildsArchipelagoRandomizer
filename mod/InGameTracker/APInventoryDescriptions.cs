@@ -249,6 +249,24 @@ public class APInventoryDescriptions
                     infos.Add("The primary symptoms are sporadic 'sleep attacks' which last about one minute. Patients report feeling a sleep attack about three seconds before loss of vision.");
                     infos.Add("It is strongly advised not to attempt 'sleepwalking' during these attacks, unless there was something even more dangerous nearby when you fell asleep.");
                     break;
+                case Item.HUDCorruptionTrap:
+                    infos.Add("The sun may be dying, but it doesn't stop solar flares from happening.");
+                    infos.Add("Due to this phenomenon, Hearthians report the HUD on their suits to flicker and corrupt for a few seconds.");
+                    break;
+                case Item.IcePhysicsTrap:
+                    infos.Add("Ice age has arrived, making all surfaces slippery, both for you and for your Little Scout.");
+                    infos.Add("Forecasts suggest this will last until the end of the loop, so be sure to stock up on jetpack fuel to move around.");
+                    break;
+                case Item.MapDisableTrap:
+                    infos.Add("Turns out Hornfels was right, something IS wrong with the Deep Space Satellite.");
+                    infos.Add("A malfunction has been reported, causing the satellite to go offline seemingly at random.");
+                    break;
+                case Item.SuitPunctureTrap:
+                    infos.Add("Hearthian spacesuits nowadays aren't as durable as they used to be, with holes opening seemingly out of nowhere.");
+                    break;
+                case Item.SupernovaTrap:
+                    infos.Add("The Sun Station turned out to be a success after all. The Nomai managed to prompt the sun to explode prematurely.");
+                    break;
                 case Item.LightModulator:
                     infos.Add("Makes your flashlight and your Scout's lights (if you have the Scout) emit the same wavelength as the eyeshine of The Stranger's inhabitants.");
                     infos.Add("That wavelength activates the light sensors controlling most doors, elevators and rafts inside The Stranger.");
