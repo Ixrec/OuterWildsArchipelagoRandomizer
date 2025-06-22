@@ -57,6 +57,10 @@ namespace ArchipelagoRandomizer
             if (!icePhysicsApplied)
                 return;
 
+            // only do ice physics in the "real" world, it's not manageable in the suitless dreamworld
+            if (PlayerState.InDreamWorld())
+                return;
+
             characterController._groundCollider.material.dynamicFriction = 0.0f;
             characterController._groundSurface = SurfaceType.Ice;
         }
