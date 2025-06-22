@@ -164,6 +164,14 @@ Outer Wilds:
     Suit Puncture Trap: 1
     Supernova Trap: 0
 
+  upgrade_counts:
+    # Choose the number of upgrades shuffled into the item pool.
+    # The default in-game settings start you with 50% of each, bringing you to 200% once all upgrades are acquired.
+    # You'll probably want to adjust them if you change these too drastically.
+    Boost Duration Upgrade: 3
+    Fuel Capacity Upgrade: 3
+    Oxygen Capacity Upgrade: 3
+
   death_link:
     # When you die, everyone dies. Of course the reverse is true too.
     # The "default" option will not include deaths to meditation, the supernova, the time loop ending,
