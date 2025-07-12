@@ -156,11 +156,9 @@ public class DeathLinkManager
 
     private static RouletteEffects RollDeathLinkEffect()
     {
-        int rngResult = prng.Next(0, RouletteSupernovaCeiling);
+        int rngResult = prng.Next(0, RouletteDeathCeiling);
         
-        if (rngResult < RouletteDeathCeiling)
-            return RouletteEffects.Death;
-        else if (rngResult < RouletteShipDamageCeiling)
+        if (rngResult < RouletteShipDamageCeiling)
             return RouletteEffects.ShipDamageTrap;
         else if (rngResult < RouletteAudioCeiling)
             return RouletteEffects.AudioTrap;
@@ -174,8 +172,10 @@ public class DeathLinkManager
             return RouletteEffects.HUDCorruptionTrap;
         else if (rngResult < RouletteIcePhysicsCeiling)
             return RouletteEffects.IcePhysicsTrap;
-        else
+        else if (rngResult < RouletteSupernovaCeiling)
             return RouletteEffects.SupernovaTrap;
+        else
+            return RouletteEffects.Death;
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(OWTime), nameof(OWTime.Unpause))]
@@ -427,8 +427,7 @@ public class DeathLinkManager
         DeathLinkRouletteEnabled     = config.GetSettingsValue<bool>("Enable Death Link Roulette");
         
         //Cumulative roulette ceilings pre-computing (mostly so it doesn't clutter some other part of the code)
-        RouletteDeathCeiling         = config.GetSettingsValue<int>("Roulette Outcome - Death");
-        RouletteShipDamageCeiling    = RouletteDeathCeiling + config.GetSettingsValue<int>("Roulette Outcome - Ship Damage Trap");
+        RouletteShipDamageCeiling    = config.GetSettingsValue<int>("Roulette Outcome - Ship Damage Trap");
         RouletteAudioCeiling         = RouletteShipDamageCeiling + config.GetSettingsValue<int>("Roulette Outcome - Audio Trap");
         RouletteNapCeiling           = RouletteAudioCeiling + config.GetSettingsValue<int>("Roulette Outcome - Nap Trap");
         RouletteSuitPunctureCeiling  = RouletteNapCeiling + config.GetSettingsValue<int>("Roulette Outcome - Suit Puncture Trap");
@@ -436,5 +435,6 @@ public class DeathLinkManager
         RouletteHUDCorruptionCeiling = RouletteMapDisableCeiling + config.GetSettingsValue<int>("Roulette Outcome - HUD Corruption Trap");
         RouletteIcePhysicsCeiling    = RouletteHUDCorruptionCeiling + config.GetSettingsValue<int>("Roulette Outcome - Ice Physics Trap");
         RouletteSupernovaCeiling     = RouletteIcePhysicsCeiling + config.GetSettingsValue<int>("Roulette Outcome - Supernova Trap");
+        RouletteDeathCeiling         = RouletteSupernovaCeiling + config.GetSettingsValue<int>("Roulette Outcome - Death");
     }
 }
