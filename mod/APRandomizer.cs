@@ -571,6 +571,7 @@ public class APRandomizer : ModBehaviour
 
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();
+        DeathLinkManager.SetupRouletteValues(config);
         SuitResources.ModSettingsChanged(config);
         GhostMatterPlacement.ModSettingsChanged(config);
         TotemCodes.ModSettingsChanged(config);
