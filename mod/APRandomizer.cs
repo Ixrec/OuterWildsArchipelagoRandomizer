@@ -137,7 +137,11 @@ public class APRandomizer : ModBehaviour
             }
 
             SaveFileName = fileName;
-            SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
+            // OWML's dubious "fixBackslashes" behavior can break our save data by turning e.g. "\"" into "/"" before actual parsing happens,
+            // turning correct JSON into incorrect JSON. This broke an actual AP save with quotes in an item name.
+            // idiot (the user) confirmed that if the file we're loading doesn't contain any filepaths,
+            // then fixBackslashes is definitely unwanted behavior and we should simply pass false for it.
+            SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName, fixBackslashes: false);
             if (SaveData == null)
             {
                 OWMLModConsole.WriteLine($"No save file found for this profile.");
