@@ -27,7 +27,7 @@
   },
   {
     "locationModID": "HN2_READING_ROOM_MC",
-    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the mural inside.",
+    "description": "Collect all the overdue library books to access the Reading Room. Then talk to the Memory Cube inside.",
     "thumbnail": "HN2_LB"
   },
 
