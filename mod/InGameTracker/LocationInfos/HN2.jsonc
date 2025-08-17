@@ -38,7 +38,7 @@
   },
   {
     "locationModID": "HN2_ROOM_VULTOS_MC",
-    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and find the second, hidden memory cube behind a fake ceiling panel. You should recognize the symbol on it if you've played Hearth's Neighbor 1.",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and find the second, hidden Memory Cube behind a fake ceiling panel. You should recognize the symbol on it if you've played Hearth's Neighbor 1.",
     "thumbnail": "HN2_DM"
   },
   {
@@ -53,7 +53,7 @@
   },
   {
     "locationModID": "HN2_ROOM_LILY_MC",
-    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories and talk to the memory cube.",
+    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories and talk to the Memory Cube.",
     "thumbnail": "HN2_DM"
   },
   {
