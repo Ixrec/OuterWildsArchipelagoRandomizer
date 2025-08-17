@@ -253,7 +253,10 @@ public class APRandomizer : ModBehaviour
         }
 
         if (SlotData.ContainsKey("death_link"))
+        {
+            DeathLinkManager.DisableDeathLinkIfActive(); // prevent "zombie" DLs being sent from slots we're no longer playing
             DeathLinkManager.ApplySlotDataSetting((long)SlotData["death_link"]);
+        }
 
         if (SlotData.ContainsKey("goal"))
             Victory.SetGoal((long)SlotData["goal"]);

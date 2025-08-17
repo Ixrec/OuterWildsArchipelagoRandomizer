@@ -42,6 +42,15 @@ public class DeathLinkManager
         EnableDeathLinkIfNeeded();
     }
 
+    public static void DisableDeathLinkIfActive()
+    {
+        if (service != null)
+        {
+            service.DisableDeathLink();
+            service = null;
+        }
+    }
+
     public static void ApplySlotDataSetting(long value)
     {
         if (Enum.IsDefined(typeof(DeathLinkSetting), value))
