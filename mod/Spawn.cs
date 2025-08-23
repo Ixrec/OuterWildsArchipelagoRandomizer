@@ -80,12 +80,18 @@ internal class Spawn
     {
         if (spawnInSuitNextUpdate)
         {
-            //APRandomizer.OWMLModConsole.WriteLine($"executing instant SuitUp() due to spawnInSuitNextUpdate");
+            // hide the suit model inside the ship, so the player won't see a "duplicate" suit
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_Update hiding spacesuit");
+            Spacesuit.SetSpacesuitVisible(false);
+
+            // The SuitUp() call must be done *after* SetSpacesuitVisible(), like in the base game's SPV.OnPressInteract(),
+            // because SPV.OnSuitUp() strongly assumes that SPV._containsSuit has already been updated.
+            // This is because there are two SPVs in the game, and it's correct for e.g. the training suit to disable
+            // its prompt once you put on the ship suit, and vice versa, but the only way for each SPV to know if it's the one
+            // that just got picked up is by assuming SPV._containsSuit has been updated already.
+            // If we get this wrong, then you lose the ability to take off your suit, breaking HN2's final puzzle.
             Locator.GetPlayerSuit().SuitUp(isTrainingSuit: false, instantSuitUp: true, putOnHelmet: true);
             spawnInSuitNextUpdate = false;
-
-            // hide the suit model inside the ship, so the player won't see a "duplicate" suit
-            Spacesuit.SetSpacesuitVisible(false);
         }
     }
 
