@@ -4,6 +4,7 @@
   "settings": {
     "AP Console: Mute": false,
     "AP Console: About Me Filter": false,
+    "AP Console: Drop All AP Server Messages": false,
 
     "Separator - Client-Side Features": {
       "type": "separator"
