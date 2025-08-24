@@ -4,7 +4,11 @@
   "settings": {
     "AP Console: Mute": false,
     "AP Console: About Me Filter": false,
-    "AP Console: Drop All AP Server Messages": false,
+    "AP Console: Drop All AP Server Messages": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "If your Outer Wilds installation becomes unstable when playing in a large multiworld, this may help."
+    },
 
     "Separator - Client-Side Features": {
       "type": "separator"
