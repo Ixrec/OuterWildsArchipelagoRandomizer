@@ -20,7 +20,7 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        static void DisableMap()
+        internal static void DisableMap()
         {
             //only applicable in the solar system
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)

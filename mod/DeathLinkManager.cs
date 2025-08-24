@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using OWML.Common;
 
 namespace ArchipelagoRandomizer;
 
@@ -13,6 +14,19 @@ public class DeathLinkManager
         Off = 0,
         Default = 1,
         AllDeaths = 2,
+    }
+
+    public enum RouletteEffects : int
+    {
+        Death = 0,
+        ShipDamageTrap = Item.ShipDamageTrap,
+        AudioTrap = Item.AudioTrap,
+        NapTrap = Item.NapTrap,
+        SuitPunctureTrap = Item.SuitPunctureTrap,
+        MapDisableTrap = Item.MapDisableTrap,
+        HUDCorruptionTrap = Item.HUDCorruptionTrap,
+        IcePhysicsTrap = Item.IcePhysicsTrap,
+        SupernovaTrap = Item.SupernovaTrap
     }
 
     public static DeathLinkSetting slotDataSetting = DeathLinkSetting.Off;
@@ -28,6 +42,20 @@ public class DeathLinkManager
     // at first appear to be a softlock. AFAICT none of them really are softlocks, but they still feel like bugs,
     // so we want to "buffer deaths" until whatever paused in-game is done.
     private static bool dieAfterUnpause = false;
+    
+    //Death Link Roulette config
+    private static bool DeathLinkRouletteEnabled = false;
+    //Ceiling values for the rng to select a given outcome
+    public static int RouletteDeathCeiling;
+    public static int RouletteShipDamageCeiling;
+    public static int RouletteAudioCeiling;
+    public static int RouletteNapCeiling;
+    public static int RouletteSuitPunctureCeiling;
+    public static int RouletteMapDisableCeiling;
+    public static int RouletteHUDCorruptionCeiling;
+    public static int RouletteIcePhysicsCeiling;
+    public static int RouletteSupernovaCeiling;
+
 
     public static void ApplyOverrideSetting()
     {
@@ -115,11 +143,42 @@ public class DeathLinkManager
 
         APRandomizer.InGameAPConsole.AddText(deathLinkObject.Cause);
 
-        if (OWTime.IsPaused())
+        if (!DeathLinkRouletteEnabled)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"buffering death because OWTime is currently paused");
-            dieAfterUnpause = true;
+            if (OWTime.IsPaused())
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"buffering death because OWTime is currently paused");
+                dieAfterUnpause = true;
+            }
+            else
+                ActuallyKillThePlayer();
         }
+        else
+        {
+            RollAndApplyDeathLinkEffect();
+        }
+    }
+
+    private static void RollAndApplyDeathLinkEffect()
+    {
+        int rngResult = prng.Next(0, RouletteDeathCeiling);
+        
+        if (rngResult < RouletteShipDamageCeiling)
+            ShipDamage.DamageShip();
+        else if (rngResult < RouletteAudioCeiling)
+            AudioTrap.PlayDisruptiveAudio();
+        else if (rngResult < RouletteNapCeiling)
+            NapTrap.ForceNap();
+        else if (rngResult < RouletteSuitPunctureCeiling)
+            SuitPunctureTrap.PunctureSuit();
+        else if (rngResult < RouletteMapDisableCeiling)
+            MapDisableTrap.DisableMap();
+        else if (rngResult < RouletteHUDCorruptionCeiling)
+            HUDCorruptionTrap.CorruptPlayerHUD();
+        else if (rngResult < RouletteIcePhysicsCeiling)
+            IcePhysicsTrap.ApplyIcePhysics();
+        else if (rngResult < RouletteSupernovaCeiling)
+            SupernovaTrap.TriggerSupernova();
         else
             ActuallyKillThePlayer();
     }
@@ -363,5 +422,24 @@ public class DeathLinkManager
         var deathLinkMessage = APRandomizer.SaveData.apConnectionData.slotName + messagesForWakeType[prng.Next(0, messagesForWakeType.Count)];
         APRandomizer.InGameAPConsole.AddText($"Because death link is set to {effectiveSetting}, sending this {wakeType} wake-up 'death' to other players with the message: \"{deathLinkMessage}\"");
         service.SendDeathLink(new DeathLink(APRandomizer.SaveData.apConnectionData.slotName, deathLinkMessage));
+    }
+
+    /**
+     * Get roulette outcome weights from settings and compute the according rng value ceilings per outcome
+     */
+    public static void SetupRouletteValues(IModConfig config)
+    {
+        DeathLinkRouletteEnabled     = config.GetSettingsValue<bool>("Enable Death Link Roulette");
+        
+        //Cumulative roulette ceilings pre-computing (mostly so it doesn't clutter some other part of the code)
+        RouletteShipDamageCeiling    = config.GetSettingsValue<int>("Roulette Outcome - Ship Damage Trap");
+        RouletteAudioCeiling         = RouletteShipDamageCeiling + config.GetSettingsValue<int>("Roulette Outcome - Audio Trap");
+        RouletteNapCeiling           = RouletteAudioCeiling + config.GetSettingsValue<int>("Roulette Outcome - Nap Trap");
+        RouletteSuitPunctureCeiling  = RouletteNapCeiling + config.GetSettingsValue<int>("Roulette Outcome - Suit Puncture Trap");
+        RouletteMapDisableCeiling    = RouletteSuitPunctureCeiling + config.GetSettingsValue<int>("Roulette Outcome - Map Disable Trap");
+        RouletteHUDCorruptionCeiling = RouletteMapDisableCeiling + config.GetSettingsValue<int>("Roulette Outcome - HUD Corruption Trap");
+        RouletteIcePhysicsCeiling    = RouletteHUDCorruptionCeiling + config.GetSettingsValue<int>("Roulette Outcome - Ice Physics Trap");
+        RouletteSupernovaCeiling     = RouletteIcePhysicsCeiling + config.GetSettingsValue<int>("Roulette Outcome - Supernova Trap");
+        RouletteDeathCeiling         = RouletteSupernovaCeiling + config.GetSettingsValue<int>("Roulette Outcome - Death");
     }
 }

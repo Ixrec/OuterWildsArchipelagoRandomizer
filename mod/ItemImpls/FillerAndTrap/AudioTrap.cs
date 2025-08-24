@@ -25,7 +25,7 @@ internal class AudioTrap
 
     private static Random prng = new Random();
 
-    private static void PlayDisruptiveAudio()
+    internal static void PlayDisruptiveAudio()
     {
         // We're still on the main menu, being told how many Audio Traps were received in previous sessions,
         // so do nothing, not even scheduling future trap execution.
