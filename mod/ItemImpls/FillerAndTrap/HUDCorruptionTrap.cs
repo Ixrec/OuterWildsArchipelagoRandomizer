@@ -23,7 +23,7 @@ namespace ArchipelagoRandomizer
 
         private static HUDCorruptionComponent corruptionComponent = null;
 
-        static void CorruptPlayerHUD()
+        internal static void CorruptPlayerHUD()
         {
             //ignore if we're on menus or in credits
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)

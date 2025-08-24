@@ -51,7 +51,7 @@ internal class NapTrap
         }
     }*/
 
-    private static void ForceNap()
+    internal static void ForceNap()
     {
         // ignore Nap Traps if we're in menus or credits
         if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)

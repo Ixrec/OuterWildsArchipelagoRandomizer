@@ -22,7 +22,7 @@ namespace ArchipelagoRandomizer
 
         private static bool triggeredSupernovaInThisLoop = false;
 
-        private static void TriggerSupernova()
+        internal static void TriggerSupernova()
         {
             //trigger ONLY in the main solar system scene. Supernova while reaching the eye is not a good idea
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem)

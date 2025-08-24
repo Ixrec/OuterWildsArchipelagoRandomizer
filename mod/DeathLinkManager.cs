@@ -143,11 +143,7 @@ public class DeathLinkManager
 
         APRandomizer.InGameAPConsole.AddText(deathLinkObject.Cause);
 
-        var rouletteResult = RouletteEffects.Death;
-        if (DeathLinkRouletteEnabled)
-            rouletteResult = RollDeathLinkEffect();
-
-        if (rouletteResult == RouletteEffects.Death)
+        if (!DeathLinkRouletteEnabled)
         {
             if (OWTime.IsPaused())
             {
@@ -159,32 +155,32 @@ public class DeathLinkManager
         }
         else
         {
-            LocationTriggers.ApplyItemToPlayer((Item) rouletteResult, 1);
+            RollAndApplyDeathLinkEffect();
         }
     }
 
-    private static RouletteEffects RollDeathLinkEffect()
+    private static void RollAndApplyDeathLinkEffect()
     {
         int rngResult = prng.Next(0, RouletteDeathCeiling);
         
         if (rngResult < RouletteShipDamageCeiling)
-            return RouletteEffects.ShipDamageTrap;
+            ShipDamage.DamageShip();
         else if (rngResult < RouletteAudioCeiling)
-            return RouletteEffects.AudioTrap;
+            AudioTrap.PlayDisruptiveAudio();
         else if (rngResult < RouletteNapCeiling)
-            return RouletteEffects.NapTrap;
+            NapTrap.ForceNap();
         else if (rngResult < RouletteSuitPunctureCeiling)
-            return RouletteEffects.SuitPunctureTrap;
+            SuitPunctureTrap.PunctureSuit();
         else if (rngResult < RouletteMapDisableCeiling)
-            return RouletteEffects.MapDisableTrap;
+            MapDisableTrap.DisableMap();
         else if (rngResult < RouletteHUDCorruptionCeiling)
-            return RouletteEffects.HUDCorruptionTrap;
+            HUDCorruptionTrap.CorruptPlayerHUD();
         else if (rngResult < RouletteIcePhysicsCeiling)
-            return RouletteEffects.IcePhysicsTrap;
+            IcePhysicsTrap.ApplyIcePhysics();
         else if (rngResult < RouletteSupernovaCeiling)
-            return RouletteEffects.SupernovaTrap;
+            SupernovaTrap.TriggerSupernova();
         else
-            return RouletteEffects.Death;
+            ActuallyKillThePlayer();
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(OWTime), nameof(OWTime.Unpause))]

@@ -20,7 +20,7 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        static void PunctureSuit()
+        internal static void PunctureSuit()
         {
             //we're not in gameplay, ignore
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)
