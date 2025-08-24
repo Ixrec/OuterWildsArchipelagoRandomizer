@@ -174,7 +174,7 @@ internal class Hints
         var locationToScout = stuffToHint[0].Key;
         var itemName = stuffToHint[0].Value.ItemName;
         var locationName = LocationNames.locationNames[locationToScout];
-        TextIDToDisplayText[textId1] = removeOpeningAngleBrackets($"Ignoring everywhere you've already been, the best item I know of is '{itemName}' at '{locationName}'.");
+        TextIDToDisplayText[textId1] = removeOpeningAngleBrackets($"Ignoring everywhere you went before asking me for hints, the best item I know of is '{itemName}' at '{locationName}'.");
 
         var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[locationToScout]]));
         if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(2)))

@@ -27,7 +27,7 @@
   },
   {
     "locationModID": "HN2_READING_ROOM_MC",
-    "description": "Use the hint from the gazebo to get inside the Lake Shrine at the north pole of Lake Core, then look at the mural inside.",
+    "description": "Collect all the overdue library books to access the Reading Room. Then talk to the Memory Cube inside.",
     "thumbnail": "HN2_LB"
   },
 
@@ -38,7 +38,7 @@
   },
   {
     "locationModID": "HN2_ROOM_VULTOS_MC",
-    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and find the second, hidden memory cube behind a fake ceiling panel. You should recognize the symbol on it if you've played Hearth's Neighbor 1.",
+    "description": "Enter Vultos' Room (1st from the left) in the Magistarium Dormitories and find the second, hidden Memory Cube behind a fake ceiling panel. You should recognize the symbol on it if you've played Hearth's Neighbor 1.",
     "thumbnail": "HN2_DM"
   },
   {
@@ -53,7 +53,7 @@
   },
   {
     "locationModID": "HN2_ROOM_LILY_MC",
-    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories and talk to the memory cube.",
+    "description": "Enter Lily's Room (4th from the left) in the Magistarium Dormitories and talk to the Memory Cube.",
     "thumbnail": "HN2_DM"
   },
   {

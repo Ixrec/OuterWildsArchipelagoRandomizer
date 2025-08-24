@@ -129,7 +129,7 @@ In addition to the prerequisites from [Installation](README.md#installation):
 In the unlikely event that someone else has to take over OW AP rando releases for me, these are the steps I follow every time I release a new version. Obviously some of these steps could be automated, but many of them fundamentally can't be, and many are valuable ways of double-checking that I haven't forgotten something critical before committing to a release.
 
 - source/git updates:
-	- check/update the "apworld_version" string the .apworld puts in slot_data 
+	- check/update the "world_version" string in the .apworld's archipelago.json manifest
 	- check/update the mod repo's submodule (`git submodule update --remote`)
 	- check/update the mod repo's manifest.json version AND the `mod_version` variable used in APRandomizer.cs's version mismatch warning
 	- check that both repos are clean, on the latest commit on their default branches (both local and remote)
@@ -139,9 +139,8 @@ In the unlikely event that someone else has to take over OW AP rando releases fo
 - build the .apworld:
 	- in PyCharm, run the unittests one last time
 	- open C:\Users\<user>\git\Archipelago\worlds (or wherever your local clone of the AP fork with the OW apworld is)
-	- zip the `outer_wilds/` folder
-	- rename the `outer_wilds.zip` to `outer_wilds.apworld`
-	- attach `outer_wilds.apworld` to the github release
+	- run AP's "Build apworlds" tool
+	- attach `build/apworlds/outer_wilds.apworld` to the github release
 
 - build the mod:
 	- open C:\Users\<user>\AppData\Roaming\OuterWildsModManager\OWML\Mods\Ixrec.ArchipelagoRandomizer (or wherever your local builds of the OW AP rando mod are)

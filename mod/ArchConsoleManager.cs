@@ -20,6 +20,7 @@ public class ArchConsoleManager : MonoBehaviour
 {
     public static bool ConsoleMuted = false;
     public static bool FilterPlayer = false;
+    private static bool DropAllAPServerMessages = false;
 
     private GameObject console;
     private GameObject pauseConsole;
@@ -61,6 +62,7 @@ public class ArchConsoleManager : MonoBehaviour
     {
         ConsoleMuted = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Mute");
         FilterPlayer = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: About Me Filter");
+        DropAllAPServerMessages = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Drop All AP Server Messages");
 
         GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole?.SetActive(false));
         GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole?.SetActive(true));
@@ -297,6 +299,12 @@ public class ArchConsoleManager : MonoBehaviour
     {
         if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
 
+        if (DropAllAPServerMessages)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Because the \"AP Console: Drop All AP Server Messages\" setting is enabled, ignoring AP server message:\n{message}");
+            return;
+        }
+
         var colorizedParts = message.Parts.Select(messagePart =>
         {
             if (messagePart.IsBackgroundColor) return messagePart.Text;
@@ -449,6 +457,8 @@ public class ArchConsoleManager : MonoBehaviour
             if (filterButton != null)
                 UpdateFilterButton();
         }
+
+        DropAllAPServerMessages = config.GetSettingsValue<bool>("AP Console: Drop All AP Server Messages");
     }
 
     private string LoopNumber()

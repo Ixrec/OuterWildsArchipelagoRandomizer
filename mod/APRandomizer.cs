@@ -137,7 +137,11 @@ public class APRandomizer : ModBehaviour
             }
 
             SaveFileName = fileName;
-            SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName);
+            // OWML's dubious "fixBackslashes" behavior can break our save data by turning e.g. "\"" into "/"" before actual parsing happens,
+            // turning correct JSON into incorrect JSON. This broke an actual AP save with quotes in an item name.
+            // idiot (the user) confirmed that if the file we're loading doesn't contain any filepaths,
+            // then fixBackslashes is definitely unwanted behavior and we should simply pass false for it.
+            SaveData = ModHelper.Storage.Load<APRandomizerSaveData>(SaveFileName, fixBackslashes: false);
             if (SaveData == null)
             {
                 OWMLModConsole.WriteLine($"No save file found for this profile.");
@@ -242,14 +246,17 @@ public class APRandomizer : ModBehaviour
         {
             var apworld_version = (string)SlotData["apworld_version"];
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "0.3.17";
+            var mod_version = "0.3.19";
             if (apworld_version != mod_version)
                 ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
         }
 
         if (SlotData.ContainsKey("death_link"))
+        {
+            DeathLinkManager.DisableDeathLinkIfActive(); // prevent "zombie" DLs being sent from slots we're no longer playing
             DeathLinkManager.ApplySlotDataSetting((long)SlotData["death_link"]);
+        }
 
         if (SlotData.ContainsKey("goal"))
             Victory.SetGoal((long)SlotData["goal"]);
