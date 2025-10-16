@@ -379,7 +379,7 @@ public class Logic
             requirements.Add(nwctr);
 
             // these maps are for corner cases where one or more additional items are required
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(r1, out var items1))
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(w1, out var items1))
             {
                 foreach (var item in items1) {
                     var tr = new TrackerRequirement();
@@ -387,7 +387,7 @@ public class Logic
                     requirements.Add(tr);
                 }
             }
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(r2, out var items2))
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(w2, out var items2))
             {
                 foreach (var item in items2)
                 {
