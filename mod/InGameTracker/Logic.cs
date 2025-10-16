@@ -343,32 +343,32 @@ public class Logic
         
         foreach (var warpPair in warps)
         {
-            var w1 = warpPair[0];
-            var w2 = warpPair[1];
+            var warpId1 = warpPair[0];
+            var warpId2 = warpPair[1];
 
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(w1, out var r1))
+            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId1, out var regionName1))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
             }
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(w2, out var r2))
+            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId2, out var regionName2))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
             }
 
             // Check for Brittle Hollow warp connections
-            switch (w1)
+            switch (warpId1)
             {
-                case "BHF": bhfConnection = w2; break;
-                case "BHNG": bhngConnection = w2; break;
-                case "WHS": whsConnection = w2; break;
+                case "BHF": bhfConnection = warpId2; break;
+                case "BHNG": bhngConnection = warpId2; break;
+                case "WHS": whsConnection = warpId2; break;
             }
-            switch (w2)
+            switch (warpId2)
             {
-                case "BHF": bhfConnection = w1; break;
-                case "BHNG": bhngConnection = w1; break;
-                case "WHS": whsConnection = w1; break;
+                case "BHF": bhfConnection = warpId1; break;
+                case "BHNG": bhngConnection = warpId1; break;
+                case "WHS": whsConnection = warpId1; break;
             }
 
             var requirements = new List<TrackerRequirement>();
@@ -379,7 +379,7 @@ public class Logic
             requirements.Add(nwctr);
 
             // these maps are for corner cases where one or more additional items are required
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(w1, out var items1))
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId1, out var items1))
             {
                 foreach (var item in items1) {
                     var tr = new TrackerRequirement();
@@ -387,7 +387,7 @@ public class Logic
                     requirements.Add(tr);
                 }
             }
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(w2, out var items2))
+            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId2, out var items2))
             {
                 foreach (var item in items2)
                 {
@@ -398,14 +398,14 @@ public class Logic
             }
 
             var warpConnection = new TrackerConnectionData();
-            warpConnection.from = r1;
-            warpConnection.to = r2;
+            warpConnection.from = regionName1;
+            warpConnection.to = regionName2;
             warpConnection.requires = requirements;
             AddConnection(TrackerRegions, warpConnection);
 
             var reverseWarpConnection = new TrackerConnectionData();
-            reverseWarpConnection.from = r2;
-            reverseWarpConnection.to = r1;
+            reverseWarpConnection.from = regionName2;
+            reverseWarpConnection.to = regionName1;
             reverseWarpConnection.requires = requirements;
             AddConnection(TrackerRegions, reverseWarpConnection);
         }
