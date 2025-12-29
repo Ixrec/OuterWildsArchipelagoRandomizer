@@ -69,6 +69,7 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.SignalQM, "   Signal: Quantum Moon"),
         new InventoryItemEntry(Item.FrequencyHS, "Frequency: Hide and Seek"),
         new InventoryItemEntry(Item.FrequencyDSR, "Frequency: Deep Space Radio"),
+        new InventoryItemEntry("NaturalPhenomenaFrequency", "Frequency: Natural Phenomena"),
         new InventoryItemEntry("StoryModFrequencies", "Story Mod Frequencies"),
 
         // Hearth's Neighbor 2: Magistarium custom items
@@ -76,6 +77,14 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.MagistariumLibraryAccessCode, "HN2: Magistarium Library Access Code", false, "enable_hn2_mod"),
         new InventoryItemEntry(Item.MagistariumDormitoryAccessCode, "HN2: Magistarium Dormitory Access Code", false, "enable_hn2_mod"),
         new InventoryItemEntry(Item.MagistariumEngineAccessCode, "HN2: Magistarium Engine Access Code", false, "enable_hn2_mod"),
+
+        // Forgotten Castaways custom items
+        new InventoryItemEntry(Item.DeepBrambleCoordinates, "FC: Deep Bramble Coordinates", false, "enable_fc_mod"),
+        new InventoryItemEntry(Item.ExpandedDictionary, "FC: Expanded Translator Dictionary", false, "enable_fc_mod"),
+        new InventoryItemEntry(Item.TamingTechniques, "FC: Anglerfish Taming Techniques", false, "enable_fc_mod"),
+        new InventoryItemEntry(Item.CrystalRepairManual, "FC: Crystal Repair Manual", false, "enable_fc_mod"),
+        new InventoryItemEntry(Item.ThermalInsulation, "FC: Thermal Insulation", false, "enable_fc_mod"),
+        new InventoryItemEntry(Item.ProbabilityRule, "FC: Probability Rule", false, "enable_fc_mod"),
 
         // Non-progression ship and equipment upgrades
         new InventoryItemEntry(Item.Autopilot, "Autopilot"),
@@ -230,6 +239,8 @@ public class APInventoryMode : ShipLogMode
                 if (!anyStoryModEnabled)
                     continue;
             }
+            if (item.ID is "NaturalPhenomenaFrequency" && !APRandomizer.SlotEnabledMod("enable_fc_mod"))
+                    continue;
 
             VisibleItemEntries.Add(name, item);
 
@@ -240,6 +251,7 @@ public class APInventoryMode : ShipLogMode
                 {
                     uint quantity = 0;
                     var allTLs = new List<Item> { Item.TranslatorHGT, Item.TranslatorTH, Item.TranslatorBH, Item.TranslatorGD, Item.TranslatorDB, Item.TranslatorOther };
+                    if (APRandomizer.SlotEnabledMod("enable_fc_mod")) allTLs.Add(Item.TranslatorDeepB);
                     foreach (var tl in allTLs)
                         if (items.ContainsKey(tl) && items[tl] > 0)
                             quantity += 1;
@@ -291,6 +303,11 @@ public class APInventoryMode : ShipLogMode
                 string itemName = $"[{status}] Story Mod Frequencies";
                 inventoryDisplayItems.Add(new InventoryDisplayItem(itemName, false, item.ItemIsNew, false));
             }
+            else if (item.ID == "NaturalPhenomenaFrequency")
+            {
+                string itemName = "[X] Frequency: Natural Phenomena";
+                inventoryDisplayItems.Add(new InventoryDisplayItem(itemName, false, item.ItemIsNew, false));
+            }
             else
             {
                 APRandomizer.OWMLModConsole.WriteLine($"Tried to parse {item} as an Item enum, but it was invalid. Unable to determine if the item is in the inventory.", OWML.Common.MessageType.Error);
@@ -310,7 +327,7 @@ public class APInventoryMode : ShipLogMode
         if (item == Item.BurntMarshmallow || item == Item.PerfectMarshmallow)
             item = Item.Marshmallow;
 
-        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
+        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther || item == Item.TranslatorDeepB)
             item = Item.Translator;
 
         string itemID = item.ToString();
@@ -325,6 +342,8 @@ public class APInventoryMode : ShipLogMode
             var sf = SignalsAndFrequencies.signalToFrequency[ItemNames.itemToSignal[item]];
             if (sf == "Traveler")
                 frequency = "FrequencyOWV";
+            else if (sf == "Natural Phenomena")
+                frequency = "NaturalPhenomenaFrequency";
             else if (ItemNames.frequencyToItem.TryGetValue(sf, out var frequencyItem))
                 if (ItemNames.IsStoryModFrequency(frequencyItem))
                     frequency = "StoryModFrequencies";
@@ -360,7 +379,7 @@ public class APInventoryMode : ShipLogMode
 
         string itemName = item.ToString();
         string? itemDisplayName = null;
-        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther)
+        if (item >= Item.TranslatorHGT && item <= Item.TranslatorOther || item == Item.TranslatorDeepB)
         {
             itemName = Item.Translator.ToString();
             itemDisplayName = ItemNames.ItemToName(item);

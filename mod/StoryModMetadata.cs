@@ -66,13 +66,24 @@ public class StoryModMetadata
         trackerCategoryImageFile = "FretsQuest",
         trackerLocationInfosFilePrefix = "FQ",
     };
+    private static ModMetadata FCMetadata = new ModMetadata {
+        trackerCategoryName = "Deep Bramble",
+        modManagerUniqueName = "cleric.DeepBramble",
+        slotDataOption = "enable_fc_mod",
+        logicCategory = "fc",
+        // copy-pasted https://github.com/coderCleric/DeepBramble/blob/main/DeepBramble/subtitle.png and put it on top of
+        // https://github.com/coderCleric/DeepBramble/blob/main/DeepBramble/planets/DeepBramble.png
+        trackerCategoryImageFile = "ForgottenCastaways",
+        trackerLocationInfosFilePrefix = "FC",
+    };
 
     public static ModMetadata[] AllStoryMods = {
         OutsiderMetadata,
         ACMetadata,
         HN1Metadata,
         HN2Metadata,
-        FQMetadata
+        FQMetadata,
+        FCMetadata,
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
@@ -83,6 +94,7 @@ public class StoryModMetadata
         { TrackerCategory.HearthsNeighbor, HN1Metadata },
         { TrackerCategory.HearthsNeighbor2Magistarium, HN2Metadata },
         { TrackerCategory.FretsQuest, FQMetadata },
+        { TrackerCategory.ForgottenCastaways, FCMetadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);
