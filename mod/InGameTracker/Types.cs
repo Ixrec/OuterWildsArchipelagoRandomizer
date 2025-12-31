@@ -23,6 +23,7 @@ public enum TrackerCategory
     HearthsNeighbor2Magistarium,
     FretsQuest,
     ForgottenCastaways,
+    EchoHike,
 }
 
 public class TrackerRequirement

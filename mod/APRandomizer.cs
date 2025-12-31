@@ -498,6 +498,8 @@ public class APRandomizer : ModBehaviour
 
         StartCoroutine(OverwriteNHInitialSpawn());
 
+        // Echo Hike custom item
+        Threader.AddThreaders();
         if (NewHorizonsAPI != null)
         {
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
@@ -522,6 +524,8 @@ public class APRandomizer : ModBehaviour
                     ExpandedDictionary.OnDeepBrambleLoadEvent();
                     PlayerData._currentGameSave.SetPersistentCondition("LockableSignalFound", true); // Stop Slate from pulling us back to the vanilla system to yap
                 }
+                // Echo Hike custom item impls
+                Threader.UpdateThreaders();
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
             DeepBrambleCoordinates.ChangeExitWarp();

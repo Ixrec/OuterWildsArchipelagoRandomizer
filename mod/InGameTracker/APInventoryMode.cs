@@ -75,6 +75,9 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.MagistariumLibraryAccessCode, "HN2: Magistarium Library Access Code", false, "enable_hn2_mod"),
         new InventoryItemEntry(Item.MagistariumDormitoryAccessCode, "HN2: Magistarium Dormitory Access Code", false, "enable_hn2_mod"),
         new InventoryItemEntry(Item.MagistariumEngineAccessCode, "HN2: Magistarium Engine Access Code", false, "enable_hn2_mod"),
+        
+        // Echo Hike custom items
+        new InventoryItemEntry(Item.Threader, "Threader", false, "enable_eh_mod"),
 
         // Forgotten Castaways custom items
         new InventoryItemEntry(Item.DeepBrambleCoordinates, "FC: Deep Bramble Coordinates", false, "enable_fc_mod"),

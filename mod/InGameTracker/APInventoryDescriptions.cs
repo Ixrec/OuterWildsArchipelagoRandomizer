@@ -341,6 +341,11 @@ public class APInventoryDescriptions
                     infos.Add("Allows your Signalscope to track the Hot Shard.");
                     infos.Add("This can be used to orient yourself towards Shattered Hearth.");
                     break;
+                // Echo Hike item descriptions
+                case Item.Threader:
+                    infos.Add("A grapple beam device made by an unknown civilisation.");
+                    infos.Add("Makes the Threader available at spawn camps.");
+                    break;
                 default:
                     return GetErrorDescription(itemID);
             }

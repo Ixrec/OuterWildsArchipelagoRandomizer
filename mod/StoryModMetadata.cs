@@ -76,6 +76,16 @@ public class StoryModMetadata
         trackerCategoryImageFile = "ForgottenCastaways",
         trackerLocationInfosFilePrefix = "FC",
     };
+    private static ModMetadata EHMetadata = new ModMetadata
+    {
+        trackerCategoryName = "Echo Hike",
+        modManagerUniqueName = "Trifid.TrifidJam3",
+        slotDataOption = "enable_eh_mod",
+        logicCategory = "eh",
+        // copy-pasted from https://github.com/TerrificTrifid/ow-nh-trifidjam3/blob/fbd158fff0e78f27953f70ab3fb588ddaa218a47/TrifidJam3/planets/Echo%20Hike.png
+        trackerCategoryImageFile = "EchoHike",
+        trackerLocationInfosFilePrefix = "EH",
+    };
 
     public static ModMetadata[] AllStoryMods = {
         OutsiderMetadata,
@@ -84,6 +94,7 @@ public class StoryModMetadata
         HN2Metadata,
         FQMetadata,
         FCMetadata,
+        EHMetadata,
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
@@ -95,6 +106,7 @@ public class StoryModMetadata
         { TrackerCategory.HearthsNeighbor2Magistarium, HN2Metadata },
         { TrackerCategory.FretsQuest, FQMetadata },
         { TrackerCategory.ForgottenCastaways, FCMetadata },
+        { TrackerCategory.EchoHike, EHMetadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);
