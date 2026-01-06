@@ -301,6 +301,10 @@ internal class LocationTriggers
                 }
             });
         }
+        else if (location == Location.SLF__TH_VILLAGE_X3 || location == Location.SPACESHIP)
+        {
+            // do nothing: these locations have been removed and are only still in the enum for save file back-compat
+        }
         else
         {
             APRandomizer.OWMLModConsole.WriteLine($"Location {location} is missing an AP id, so not sending anything to the AP server");
