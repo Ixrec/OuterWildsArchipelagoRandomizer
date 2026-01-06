@@ -285,8 +285,6 @@ internal class LocationTriggers
 
         if (LocationNames.locationToArchipelagoId.ContainsKey(location))
         {
-            if (APRandomizer.DisableInGameLocationSending && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
             var locationId = LocationNames.locationToArchipelagoId[location];
 
             // we want to time out relatively quickly if the server happens to be down, but don't
@@ -311,8 +309,6 @@ internal class LocationTriggers
 
     public static void ApplyItemToPlayer(Item item, uint count)
     {
-        if (APRandomizer.DisableInGameItemApplying && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (ItemNames.itemToFrequency.ContainsKey(item))
         {
             SignalsAndFrequencies.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);

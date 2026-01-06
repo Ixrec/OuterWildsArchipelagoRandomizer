@@ -127,8 +127,6 @@ public class ArchConsoleManager : MonoBehaviour
     // Creates the two console displays
     private void CreateConsoles(OWScene scene, OWScene loadScene)
     {
-        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (loadScene != OWScene.SolarSystem && loadScene != OWScene.EyeOfTheUniverse) return;
         // Create objects and establish references
         gameplayConsoleEntries = new Queue<string>();
@@ -216,8 +214,6 @@ public class ArchConsoleManager : MonoBehaviour
     /// <param name="skipHistory">Whether to not save this text between loops</param>
     public void AddText(string text, bool skipGameplayConsole = false, AudioType soundToPlay = AudioType.None, bool skipHistory = false)
     {
-        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (!skipHistory) consoleHistory.Add(text);
 
         // If the consoles haven't been created yet, then adding to history is all we want to do for now.
@@ -297,8 +293,6 @@ public class ArchConsoleManager : MonoBehaviour
 
     public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
     {
-        if (APRandomizer.DisableConsole && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (DropAllAPServerMessages)
         {
             APRandomizer.OWMLModConsole.WriteLine($"Because the \"AP Console: Drop All AP Server Messages\" setting is enabled, ignoring AP server message:\n{message}");
