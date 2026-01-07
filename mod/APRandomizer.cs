@@ -78,21 +78,13 @@ public class APRandomizer : ModBehaviour
     public static bool AutoNomaiText = false;
     public static bool ColorNomaiText = true;
     public static bool InstantTranslator = false;
-
     public static bool HasSeenSettingsText = false;
-    public static bool DisableConsole = false;
-    public static bool DisableInGameLocationSending = false;
-    private static bool DisableInGameItemReceiving = false;
-    public static bool DisableInGameItemApplying = false;
-    private static bool DisableInGameSaveFileWrites = false;
 
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
     private static Task pendingSaveFileWrite = null;
     private static DateTimeOffset lastWriteTime = DateTimeOffset.UtcNow;
     public static void WriteToSaveFile()
     {
-        if (DisableInGameSaveFileWrites && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (pendingSaveFileWrite != null) return;
 
         if (lastWriteTime < DateTimeOffset.UtcNow.AddSeconds(-1))
@@ -130,12 +122,6 @@ public class APRandomizer : ModBehaviour
             OWMLModConsole.WriteLine($"Profile {profileName} read by the game. Checking for a corresponding AP APRandomizer save file.");
 
             var fileName = $"SaveData/{profileName}.json";
-            if (SaveFileName == fileName && DisableInGameSaveFileWrites)
-            {
-                OWMLModConsole.WriteLine($"skipping reload of {profileName} save file because the '[DEBUG] Don't Write To Save File In-Game' is in effect, and we don't want to throw away the pending writes");
-                return;
-            }
-
             SaveFileName = fileName;
             // OWML's dubious "fixBackslashes" behavior can break our save data by turning e.g. "\"" into "/"" before actual parsing happens,
             // turning correct JSON into incorrect JSON. This broke an actual AP save with quotes in an item name.
@@ -364,8 +350,6 @@ public class APRandomizer : ModBehaviour
     {
         try
         {
-            if (DisableInGameItemReceiving && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
             while (receivedItemsHelper.PeekItem() != null)
             {
                 var itemId = receivedItemsHelper.PeekItem().ItemId;
@@ -569,12 +553,6 @@ public class APRandomizer : ModBehaviour
         ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         InstantTranslator = config.GetSettingsValue<bool>("Instant Translator");
         NomaiTextQoL.NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
-
-        DisableConsole = config.GetSettingsValue<bool>("[DEBUG] Disable In-Game Console");
-        DisableInGameLocationSending = config.GetSettingsValue<bool>("[DEBUG] Don't Send Locations In-Game");
-        DisableInGameItemReceiving = config.GetSettingsValue<bool>("[DEBUG] Don't Receive Items In-Game");
-        DisableInGameItemApplying = config.GetSettingsValue<bool>("[DEBUG] Don't Apply Received Items In-Game");
-        DisableInGameSaveFileWrites = config.GetSettingsValue<bool>("[DEBUG] Don't Write To Save File In-Game");
 
         InGameAPConsole?.ModSettingsChanged(config);
         DeathLinkManager.ApplyOverrideSetting();

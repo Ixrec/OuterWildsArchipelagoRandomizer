@@ -171,16 +171,6 @@
       "max": 10,
       "value": 0,
       "tooltip": "Number of chances added to the roulette for a Supernova Trap to happen"
-    },
-
-    "Separator - Crash Testing": {
-      "type": "separator"
-    },
-
-    "[DEBUG] Disable In-Game Console": false,
-    "[DEBUG] Don't Send Locations In-Game": false,
-    "[DEBUG] Don't Receive Items In-Game": false,
-    "[DEBUG] Don't Apply Received Items In-Game": false,
-    "[DEBUG] Don't Write To Save File In-Game": false
+    }
   }
 }

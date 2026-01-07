@@ -285,8 +285,6 @@ internal class LocationTriggers
 
         if (LocationNames.locationToArchipelagoId.ContainsKey(location))
         {
-            if (APRandomizer.DisableInGameLocationSending && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
             var locationId = LocationNames.locationToArchipelagoId[location];
 
             // we want to time out relatively quickly if the server happens to be down, but don't
@@ -303,6 +301,10 @@ internal class LocationTriggers
                 }
             });
         }
+        else if (location == Location.SLF__TH_VILLAGE_X3 || location == Location.SPACESHIP)
+        {
+            // do nothing: these locations have been removed and are only still in the enum for save file back-compat
+        }
         else
         {
             APRandomizer.OWMLModConsole.WriteLine($"Location {location} is missing an AP id, so not sending anything to the AP server");
@@ -311,8 +313,6 @@ internal class LocationTriggers
 
     public static void ApplyItemToPlayer(Item item, uint count)
     {
-        if (APRandomizer.DisableInGameItemApplying && LoadManager.GetCurrentScene() == OWScene.SolarSystem) return;
-
         if (ItemNames.itemToFrequency.ContainsKey(item))
         {
             SignalsAndFrequencies.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
