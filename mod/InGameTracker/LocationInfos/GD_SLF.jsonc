@@ -21,12 +21,12 @@
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X2",
-        "description": "Gabbro died, and not in the metaphorical sense. They probably have more information.",
+        "description": "After your first loop reset, Gabbro will remember dying, and not in the metaphorical sense. They probably have more information.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
         "locationModID": "SLF__GD_GABBRO_ISLAND_X3",
-        "description": "After a few loops and a few conversations with you, Gabbro is pretty confident that you and them are the only two aware of the time loop.",
+        "description": "After two loop resets and a conversation with you, Gabbro is pretty confident that you and them are the only two aware of the time loop.",
         "thumbnail": "GD_GABBRO_ISLAND"
     },
     {
