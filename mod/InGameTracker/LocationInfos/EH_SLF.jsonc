@@ -1,0 +1,42 @@
+[
+  {
+    "locationModID": "SLF__EH_ENTRANCE_X1",
+    "description": "Enter the structure at the north pole of Echo Hike.",
+    "thumbnail": "EH_ENTRANCE"
+  },
+  {
+    "locationModID": "SLF__EH_ENTRANCE_X2",
+    "description": "Use Threader.",
+    "thumbnail": "EH_ENTRANCE"
+  },
+  {
+    "locationModID": "SLF__EH_CAVERN_X1",
+    "description": "Use Threader to enter the cavern in Echo Hike.",
+    "thumbnail": "EH_CAVERN"
+  },
+  {
+    "locationModID": "SLF__EH_CAVERN_X2",
+    "description": "Investigate an unlit beacon inside the cavern.",
+    "thumbnail": "EH_CAVERN"
+  },
+  {
+    "locationModID": "SLF__EH_CAVERN_X3",
+    "description": "Use Threader to grab energy from lit beacon and activate an unlit one.",
+    "thumbnail": "EH_CAVERN"
+  },
+  {
+    "locationModID": "SLF__EH_PHOSPHORS_X1",
+    "description": "Activate all the beacons using Threader.",
+    "thumbnail": "EH_PHOSPHORS"
+  },
+  {
+    "locationModID": "SLF__EH_PHOSPHORS_X2",
+    "description": "Activate all the beacons using Threader.",
+    "thumbnail": "EH_PHOSPHORS"
+  },
+  {
+    "locationModID": "SLF__EH_PHOSPHORS_X3",
+    "description": "Activate all the beacons using Threader.",
+    "thumbnail": "EH_PHOSPHORS"
+  }
+]

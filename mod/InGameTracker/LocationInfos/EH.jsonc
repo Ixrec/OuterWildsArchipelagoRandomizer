@@ -1,0 +1,17 @@
+[
+  {
+    "locationModID": "EH_ENTER",
+    "description": "Enter the structure at the north pole of Echo Hike",
+    "thumbnail": "EH_ENTRANCE"
+  },
+  {
+    "locationModID": "EH_BEACON",
+    "description": "Use Threader to grab energy from lit beacon and activate an unlit one.",
+    "thumbnail": "EH_CAVERN"
+  },
+  {
+    "locationModID": "EH_PHOSPHORS",
+    "description": "Activate all the beacons using Threader.",
+    "thumbnail": "EH_PHOSPHORS"
+  }
+]

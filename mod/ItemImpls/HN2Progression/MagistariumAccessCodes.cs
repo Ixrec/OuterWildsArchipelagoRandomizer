@@ -70,6 +70,7 @@ internal class MagistariumAccessCodes
         // stop here unless we're in the HN2 system
         if (APRandomizer.NewHorizonsAPI == null) return;
         if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam3") return;
+        if (!APRandomizer.Instance.ModHelper.Interaction.ModExists("GameWyrm.HearthsNeighbor2")) return;
 
         var grandChamber = GameObject.Find("MAGISTARIUM_Body/Sector/Magistration/MagistariumSector/Sectors/GrandChamber");
         var door = grandChamber.transform.Find("HorrorDoor").gameObject;
@@ -128,6 +129,7 @@ internal class MagistariumAccessCodes
         // and only if we're in the NH2 system
         if (APRandomizer.NewHorizonsAPI == null) return;
         if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam3") return;
+        if (!APRandomizer.Instance.ModHelper.Interaction.ModExists("GameWyrm.HearthsNeighbor2")) return;
 
         LibraryDoorIR.ChangePrompt("Requires Magistarium Library Access Code");
         LibraryDoorIR.SetKeyCommandVisible(false);

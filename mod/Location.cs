@@ -882,6 +882,20 @@ public enum Location
     SLF__READ_BRIDGE_SCROLL_ARGUMENT,
 
     SLF__READ_BANJO_SCROLL,
+
+    // Echo Hike locations
+    EH_ENTER,
+    EH_BEACON,
+    EH_PHOSPHORS,
+
+    SLF__EH_ENTRANCE_X1,
+    SLF__EH_ENTRANCE_X2,
+    SLF__EH_CAVERN_X1,
+    SLF__EH_CAVERN_X2,
+    SLF__EH_CAVERN_X3,
+    SLF__EH_PHOSPHORS_X1,
+    SLF__EH_PHOSPHORS_X2,
+    SLF__EH_PHOSPHORS_X3,
 };
 
 public static class LocationNames
@@ -1657,6 +1671,20 @@ public static class LocationNames
         { Location.SLF__READ_BRIDGE_SCROLL_ARGUMENT, "FQ Ship Log: Bridge's Scroll 2 - Argued" },
 
         { Location.SLF__READ_BANJO_SCROLL, "FQ Ship Log: Corrupted Scroll" },
+
+        // Echo Hike locations
+        { Location.EH_ENTER, "EH: Enter The Structure" },
+        { Location.EH_BEACON, "EH: Light a Beacon" },
+        { Location.EH_PHOSPHORS, "EH: Meet The Phosphors" },
+
+        { Location.SLF__EH_ENTRANCE_X1, "EH Ship Log: Sunken Entrance 1 - Chasm" },
+        { Location.SLF__EH_ENTRANCE_X2, "EH Ship Log: Sunken Entrance 2 - Device" },
+        { Location.SLF__EH_CAVERN_X1, "EH Ship Log: Frozen Cavern 1 - Entrance" },
+        { Location.SLF__EH_CAVERN_X2, "EH Ship Log: Frozen Cavern 2 - Inactive Beacons"  },
+        { Location.SLF__EH_CAVERN_X3, "EH Ship Log: Frozen Cavern 3 - Activating Beacons" },
+        { Location.SLF__EH_PHOSPHORS_X1, "EH Ship Log: Phosphor Shoal 1 - Phosphors" },
+        { Location.SLF__EH_PHOSPHORS_X2, "EH Ship Log: Phosphor Shoal 2 - Planet" },
+        { Location.SLF__EH_PHOSPHORS_X3, "EH Ship Log: Phosphor Shoal 3 - Thanks" },
     };
 
     public static Dictionary<string, Location> locationNamesReversed = locationNames.ToDictionary(ln => ln.Value, ln => ln.Key);

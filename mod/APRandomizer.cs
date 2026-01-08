@@ -490,15 +490,21 @@ public class APRandomizer : ModBehaviour
         StartCoroutine(DisableNHSpawn());
 
         var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
+        // Echo Hike custom item
+        Threader.AddThreaders();
         if (newHorizonsAPI != null)
+        {
             newHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
             {
+                // Echo Hike custom item
+                Threader.UpdateThreaders();
                 // Hearth's Neighbor 2: Magistarium custom item impls
                 if (system == "Jam3")
                 {
                     MagistariumAccessCodes.OnJam3StarSystemLoadedEvent();
                 }
             });
+        }
     }
     System.Collections.IEnumerator DisableNHSpawn()
     {

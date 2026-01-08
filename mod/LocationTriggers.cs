@@ -221,6 +221,11 @@ internal class LocationTriggers
         { "READ_SKELETON_SCROLL_START", Location.FQ_SKELETON_SCROLL },
         { "READ_BRIDGE_SCROLL_BANJO", Location.FQ_BRIDGE_SCROLL },
         { "READ_BANJO_SCROLL", Location.FQ_BANJO_SCROLL },
+
+        // Echo Hike default locations
+        { "EH_ENTRANCE_X1", Location.EH_ENTER },
+        { "EH_CAVERN_X3", Location.EH_BEACON },
+        { "EH_PHOSPHORS_X1", Location.EH_PHOSPHORS },
     };
 
     // manual scrolls
@@ -382,6 +387,7 @@ internal class LocationTriggers
             case Item.MagistariumLibraryAccessCode: MagistariumAccessCodes.hasLibraryAccess = (count > 0); break;
             case Item.MagistariumDormitoryAccessCode: MagistariumAccessCodes.hasDormitoriesAccess = (count > 0); break;
             case Item.MagistariumEngineAccessCode: MagistariumAccessCodes.hasEngineAccess = (count > 0); break;
+            case Item.Threader: Threader.hasThreader = (count > 0); break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;

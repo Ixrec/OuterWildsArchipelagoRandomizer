@@ -44,6 +44,7 @@ internal class MemoryCubeInterface
         // and only if we're in the NH2 system
         if (APRandomizer.NewHorizonsAPI == null) return;
         if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam3") return;
+        if (!APRandomizer.Instance.ModHelper.Interaction.ModExists("GameWyrm.HearthsNeighbor2")) return;
 
         var memoryCubeIRs = GameObject.Find("MAGISTARIUM_Body")
             ?.GetComponentsInChildren<InteractReceiver>()

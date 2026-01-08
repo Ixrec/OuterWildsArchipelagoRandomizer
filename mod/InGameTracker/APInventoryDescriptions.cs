@@ -191,6 +191,9 @@ public class APInventoryDescriptions
                 case Item.MagistariumEngineAccessCode:
                     infos.Add("Opens the door in the Magistarium Grand Chamber leading down to the Engine Room.");
                     break;
+                case Item.Threader:
+                    infos.Add("Makes Threader available at spawn camps.");
+                    break;
                 case Item.Autopilot:
                     infos.Add("You fixed the faulty wiring between the autopilot module and your spaceship controls.");
                     break;

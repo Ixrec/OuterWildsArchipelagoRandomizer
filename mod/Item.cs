@@ -116,6 +116,9 @@ public enum Item
 
     // Fret's Quest items
     FrequencyHearthianRadio,
+
+    // Echo Hike items
+    Threader,
 };
 
 public static class ItemNames
@@ -235,6 +238,9 @@ public static class ItemNames
 
         // Fret's Quest items
         { Item.FrequencyHearthianRadio, "Hearthian Radio Frequency" },
+
+        // Echo Hike items
+        { Item.Threader, "Threader" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
