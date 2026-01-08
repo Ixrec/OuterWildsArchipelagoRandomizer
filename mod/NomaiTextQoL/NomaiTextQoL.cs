@@ -65,7 +65,6 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
                             {
                                 var textLine = __instance._textLines.First(x => x.GetEntryID() == key);
 
-
                                 ArcHintData hintData = textLine.gameObject.GetAddComponent<ArcHintData>();
 
                                 // DatabaseID is the ship log name
@@ -129,6 +128,33 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
 
             __result = data.NomaiWallColor();
             return false;
+        }
+
+        // Forgotten Castaways: We steal control over alien text, so we need to duplicate their code to make the text color properly
+        [HarmonyPostfix, HarmonyPatch(typeof(NomaiTextLine), nameof(NomaiTextLine.DetermineTextLineColor))]
+        public static void RecolorDreeText(NomaiTextLine __instance, NomaiTextLine.VisualState state, ref Color __result)
+        {
+            ArcHintData data = __instance.GetComponent<ArcHintData>();
+            // Don't override the custom colors
+            if (ColorNomaiText && data != null && state == NomaiTextLine.VisualState.UNREAD && data.Locations.Count != 0)
+            {
+                return;
+            }
+            // Only recolor if it's active, in the Deep Bramble, and is alien text
+            if (APRandomizer.NewHorizonsAPI != null)
+                if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() == "DeepBramble" && __instance._active && __instance.gameObject.GetComponent<OWRenderer>().sharedMaterial.name.Contains("dre"))
+                {
+                    // Determine the color
+                    switch (state)
+                    {
+                        case NomaiTextLine.VisualState.UNREAD:
+                            __result = new Color(0.5238f, 0.2374f, 1, 1);
+                            break;
+                        case NomaiTextLine.VisualState.TRANSLATED:
+                            __result = new Color(0.345f, 0.3f, 0.533f, 1);
+                            break;
+                    }
+                }
         }
 
         // fixes for the text not becoming properly grey when read

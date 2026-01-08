@@ -59,6 +59,12 @@ public class APInventoryDescriptions
                     foreach (var kv in inventory.Where(kv => ItemNames.IsStoryModFrequency(kv.Key)))
                         infos.Add($"[{((kv.Value > 0) ? 'X' : ' ')}] {ItemNames.itemNames[kv.Key]}");
                     break;
+                case "NaturalPhenomenaFrequency":
+                    infos.Add("A frequency where you can hear natural phenomena amplified by the warped space of the Bramble.");
+                    infos.Add($"[{((inventory[Item.SignalAmplifiedAmbience] > 0) ? 'X' : ' ')}] Amplified Ambience");
+                    infos.Add($"[{((inventory[Item.SignalGravitationalAnomaly] > 0) ? 'X' : ' ')}] Gravitational Anomaly");
+                    infos.Add($"[{((inventory[Item.SignalGeothermalActivity] > 0) ? 'X' : ' ')}] Geothermal Activity");
+                    break;
                 default:
                     return GetErrorDescription(itemID);
             }
@@ -127,8 +133,10 @@ public class APInventoryDescriptions
                     infos.Add("The translator tool that you and Hal have been working on since Feldspar brought that Nomai wall to the museum.");
                     if (APRandomizer.SlotEnabledSplitTranslator())
                     {
-                        infos.Add("Because this world was generated with split_translator: true, this tool is broken into six pieces:");
-                        foreach (var tl in new List<Item> { Item.TranslatorHGT, Item.TranslatorTH, Item.TranslatorBH, Item.TranslatorGD, Item.TranslatorDB, Item.TranslatorOther })
+                        infos.Add("Because this world was generated with split_translator: true, this tool is broken into multiple pieces:");
+                        List<Item> translators = [Item.TranslatorHGT, Item.TranslatorTH, Item.TranslatorBH, Item.TranslatorGD, Item.TranslatorDB, Item.TranslatorOther];
+                        if (APRandomizer.SlotEnabledMod("enable_fc_mod")) translators.Add(Item.TranslatorDeepB);
+                        foreach (var tl in translators)
                             infos.Add(((inventory.ContainsKey(tl) && inventory[tl] > 0) ? "[X] " : "[ ] ") + ItemNames.ItemToName(tl));
                         infos.Add("Texts that can be translated from multiple parts of the solar system use the translator for their initial position, e.g. the Tower of Quantum Knowledge text walls use Translator (Brittle Hollow) even when it's at White Hole Station.");
                     }
@@ -306,6 +314,32 @@ public class APInventoryDescriptions
                 case Item.AlarmBypassPatch:
                     infos.Add("After the Stranger's inhabitants discovered the simulation's alarm bells don't work on the deceased, they developed a 'temporary' hack that simply refuses to import your brainwaves if no heartbeat is detected.");
                     infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to bypass alarm bells in the simulation.");
+                    break;
+                // Forgotten Castaways item descriptions
+                case Item.DeepBrambleCoordinates:
+                    infos.Add("These coordinates tell you the warp path between the Deep Bramble and the Outer Wilds. With them, you can warp in and out using your ship's warp drive.");
+                    break;
+                case Item.ExpandedDictionary:
+                    infos.Add("Updates your translator with a dictionary of Dree vocabulary and writing samples, allowing you to read Dree text.");
+                    break;
+                case Item.TamingTechniques:
+                    infos.Add("You've learned the ancient anglerfish taming techniques of the Dree. Mostly, this just involves petting their eyes. They must like it?");
+                    break;
+                case Item.CrystalRepairManual:
+                    infos.Add("A manual on how to repair broken gravity crystals. After reading it, you feel safe moving them.");
+                    infos.Add("To fix a gravity crystal, slot it above a bell, then ring three bells in order: The one 2 spots to the left, the one directly to the right, and finally the bell directly below.");
+                    break;
+                case Item.ThermalInsulation:
+                    infos.Add("A special layer of insulating material to help you to withstand extreme temperatures.");
+                    infos.Add("The insulation isn't without limits: You'll still want to cool off every once in a while, and directly touching things like lava or active stars will still kill you.");
+                    break;
+                case Item.ProbabilityRule:
+                    infos.Add("The Probability Rule allows quantum objects to travel great distances when they have no other locations to travel to.");
+                    infos.Add("The tracking equipment on your suit prevented these large jumps, so with it turned off you can now utilize this rule.");
+                    break;
+                case Item.SignalHotShard:
+                    infos.Add("Allows your Signalscope to track the Hot Shard.");
+                    infos.Add("This can be used to orient yourself towards Shattered Hearth.");
                     break;
                 default:
                     return GetErrorDescription(itemID);

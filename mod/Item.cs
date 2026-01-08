@@ -116,6 +116,23 @@ public enum Item
 
     // Fret's Quest items
     FrequencyHearthianRadio,
+
+    // Forgotten Castaways items
+    TranslatorDeepB,
+    ExpandedDictionary,
+
+    FrequencyNomaiTrailmarkers,
+    SignalAmplifiedAmbience,
+    SignalGravitationalAnomaly,
+    SignalGeothermalActivity,
+    SignalHotShard,
+    FrequencyEcholocationTones,
+
+    TamingTechniques,
+    CrystalRepairManual,
+    ThermalInsulation,
+    ProbabilityRule,
+    DeepBrambleCoordinates,
 };
 
 public static class ItemNames
@@ -127,6 +144,8 @@ public static class ItemNames
         Item.FrequencyGalacticCommunication,
         Item.FrequencyAstralCodec,
         Item.FrequencyHearthianRadio,
+        Item.FrequencyNomaiTrailmarkers,
+        Item.FrequencyEcholocationTones,
     };
     public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
@@ -235,6 +254,23 @@ public static class ItemNames
 
         // Fret's Quest items
         { Item.FrequencyHearthianRadio, "Hearthian Radio Frequency" },
+
+        // Forgotten Castaways items
+        { Item.TranslatorDeepB, "Translator (Deep Bramble)" },
+        { Item.ExpandedDictionary, "Expanded Dictionary" },
+
+        { Item.FrequencyNomaiTrailmarkers, "Nomai Trailmarkers Frequency" },
+        { Item.SignalAmplifiedAmbience, "Amplified Ambience Signal" },
+        { Item.SignalGravitationalAnomaly, "Gravitational Anomaly Signal" },
+        { Item.SignalGeothermalActivity, "Geothermal Activity Signal" },
+        { Item.SignalHotShard, "Hot Shard Signal" },
+        { Item.FrequencyEcholocationTones, "Echolocation Tones Frequency" },
+
+        { Item.TamingTechniques, "Taming Techniques" },
+        { Item.CrystalRepairManual, "Crystal Repair Manual" },
+        { Item.ThermalInsulation, "Thermal Insulation" },
+        { Item.ProbabilityRule, "Probability Rule" },
+        { Item.DeepBrambleCoordinates, "Deep Bramble Coordinates" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -261,6 +297,10 @@ public static class ItemNames
 
         // Fret's Quest frequency items
         { "Hearthian Radio", Item.FrequencyHearthianRadio },
+
+        // Forgotten Castaways frequency items
+        { "Nomai Trailmarkers", Item.FrequencyNomaiTrailmarkers },
+        { "Echolocation Tones", Item.FrequencyEcholocationTones },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 
@@ -284,6 +324,12 @@ public static class ItemNames
         { "HideAndSeek_Tephra", Item.SignalTephra },
         { "RadioTower", Item.SignalDSRTower },
         { "MapSatellite", Item.SignalDSRSatellite },
+        
+        // Forgotten Castaways signal items
+        { "Amplified Ambience", Item.SignalAmplifiedAmbience },
+        { "Gravitational Anomaly", Item.SignalGravitationalAnomaly },
+        { "Geothermal Activity", Item.SignalGeothermalActivity },
+        { "Hot Shard", Item.SignalHotShard},
     };
     public static Dictionary<Item, string> itemToSignal = signalToItem.ToDictionary(sti => sti.Value, sti => sti.Key);
 
@@ -339,6 +385,19 @@ public static class ItemNames
         { Item.MagistariumDormitoryAccessCode, "HAS_AP_ITEM_HN2_DORMITORY_ACCESS_CODE" },
         { Item.MagistariumEngineAccessCode,    "HAS_AP_ITEM_HN2_ENGINE_ACCESS_CODE" },
         { Item.FrequencyHearthianRadio,        "HAS_AP_ITEM_FQ_HEARTHIAN_RADIO_FREQUENCY" },
+        { Item.DeepBrambleCoordinates,         "HAS_AP_ITEM_FC_DEEP_BRAMBLE_COORDINATES" },
+        { Item.TranslatorDeepB,                "HAS_AP_ITEM_FC_TRANSLATOR" },
+        { Item.ExpandedDictionary,             "HAS_AP_ITEM_FC_EXPANDED_DICTIONARY" },
+        { Item.FrequencyNomaiTrailmarkers,     "HAS_AP_ITEM_FC_NOMAI_TRAILMARKERS_FREQUENCY" },
+        { Item.SignalAmplifiedAmbience,        "HAS_AP_ITEM_FC_AMPLIFIED_AMBIENCE_SIGNAL" },
+        { Item.SignalGravitationalAnomaly,     "HAS_AP_ITEM_FC_GRAVITATIONAL_ANOMALY_SIGNAL" },
+        { Item.SignalGeothermalActivity,       "HAS_AP_ITEM_FC_GEOTHERMAL_ACTIVITY_SIGNAL" },
+        { Item.SignalHotShard,                 "HAS_AP_ITEM_FC_HOT_SHARD_SIGNAL" },
+        { Item.FrequencyEcholocationTones,     "HAS_AP_ITEM_FC_ECHOLOCATION_TONES_FREQUENCY" },
+        { Item.TamingTechniques,               "HAS_AP_ITEM_FC_TAMING_TECHNIQUES" },
+        { Item.CrystalRepairManual,            "HAS_AP_ITEM_FC_CRYSTAL_REPAIR_MANUAL" },
+        { Item.ThermalInsulation,              "HAS_AP_ITEM_FC_THERMAL_INSULATION" },
+        { Item.ProbabilityRule,                "HAS_AP_ITEM_FC_PROBABILITY_RULE" },
     };
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
