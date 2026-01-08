@@ -19,7 +19,7 @@ namespace ArchipelagoRandomizer
             }
         }
 
-        private static void ApplyIcePhysics()
+        internal static void ApplyIcePhysics()
         {
             //we're in credits or menus. Ignore.
             if (LoadManager.GetCurrentScene() != OWScene.SolarSystem && LoadManager.GetCurrentScene() != OWScene.EyeOfTheUniverse)

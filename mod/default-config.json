@@ -72,6 +72,105 @@
     "Oxygen Capacity: Initial % of Vanilla": "50",
     "Oxygen Capacity: % Increase Per Upgrade": "50",
     "Boost Duration: Initial % of Vanilla": "50",
-    "Boost Duration: % Increase Per Upgrade": "50"
+    "Boost Duration: % Increase Per Upgrade": "50",
+
+    "Separator - Death Link Roulette": {
+      "type":"separator"
+    },
+
+    "Enable Death Link Roulette": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "With this on, instead of killing you upon receiving a Death Link, a random outcome will be chosen according to the weights given in the next settings. If all values are the same, they have equal chances of happening and 0 disables an outcome."
+    },
+
+    "Roulette Outcome - Death": {
+      "title" : "Death",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 0,
+      "tooltip": "Number of chances added to the roulette for a death to happen"
+    },
+
+
+    "Roulette Outcome - Ship Damage Trap": {
+      "title" : "Ship Damage Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 2,
+      "tooltip": "Number of chances added to the roulette for a Ship Damage Trap to happen"
+    },
+
+
+    "Roulette Outcome - Audio Trap": {
+      "title" : "Audio Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 1,
+      "tooltip": "Number of chances added to the roulette for an Audio Trap to happen"
+    },
+
+
+    "Roulette Outcome - Nap Trap": {
+      "title" : "Nap Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 2,
+      "tooltip": "Number of chances added to the roulette for a Nap Trap to happen"
+    },
+
+
+    "Roulette Outcome - Suit Puncture Trap": {
+      "title" : "Suit Puncture Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 1,
+      "tooltip": "Number of chances added to the roulette for a Suit Puncture Trap to happen"
+    },
+
+
+    "Roulette Outcome - Map Disable Trap": {
+      "title" : "Map Disable Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 0,
+      "tooltip": "Number of chances added to the roulette for a Map Disable Trap to happen"
+    },
+
+
+    "Roulette Outcome - HUD Corruption Trap": {
+      "title" : "HUD Corruption Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 1,
+      "tooltip": "Number of chances added to the roulette for a HUD Corruption Trap to happen"
+    },
+
+
+    "Roulette Outcome - Ice Physics Trap": {
+      "title" : "Ice Physics Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 0,
+      "tooltip": "Number of chances added to the roulette for an Ice Physics Trap to happen"
+    },
+
+
+    "Roulette Outcome - Supernova Trap": {
+      "title" : "Supernova Trap",
+      "type": "slider",
+      "min": 0,
+      "max": 10,
+      "value": 0,
+      "tooltip": "Number of chances added to the roulette for a Supernova Trap to happen"
+    }
   }
 }

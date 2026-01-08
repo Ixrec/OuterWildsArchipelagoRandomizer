@@ -46,7 +46,7 @@ internal class ShipDamage
 
     // Randomly choose 2 hulls and 2 components to damage.
     // The one special wrinkle is that we want to avoid damaging both thruster banks in a single trap if possible.
-    private static void DamageShip()
+    internal static void DamageShip()
     {
         if (shipDamageController != null)
         {
