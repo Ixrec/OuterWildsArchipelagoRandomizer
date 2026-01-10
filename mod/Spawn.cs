@@ -107,18 +107,21 @@ internal class Spawn
         return true;
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.SpawnPlayer))]
-    public static bool PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
+    // In general, when other mods might be patching the same method we are, postfix patches that overwrite the result are more robust than
+    // prefix patches that skip the vanilla method (and all other mods' patches, which is the really dangerous part).
+    // We know NewHorizons also patches SpawnPlayer, so it's definitely worth favoring postfix here.
+    [HarmonyPostfix, HarmonyPatch(typeof(PlayerSpawner), nameof(PlayerSpawner.SpawnPlayer))]
+    public static void PlayerSpawner_SpawnPlayer(PlayerSpawner __instance)
     {
         if (!APRandomizer.IsVanillaSystemLoaded())
         {
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're not in the vanilla solar system");
-            return true; // let vanilla impl run
+            return;
         }
+
         if (spawnChoice == SpawnChoice.Vanilla || spawnChoice == SpawnChoice.TimberHearth)
         {
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're spawning in TH village");
-            return true; // let vanilla impl run
         }
         else if (spawnChoice == SpawnChoice.HourglassTwins)
         {
@@ -140,7 +143,6 @@ internal class Spawn
             playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(emberTwinOWRB);
             shipRigidBody.SetVelocity(emberTwinOWRB.GetVelocity());
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(emberTwinOWRB);
-            return false;
         }
         else if (spawnChoice == SpawnChoice.BrittleHollow)
         {
@@ -164,7 +166,6 @@ internal class Spawn
             playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(brittleHollowOWRB);
             shipRigidBody.SetVelocity(brittleHollowOWRB.GetVelocity());
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(brittleHollowOWRB);
-            return false;
         }
         else if (spawnChoice == SpawnChoice.GiantsDeep)
         {
@@ -184,7 +185,6 @@ internal class Spawn
             playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(statueIslandOWRB);
             shipRigidBody.SetVelocity(statueIslandOWRB.GetVelocity());
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(statueIslandOWRB);
-            return false;
         }
         else if (spawnChoice == SpawnChoice.Stranger)
         {
@@ -204,7 +204,6 @@ internal class Spawn
             playerRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(ringWorldOWRB);
             shipRigidBody.SetVelocity(ringWorldOWRB.GetVelocity());
             shipRigidBody.GetRequiredComponent<MatchInitialMotion>().SetBodyToMatch(ringWorldOWRB);
-            return false;
         }
         else throw new System.ArgumentException($"spawnChoice had an invalid value of {spawnChoice}");
     }
