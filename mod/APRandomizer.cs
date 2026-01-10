@@ -64,6 +64,8 @@ public class APRandomizer : ModBehaviour
         LoadManager.GetCurrentScene() == OWScene.SolarSystem &&
         (NewHorizonsAPI == null || NewHorizonsAPI.GetCurrentStarSystem() == "SolarSystem");
 
+    public static bool NewHorizonsWarpingToVanillaSystem = false;
+
     /// <summary>
     /// Runs whenever a new session is created
     /// </summary>
@@ -491,14 +493,22 @@ public class APRandomizer : ModBehaviour
 
         var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
         if (newHorizonsAPI != null)
+        {
+            newHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API ChangeStarSystemEvent system = {system}");
+                Spawn.OnChangeStarSystemEvent(system);
+            });
             newHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
             {
-                // Hearth's Neighbor 2: Magistarium custom item impls
+                APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API StarSystemLoadedEvent system = {system}");
                 if (system == "Jam3")
                 {
+                    // Hearth's Neighbor 2: Magistarium custom item impls
                     MagistariumAccessCodes.OnJam3StarSystemLoadedEvent();
                 }
             });
+        }
     }
     System.Collections.IEnumerator DisableNHSpawn()
     {

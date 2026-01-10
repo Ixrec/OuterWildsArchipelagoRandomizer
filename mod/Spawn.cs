@@ -107,6 +107,11 @@ internal class Spawn
         return true;
     }
 
+    private static bool NewHorizonsWarpingToVanillaSystem = false;
+    public static void OnChangeStarSystemEvent(string system) => NewHorizonsWarpingToVanillaSystem = true;
+    // NH doesn't appear to have an event for "done spawning player". I tested StarSystemLoadedEvent, and that one fires *before* SpawnPlayer().
+    // So in practice we're relying on the assumption that there will always be exactly one SpawnPlayer() call per ChangeStarSystemEvent.
+
     // In general, when other mods might be patching the same method we are, postfix patches that overwrite the result are more robust than
     // prefix patches that skip the vanilla method (and all other mods' patches, which is the really dangerous part).
     // We know NewHorizons also patches SpawnPlayer, so it's definitely worth favoring postfix here.
@@ -116,6 +121,12 @@ internal class Spawn
         if (!APRandomizer.IsVanillaSystemLoaded())
         {
             APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since we're not in the vanilla solar system");
+            return;
+        }
+        if (NewHorizonsWarpingToVanillaSystem)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since NewHorizons is warping is back to the vanilla system");
+            NewHorizonsWarpingToVanillaSystem = false;
             return;
         }
 
