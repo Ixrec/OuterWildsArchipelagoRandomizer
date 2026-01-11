@@ -29,7 +29,7 @@ internal class Spacesuit
     // This is public so that it can also be called from Spawn.cs when we spawn already in our spacesuit
     public static void SetSpacesuitVisible(bool spacesuitVisible)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) called");
+        //APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) called");
         var ship = Locator.GetShipBody()?.gameObject?.transform;
         if (ship != null)
         {
@@ -38,7 +38,7 @@ internal class Spacesuit
             var spv = gear.GetComponent<SuitPickupVolume>();
             if (spv._containsSuit != spacesuitVisible)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) found spv needs changing to {spacesuitVisible}");
+                //APRandomizer.OWMLModConsole.WriteLine($"SetSpacesuitVisible({spacesuitVisible}) found spv needs changing to {spacesuitVisible}");
                 // a highly simplified version of the parts of SuitPickupVolume::OnPressInteract() we care about, e.g. without the SuitUp() call
                 spv._containsSuit = !spv._containsSuit;
                 spv._interactVolume.ChangePrompt(spv._containsSuit ? UITextType.SuitUpPrompt : UITextType.ReturnSuitPrompt, spv._pickupSuitCommandIndex);
