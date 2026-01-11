@@ -24,6 +24,14 @@ internal class Spacesuit
     {
         if (!PlayerState.IsWearingSuit())
             SetSpacesuitVisible(hasSpacesuit);
+
+        var ship = Locator.GetShipBody()?.gameObject?.transform;
+        if (ship != null)
+        {
+            var spv = ship.Find("Module_Supplies/Systems_Supplies/ExpeditionGear").GetComponent<SuitPickupVolume>();
+            // Only enable/disable the Suit Up / Return Suit prompt. We want Preflight Checklist to work regardless.
+            spv._interactVolume.EnableSingleInteraction(hasSpacesuit, spv._pickupSuitCommandIndex);
+        }
     }
 
     // This is public so that it can also be called from Spawn.cs when we spawn already in our spacesuit
