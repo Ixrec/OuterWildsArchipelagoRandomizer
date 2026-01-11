@@ -210,14 +210,15 @@ internal class Spawn
     /*[HarmonyPrefix, HarmonyPatch(typeof(ToolModeUI), nameof(ToolModeUI.Update))]
     public static void ToolModeUI_Update_Prefix()
     {
+        var totalChoices = System.Enum.GetNames(typeof(SpawnChoice)).Length;
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.up2))
         {
-            spawnChoice = (SpawnChoice)(((int)spawnChoice + 1) % 5);
+            spawnChoice = (SpawnChoice)(((int)spawnChoice + 1) % totalChoices);
             APRandomizer.OWMLModConsole.WriteLine($"spawnChoice changed to {spawnChoice}");
         }
         if (OWInput.SharedInputManager.IsNewlyPressed(InputLibrary.down2))
         {
-            spawnChoice = (SpawnChoice)(((int)spawnChoice - 1) % 5);
+            spawnChoice = (SpawnChoice)(((int)spawnChoice - 1) % totalChoices);
             APRandomizer.OWMLModConsole.WriteLine($"spawnChoice changed to {spawnChoice}");
         }
     }*/
