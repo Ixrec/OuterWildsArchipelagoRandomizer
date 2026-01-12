@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace ArchipelagoRandomizer;
 
@@ -72,5 +75,26 @@ internal class Spacesuit
     public static void ShipPromptController_LateInitialize_Postfix(ShipPromptController __instance)
     {
         ApplyHasSpacesuitFlag(_hasSpacesuit);
+    }
+
+    // only allow NH to fiddle with the spacesuit if you already have the Spacesuit AP item
+    [HarmonyPatch]
+    internal class NewHorizonsSuitUpPatch
+    {
+        [HarmonyPrepare]
+        private static bool Prepare() => AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetName().Name == "NewHorizons");
+        [HarmonyTargetMethod]
+        private static MethodBase Target() => Type.GetType($"NewHorizons.Builder.General.SpawnPointBuilder, NewHorizons").GetMethod("SuitUp");
+        [HarmonyPrefix]
+        private static bool Patch()
+        {
+            if (_hasSpacesuit)
+                return true; // no need to change anything
+            else
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"blocking a NewHorizons SuitUp() call because you don't have the Spacesuit AP item yet");
+                return false;
+            }
+        }
     }
 }
