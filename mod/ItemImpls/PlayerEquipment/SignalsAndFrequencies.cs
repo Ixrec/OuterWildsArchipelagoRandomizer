@@ -186,6 +186,11 @@ internal class SignalsAndFrequencies
         // so we have to wait for *both* the item to be acquired and the location checked
         // before we can let the in-game signalscope fully recognize this signal
         var location = LocationNames.signalToLocation[signalName.ToString()];
+        if (!APRandomizer.SaveData.locationsChecked.ContainsKey(location))
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"AudioSignal_IdentifySignal_Prefix discovered the save file is missing {location}", OWML.Common.MessageType.Error);
+            return true;
+        }
         var isKnown = APRandomizer.SaveData.locationsChecked[location] && usableSignals.Contains(signalName.ToString());
 
         __result = isKnown; // override return value
