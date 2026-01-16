@@ -489,7 +489,7 @@ public class APRandomizer : ModBehaviour
 
         Application.quitting += () => OnSessionClosed(APSession, false);
 
-        StartCoroutine(DisableNHSpawn());
+        StartCoroutine(OverwriteNHInitialSpawn());
 
         var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
         if (newHorizonsAPI != null)
@@ -510,7 +510,13 @@ public class APRandomizer : ModBehaviour
             });
         }
     }
-    System.Collections.IEnumerator DisableNHSpawn()
+
+    // There's an important distinction here between your *initial* spawn at the start of a New/Resume (Random) Expedition,
+    // and the *current* spawn point for any given loop which NewHorizons typically changes when you warp between systems.
+    // Randomizers obviously need total control over the initial spawn, so NH story mods which change it need to be overwritten.
+    // But changing the current spawn on warp is a desirable time-saving feature with no impact on logic.
+    // So that's why we're doing this overwrite only once on mod Start().
+    System.Collections.IEnumerator OverwriteNHInitialSpawn()
     {
         yield return new WaitForEndOfFrame();
 
@@ -520,7 +526,7 @@ public class APRandomizer : ModBehaviour
 
         // There's no way to ask what the default system currently is, so if NH is running at all
         // then we have to assume it needs overriding.
-        OWMLModConsole.WriteLine($"DisableNHSpawn() calling SetDefaultSystem(\"SolarSystem\")");
+        OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"SolarSystem\")");
         newHorizonsAPI?.SetDefaultSystem("SolarSystem");
     }
 
