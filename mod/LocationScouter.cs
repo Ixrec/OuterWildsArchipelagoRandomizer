@@ -31,19 +31,24 @@ namespace ArchipelagoRandomizer
             }
 
             APRandomizer.OWMLModConsole.WriteLine($"save data does not contain any location scouts, so calling ScoutAllLocations()");
-            ScoutAllLocations(session);
+            ScoutAllHintableLocations(session);
         }
 
-        public void ScoutAllLocations(ArchipelagoSession session)
+        public void ScoutAllHintableLocations(ArchipelagoSession session)
         {
-            ScoutedLocations = new();
-            List<long> locationIDs = new List<long>();
-            foreach (Location loc in LocationNames.locationNames.Keys)
-                if (LocationNames.locationToArchipelagoId.ContainsKey(loc))
-                    locationIDs.Add(LocationNames.locationToArchipelagoId[loc]);
+            List<string> hintablePrefixes = new();
+            foreach (var (_, prefixes) in Hints.characterToLocationPrefixes)
+                hintablePrefixes.AddRange(prefixes);
+
+            List<long> hintableLocationIDs = LocationNames.locationNames.Keys
+                .Where(loc => LocationNames.locationToArchipelagoId.ContainsKey(loc))
+                .Where(loc => hintablePrefixes.Any(p => LocationNames.locationNames[loc].StartsWith(p)))
+                .Select(loc => LocationNames.locationToArchipelagoId[loc])
+                .ToList();
 
             // Now we actually scout, code taken and modified from the Tunic randomizer (thanks Silent and Scipio!)
-            var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(locationIDs.ToArray()).ContinueWith(locationInfoPacket =>
+            ScoutedLocations = new();
+            var scoutTask = Task.Run(() => session.Locations.ScoutLocationsAsync(hintableLocationIDs.ToArray()).ContinueWith(locationInfoPacket =>
             {
                 foreach (var (locationId, scoutedItemInfo) in locationInfoPacket.Result)
                 {
