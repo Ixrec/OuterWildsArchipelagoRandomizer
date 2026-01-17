@@ -1,6 +1,6 @@
 # Outer Wilds Archipelago Randomizer
 
-![Logo](ModLogo.png)
+![Logo](readme_images/ModLogo.png)
 
 An [Outer Wilds](https://www.mobiusdigitalgames.com/outer-wilds.html) mod for [the Archipelago multi-game randomizer system](https://archipelago.gg/).
 
@@ -28,31 +28,9 @@ Some people have even made Youtube videos of their randomizer playthroughs. Of t
 
 ### What This Mod Changes
 
-Randomizers in the Archipelago sense—which are sometimes called "Metroidvania-style" or "progression-based" randomizers—rely on the base game having several progression-blocking items you must find in order to complete the game.
-In Outer Wilds progression is usually blocked by player knowledge rather than items, so to make a good randomizer we take away some of your starting equipment, and turn much of that player knowledge into items. Here are several examples:
+Randomizers in the Archipelago sense—which are sometimes called "Metroidvania-style" or "progression-based" randomizers—rely on the base game having several progression-blocking items you must find in order to complete the game. In Outer Wilds progression is usually blocked by player knowledge, so to make a good randomizer we take away some of your starting equipment (Translator, Scout, Signalscope, etc), and turn much of that player knowledge into items (using warp platforms now requires a "Nomai Warp Codes" item, using the special GD tornado now requires a "Tornado Aerodynamic Adjustments" item, etc). These "items" are then placed at randomly selected "locations" while ensuring the game can still be completed. Most of the locations in this randomizer are revealing facts in the Ship Log, finding notes/recorders/fuel tanks left by other Hearthians, and scanning each signal source.
 
-- Translator
-- Scout
-- Signalscope frequencies
-- Nomai Warp Codes (replaces "the player knowing how warp pads work" with a button prompt)
-- Silent Running Mode (the fish have better hearing without this)
-- Tornado Aerodynamic Adjustments
-- Coordinates (since coordinates are randomized by default, you need this to finish)
-- Autopilot
-- Oxygen/Fuel Capacity Upgrades
-- Oxygen/Fuel Refills
-- Marshmallows
-- and more
-
-In randomizer terms: "items" are placed at randomly selected "locations" (while ensuring the game can still be completed). Most of the locations in this randomizer are:
-
-- Notes, tape recorders and fuel tanks left by other Hearthians
-- Translating pieces of Nomai text (e.g. the High Energy Lab experiment)
-- Reaching important in-game places (e.g. the core of Giant's Deep)
-- Scanning each Signalscope signal source
-- Revealing facts in the Ship Log (which is usually also one of the above)
-
-Complete lists and descriptions of all the items and locations in the randomizer can be found in-game in the ship log. Or in randomizer terms: we added an "in-game tracker" to the ship log. We strongly recommend using this tracker on your first randomizer playthrough to learn what you're supposed to be doing.
+[As shown below](#in-game-ship-log-tracker), complete lists and descriptions of all the items and locations in the randomizer can be found in-game in the ship log. Or in randomizer terms: we added an "in-game tracker" to the ship log. We strongly recommend using this tracker on your first randomizer playthrough to learn what you're supposed to be doing.
 
 ## Installation
 
@@ -109,21 +87,51 @@ To downgrade to an older version, you'll need to install a `Ixrec.ArchipelagoRan
 Either way, the Mod Manager should immediately display the version number of the mod version you installed. Be careful not to click the Fix Issues button until you want to go back to the latest stable mod version.
 </details>
 
+## Tracker Support
+
+### In-Game Ship Log Tracker
+
+If you've never played the Outer Wilds Archipelago Randomizer before, this is the tracker you want to focus on. It comes "for free" with the randomizer mod, uses the familiar ship log interface, contains detailed descriptions of every single item and location, and even displays the randomizer's "logic" for which items you need to access each location.
+
+<img src="readme_images/APChecklist.png" height="300">
+<img src="readme_images/TimberHearthChecklist.png" height="300">
+<img src="readme_images/APInventory.png" height="300">
+
+### Universal Tracker
+
+If you're not familiar with Universal Tracker, [get the latest `tracker.apworld` file here](https://github.com/FarisTheAncient/Archipelago/releases), then read [this pinned Discord message](https://discord.com/channels/731205301247803413/1367270230635839539/1367270506473979944) for a general introduction. For more details see [UT's Discord thread](https://discord.com/channels/731205301247803413/1170094879142051912) and its other pins.
+
+<img src="readme_images/UniversalTracker.png" height="300">
+
+Compared to the In-Game Tracker, the main advantage of Universal Tracker is that it runs outside of and separate from Outer Wilds. This lets you place UT on another monitor while playing, or leave UT running all day in the background so you can quickly check if you're still "in BK mode" without launching Outer Wilds itself.
+
+### Items-only PopTracker Pack
+
+Finally, [there's a PopTracker pack for Outer Wilds items](https://github.com/magicdotexe/Outer-Wilds-PopTracker-Pack). If you're not familiar with PopTracker itself, [you can find it here](https://github.com/black-sliver/PopTracker).
+
+<img src="readme_images/ItemsOnlyPoptrackerPack.png" height="300">
+
+Again, this pack is just items. No locations, maps, or logic. But since PopTracker is also a separate program from OW itself, and Universal Tracker shows *locations*, you may find this useful too.
+
 ## Mod Compatibility
 
 Outer Wilds story mods whose content has been fully integrated into this randomizer:
 
 - [Astral Codec](https://outerwildsmods.com/mods/astralcodec/)
-- [The Outsider](https://outerwildsmods.com/mods/theoutsider/)
+- [Forgotten Castaways](https://outerwildsmods.com/mods/forgottencastaways/)
+- [Fret's Quest](https://outerwildsmods.com/mods/fretsquest/)
 - [Hearth's Neighbor](https://outerwildsmods.com/mods/hearthsneighbor/)
 - [Hearth's Neighbor 2: Magistarium](https://outerwildsmods.com/mods/hearthsneighbor2magistarium/)
-- [Fret's Quest](https://outerwildsmods.com/mods/fretsquest/)
+- [The Outsider](https://outerwildsmods.com/mods/theoutsider/)
+
+Outer Wilds quality of life/tooling/etc mods that this randomizer goes out of its way to support:
+
+- Suit Log: All of the ship log's "in-game tracker" content is available in the Suit Log too.
 
 Outer Wilds quality of life/tooling/etc mods that are known to work without issue:
 
 - Clock
 - Cheat and Debug Menu
-- Suit Log
 - Unity Explorer
 - Light Bramble (thanks Rever for testing this), although it makes the "Silent Running Mode" item pointless
 - Time Saver (thanks Jade for testing this)
@@ -139,10 +147,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Credits
 
-- GameWyrm for contributing this mod's in-game console, in-game tracker, and the banner art
-- Smaller direct code/content contributors, including: thestrangepie (suitless logic), hopop201 (location names/descriptions), dgarroDC (bug fix)
-- Amada, Axxroy, DCBomB, Groot, Hopop, Onemario, qwint, Rever, Scipio, Snow, and others in the "Archipelago" Discord server for feedback, discussion and encouragement
+- Direct feature contributions include:
+	- GameWyrm: this mod's in-game console, early versions of the in-game tracker, the banner art image, and the "Quality of Life" mod settings
+	- hanophora: Suit Log integration
+	- magic.exe: the items-only PopTracker pack
+	- msyverw: Forgotten Castaways integration
+	- MYoshua64: Ice Physics, HUD Corruption, Map Disable, Suit Puncture and Supernova Trap items
+	- RS-Mind: Forgotten Castaways integration and Randomize Stranger Codes mod setting
+	- t-rbernard: Death Link Roulette mod settings
+	- thestrangepie: `shuffle_spacesuit: true` / "suitless" logic
+- dgarroDC, hopop201, ScipioWright and Zannick for smaller direct contributions (bug fixes, typo fixes, spoiler-proofing, etc)
 - clubby789, dgarroDC, GameWyrm, glitchewski, JohnCorby, nebula, Trifid, viovayo, xen and others from the "Outer Wilds Modding" Discord server for help learning how to mod Unity games in general and Outer Wilds in particular, and creating the other OW mods that this randomizer relies on or is often played with
+- Amada, Axxroy, DCBomB, Groot, Hopop, Onemario, qwint, Rever, Scipio, Snow, and others in the "Archipelago" Discord server for feedback, discussion and encouragement
 - Nicopopxd for creating the Outer Wilds "Manual" for Archipelago
 - Flitter for talking me into trying out Archipelago randomizers in the first place
 - All the Archipelago contributors who made that great multi-randomizer system
