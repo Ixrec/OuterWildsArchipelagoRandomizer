@@ -1,17 +1,16 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
     class RandomizeFollyLevers
     {
-        private static readonly System.Random prng = new();
-
         public static void OnDeepBrambleLoadEvent()
         {
             leversRandomized = false;
@@ -25,6 +24,9 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
             if (sector._idString != "Graviton's Folly" || leversRandomized) return;
 
             APRandomizer.OWMLModConsole.WriteLine("Randomizing Folly levers");
+
+            MD5 hasher = MD5.Create(); // The room seed is a string, so we hash it to get our seed
+            System.Random prng = new System.Random(BitConverter.ToInt32(hasher.ComputeHash(Encoding.UTF8.GetBytes(APRandomizer.APSession.RoomState.Seed)), 0) + APRandomizer.APSession.ConnectionInfo.Slot);
 
             FieldInfo beamField = Type.GetType("DeepBramble.MiscBehaviours.Lever, DeepBramble", true).GetField("beamObject", BindingFlags.NonPublic | BindingFlags.Instance);
             List<object> levers = [
