@@ -516,6 +516,9 @@ public class APRandomizer : ModBehaviour
                 if (system == "DeepBramble")
                 {
                     ThermalInsulation.OnDeepBrambleLoadEvent();
+                    TamingTechniques.OnDeepBrambleLoadEvent();
+                    RandomizeFollyLevers.OnDeepBrambleLoadEvent();
+                    ExpandedDictionary.OnDeepBrambleLoadEvent();
                 }
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.

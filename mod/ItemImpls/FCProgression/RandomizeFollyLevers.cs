@@ -12,6 +12,11 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
     {
         private static readonly System.Random prng = new();
 
+        public static void OnDeepBrambleLoadEvent()
+        {
+            leversRandomized = false;
+        }
+
         private static bool leversRandomized = false;
 
         [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]

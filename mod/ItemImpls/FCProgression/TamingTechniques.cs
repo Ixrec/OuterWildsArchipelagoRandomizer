@@ -32,6 +32,11 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
             }
         }
 
+        public static void OnDeepBrambleLoadEvent()
+        {
+            eyesDisabled = false;
+        }
+
         private static bool eyesDisabled = false;
 
         [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]

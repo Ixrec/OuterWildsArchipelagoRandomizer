@@ -32,6 +32,10 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 
         public static void OnCompleteSceneLoad() => _deepBrambleTextWalls.Clear(); // Clear the list before NH loads in the Deep Bramble dimension
 
+        public static void OnDeepBrambleLoadEvent()
+        {
+            textChanged = false;
+        }
 
         private static bool textChanged = false;
 
