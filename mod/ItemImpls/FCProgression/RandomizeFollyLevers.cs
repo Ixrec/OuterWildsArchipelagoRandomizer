@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +11,13 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
     class RandomizeFollyLevers
     {
         private static readonly System.Random prng = new();
-        public static void OnDeepBrambleLoadEvent()
-        {
-            if (APRandomizer.NewHorizonsAPI == null || APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "DeepBramble")
-                return;
 
-            APRandomizer.Instance.StartCoroutine(RandomizeLevers());
-        }
+        private static bool leversRandomized = false;
 
-        private static IEnumerator RandomizeLevers()
+        [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]
+        public static void PlayerSectorDetector_OnAddSector(PlayerSectorDetector __instance, Sector sector)
         {
-            // If we do this too quickly the triggers have issues when re-enabled
-            yield return new WaitForSeconds(1f);
+            if (sector._idString != "Graviton's Folly" || leversRandomized) return;
 
             APRandomizer.OWMLModConsole.WriteLine("Randomizing Folly levers");
 

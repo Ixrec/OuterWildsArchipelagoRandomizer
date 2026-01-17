@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,29 +31,21 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
                 }
             }
         }
-        public static void OnDeepBrambleLoadEvent()
+
+        private static bool eyesDisabled = false;
+
+        [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]
+        public static void PlayerSectorDetector_OnAddSector(PlayerSectorDetector __instance, Sector sector)
         {
-            if (APRandomizer.NewHorizonsAPI == null) return;
-            if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "DeepBramble") return;
-
-            APRandomizer.Instance.StartCoroutine(DisableAnglerEyes());
-        }
-
-        private static IEnumerator DisableAnglerEyes()
-        {
-            // If we do this too quickly the triggers have issues when re-enabled
-            yield return new WaitForSeconds(1f);
-
-            // In case the player received the item within the past second, we check again
-            if (!HasTamingTechniques)
-            {
+            if (sector._idString != "titans_tears_fc") return;
+            if (HasTamingTechniques || eyesDisabled) return;
                 // Disable petting anglerfish eyes in Bright Hollow
-                GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
-                GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (1)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
-                GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (2)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
-                // Disable Kevin's eye trigger
-                GameObject.Find("TheNursery_Body/Sector/nursery_tube/kevin/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_triggers").SetActive(false);
-            }
+            GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
+            GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (1)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
+            GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (2)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(false);
+            // Disable Kevin's eye trigger
+            GameObject.Find("TheNursery_Body/Sector/nursery_tube/kevin/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_triggers").SetActive(false);
+            eyesDisabled = true;
         }
     }
 }

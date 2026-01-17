@@ -32,11 +32,14 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 
         public static void OnCompleteSceneLoad() => _deepBrambleTextWalls.Clear(); // Clear the list before NH loads in the Deep Bramble dimension
 
-        public static void OnDeepBrambleLoadEvent() => APRandomizer.Instance.StartCoroutine(RenameText());
 
-        private static IEnumerator RenameText()
+        private static bool textChanged = false;
+
+        [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]
+        public static void PlayerSectorDetector_OnAddSector(PlayerSectorDetector __instance, Sector sector)
         {
-            yield return new WaitForSeconds(1);
+            if (sector._idString != "titans_tears_fc" || textChanged) return;
+
             foreach (NomaiWallText wall in _deepBrambleTextWalls)
             {
                 if (!wall._initialized) continue;
@@ -44,6 +47,7 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
                     if (txt._renderer.sharedMaterial.name.Contains("dree"))
                         txt._renderer.sharedMaterial.name = txt._renderer.sharedMaterial.name.Replace("dree", RenamedDreeTextName);
             }
+            textChanged = true;
         }
 
         [HarmonyPostfix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.Awake))]
