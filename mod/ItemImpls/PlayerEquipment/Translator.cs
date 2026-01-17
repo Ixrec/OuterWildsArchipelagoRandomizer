@@ -28,7 +28,8 @@ internal class Translator
         BrittleHollow,
         GiantsDeep,
         DarkBramble,
-        Other
+        Other,
+        DeepBramble,
     }
 
     public static bool hasRegularTranslator = false;
@@ -38,11 +39,16 @@ internal class Translator
     public static bool hasGDTranslator = false;
     public static bool hasDBTranslator = false;
     public static bool hasOtherTranslator = false;
+    public static bool hasDeepBTranslator = false;
 
     private static TranslatorSector currentTranslatorSector = TranslatorSector.Other;
 
     private static TranslatorSector GetTranslatorSector(List<Sector> sectorList)
     {
+        // The Deep Bramble is its own system, so we can check it easily here.
+        if (APRandomizer.NewHorizonsAPI?.GetCurrentStarSystem() == "DeepBramble")
+            return TranslatorSector.DeepBramble;
+
         // For the most part, the translator sector is whichever of the 5 major planet sectors we're in, or Other otherwise.
         // The exceptions are all Unnamed mini-sectors that can change which if any planet they're on, so
         // we need to check for these explicitly and make sure they take precedence over major planet.
@@ -105,6 +111,7 @@ internal class Translator
             case TranslatorSector.BrittleHollow: cannotTranslatePromptText = "Translator (Brittle Hollow) Not Available"; break;
             case TranslatorSector.GiantsDeep: cannotTranslatePromptText = "Translator (Giant's Deep) Not Available"; break;
             case TranslatorSector.DarkBramble: cannotTranslatePromptText = "Translator (Dark Bramble) Not Available"; break;
+            case TranslatorSector.DeepBramble: cannotTranslatePromptText = "Translator (Deep Bramble) Not Available"; break;
             case TranslatorSector.Other: cannotTranslatePromptText = "Translator (Other) Not Available"; break;
         }
     }
@@ -121,6 +128,7 @@ internal class Translator
             case TranslatorSector.BrittleHollow: return hasBHTranslator;
             case TranslatorSector.GiantsDeep: return hasGDTranslator;
             case TranslatorSector.DarkBramble: return hasDBTranslator;
+            case TranslatorSector.DeepBramble: return hasDeepBTranslator;
             case TranslatorSector.Other: return hasOtherTranslator;
             default: throw new System.ArgumentException($"Invalid translator sector: {currentTranslatorSector}");
         }

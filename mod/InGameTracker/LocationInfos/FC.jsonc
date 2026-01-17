@@ -1,0 +1,272 @@
+﻿[
+  {
+    "locationModID": "FC_VESSEL_BRIDGE_RECORDER",
+    "description": "On the bridge of the Vessel, some Nomai left a recorder behind detailing their plans for escape.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "FC_LOWER_BRIDGE_DEVICE",
+    "description": "On the wall of the lower bridge is a strange device with a dead black hole core. What could it have been used for?",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "FC_DEEP_BRAMBLE_ENTER",
+    "description": "Using either your warp drive or the device within the Vessel, warp deeper into the Bramble",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_BRAMBLES_DOORSTEP_RECORDER",
+    "description": "Within Bramble's Doorstep, a Nomai recorder floats next to a trailmarker.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_FIRST_MARKER",
+    "description": "At Bramble's Doorstep is a Nomai trailmarker for you to scan.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_TITANS_TEARS",
+    "description": "Within Briar's Hollow, there is a cluster of planetoids named Titan's Tears.",
+    "thumbnail": "PLANETOID_CLUSTER_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_TITANS_TEARS_SHELTER",
+    "description": "The Nomai wrote about a campsite somewhere within Briar's Hollow on the wall of their shelter on Titan's Tears.",
+    "thumbnail": "PLANETOID_CLUSTER_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_HOLE_OVERLOOK",
+    "description": "There is a hole at the edge of Briar's Hollow. Check it out from the closest planetoid.",
+    "thumbnail": "HOLE_OVERLOOK_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_HOLE_OVERLOOK_TEXT",
+    "description": "A text wall sits upon one of the smaller planetoids of Titan's Tears. It discusses a nearby hole at the edge of Briar's Hollow.",
+    "thumbnail": "HOLE_OVERLOOK_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_RECURSIVE_NODE",
+    "description": "Locate the Recursive Node at the center of Briar's Hollow.",
+    "thumbnail": "RECURSIVE_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_AMPLIFIED_AMBIENCE",
+    "description": "The recursive node in Briar's Hollow emits a strange mixture of signals. You can scan the mixture, even with how messy it is.",
+    "thumbnail": "RECURSIVE_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_VISIT_NORTHERN_CAMPSITE",
+    "description": "Find the campsite at the north pole of Lover's Rock.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_CAMP_MARKER",
+    "description": "The campsite has a Nomai marker. Go scan it.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_NORTHERN_CAMPSITE_TEXT",
+    "description": "On the wall of the Northern Campsite, a Nomai wrote about a place they were led to through the Recursive Node.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SOIL_LAB",
+    "description": "Nomai text on the wall of the Soil Lab mentions that there's a method to repair gravity crystals.",
+    "thumbnail": "SOIL_LAB_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_GRAVITATIONAL_ANOMALY",
+    "description": "Graviton's Folly emits a signal that sounds a lot like gravity crystals. Do you think they're related?",
+    "thumbnail": "GRAVITONS_FOLLY_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_EYE_SHRINE",
+    "description": "A text wall at the Eye Shrine in Graviton's Folly discusses the purpose of the Eye of the Universe.",
+    "thumbnail": "EYE_SHRINE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ALIEN_STUDY",
+    "description": "A text wall on the side of Pillar Town discusses the Dree's unique biology.",
+    "thumbnail": "ALIEN_STUDY_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_QUARRY",
+    "description": "Some text in a building by the quarry on Graviton's Folly mentions what the material was used for.",
+    "thumbnail": "QUARRY_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_BREAK_CRYSTAL",
+    "description": "Using the Nomai's tractor beams, enter the core of Graviton's Folly and get a little too close to the crystal inside.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_CORE_LAB_TEXT",
+    "description": "If you break the gravity crystal at the heart of Graviton's Folly, you should be able to read the text at the top of the broken stairs in the Core Lab.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_WARPED_ECHOLOCATION",
+    "description": "You can hear what sounds like echolocation coming from the Dangerous Node, but it's a lot lower-pitched than what you'd expect. It scans just fine, though.",
+    "thumbnail": "DILATION_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_KILL_NODE",
+    "description": "Using the syringe from the Venomous Reject, you think you can kill the Dangerous Node in Briar's Hollow.",
+    "thumbnail": "DILATION_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_AMYLAX_HOUSE",
+    "description": "Within Amylax's House, marked by an orange light, is some Dree text you can translate.",
+    "thumbnail": "AMYLAX_HOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ALIEN_PARK_RECORDER",
+    "description": "A recorder at the park on Shattered Hearth mentions a gravitational signal.",
+    "thumbnail": "DREE_PARK_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_CONCERT_HALL_RECORDER",
+    "description": "A recorder outside the Concert Hall mentions that a Nomai was too busy with something to attend a concert.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_CONCERT_HALL_ALIEN",
+    "description": "Some Dree text within the Concert Hall explains how to repair gravity crystals using the nearby bells.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_CRYSTAL_REPAIR",
+    "description": "Repair a gravity crystal using the bells found within the Concert Hall.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_OBSERVATION_PLATFORM",
+    "description": "Some Nomai writing within the Observation Platform talks about an anglerfish named Kevin.",
+    "thumbnail": "FISH_PLATFORM_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCROLL_WALL",
+    "description": "Locate an intact scroll wall inside the Enzyme Lab.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ENZYME_LAB",
+    "description": "Some Nomai text inside the Enzyme Lab mentions an anglerfish named Kevin.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_UNBLOCKED_SCROLL",
+    "description": "Using the scroll wall in the Enzyme Lab, you can read the scroll from the Quantum Cave.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ENTER_TRANSLATION_LAB",
+    "description": "If you distract the baby anglerfish at the entrance, you should be able to get inside the Translation Lab.",
+    "thumbnail": "TRANSLATION_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_TRANSLATION_LAB_TEXT",
+    "description": "The Nomai left behind a Dree dictionary in the Translation Lab. Your translator doesn't seem to understand how to use the dictionary, but you might as well try.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_NURSERY",
+    "description": "A tunnel filled with dense fog and aggressive anglerfish? Sounds like a fun place to visit!",
+    "thumbnail": "NURSERY_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SYRINGE",
+    "description": "Inside the building on the Venomous Reject, you can find a syringe filled with some of the node's toxins.",
+    "thumbnail": "REJECT_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_VENOMOUS_REJECT_TANK",
+    "description": "It's nice to have a place to fuel up among all this venom.",
+    "thumbnail": "REJECT_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_HEARTHS_CORE_RECORDER",
+    "description": "A Nomai recording next to the core of Shattered Hearth warns of danger ahead.",
+    "thumbnail": "HEARTH_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_GEOTHERMAL_ACTIVITY",
+    "description": "Echoing through Magma's Recursion are the sounds of moving lava. Don't burn yourself while scanning them.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_LANDING_TANK",
+    "description": "When you land in Magma's Recursion, don't forget to fuel up.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_LANDING_ZONE",
+    "description": "Some Nomai text in the landing zone talks about how young anglerfish may be distracted.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ABANDONED_SETTLEMENT_TANK",
+    "description": "The Nomai left some spare fuel lying around in the Abandoned Settlement.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_ABANDONED_SETTLEMENT_TEXT",
+    "description": "The Nomai recorded how to navigate Magma's Recursion somewhere in the Abandoned Settlement.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_GAS_CAVE",
+    "description": "Some Nomai text in the Gas Cave on Magma's Recursion mentions how the Nomai used their gravity crystals.",
+    "thumbnail": "GAS_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_EYE_SIGNAL_LAB",
+    "description": "Some Nomai text in the Eye Signal Lab mentions a dangerous node somewhere in Briar's Hollow.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_ALIEN_ECHOLOCATION",
+    "description": "A modified Nomai recorder in the Eye Signal Lab emits a recording of Dree echolocation. A signal as unique as this one deserves to be scanned.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_QUANTUM_CAVE",
+    "description": "Locate the quantum shard within Magma's Recursion.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_HOT_SHARD",
+    "description": "You can detect a signal on the Quantum Fluctuations frequency in Magma's Recursion. Your signalscope won't do much to help you find it, but it will definitely help scan it.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_BRAMBLES_HEART",
+    "description": "Using the Hot Shard, enter the deepest part of the Bramble.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_DNP_TEXT",
+    "description": "Some Dree text at the Distant Node Project states the goal of the project.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_DISTANT_NODE_PROJECT",
+    "description": "Enter the Distant Node Project at Bramble's Heart and see what remains.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_DNP_RECORDER",
+    "description": "A recorder in the Distant Node Project describes the project's final moments.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_SCAN_DITYLUM_ECHOLOCATION",
+    "description": "Even while mourning his friends, Ditylum's echolocation can still be heard. And scanned.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "FC_MOURNING",
+    "description": "Follow Ditylum to the Distant Node Project and sit with him.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  }
+]

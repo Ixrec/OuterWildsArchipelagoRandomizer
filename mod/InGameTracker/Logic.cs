@@ -56,6 +56,7 @@ public class Logic
         BrittleHollow = 3,
         GiantsDeep = 4,
         Stranger = 5,
+        DeepBramble = 7,
     }
     public Dictionary<SlotDataSpawn, string> SlotDataSpawnToRegionName = new Dictionary<SlotDataSpawn, string>
     {
@@ -65,6 +66,7 @@ public class Logic
         { SlotDataSpawn.BrittleHollow, "Brittle Hollow" },
         { SlotDataSpawn.GiantsDeep, "Giant's Deep" },
         { SlotDataSpawn.Stranger, "Stranger Sunside Hangar" },
+        { SlotDataSpawn.DeepBramble, "Bramble's Doorstep" },
     };
     public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
     {
@@ -303,6 +305,17 @@ public class Logic
         spawnConnection.to = SlotDataSpawnToRegionName[spawn];
         spawnConnection.requires = new();
         AddConnection(TrackerRegions, spawnConnection);
+
+        // The Deep Bramble spawn has some extra nuance since it's in a different system
+        if (spawn == SlotDataSpawn.DeepBramble)
+        {
+            AddConnection(TrackerRegions, new() {
+                from = "Bramble's Doorstep",
+                to = "Deep Bramble",
+                requires = [new() { item = "Launch Codes" }]
+            });
+            TrackerRegions["Menu"].toConnections.First(tcd => tcd.to == "Space").requires.Add(new() { item = "Deep Bramble Coordinates" });
+        }
 
         // just hardcode the vanilla warps again, it's easier than deriving these strings from the maps in WarpPlatforms.cs
         List<List<string>> warps = [["SS", "ST"], ["ET", "ETT"], ["ATP", "ATT"], ["TH", "THT"], ["BHNG", "WHS"], ["BHF", "BHT"], ["GD", "GDT"]];

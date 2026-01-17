@@ -1,0 +1,592 @@
+﻿[
+  {
+    "locationModID": "SLF__TANGLED_RECORDER_FACT",
+    "description": "A recorder near the entrance to the Vessel indicates some Nomai were left behind.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "SLF__MAIN_BRIDGE_RECORDER_FACT",
+    "description": "A recorder on the bridge indicates the Nomai concocted a plan in the lower bridge.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "SLF__LOWER_BRIDGE_RECORDER_FACT",
+    "description": "A recorder in the lower bridge details the Nomai's plan to escape the Vessel.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "SLF__WARP_DEVICE_OBSERVE_FACT",
+    "description": "The lower bridge has a dead warp core on the wall.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "SLF__WARP_TO_DB_FACT",
+    "description": "Using your ship's warp drive, you can warp into the Deep Bramble.",
+    "thumbnail": "STRANDED_NOMAI_ENTRY"
+  },
+  {
+    "locationModID": "SLF__ENTRY_FACT_FC",
+    "description": "There is a part of the Bramble not directly connected to Dark Bramble.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NOMAI_WARP_FACT_FC",
+    "description": "Using your ship's warp drive, you can warp out of the Deep Bramble.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__OXYGEN_SPLITUP_FACT_FC",
+    "description": "A recorder in Bramble's Doorstep explains how the Nomai split up to search for oxygen.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BEACON_FREQUENCY_FACT_FC",
+    "description": "The Nomai left behind a trailmarker in Bramble's Doorstep. Scan its signal.",
+    "thumbnail": "START_DIMENSION_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CLUSTER_DISCOVERY_FACT_FC",
+    "description": "By the entrance of Briar's Hollow is a cluster of small planetoids.",
+    "thumbnail": "PLANETOID_CLUSTER_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CLUSTER_SETTLEMENT_FACT_FC",
+    "description": "A recorder next to the tree on Titan's Tears explains how the Nomai decided to build shelter there.",
+    "thumbnail": "PLANETOID_CLUSTER_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HOLE_OVERLOOK_DISCOVERY_FACT_FC",
+    "description": "One of the smaller planetoids of Titan's Tears overlooks a hole in the wall of Briar's Hollow.",
+    "thumbnail": "HOLE_OVERLOOK_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HOLE_ESCAPE_FACT_FC",
+    "description": "A text wall can be found on Titan's Tears discussing a possibility for escape.",
+    "thumbnail": "HOLE_OVERLOOK_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ENCLOSED_SPACE_FOUND_FACT_FC",
+    "description": "Along the wall of Briar's Hollow is an enclosed space with a Bramble node inside.",
+    "thumbnail": "ENCLOSED_SPACE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__RECURSIVE_NODE_FOUND_FACT_FC",
+    "description": "At the center of Briar's Hollow is Briar's Hollow.",
+    "thumbnail": "RECURSIVE_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__RECURSIVE_NODE_SIGNAL_FACT_FC",
+    "description": "The recursive node at the center of Briar's Hollow emits a signal you can scan.",
+    "thumbnail": "RECURSIVE_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CAMP_DISCOVERY_FACT_FC",
+    "description": "On the north pole of Lover's Rock, you can find a campsite in a crater.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FIRST_SIGHTING_FACT_FC",
+    "description": "Nomai text at the Northern Campsite describes the Nomai's first sighting of the Dree.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FIRST_MEETING_FACT_FC",
+    "description": "Nomai text at the Northern Campsite explains how the Nomai and Dree first met.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__STALKING_FACT_FC",
+    "description": "Nomai text at the Northern Campsite discusses the watchful gazes of the Dree.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ALIEN_LEADING_FACT_FC",
+    "description": "Nomai text at the Northern Campsite mentions how a Nomai was led into an enclosed space.",
+    "thumbnail": "CAMP_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__SOIL_LAB_DISCOVERY_FACT_FC",
+    "description": "A small building on Lover's Rock appears to have been a location for studying soil.",
+    "thumbnail": "SOIL_LAB_FC"
+  },
+  {
+    "locationModID": "SLF__SOIL_LAB_CRYSTAL_FACT_FC",
+    "description": "A broken crystal sits within the Soil Lab.",
+    "thumbnail": "SOIL_LAB_FC"
+  },
+  {
+    "locationModID": "SLF__SOIL_LAB_REPAIR_FACT_FC",
+    "description": "Nomai text at the Soil Lab indicates that broken gravity crystals can be fixed.",
+    "thumbnail": "SOIL_LAB_FC"
+  },
+  {
+    "locationModID": "SLF__CAMP_PLANETOID_SOIL_FACT",
+    "description": "Nomai text at the Soil Lab discusses the strange composition of the soil.",
+    "thumbnail": "SOIL_LAB_FC"
+  },
+  {
+    "locationModID": "SLF__TREEHOUSE_FOUND_FACT_FC",
+    "description": "A treehouse lies upon Lover's Rock.",
+    "thumbnail": "TREEHOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__TREEHOUSE_RECORDER_FACT_FC",
+    "description": "A recorder within the treehouse discusses the writing of names.",
+    "thumbnail": "TREEHOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FOLLY_DISCOVERY_FACT_FC",
+    "description": "Following the sound of gravitational distortion in Briar's Hollow will lead you to a hollow crystal planet.",
+    "thumbnail": "GRAVITONS_FOLLY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FOLLY_SIGNAL_FACT_FC",
+    "description": "You can scan the signal being emitted by Graviton's Folly",
+    "thumbnail": "GRAVITONS_FOLLY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__PILLAR_DISCOVERY_FACT_FC",
+    "description": "A giant crystal on Graviton's Folly has various structures upon it.",
+    "thumbnail": "PILLAR_TOWN_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__GIFT_FACT_FC",
+    "description": "Text inside a building in Pillar Town talks about a necklace.",
+    "thumbnail": "PILLAR_TOWN_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ALIEN_STUDY_DISCOVERY_FACT_FC",
+    "description": "Part of Pillar Town is dedicated to the Nomai's discoveries about the Dree.",
+    "thumbnail": "ALIEN_STUDY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ALIEN_SIGHT_FACT_FC",
+    "description": "A text wall in Pillar Town details how the Dree see.",
+    "thumbnail": "ALIEN_STUDY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ALIEN_DRUIDCRAFT_FACT_FC",
+    "description": "A text wall in Pillar Town talks about druidcraft.",
+    "thumbnail": "ALIEN_STUDY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__STRANDED_DREE_TEXT_FACT_FC",
+    "description": "A text wall in Pillar Town discusses the stagnation of the Dree.",
+    "thumbnail": "ALIEN_STUDY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__EYE_SHRINE_DISCOVERY_FACT_FC",
+    "description": "At the top of Pillar Town is a shrine of the Eye of the Universe.",
+    "thumbnail": "EYE_SHRINE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NO_SIGNAL_FACT_FC",
+    "description": "A text wall in the Eye Shrine mentions how the Eye's signal has disappeared.",
+    "thumbnail": "EYE_SHRINE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__EYE_PURPOSE_FACT_FC",
+    "description": "A text wall in the Eye Shrine discusses possible purposes of the Eye.",
+    "thumbnail": "EYE_SHRINE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__EYE_AGE_FACT_FC",
+    "description": "A text wall in the Eye Shrine contains theories about the Eye signal's age.",
+    "thumbnail": "EYE_SHRINE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__POD_MEMORIAL_FACT_FC",
+    "description": "On one side of Pillar Town is a collection of memorials.",
+    "thumbnail": "POD_MEMORIAL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NOMAI_DISHEARTENED_FACT_FC",
+    "description": "A recorder by the Third Pod Memorial reveals emotional struggles of the Nomai.",
+    "thumbnail": "POD_MEMORIAL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NOMAI_REVITALIZED_FACT_FC",
+    "description": "Text in the Third Pod Memorial mentions a signal the Nomai heard in Magma's Recursion.",
+    "thumbnail": "POD_MEMORIAL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__QUARRY_DISCOVERY_FACT_FC",
+    "description": "The Nomai made a quarry on the inner surface of Graviton's Folly.",
+    "thumbnail": "QUARRY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__QUARRY_TRANSLATION_FACT_FC",
+    "description": "Text in the building by the quarry explain what the material was being used for.",
+    "thumbnail": "QUARRY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_LAB_FOUND_FACT_FC",
+    "description": "A lab lies within Graviton's Folly.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_LAB_PURPOSE_FACT",
+    "description": "Text inside the Core Lab explains its purpose.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_DITYLUM_STRANDED_FACT_FC",
+    "description": "Text within the Core Lab discusses how Ditylum became stranded.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BAD_PLANS_FACT_FC",
+    "description": "The Nomai discussed some poor plans to rescue Ditylum in the Core Lab.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BROKEN_STAIRS_FACT_FC",
+    "description": "A staircase in the Core Lab is broken and unusable.",
+    "thumbnail": "CORE_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__GRAV_CORE_SEEN_FACT_FC",
+    "description": "You can see a large crystal floating in the center of Graviton's Folly.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_THEORY_FACT_FC",
+    "description": "Some text in the Core Lab explains a theory about the gravity of Graviton's Folly.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_TUNNELS_FACT_FC",
+    "description": "You can use a tractor beam to enter Folly's Core, but you should be prepared to die to spikes.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__GRAV_CRYSTAL_TEXT_FACT_FC",
+    "description": "Text in the Core Lab mentions the existence of a small crystal within the core of Graviton's Folly.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__TRACTOR_COMBO_FACT_FC",
+    "description": "The combination of levers required to enter the core is written in Dree text.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_ENTERED_FACT_FC",
+    "description": "You can use the tunnels to reach the center of Folly's Core.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CORE_BROKEN_FACT_FC",
+    "description": "Hitting the small crystal within Folly's Core will break it.",
+    "thumbnail": "GRAV_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DITYLUM_EJECTION_FACT_FC",
+    "description": "Ditylum is ejected from the Dangerous Node when it is killed.",
+    "thumbnail": "DILATION_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DITYLUM_FOUND_FACT_FC",
+    "description": "After killing the Dangerous Node, sit with Ditylum in Bramble's Heart.",
+    "thumbnail": "DILATION_NODE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__REINVIGORATION_RECORDING_FACT_FC",
+    "description": "You can find a Nomai recorder in a Dree house marked by an orange light.",
+    "thumbnail": "AMYLAX_HOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DATING_START_FACT_FC",
+    "description": "Dree writing inside Amylax's house, marked by an orange light, explains the start of a relationship.",
+    "thumbnail": "AMYLAX_HOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__COMMUNION_RECORDING_FACT_FC",
+    "description": "You can find a recording in a Dree house marked by a green light.",
+    "thumbnail": "KARENIA_HOUSE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_HOME_FACT_FC",
+    "description": "A Nomai recording at the park on Shattered Hearth mentions the Dree's home.",
+    "thumbnail": "DREE_PARK_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__STORY_AREA_DISCOVERY_FACT_FC",
+    "description": "A stump on Shattered Hearth seems like a good place to tell some stories.",
+    "thumbnail": "STORY_AREA_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__STORY_AREA_PURPOSE_FACT_FC",
+    "description": "A recording in the Storytelling Area on Shattered Hearth explains what the area was used for.",
+    "thumbnail": "STORY_AREA_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HELMET_REMOVED_FACT_FC",
+    "description": "A recording in the Storytelling Area on Shattered Hearth relays a Dree's momentary fright.",
+    "thumbnail": "STORY_AREA_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_SINGING_FACT_FC",
+    "description": "A recorder by the Concert Hall discusses the Dree's vocals.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CONCERT_MISSED_FACT_FC",
+    "description": "A recorder by the Concert Hall mentions how a Nomai missed a concert.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CONCERT_BELLS_FACT_FC",
+    "description": "Within the Concert Hall you can find five large bells.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CONCERT_DREE_TEXT_FACT_FC",
+    "description": "Nomai text within the Concert Hall mentions how to repair gravity crystals, but some of it is written in Dree.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CONCERT_COMBO_FACT_FC",
+    "description": "Dree text written on the side of the Concert Hall's stage explains how to fix a gravity crystal.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__CONCERT_SUCCESS_FACT_FC",
+    "description": "You can repair a gravity crystal from the Soil Lab at the Concert Hall.",
+    "thumbnail": "CONCERT_HALL_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__PLATFORM_DISCOVERY_FACT_FC",
+    "description": "By going through the white node by Shattered Hearth, you can reach the dome-shaped Observation Platform.",
+    "thumbnail": "FISH_PLATFORM_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DOMESTIC_TOOTH_FACT_FC",
+    "description": "A text wall in the Observation Platform talks about Kevin's tooth.",
+    "thumbnail": "FISH_PLATFORM_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DOMESTIC_EGG_FACT_FC",
+    "description": "A text wall in the Observation Platform discusses Dree diet.",
+    "thumbnail": "FISH_PLATFORM_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_RELUCTANCE_FACT_FC",
+    "description": "A text wall in the Observation Platform mentions risk-taking.",
+    "thumbnail": "FISH_PLATFORM_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__KEVIN_USAGE_FACT_FC",
+    "description": "Some text in the Enzyme Lab talks about Kevin.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FISH_STOMACH_FACT_FC",
+    "description": "Text on the wall of the Enzyme Lab discusses anglerfish biology.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__SCROLL_WALL_FACT_FC",
+    "description": "The scroll wall in the Enzyme Lab appears to be in much better shape than the scrolls around it.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BLOCKABLE_ROCK_FOREIGN_FACT_FC",
+    "description": "You can bring the scroll from Magma's Recursion to the Enzyme Lab to read it. It mentions a new quantum rule.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BLOCKABLE_ROCK_REASON_FACT_FC",
+    "description": "You can bring the scroll from Magma's Recursion to the Enzyme Lab to read it. It explains how a new quantum rule works.",
+    "thumbnail": "ENZYME_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ANGLER_DISTRACTION_SUCCESS_FACT_FC",
+    "description": "By bringing your ship to the Translation Lab, you can distract the small anglerfish nearby.",
+    "thumbnail": "TRANSLATION_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__STARVED_FISH_FACT_FC",
+    "description": "Some text in the Translation Lab discusses how an anglerfish might starve.",
+    "thumbnail": "TRANSLATION_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_NAME_FACT_FC",
+    "description": "Text within the Translation Lab reveals the name of the Dree.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DITYLUM_NAME_FACT_FC",
+    "description": "Text on the wall of the Translation Lab talks about Ditylum.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BRAMBLE_NAME_FACT_FC",
+    "description": "Some text in the Translation Lab lays out proper terms for talking about the Bramble.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__TRANSLATION_DRUIDCRAFT_FACT_FC",
+    "description": "Some text on the wall of the Translation Lab mentions druidcraft.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__TRANSLATOR_UPGRADE_FACT_FC",
+    "description": "A certain curve of text in the Translation Lab contains a Dree dictionary. Unfortunately, it seems incompatible with your translator.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NO_ESCAPE_FACT_FC",
+    "description": "Text in the Translation Lab discusses the prospects for escaping the Deep Bramble.",
+    "thumbnail": "TRANSLATIONS_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NURSERY_FOUND_FACT_FC",
+    "description": "A Bramble node by Shattered Hearth will take you to a long corridor filled with anglerfish.",
+    "thumbnail": "NURSERY_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__REJECT_NATURE_FACT_FC",
+    "description": "Nomai text within the Venomous Reject discusses its nature.",
+    "thumbnail": "REJECT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__NODE_DEATH_IDEA_FACT_FC",
+    "description": "A recorder in the Venomous Reject questions what happens when a Bramble node is killed.",
+    "thumbnail": "REJECT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__SYRING_FOUND_FACT_FC",
+    "description": "You can find a dangerous-looking syringe within the Venomous Reject.",
+    "thumbnail": "REJECT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HEARTH_CORE_DISCOVERY_FACT_FC",
+    "description": "At the core of Shattered Hearth is a Bramble node leading somewhere very hot.",
+    "thumbnail": "HEARTH_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HOT_NODE_RECORDING_FACT_FC",
+    "description": "A recording by the core of Shattered Hearth warns of danger ahead.",
+    "thumbnail": "HEARTH_CORE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__EYE_SIGNAL_DISCOVERY_FACT_FC",
+    "description": "You can hear a signal as you enter Magma's Recursion.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_RESCUE_FACT_FC",
+    "description": "Text in the Landing Zone of Magma's Recursion explains how the Nomai were saved by the Dree.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__EGG_STORY_FACT_FC",
+    "description": "Text in the Landing Zone of Magma's Recursion relates a story about anglerfish eggs.",
+    "thumbnail": "LANDING_ZONE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ABANDONED_SETTLEMENT_FOUND_FACT_FC",
+    "description": "On the surface of Magma's Recursion lies a long-abandoned settlement.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HOT_PLANET_NO_CITY_FACT_FC",
+    "description": "Some text in one of the buildings of the Abandoned Settlement in Magma's Recursion explains why the location was abandoned.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HOT_ROAD_FACT_FC",
+    "description": "Some text within the Abandoned Settlement explains how to navigate Magma's Recursion.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__SIGNAL_FEEDBACK_FACT_FC",
+    "description": "Text at the Abandoned Settlement of Magma's Recursion explains why the region is so hot.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__FLIRTING_REVELATION_FACT_FC",
+    "description": "At the Abandoned Settlement within Magma's Recursion, you can find Nomai dating advice written on a wall.",
+    "thumbnail": "ABANDONED_SETTLEMENT_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__GAS_CAVE_DISCOVERY_FACT_FC",
+    "description": "On Magma's Recursion you can find a cave filled with combustible gas. Using your jetpack inside would probably be a bad idea.",
+    "thumbnail": "GAS_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__GAS_CRYSTALS_FACT_FC",
+    "description": "Text in the Gas Cave at Magma's Recursion explains how the Nomai used gravity crystals.",
+    "thumbnail": "GAS_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__RELATIONSHIP_ADVICE_FACT_FC",
+    "description": "A recording in the Signal Lab contains romantic advice.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__SIGNAL_LAB_USE_FACT_FC",
+    "description": "Text on the wall in the Signal Lab record the results of the Nomai's studies.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_ECHOLOCATION_STUDY_FACT_FC",
+    "description": "Some text on the wall of the Signal Lab explains the purpose of the modified recorder beside it.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DREE_SIGNAL_TUNE_FACT_FC",
+    "description": "You can use your signalscope to record the signal being emitted by the recorder in the Signal Lab.",
+    "thumbnail": "SIGNAL_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__QUANTUM_CAVE_DISCOVERY_FACT_FC",
+    "description": "A cave on Magma's Recursion contains a quantum shard.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__OBSTRUCTED_TEXT_FACT_FC",
+    "description": "Because of damage to the text wall at the Quantum Cave on Magma's Recursion, you can't read the entirety of the scroll there.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__ROCK_USED_FACT_FC",
+    "description": "Using the quantum rules of entanglement and probability, you can ride the Hot Shard to Bramble's Heart.",
+    "thumbnail": "QUANTUM_CAVE_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__HEART_LAB_DISCOVERY_FACT_FC",
+    "description": "Is it possible to find the heart of the Bramble?",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__BRAMBLE_HEART_DISCOVERY_FACT_FC",
+    "description": "Some Dree text at the Distant Node Project explains where you are.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__PROJECT_GOAL_FACT_FC",
+    "description": "Dree text at the Distant Node Project explains the project's goal.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__PROJECT_TIMING_FACT_FC",
+    "description": "Dree text at the Distant Node Project details the Dree's part of the plan.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DEAD_ALIENS_FACT_FC",
+    "description": "A sealed room lies at the end of the Distant Node Project",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DITYLUM_MISSING_FACT_FC",
+    "description": "A recorder in the final room of the Distant Node Project tells of the project's final moments.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  },
+  {
+    "locationModID": "SLF__DITYLUM_MOURNING_FACT_FC",
+    "description": "After freeing him from the Dangerous Node, you can go to Bramble's Heart and sit with Ditylum.",
+    "thumbnail": "HEART_LAB_ENTRY_FC"
+  }
+]

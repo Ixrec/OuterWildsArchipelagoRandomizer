@@ -3,11 +3,13 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using ArchipelagoRandomizer.InGameTracker;
+using ArchipelagoRandomizer.ItemImpls.FCProgression;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -53,6 +55,8 @@ public class APRandomizer : ModBehaviour
         SlotData.ContainsKey("dlc_only") && (long)SlotData["dlc_only"] > 0;
     public static bool SlotEnabledSplitTranslator() =>
         SlotData.ContainsKey("split_translator") && (long)SlotData["split_translator"] == 1;
+    public static bool SlotEnabledMod(string modOption) =>
+        SlotData.ContainsKey(modOption) && (long)SlotData[modOption] > 0;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;
@@ -163,7 +167,7 @@ public class APRandomizer : ModBehaviour
         {
             APSession.Items.ItemReceived -= APSession_ItemReceived;
             APSession.MessageLog.OnMessageReceived -= APSession_OnMessageReceived;
-            OnSessionClosed(APSession, true);
+            OnSessionClosed?.Invoke(APSession, true);
         }
         APSession = ArchipelagoSessionFactory.CreateSession(cdata.hostname, (int)cdata.port);
         LoginResult result = APSession.TryConnectAndLogin("Outer Wilds", cdata.slotName, ItemsHandlingFlags.AllItems, password: cdata.password, requestSlotData: true);
@@ -299,7 +303,7 @@ public class APRandomizer : ModBehaviour
             APSession.Locations.CompleteLocationChecks(locationIdsMissedByServer.ToArray());
         }
 
-        OnSessionOpened(APSession);
+        OnSessionOpened?.Invoke(APSession);
 
         successCallback();
     }
@@ -472,6 +476,8 @@ public class APRandomizer : ModBehaviour
             Hints.OnCompleteSceneLoad();
             // Hearth's Neighbor 2: Magistarium custom item impls
             MemoryCubeInterface.OnCompleteSceneLoad();
+            // Forgotten Castaways custom item impls
+            ExpandedDictionary.OnCompleteSceneLoad();
         };
 
         // update the Nomai text setting before any can be created
@@ -491,15 +497,14 @@ public class APRandomizer : ModBehaviour
 
         StartCoroutine(OverwriteNHInitialSpawn());
 
-        var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
-        if (newHorizonsAPI != null)
+        if (NewHorizonsAPI != null)
         {
-            newHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
+            NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
             {
                 APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API ChangeStarSystemEvent system = {system}");
                 Spawn.OnChangeStarSystemEvent(system);
             });
-            newHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
+            NewHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
             {
                 APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API StarSystemLoadedEvent system = {system}");
                 if (system == "Jam3")
@@ -507,7 +512,17 @@ public class APRandomizer : ModBehaviour
                     // Hearth's Neighbor 2: Magistarium custom item impls
                     MagistariumAccessCodes.OnJam3StarSystemLoadedEvent();
                 }
+                // Forgotten Castaways custom item impls
+                if (system == "DeepBramble")
+                {
+                    ThermalInsulation.OnDeepBrambleLoadEvent();
+                    TamingTechniques.OnDeepBrambleLoadEvent();
+                    RandomizeFollyLevers.OnDeepBrambleLoadEvent();
+                    ExpandedDictionary.OnDeepBrambleLoadEvent();
+                }
             });
+            // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
+            DeepBrambleCoordinates.ChangeExitWarp();
         }
     }
 
@@ -516,18 +531,25 @@ public class APRandomizer : ModBehaviour
     // Randomizers obviously need total control over the initial spawn, so NH story mods which change it need to be overwritten.
     // But changing the current spawn on warp is a desirable time-saving feature with no impact on logic.
     // So that's why we're doing this overwrite only once on mod Start().
-    System.Collections.IEnumerator OverwriteNHInitialSpawn()
+    IEnumerator OverwriteNHInitialSpawn()
     {
         yield return new WaitForEndOfFrame();
 
-        var newHorizonsAPI = ModHelper.Interaction.TryGetModApi<INewHorizons>("xen.NewHorizons");
-        if (newHorizonsAPI is null)
+        if (NewHorizonsAPI is null)
             yield break;
 
         // There's no way to ask what the default system currently is, so if NH is running at all
         // then we have to assume it needs overriding.
-        OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"SolarSystem\")");
-        newHorizonsAPI?.SetDefaultSystem("SolarSystem");
+        if (Spawn.spawnChoice == Spawn.SpawnChoice.DeepBramble)
+        {
+            OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"DeepBramble\")");
+            NewHorizonsAPI.SetDefaultSystem("DeepBramble");
+        }
+        else
+        { 
+            OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"SolarSystem\")");
+            NewHorizonsAPI.SetDefaultSystem("SolarSystem");
+        }
     }
 
     public override void SetupTitleMenu(ITitleMenuManager titleManager) => MainMenu.SetupTitleMenu(titleManager);
