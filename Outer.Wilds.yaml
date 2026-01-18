@@ -52,7 +52,8 @@ Outer Wilds:
     # 
     # 'vanilla' is the same as the base game: you wake up in TH Village, talk to Hornfels to get the Launch Codes, then walk by the Nomai statue to start the time loop.
     # All other options (including timber_hearth) will spawn you in your spacesuit, with the time loop already started, and the Launch Codes item placed randomly like any other AP item.
-    # stranger of course requires enable_eotc_dlc to be true.
+    # `stranger` of course requires `enable_eotc_dlc` to be true
+    # `deep_bramble` requires `enable_fc_mod` to be true
     # 
     # The idea is that non-vanilla spawns will require you to play "shipless" for a while, possibly using Nomai Warp Codes to visit other planets. The ship will still spawn nearby, so you can use the ship log/tracker right away.
     # When playing with non-vanilla spawns, we recommend:
@@ -66,6 +67,7 @@ Outer Wilds:
     giants_deep: 0
     stranger: 0
     random_non_vanilla: 0
+    deep_bramble: 0
 
   early_key_item:
     # Ensure that one of Translator, Nomai Warp Codes, Launch Codes, or Stranger Light Modulator will be somewhere
@@ -147,8 +149,9 @@ Outer Wilds:
     # Maximum value is 100
     15: 50
     random: 0
-    random-low: 0
-    random-high: 0
+    random-low: 0 # random value weighted towards lower values
+    random-high: 0 # random value weighted towards higher values
+    random-range-0-100: 0 # random value between 0 and 100
 
   trap_type_weights:
     # When a filler item is replaced with a trap, these weights determine the
@@ -233,5 +236,11 @@ Outer Wilds:
   enable_fq_mod:
     # Incorporates Fret's Quest story mod content into the randomizer with an additional 1 item and 18 locations.
     # If logsanity is enabled, that will add another 38 locations, for a total of 56 FQ locations.
+    'false': 50
+    'true': 0
+
+  enable_fc_mod:
+    # Incorporates Forgotten Castaways story mod content into the randomizer with an additional 13 items and 54 locations.
+    # If logsanity is enabled, that will add another 118 locations, for a total of 172 FC locations.
     'false': 50
     'true': 0
