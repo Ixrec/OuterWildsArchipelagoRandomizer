@@ -10,7 +10,7 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class Hints
 {
-    public readonly static Dictionary<string, string[]> characterToLocationPrefixes = new Dictionary<string, string[]>
+    private static Dictionary<string, string[]> characterToLocationPrefixes = new Dictionary<string, string[]>
     {
         { "Chert", [ "AT: ", "ET: ", "AT Ship Log: ", "ET Ship Log: " ] },
         { "Esker", [ "TH: ", "AR: ", "TH Ship Log: ", "AR Ship Log: " ] },
