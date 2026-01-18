@@ -1,4 +1,5 @@
-﻿using UnityEngine.Events;
+﻿using OWML.Common;
+using UnityEngine.Events;
 
 namespace ArchipelagoRandomizer;
 
@@ -8,4 +9,5 @@ public interface INewHorizons
     bool SetDefaultSystem(string name);
     UnityEvent<string> GetStarSystemLoadedEvent();
     UnityEvent<string> GetChangeStarSystemEvent();
+    void DefineStarSystem(string name, string config, IModBehaviour mod);
 }

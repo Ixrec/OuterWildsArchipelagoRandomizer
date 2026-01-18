@@ -79,6 +79,7 @@ internal class Anglerfish
     {
         silentRunningPrompt.SetVisibility(
             hasAnglerfishKnowledge &&
+            APRandomizer.NewHorizonsAPI?.GetCurrentStarSystem() != "DeepBramble" &&
             (OWInput.IsInputMode(InputMode.Character) || OWInput.IsInputMode(InputMode.ShipCockpit)) &&
             (
                 Locator.GetPlayerSectorDetector().IsWithinSector(Sector.Name.DarkBramble) ||

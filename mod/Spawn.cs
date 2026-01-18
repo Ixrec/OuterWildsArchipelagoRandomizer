@@ -1,12 +1,15 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.ItemImpls.FCProgression;
+using HarmonyLib;
+using System.Collections;
 using UnityEngine;
+using static UnityEngine.PostProcessing.AntialiasingModel;
 
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class Spawn
 {
-    enum SpawnChoice
+    internal enum SpawnChoice
     {
         Vanilla,
         HourglassTwins,
@@ -14,9 +17,10 @@ internal class Spawn
         BrittleHollow,
         GiantsDeep,
         Stranger,
+        DeepBramble,
     }
 
-    private static SpawnChoice spawnChoice = SpawnChoice.Vanilla;
+    internal static SpawnChoice spawnChoice = SpawnChoice.Vanilla;
 
     public static void ApplySlotData(long spawnChoiceSlotData)
     {
@@ -28,6 +32,7 @@ internal class Spawn
             case /*"brittle_hollow"*/  3: spawnChoice = SpawnChoice.BrittleHollow; break;
             case /*"giants_deep"*/     4: spawnChoice = SpawnChoice.GiantsDeep; break;
             case /*"stranger"*/        5: spawnChoice = SpawnChoice.Stranger; break;
+            case /*"deep_bramble"*/    7: spawnChoice = SpawnChoice.DeepBramble; APRandomizer.NewHorizonsAPI?.SetDefaultSystem("DeepBramble"); break;
         }
     }
 
@@ -72,6 +77,14 @@ internal class Spawn
         {
             APRandomizer.OWMLModConsole.WriteLine($"auto-revealing The Stranger ship log because EotE DLC is enabled");
             __instance.RevealFact("IP_RING_WORLD_X1");
+        }
+
+        // The Village 1 logsanity check is automatically triggered on startup... unless you aren't in the vanilla system.
+        // Rather than changing the access logic, we can just forcibly trigger it here
+        if(APRandomizer.NewHorizonsAPI?.GetCurrentStarSystem() is not null and not "SolarSystem" && !__instance.IsFactRevealed("TH_VILLAGE_X1"))
+        {
+            APRandomizer.OWMLModConsole.WriteLine("auto-revealing Village 1 ship log because we didn't spawn in the Outer Wilds system");
+            __instance.RevealFact("TH_VILLAGE_X1");
         }
     }
 

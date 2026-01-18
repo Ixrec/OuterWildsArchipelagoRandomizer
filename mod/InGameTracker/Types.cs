@@ -22,6 +22,7 @@ public enum TrackerCategory
     AstralCodec,
     HearthsNeighbor2Magistarium,
     FretsQuest,
+    ForgottenCastaways,
 }
 
 public class TrackerRequirement

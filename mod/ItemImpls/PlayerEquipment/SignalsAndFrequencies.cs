@@ -67,6 +67,18 @@ internal class SignalsAndFrequencies
         { "Reson's Radio", "Hearthian Radio" },
         { "Reson's Second Radio", "Hearthian Radio" },
         { "Rim's Second Radio", "Hearthian Radio" },
+
+        // Forgotten Castaways
+        // left out Ditylum (Traveler) because it is only available during the finale
+        { "First Marker", "Nomai Trailmarkers" },
+        { "Camp Marker", "Nomai Trailmarkers" },
+        { "Amplified Ambience", "Natural Phenomena" },
+        { "Gravitational Anomaly", "Natural Phenomena" },
+        { "Geothermal Activity", "Natural Phenomena" },
+        { "Hot Shard", "Quantum" },
+        { "Alien Echolocation", "Echolocation Tones" },
+        { "Warped Echolocation", "Echolocation Tones" },
+        { "Ditylum Echolocation", "Echolocation Tones" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -85,6 +97,7 @@ internal class SignalsAndFrequencies
             "Quantum_BH_Shard",
             "Quantum_GD_Shard",
             "Quantum_QM",
+            "Hot Shard", // Forgotten Castaways
         } },
         { "EscapePod", new HashSet<string>{
             "EscapePod_BH",
@@ -135,6 +148,22 @@ internal class SignalsAndFrequencies
             "Reson's Second Radio",
             "Rim's Second Radio",
         } },
+
+        // Forgotten Castaways
+        { "Nomai Trailmarkers", new HashSet<string>{
+            "First Marker",
+            "Camp Marker",
+        } },
+        { "Natural Phenomena", new HashSet<string>{
+            "Amplified Ambience",
+            "Gravitational Anomaly",
+            "Geothermal Activity",
+        } },
+        { "Echolocation Tones", new HashSet<string>{
+            "Alien Echolocation",
+            "Warped Echolocation",
+            "Ditylum Echolocation",
+        } },
     };
 
     public static HashSet<string> usableFrequencies = new();
@@ -172,11 +201,18 @@ internal class SignalsAndFrequencies
         // The Outer Wilds Ventures frequency the Signalscope starts with is the only frequency we haven't itemized,
         // so the player "knows" at least two frequencies if they have acquired any one of the AP frequency items.
 
+        // If Forgotten Castaways is enabled, Natural Phenomena is an additional starting frequency.
+        if (APRandomizer.SlotEnabledMod("enable_fc_mod"))
+        {
+            __result = true;
+            return false;
+        }
+
         __result = usableFrequencies.Count > 0; // override return value
         return false; // skip vanilla implementation
     }
-    // no priority tag on KnowsSignal because we've chosen not to itemize any of the story mod *signals*; only the frequencies have AP items
     [HarmonyPrefix, HarmonyPatch(typeof(PlayerData), nameof(PlayerData.KnowsSignal))]
+    [HarmonyPriority(Priority.Low)] // run this *after* the New Horizons patch for KnowsSignal, so our __result overrides NH's
     public static bool PlayerData_KnowsSignal_Prefix(SignalName signalName, ref bool __result)
     {
         if (!ItemNames.signalToItem.ContainsKey(signalName.ToString()))
@@ -300,7 +336,7 @@ internal class SignalsAndFrequencies
         // If this signal corresponds to an AP frequency item that we don't have yet,
         // prevent us from "detecting" and thus scanning it until we get that item.
         if (signalToFrequency.TryGetValue(signalName.ToString(), out var frequency))
-            if (frequency != "Traveler")
+            if (frequency != "Traveler" && frequency != "Natural Phenomena") // FC: Natural Phenomena is a starting frequency
                 if (!usableFrequencies.Contains(frequency) && mightDisplayUnidentifiedSignalMessage)
                     return false; // skip vanilla implementation
 
@@ -387,6 +423,16 @@ internal class SignalsAndFrequencies
         __instance._degreesFromScope = 180f;
 
         return false; // skip vanilla implementation
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.Start))]
+    public static void IdentifyNaturalPhenomena(AudioSignal __instance)
+    {
+        // Immediately identify the Natural Phenomena frequency for better UX
+        if (__instance.GetFrequency().ToString() == "Natural Phenomena")
+        {
+            PlayerData.LearnFrequency(__instance.GetFrequency());
+        }
     }
 
     // If you get the Signalscope item, then talk to Tephra before getting the Hide & Seek Frequency item, the
