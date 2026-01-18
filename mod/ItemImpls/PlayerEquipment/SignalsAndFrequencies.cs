@@ -426,7 +426,7 @@ internal class SignalsAndFrequencies
     }
 
     [HarmonyPrefix, HarmonyPatch(typeof(AudioSignal), nameof(AudioSignal.Start))]
-    public static void IdentifyAmplifiedAmbience(AudioSignal __instance)
+    public static void IdentifyNaturalPhenomena(AudioSignal __instance)
     {
         // Immediately identify the Natural Phenomena frequency for better UX
         if (__instance.GetFrequency().ToString() == "Natural Phenomena")
