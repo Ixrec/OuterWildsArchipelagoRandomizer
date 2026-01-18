@@ -30,6 +30,7 @@ public class TrackerRequirement
     public string location;
     public string region;
     public List<TrackerRequirement> anyOf;
+    public List<TrackerRequirement> allOf;
 }
 
 /// <summary>

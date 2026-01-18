@@ -605,13 +605,16 @@ public class Logic
         }
         if (requirement.anyOf != null)
             return AnyOfAccess(requirement.anyOf);
+        if (requirement.allOf != null)
+            return CanAccessAll(requirement.allOf);
         throw new ArgumentException($"CanAccess called with invalid TrackerRequirement: {requirement}");
     }
 
     public IEnumerable<string> GetAllRegionsInRequirements(IEnumerable<TrackerRequirement> requires)
     {
         return requires.Where(req => req.region != null).Select(req => req.region)
-            .Concat(requires.Where(req => req.anyOf != null).SelectMany(req => GetAllRegionsInRequirements(req.anyOf)));
+            .Concat(requires.Where(req => req.anyOf != null).SelectMany(req => GetAllRegionsInRequirements(req.anyOf)))
+            .Concat(requires.Where(req => req.allOf != null).SelectMany(req => GetAllRegionsInRequirements(req.allOf)));
     }
 
     public List<string> GetLogicDisplayStrings(TrackerLocationData data, bool includeLocationName = false)
@@ -776,6 +779,18 @@ public class Logic
                     GetLogicRequirementsStrings(req.anyOf)
                 );
                 if (req.anyOf.Count > 1)
+                {
+                    reqStr = "(" + reqStr + ")";
+                }
+                reqStrings.Add(reqStr);
+            }
+            else if (req.allOf != null && req.allOf.Count > 0)
+            {
+                string reqStr = string.Join(
+                    " <color=lime>AND</color> ",
+                    GetLogicRequirementsStrings(req.allOf)
+                );
+                if (req.allOf.Count > 1)
                 {
                     reqStr = "(" + reqStr + ")";
                 }
