@@ -1,6 +1,5 @@
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
-using Archipelago.MultiClient.Net.Packets;
 using OWML.Common;
 using System;
 using System.Collections;

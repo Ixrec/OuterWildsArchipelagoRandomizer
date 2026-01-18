@@ -1,6 +1,4 @@
-﻿using Archipelago.MultiClient.Net.Enums;
-using Archipelago.MultiClient.Net.Packets;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 
 namespace ArchipelagoRandomizer;

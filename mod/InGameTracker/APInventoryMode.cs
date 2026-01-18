@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 namespace ArchipelagoRandomizer.InGameTracker;
 
-using static NomaiWarpPlatform;
-
 // Tuples: name, green arrow, green exclamation point, orange asterisk
 using InventoryDisplayItem = Tuple<string, bool, bool, bool>;
 

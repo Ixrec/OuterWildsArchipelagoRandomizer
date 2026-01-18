@@ -1,8 +1,5 @@
-﻿using ArchipelagoRandomizer.ItemImpls.FCProgression;
-using HarmonyLib;
-using System.Collections;
+﻿using HarmonyLib;
 using UnityEngine;
-using static UnityEngine.PostProcessing.AntialiasingModel;
 
 namespace ArchipelagoRandomizer;
 

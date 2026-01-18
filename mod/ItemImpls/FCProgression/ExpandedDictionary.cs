@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
