@@ -81,7 +81,7 @@ internal class Spawn
 
         // The Village 1 logsanity check is automatically triggered on startup... unless you aren't in the vanilla system.
         // Rather than changing the access logic, we can just forcibly trigger it here
-        if(spawnChoice == SpawnChoice.DeepBramble && !__instance.IsFactRevealed("TH_VILLAGE_X1"))
+        if(APRandomizer.NewHorizonsAPI?.GetCurrentStarSystem() is not null and not "SolarSystem" && !__instance.IsFactRevealed("TH_VILLAGE_X1"))
         {
             APRandomizer.OWMLModConsole.WriteLine("auto-revealing Village 1 ship log because we didn't spawn in the Outer Wilds system");
             __instance.RevealFact("TH_VILLAGE_X1");
