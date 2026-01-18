@@ -258,7 +258,7 @@ public class Logic
         var newItems = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
 
         // Only bother recalculating logic if the item actually unlocks checks
-        if (newItems.Any(item => item.Flags == Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement))
+        if (newItems.Any(item => item.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)))
             DetermineAllAccessibility();
     }
 
