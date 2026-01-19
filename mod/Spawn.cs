@@ -141,8 +141,14 @@ internal class Spawn
         }
         if (NewHorizonsWarpingToVanillaSystem)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since NewHorizons is warping is back to the vanilla system");
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since NewHorizons is warping us back to the vanilla system");
             NewHorizonsWarpingToVanillaSystem = false;
+            return;
+        }
+        if (spawnChoice == SpawnChoice.DeepBramble)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_SpawnPlayer doing nothing, since spawn is DeepBramble but we're in the vanilla system. " +
+                $"This probably means NewHorizons sent us back to the vanilla system without the warp drive for some reason.", OWML.Common.MessageType.Warning);
             return;
         }
 
