@@ -2,6 +2,7 @@
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
+    [HarmonyPatch]
     class QuantumProbability
     {
         private static bool _hasProbabilityKnowledge = false;
