@@ -162,7 +162,7 @@ public class APChecklistMode : ShipLogMode
             {
                 SelectSelectionItem(SelectionWrapper.GetSelectedIndex());
             }
-            if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm))
+            if (OWInput.IsNewlyPressed(InputLibrary.menuConfirm) || OWInput.IsNewlyPressed(InputLibrary.interact))
             {
                 OpenChecklistPage(SelectionWrapper.GetSelectedIndex());
             }
