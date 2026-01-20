@@ -433,12 +433,13 @@ public class APRandomizer : ModBehaviour
         // You won't be able to access OWML's mod helper in Awake.
         // So you probably don't want to do anything here.
         // Use Start() instead.
-        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         Instance = this;
     }
 
     private void Start()
     {
+        // We patch methods here to ensure that all other mod assemblies are loaded, in case we need to patch their methods
+        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         // Starting here, you'll have access to OWML's mod helper.
 
         // These .jsonc files are what we share directly with the .apworld to ensure
@@ -519,6 +520,7 @@ public class APRandomizer : ModBehaviour
                     TamingTechniques.OnDeepBrambleLoadEvent();
                     RandomizeFollyLevers.OnDeepBrambleLoadEvent();
                     ExpandedDictionary.OnDeepBrambleLoadEvent();
+                    PlayerData._currentGameSave.SetPersistentCondition("LockableSignalFound", true); // Stop Slate from pulling us back to the vanilla system to yap
                 }
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
@@ -530,7 +532,7 @@ public class APRandomizer : ModBehaviour
     // and the *current* spawn point for any given loop which NewHorizons typically changes when you warp between systems.
     // Randomizers obviously need total control over the initial spawn, so NH story mods which change it need to be overwritten.
     // But changing the current spawn on warp is a desirable time-saving feature with no impact on logic.
-    // So that's why we're doing this overwrite only once on mod Start().
+    // So that's why we're doing this overwrite only once a frame after mod Start() (to ensure it happens *after* other mods).
     IEnumerator OverwriteNHInitialSpawn()
     {
         yield return new WaitForEndOfFrame();
@@ -540,16 +542,7 @@ public class APRandomizer : ModBehaviour
 
         // There's no way to ask what the default system currently is, so if NH is running at all
         // then we have to assume it needs overriding.
-        if (Spawn.spawnChoice == Spawn.SpawnChoice.DeepBramble)
-        {
-            OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"DeepBramble\")");
-            NewHorizonsAPI.SetDefaultSystem("DeepBramble");
-        }
-        else
-        { 
-            OWMLModConsole.WriteLine($"OverwriteNHInitialSpawn() calling SetDefaultSystem(\"SolarSystem\")");
-            NewHorizonsAPI.SetDefaultSystem("SolarSystem");
-        }
+        Spawn.ResetSpawnSystem();
     }
 
     public override void SetupTitleMenu(ITitleMenuManager titleManager) => MainMenu.SetupTitleMenu(titleManager);

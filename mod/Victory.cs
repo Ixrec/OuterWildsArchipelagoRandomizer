@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Concurrent;
 
 namespace ArchipelagoRandomizer;
 
@@ -17,6 +18,8 @@ public class Victory
     }
 
     public static GoalSetting goalSetting = GoalSetting.SongOfFive;
+    // This is set to whichever system we most recently spawned in. Apparently, the afterlife is part of the vanilla system according to NH
+    private static string currentSystem = "SolarSystem";
 
     public static void SetGoal(long goal)
     {
@@ -31,6 +34,9 @@ public class Victory
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
+        if (APRandomizer.NewHorizonsAPI is INewHorizons nhAPI) // Save current system for future reference
+            currentSystem = APRandomizer.NewHorizonsAPI.GetCurrentStarSystem();
+
         if (loadScene != OWScene.EyeOfTheUniverse) return;
 
         var metSolanum = hasMetSolanum();
@@ -109,6 +115,9 @@ public class Victory
     public static void EchoesOverController_OnTriggerEndOfDLC()
     {
         APRandomizer.OWMLModConsole.WriteLine($"EchoesOverController_OnTriggerEndOfDLC() called");
+
+        if (currentSystem != "SolarSystem")
+            return; // Do not complete goal unless we're seeing DLC credits in the vanilla system
 
         if (goalSetting == GoalSetting.EchoesOfTheEye)
             SetGoalAchieved();
