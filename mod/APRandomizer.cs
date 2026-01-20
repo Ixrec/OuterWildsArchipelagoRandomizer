@@ -433,12 +433,12 @@ public class APRandomizer : ModBehaviour
         // You won't be able to access OWML's mod helper in Awake.
         // So you probably don't want to do anything here.
         // Use Start() instead.
-        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         Instance = this;
     }
 
     private void Start()
     {
+        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         // Starting here, you'll have access to OWML's mod helper.
 
         // These .jsonc files are what we share directly with the .apworld to ensure
@@ -519,6 +519,7 @@ public class APRandomizer : ModBehaviour
                     TamingTechniques.OnDeepBrambleLoadEvent();
                     RandomizeFollyLevers.OnDeepBrambleLoadEvent();
                     ExpandedDictionary.OnDeepBrambleLoadEvent();
+                    PlayerData._currentGameSave.SetPersistentCondition("LockableSignalFound", true); // Stop Slate from yapping
                 }
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.

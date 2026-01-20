@@ -33,6 +33,15 @@ internal class Spawn
         }
     }
 
+    public static void ResetSpawnSystem()
+    {
+        switch (spawnChoice)
+        {
+            case SpawnChoice.DeepBramble: APRandomizer.NewHorizonsAPI?.SetDefaultSystem("DeepBramble"); break;
+            default: APRandomizer.NewHorizonsAPI?.SetDefaultSystem("SolarSystem"); break;
+        }
+    }
+
     private static bool spawnInSuitNextUpdate = false;
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
