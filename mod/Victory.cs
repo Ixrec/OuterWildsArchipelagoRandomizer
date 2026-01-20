@@ -18,6 +18,7 @@ public class Victory
     }
 
     public static GoalSetting goalSetting = GoalSetting.SongOfFive;
+    // This is set to whichever system we most recently spawned in. Apparently, the afterlife is part of the vanilla system according to NH
     private static string currentSystem = "SolarSystem";
 
     public static void SetGoal(long goal)

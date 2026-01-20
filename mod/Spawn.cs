@@ -37,8 +37,14 @@ internal class Spawn
     {
         switch (spawnChoice)
         {
-            case SpawnChoice.DeepBramble: APRandomizer.NewHorizonsAPI?.SetDefaultSystem("DeepBramble"); break;
-            default: APRandomizer.NewHorizonsAPI?.SetDefaultSystem("SolarSystem"); break;
+            case SpawnChoice.DeepBramble:
+                APRandomizer.OWMLModConsole.WriteLine($"ResetSpawnSystem() calling SetDefaultSystem(\"DeepBramble\")");
+                APRandomizer.NewHorizonsAPI?.SetDefaultSystem("DeepBramble");
+                break;
+            default:
+                APRandomizer.OWMLModConsole.WriteLine($"ResetSpawnSystem() calling SetDefaultSystem(\"SolarSystem\")");
+                APRandomizer.NewHorizonsAPI?.SetDefaultSystem("SolarSystem");
+                break;
         }
     }
 
