@@ -65,6 +65,8 @@ public class ArchConsoleManager : MonoBehaviour
 
         GlobalMessenger.AddListener("EnterConversation", () => gameplayConsole?.SetActive(false));
         GlobalMessenger.AddListener("ExitConversation", () => gameplayConsole?.SetActive(true));
+        GlobalMessenger.AddListener("EnterShipComputer", () => gameplayConsole?.SetActive(false));
+        GlobalMessenger.AddListener("ExitShipComputer", () => gameplayConsole?.SetActive(true));
 
         APRandomizer.OnSessionOpened += (s) =>
         {
