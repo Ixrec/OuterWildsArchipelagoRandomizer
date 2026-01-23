@@ -256,9 +256,13 @@ public class Logic
     {
         // only gets new items
         var newItems = itemsHelper.AllItemsReceived.Except(previouslyObtainedItems);
+        previouslyObtainedItems = itemsHelper.AllItemsReceived;
 
         // Only bother recalculating logic if the item actually unlocks checks
-        if (newItems.Any(item => item.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement)))
+        // If the item is sent from the cheat console, we don't know if it's progression or not
+        if (newItems.Any(item =>
+                item.Flags.HasFlag(Archipelago.MultiClient.Net.Enums.ItemFlags.Advancement) ||
+                item.LocationName == "Cheat Console"))
             DetermineAllAccessibility();
     }
 
