@@ -295,10 +295,7 @@ public class ArchConsoleManager : MonoBehaviour
     public static void AddAPMessage(LogMessage message, AudioType soundToPlay = AudioType.ShipLogMarkLocation)
     {
         if (DropAllAPServerMessages)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"Because the \"AP Console: Drop All AP Server Messages\" setting is enabled, ignoring AP server message:\n{message}");
-            return;
-        }
+            return; // don't even log anything; if it's too spammy for the console it's probably too spammy/destabilizing for the log files too
 
         var colorizedParts = message.Parts.Select(messagePart =>
         {
