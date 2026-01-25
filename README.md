@@ -148,6 +148,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 ## Credits
 
 - Direct feature contributions include:
+	- aXu-AP: Echo Hike mod / Threader integration
 	- GameWyrm: this mod's in-game console, early versions of the in-game tracker, the banner art image, and the "Quality of Life" mod settings
 	- hanophora: Suit Log integration
 	- magic.exe: the items-only PopTracker pack
