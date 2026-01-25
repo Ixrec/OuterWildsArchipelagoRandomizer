@@ -266,6 +266,11 @@ internal class LocationTriggers
         { "DITYLUM_MISSING_FACT_FC", Location.FC_DNP_RECORDER },
         { "DITYLUM_MOURNING_FACT_FC", Location.FC_MOURNING },
         { "CORE_BROKEN_FACT_FC", Location.FC_BREAK_CRYSTAL },
+
+        // Echo Hike default locations
+        { "EH_ENTRANCE_X1", Location.EH_ENTER },
+        { "EH_CAVERN_X3", Location.EH_BEACON },
+        { "EH_PHOSPHORS_X1", Location.EH_PHOSPHORS },
     };
 
     // manual scrolls
@@ -434,6 +439,7 @@ internal class LocationTriggers
             case Item.CrystalRepairManual: CrystalManual.HasCrystalManual = (count > 0); break;
             case Item.ProbabilityRule: QuantumProbability.hasProbabilityKnowledge = (count > 0); break;
             case Item.DeepBrambleCoordinates: DeepBrambleCoordinates.HasDeepBrambleCoordinates = (count > 0); break;
+            case Item.Threader: Threader.hasThreader = (count > 0); break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;

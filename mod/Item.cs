@@ -133,6 +133,9 @@ public enum Item
     ThermalInsulation,
     ProbabilityRule,
     DeepBrambleCoordinates,
+
+    // Echo Hike items
+    Threader,
 };
 
 public static class ItemNames
@@ -271,6 +274,9 @@ public static class ItemNames
         { Item.ThermalInsulation, "Thermal Insulation" },
         { Item.ProbabilityRule, "Probability Rule" },
         { Item.DeepBrambleCoordinates, "Deep Bramble Coordinates" },
+
+        // Echo Hike items
+        { Item.Threader, "Threader" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -398,6 +404,7 @@ public static class ItemNames
         { Item.CrystalRepairManual,            "HAS_AP_ITEM_FC_CRYSTAL_REPAIR_MANUAL" },
         { Item.ThermalInsulation,              "HAS_AP_ITEM_FC_THERMAL_INSULATION" },
         { Item.ProbabilityRule,                "HAS_AP_ITEM_FC_PROBABILITY_RULE" },
+        { Item.Threader,                       "HAS_AP_ITEM_EH_THREADER" },
     };
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly
