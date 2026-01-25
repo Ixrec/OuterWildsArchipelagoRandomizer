@@ -2217,7 +2217,10 @@ public static class LocationNames
             var name = (string)locationData["name"];
 
             if (!locationNamesReversed.ContainsKey(name))
-                throw new System.Exception($"LoadArchipelagoIds failed: unknown location name {name}");
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"LoadArchipelagoIds failed: unknown location name {name}", OWML.Common.MessageType.Warning);
+                continue;
+            }
 
             var location = locationNamesReversed[name];
             archipelagoIdToLocation.Add(archipelagoId, location);

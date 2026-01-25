@@ -425,7 +425,10 @@ public static class ItemNames
             var name = (string)itemData["name"];
 
             if (!itemNamesReversed.ContainsKey(name))
-                throw new System.Exception($"LoadArchipelagoIds failed: unknown item name {name}");
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"LoadArchipelagoIds failed: unknown item name {name}", OWML.Common.MessageType.Warning);
+                continue;
+            }
 
             var item = itemNamesReversed[name];
             archipelagoIdToItem.Add(archipelagoId, item);

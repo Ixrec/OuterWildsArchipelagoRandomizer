@@ -611,6 +611,11 @@ public class Logic
         {
             if (requirement.item.StartsWith("Translator (") && !APRandomizer.SlotEnabledSplitTranslator())
                 return ItemsCollected.ContainsKey(Item.Translator);
+            if (!ItemNames.itemNamesReversed.ContainsKey(requirement.item))
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"CanAccess() called with unknown item: {requirement.item}", OWML.Common.MessageType.Warning);
+                return false;
+            }
             return ItemsCollected.ContainsKey(ItemNames.itemNamesReversed[requirement.item]);
         }
         if (!string.IsNullOrEmpty(requirement.location))
