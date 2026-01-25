@@ -58,7 +58,7 @@ internal class Threader
         AddThreader("Timber Hearth", 11.8452f, -44.8447f, 185.5202f, 11.4649f, 338.4336f, 222.1763f);
         AddThreader("Ember Twin", 3.5126f, 156.8704f, 7.8129f, 355.9978f, 163.6575f, 35.1131f);
         AddThreader("Brittle Hollow", -33.8987f, 4.4243f, 279.8854f, 336.3344f, 346.9767f, 245.6233f);
-        AddThreader("StatueIsland", 6.8373f, 32.6154f, -25.1648f, 330.509f, 119.5316f, 251.5381f);
+        AddThreader("StatueIsland", -1.9625f, 32.8295f, -24.4187f, 357.6114f, 178.8829f, 327.4641f);
         AddThreader("RINGWORLD", 45.0617f, -123.6726f, -290.0204f, 306.7843f, 83.1867f, 318.7848f);
         if (APRandomizer.Instance.ModHelper.Interaction.ModExists("GameWyrm.HearthsNeighbor"))
             AddThreader("LonelyHermit", 59.8121f, 14.2851f, 274.7672f, 287.8107f, 127.3934f, 85.9663f, "GameWyrm.HearthsNeighbor");
@@ -66,7 +66,7 @@ internal class Threader
             AddThreader("Bramble's Doorstep", -5f, 5f, 13f, 10f, 30f, 20f, "DeepBramble");
         areThreadersAdded = true;
     }
-
+    
     public static void UpdateThreaders()
     {
         if (APRandomizer.NewHorizonsAPI == null) return;
