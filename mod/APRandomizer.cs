@@ -433,13 +433,17 @@ public class APRandomizer : ModBehaviour
         // You won't be able to access OWML's mod helper in Awake.
         // So you probably don't want to do anything here.
         // Use Start() instead.
+
+        // For most patches, waiting until Start() to call CreateAndPatchAll() also works.
+        // The LoadingSpinner.cs patch is the only one we currently know is broken by moving this down,
+        // but it's not worth testing all the others individually.
+        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
         Instance = this;
     }
 
     private void Start()
     {
-        // We patch methods here to ensure that all other mod assemblies are loaded, in case we need to patch their methods
-        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         // Starting here, you'll have access to OWML's mod helper.
 
         // These .jsonc files are what we share directly with the .apworld to ensure
