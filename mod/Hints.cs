@@ -70,9 +70,8 @@ internal class Hints
         //APRandomizer.OWMLModConsole.WriteLine($"CharacterDialogueTree_InputDialogueOption passed {optionIndex} at node {__instance._currentNode?.Name}");
 
         string selectedTextId = null;
-        if (__instance._currentNode.ListDialogueOptions != null && optionIndex >= 0 && optionIndex < __instance._currentNode.ListDialogueOptions.Count())
-            selectedTextId = __instance._currentNode.ListDialogueOptions[optionIndex]?._textID;
-
+        if (optionIndex >= 0)
+            selectedTextId = __instance._currentDialogueBox.OptionFromUIIndex(optionIndex)?._textID;
         if (selectedTextId != HintOptionTextId)
             return;
 
@@ -218,7 +217,7 @@ internal class Hints
         {
             var listDialogueOptions = __instance._mapDialogueNodes[questionsNodeName].ListDialogueOptions;
 
-            if (listDialogueOptions.Any() && listDialogueOptions[0]._textID == HintOptionTextId)
+            if (listDialogueOptions.Exists(d => d._textID == HintOptionTextId))
                 return; // we've already added the hint option to this character
 
             var hintNodeName = $"APRandomizer_{__instance._characterName}_HintsNode";
@@ -227,7 +226,7 @@ internal class Hints
             var hintOption = new DialogueOption();
             hintOption._textID = HintOptionTextId;
             hintOption._targetName = hintNodeName;
-            listDialogueOptions.Insert(0, hintOption);
+            listDialogueOptions.Insert(listDialogueOptions.Count - 1, hintOption);
 
             List<DialogueText.TextBlock> textBlocks = [new DialogueText.TextBlock(["_TextPage1", "_TextPage2"], "")];
             var hintText = new DialogueText([], false);
