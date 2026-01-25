@@ -1,40 +1,53 @@
 ﻿using HarmonyLib;
 using System;
-using System.Linq;
 using System.Reflection;
-using static ArchipelagoRandomizer.Victory;
 
-namespace ArchipelagoRandomizer
+namespace ArchipelagoRandomizer;
+
+// Here we don't use the usual [HarmonyPatch] annotations that are applied by CreateAndPatchAll() in the mod's Awake() method.
+// Since FC isn't a dependency, we can't guarantee FC will be loaded before us, so we have to wait until we are sure to manually apply this patch.
+
+internal class SadDitylumPatch
 {
-    public class ForgottenCastawaysPatch
+    private static bool patchApplied = false;
+    public static void EnsurePatchApplied()
     {
-        protected static bool CheckIfLoaded() => AppDomain.CurrentDomain.GetAssemblies().Any(a => a.GetName().Name == "DeepBramble");
-        protected static MethodBase GetMethod(string prefix, string typeName, string methodName) => GetMethod($"{prefix}.{typeName}", methodName);
-        protected static MethodBase GetMethod(string prefix, string typeName, string methodName, BindingFlags flags) => GetMethod($"{prefix}.{typeName}", methodName, flags);
-        protected static MethodBase GetMethod(string typeName, string methodName) => Type.GetType($"{typeName}, DeepBramble").GetMethod(methodName);
-        protected static MethodBase GetMethod(string typeName, string methodName, BindingFlags flags) => Type.GetType($"{typeName}, DeepBramble").GetMethod(methodName, flags);
+        if (!patchApplied)
+            patchApplied = ApplyPatch();
     }
 
-    [HarmonyPatch]
-    internal class SadDitylumPatch : ForgottenCastawaysPatch
+    private static bool ApplyPatch()
     {
-        private const string Namespace = "DeepBramble.Ditylum";
-        private const string Classname = "SadDitylumManager";
-        private const string Method = "Sit";
-
-        [HarmonyPrepare]
-        private static bool Prepare()
+        var sdm = Type.GetType("DeepBramble.Ditylum.SadDitylumManager, DeepBramble"); // since this is from another assembly we need the explicit ", AssemblyName"
+        if (sdm == null)
         {
-            return CheckIfLoaded();
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply SadDitylumPatch, SDM was null", OWML.Common.MessageType.Warning);
+            return false;
         }
 
-        [HarmonyTargetMethod]
-        private static MethodBase Target() => GetMethod(Namespace, Classname, Method, BindingFlags.NonPublic | BindingFlags.Instance);
-
-        [HarmonyPostfix]
-        private static void Patch()
+        var originalMethod = sdm.GetMethod("Sit", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (originalMethod == null)
         {
-            Spawn.ResetSpawnSystem();
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply SadDitylumPatch, originalMethod was null", OWML.Common.MessageType.Warning);
+            return false;
         }
+
+        var sitPostfixPatch = typeof(SadDitylumPatch).GetMethod("Sit_PostfixPatch", BindingFlags.NonPublic | BindingFlags.Static);
+        if (sitPostfixPatch == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply SadDitylumPatch, sitPostfixPatch was null", OWML.Common.MessageType.Warning);
+            return false;
+        }
+
+        var harmony = new Harmony("Ixrec.ArchipelagoRandomizer.DelayedPatches");
+        harmony.Patch(originalMethod, postfix: new HarmonyMethod(sitPostfixPatch));
+        APRandomizer.OWMLModConsole.WriteLine($"successfully applied SadDitylumPatch", OWML.Common.MessageType.Success);
+        return true;
+    }
+
+    private static void Sit_PostfixPatch()
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"SadDitylumPatch Sit_PostfixPatch() called");
+        Spawn.ResetSpawnSystem();
     }
 }

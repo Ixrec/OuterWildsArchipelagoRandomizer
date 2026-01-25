@@ -527,6 +527,7 @@ public class APRandomizer : ModBehaviour
                     RandomizeFollyLevers.OnDeepBrambleLoadEvent();
                     ExpandedDictionary.OnDeepBrambleLoadEvent();
                     PlayerData._currentGameSave.SetPersistentCondition("LockableSignalFound", true); // Stop Slate from pulling us back to the vanilla system to yap
+                    SadDitylumPatch.EnsurePatchApplied();
                 }
                 // Echo Hike custom item impls
                 Threader.UpdateThreaders();
