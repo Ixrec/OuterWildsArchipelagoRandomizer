@@ -74,6 +74,7 @@ public class APChecklistMode : ShipLogMode
         { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", false, false, "IP_SARCOPHAGUS") },
+        { Victory.GoalSetting.SongOfTheUniverse, ("Victory - Song of the Universe", "Reach the Eye after meeting enough friends", false, false, "DB_VESSEL") },
     };
 
     // Runs when the mode is created
@@ -98,6 +99,9 @@ public class APChecklistMode : ShipLogMode
                 break;
             case Victory.GoalSetting.EchoesOfTheEye:
                 victoryCondition = $"<color={so7}>THE ECHOES OF THE EYE</color>";
+                break;
+            case Victory.GoalSetting.SongOfTheUniverse:
+                victoryCondition = $"<color={so7}>THE SONG OF THE UNIVERSE</color>";
                 break;
         }
 
@@ -257,12 +261,12 @@ public class APChecklistMode : ShipLogMode
             TrackerInfo info = new();
             info.description = goalMetadata.Item2;
             if (goalMetadata.Item3) // show whether you've met Solanum
-                if (Victory.hasMetSolanum())
+                if (Victory.HasMetSolanum)
                     info.description += "\n- <color=lime>You have already met Solanum</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met Solanum</color>";
             if (goalMetadata.Item4) // show whether you've met Prisoner
-                if (Victory.hasMetPrisoner())
+                if (Victory.HasMetPrisoner)
                     info.description += "\n- <color=lime>You have already met the Prisoner</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met the Prisoner</color>";
