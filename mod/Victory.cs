@@ -126,21 +126,10 @@ public class Victory
         }
         else if (goalSetting == GoalSetting.SongOfTheUniverse)
         {
-            if (!APRandomizer.SlotData.TryGetValue("required_friends", out object required_friends))
-            {
-                APRandomizer.OWMLModConsole.WriteLine("Unable to read 'required_friends' from slot data.", OWML.Common.MessageType.Error);
-                uniqueMessagePart = "Your goal is Song of the Universe, but there was an issue retrieving the `required_friends` option. So congrats!";
+            if (HasMetRequiredFriends)
                 isVictory = true;
-            }
-            else
-            {
-                int friendsMet = FriendsMet;
-                long requiredFriends = (long)required_friends;
-                if (friendsMet >= requiredFriends)
-                    isVictory = true;
-                else
-                    uniqueMessagePart = $"Your goal is Song of the Universe, but you have only met {friendsMet} of the required {requiredFriends} friends.";
-            }
+            else 
+                uniqueMessagePart = $"Your goal is Song of the Universe, but you have only met {FriendsMet} of the required {APRandomizer.SlotData["required_friends"]} friends.";
         }
         else
         {
