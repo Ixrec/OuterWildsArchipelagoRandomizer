@@ -77,6 +77,16 @@ public class APChecklistMode : ShipLogMode
         { Victory.GoalSetting.SongOfTheUniverse, ("Victory - Song of the Universe", "Reach the Eye after meeting enough friends", true, false, "DB_VESSEL") },
     };
 
+    private static readonly IEnumerable<(string modOption, Func<bool> completed, string description)> modGoalMetadata = [
+        ("enable_hn1_mod",      Victory.HasFinishedHearthsNeighbor1,   "scanned the Cockpit Signal (HN1)"),
+        ("enable_outsider_mod", Victory.HasFinishedTheOutsider,        "spoken to Friend (TO)"),
+        ("enable_ac_mod",       Victory.HasFinishedAstralCodec,        "acquired the Astral Codec (AC)"),
+        ("enable_hn2_mod",      Victory.HasFinishedHearthsNeighbor2,   "activated the Device (HN2)"),
+        ("enable_fq_mod",       Victory.HasFinishedFretsQuest,         "finished Tuner's song (FQ)"),
+        ("enable_fc_mod",       Victory.HasFinishedForgottenCastaways, "sat with Ditylum (FC)"),
+        ("enable_eh_mod",       Victory.HasFinishedEchoHike,           "met the Phosphors (EH)"),
+    ];
+
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
     {
@@ -263,57 +273,28 @@ public class APChecklistMode : ShipLogMode
             if (goalEventName == "Victory - Song of the Universe")
                 info.description += $"\nYou need to have accomplished {APRandomizer.SlotRequiredFriends} of the following:";
             if (goalMetadata.Item3) // show whether you've met Solanum
-                if (Victory.HasMetSolanum)
+                if (Victory.HasMetSolanum())
                     info.description += "\n- <color=lime>You have already met Solanum</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met Solanum</color>";
             if (goalMetadata.Item4) // show whether you've met Prisoner
-                if (Victory.HasMetPrisoner)
+                if (Victory.HasMetPrisoner())
                     info.description += "\n- <color=lime>You have already met the Prisoner</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met the Prisoner</color>";
             if (goalEventName == "Victory - Song of the Universe")
             {
                 if (APRandomizer.SlotEnabledEotEDLC())
-                    if (Victory.HasMetPrisoner)
+                    if (Victory.HasMetPrisoner())
                         info.description += "\n- <color=lime>You have already met the Prisoner (DLC)</color>";
                     else
                         info.description += "\n- <color=red>You have not yet met the Prisoner (DLC)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_hn1_mod"))
-                    if (Victory.HasFinishedHearthsNeighbor1)
-                        info.description += "\n- <color=lime>You have already scanned the Cockpit Signal (HN1)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet scanned the Cockpit Signal (HN1)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_outsider_mod"))
-                    if (Victory.HasFinishedTheOutsider)
-                        info.description += "\n- <color=lime>You have already spoken to Friend (TO)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet spoken to Friend (TO)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_ac_mod"))
-                    if (Victory.HasFinishedAstralCodec)
-                        info.description += "\n- <color=lime>You have already acquired the Astral Codec (AC)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet acquired the Astral Codec (AC)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_hn2_mod"))
-                    if (Victory.HasFinishedHearthsNeighbor2)
-                        info.description += "\n- <color=lime>You have already activated the Device (HN2)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet activated the Device (HN2)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_fq_mod"))
-                    if (Victory.HasFinishedFretsQuest)
-                        info.description += "\n- <color=lime>You have already finished Tuner's song (FQ)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet finished Tuner's song (FQ)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_fc_mod"))
-                    if (Victory.HasFinishedForgottenCastaways)
-                        info.description += "\n- <color=lime>You have already sat with Ditylum (FC)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet sat with Ditylum (FC)</color>";
-                if (APRandomizer.SlotEnabledMod("enable_eh_mod"))
-                    if (Victory.HasFinishedEchoHike)
-                        info.description += "\n- <color=lime>You have already met the Phosphors (EH)</color>";
-                    else
-                        info.description += "\n- <color=red>You have not yet met the Phosphors (EH)</color>";
+                foreach ((string modOption, Func<bool> completed, string description) in modGoalMetadata)
+                    if (APRandomizer.SlotEnabledMod(modOption))
+                        if (completed())
+                            info.description += $"\n- <color=lime>You have already {description}</color>";
+                        else
+                            info.description += $"\n- <color=red>You have not yet {description}</color>";
             }
             info.thumbnail = goalMetadata.Item5;
 

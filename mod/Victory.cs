@@ -31,25 +31,25 @@ public class Victory
             APRandomizer.OWMLModConsole.WriteLine($"{goal} is not a valid goal setting", OWML.Common.MessageType.Error);
     }
 
-    public static bool HasMetSolanum => PlayerData.GetPersistentCondition("MET_SOLANUM");
-    public static bool HasMetPrisoner => PlayerData.GetPersistentCondition("MET_PRISONER");
-    public static bool HasFinishedHearthsNeighbor1 => APRandomizer.SaveData.locationsChecked[Location.HN1_SIGNAL_GC_COCKPIT];
-    public static bool HasFinishedTheOutsider => APRandomizer.SaveData.locationsChecked[Location.TO_CLIFFSIDE_DECAY];
-    public static bool HasFinishedAstralCodec => APRandomizer.SaveData.locationsChecked[Location.AC_LC_ASTRAL_CODEC];
-    public static bool HasFinishedHearthsNeighbor2 => APRandomizer.SaveData.locationsChecked[Location.HN2_ASCEND];
-    public static bool HasFinishedFretsQuest => APRandomizer.SaveData.locationsChecked[Location.FQ_LYRICS_DONE];
-    public static bool HasFinishedForgottenCastaways => APRandomizer.SaveData.locationsChecked[Location.FC_MOURNING];
-    public static bool HasFinishedEchoHike => APRandomizer.SaveData.locationsChecked[Location.EH_PHOSPHORS];
+    public static bool HasMetSolanum() => PlayerData.GetPersistentCondition("MET_SOLANUM");
+    public static bool HasMetPrisoner() => PlayerData.GetPersistentCondition("MET_PRISONER");
+    public static bool HasFinishedHearthsNeighbor1() => APRandomizer.SaveData.locationsChecked[Location.HN1_SIGNAL_GC_COCKPIT];
+    public static bool HasFinishedTheOutsider() => APRandomizer.SaveData.locationsChecked[Location.TO_CLIFFSIDE_DECAY];
+    public static bool HasFinishedAstralCodec() => APRandomizer.SaveData.locationsChecked[Location.AC_LC_ASTRAL_CODEC];
+    public static bool HasFinishedHearthsNeighbor2() => APRandomizer.SaveData.locationsChecked[Location.HN2_ASCEND];
+    public static bool HasFinishedFretsQuest() => APRandomizer.SaveData.locationsChecked[Location.FQ_LYRICS_DONE];
+    public static bool HasFinishedForgottenCastaways() => APRandomizer.SaveData.locationsChecked[Location.FC_MOURNING];
+    public static bool HasFinishedEchoHike() => APRandomizer.SaveData.locationsChecked[Location.EH_PHOSPHORS];
     public static int FriendsMet => ((IEnumerable<bool>)[
-        HasMetSolanum,
-        HasMetPrisoner,
-        HasFinishedHearthsNeighbor1,
-        HasFinishedTheOutsider,
-        HasFinishedAstralCodec,
-        HasFinishedHearthsNeighbor2,
-        HasFinishedFretsQuest,
-        HasFinishedForgottenCastaways,
-        HasFinishedEchoHike,
+        HasMetSolanum(),
+        HasMetPrisoner(),
+        HasFinishedHearthsNeighbor1(),
+        HasFinishedTheOutsider(),
+        HasFinishedAstralCodec(),
+        HasFinishedHearthsNeighbor2(),
+        HasFinishedFretsQuest(),
+        HasFinishedForgottenCastaways(),
+        HasFinishedEchoHike(),
     ]).Count(x => x);
     public static bool HasMetRequiredFriends {
         get {
@@ -71,8 +71,8 @@ public class Victory
 
         if (loadScene != OWScene.EyeOfTheUniverse) return;
 
-        var metSolanum = HasMetSolanum;
-        var metPrisoner = HasMetPrisoner;
+        var metSolanum = HasMetSolanum();
+        var metPrisoner = HasMetPrisoner();
 
         APRandomizer.OWMLModConsole.WriteLine($"EyeOfTheUniverse scene loaded.\n" +
             $"MET_SOLANUM: {metSolanum}\n" +
