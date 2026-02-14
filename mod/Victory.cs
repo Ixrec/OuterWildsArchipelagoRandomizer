@@ -51,6 +51,18 @@ public class Victory
         HasFinishedForgottenCastaways,
         HasFinishedEchoHike,
     ]).Count(x => x);
+    public static bool HasMetRequiredFriends {
+        get {
+            if (!APRandomizer.SlotData.TryGetValue("required_friends", out object required_friends))
+            {
+                // If there's an issue retrieving the required_friends option, just default to true instead of preventing victory entirely
+                APRandomizer.OWMLModConsole.WriteLine("Unable to read 'required_friends' from slot data.", OWML.Common.MessageType.Error);
+                return true;
+            }
+
+            return FriendsMet >= (long)required_friends;
+        }
+    }
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
@@ -116,6 +128,7 @@ public class Victory
         {
             if (!APRandomizer.SlotData.TryGetValue("required_friends", out object required_friends))
             {
+                APRandomizer.OWMLModConsole.WriteLine("Unable to read 'required_friends' from slot data.", OWML.Common.MessageType.Error);
                 uniqueMessagePart = "Your goal is Song of the Universe, but there was an issue retrieving the `required_friends` option. So congrats!";
                 isVictory = true;
             }

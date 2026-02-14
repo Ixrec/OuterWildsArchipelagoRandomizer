@@ -74,7 +74,7 @@ public class APChecklistMode : ShipLogMode
         { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", false, false, "IP_SARCOPHAGUS") },
-        { Victory.GoalSetting.SongOfTheUniverse, ("Victory - Song of the Universe", "Reach the Eye after meeting enough friends", false, false, "DB_VESSEL") },
+        { Victory.GoalSetting.SongOfTheUniverse, ("Victory - Song of the Universe", "Reach the Eye after meeting enough friends", true, false, "DB_VESSEL") },
     };
 
     // Runs when the mode is created
