@@ -260,6 +260,8 @@ public class APChecklistMode : ShipLogMode
             string goalEventName = goalMetadata.Item1;
             TrackerInfo info = new();
             info.description = goalMetadata.Item2;
+            if (goalEventName == "Victory - Song of the Universe")
+                info.description += $"\nYou need to have accomplished {APRandomizer.SlotRequiredFriends} of the following:";
             if (goalMetadata.Item3) // show whether you've met Solanum
                 if (Victory.HasMetSolanum)
                     info.description += "\n- <color=lime>You have already met Solanum</color>";
@@ -270,6 +272,49 @@ public class APChecklistMode : ShipLogMode
                     info.description += "\n- <color=lime>You have already met the Prisoner</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met the Prisoner</color>";
+            if (goalEventName == "Victory - Song of the Universe")
+            {
+                if (APRandomizer.SlotEnabledEotEDLC())
+                    if (Victory.HasMetPrisoner)
+                        info.description += "\n- <color=lime>You have already met the Prisoner (DLC)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet met the Prisoner (DLC)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_hn1_mod"))
+                    if (Victory.HasFinishedHearthsNeighbor1)
+                        info.description += "\n- <color=lime>You have already scanned the Cockpit Signal (HN1)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet scanned the Cockpit Signal (HN1)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_outsider_mod"))
+                    if (Victory.HasFinishedTheOutsider)
+                        info.description += "\n- <color=lime>You have already spoken to Friend (TO)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet spoken to Friend (TO)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_ac_mod"))
+                    if (Victory.HasFinishedAstralCodec)
+                        info.description += "\n- <color=lime>You have already acquired the Astral Codec (AC)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet acquired the Astral Codec (AC)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_hn2_mod"))
+                    if (Victory.HasFinishedHearthsNeighbor2)
+                        info.description += "\n- <color=lime>You have already activated the Device (HN2)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet activated the Device (HN2)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_fq_mod"))
+                    if (Victory.HasFinishedFretsQuest)
+                        info.description += "\n- <color=lime>You have already finished Tuner's song (FQ)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet finished Tuner's song (FQ)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_fc_mod"))
+                    if (Victory.HasFinishedForgottenCastaways)
+                        info.description += "\n- <color=lime>You have already sat with Ditylum (FC)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet sat with Ditylum (FC)</color>";
+                if (APRandomizer.SlotEnabledMod("enable_eh_mod"))
+                    if (Victory.HasFinishedEchoHike)
+                        info.description += "\n- <color=lime>You have already met the Phosphors (EH)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet met the Phosphors (EH)</color>";
+            }
             info.thumbnail = goalMetadata.Item5;
 
             string displayName = Regex.Replace(goalEventName, "Victory - ", "");

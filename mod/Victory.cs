@@ -53,14 +53,14 @@ public class Victory
     ]).Count(x => x);
     public static bool HasMetRequiredFriends {
         get {
-            if (!APRandomizer.SlotData.TryGetValue("required_friends", out object required_friends))
+            if (APRandomizer.SlotRequiredFriends is not long required_friends)
             {
                 // If there's an issue retrieving the required_friends option, just default to true instead of preventing victory entirely
                 APRandomizer.OWMLModConsole.WriteLine("Unable to read 'required_friends' from slot data.", OWML.Common.MessageType.Error);
                 return true;
             }
 
-            return FriendsMet >= (long)required_friends;
+            return FriendsMet >= required_friends;
         }
     }
 
@@ -129,7 +129,7 @@ public class Victory
             if (HasMetRequiredFriends)
                 isVictory = true;
             else 
-                uniqueMessagePart = $"Your goal is Song of the Universe, but you have only met {FriendsMet} of the required {APRandomizer.SlotData["required_friends"]} friends.";
+                uniqueMessagePart = $"Your goal is Song of the Universe, but you have only met {FriendsMet} of the required {APRandomizer.SlotRequiredFriends} friends.";
         }
         else
         {
