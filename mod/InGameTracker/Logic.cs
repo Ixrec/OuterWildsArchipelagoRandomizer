@@ -589,6 +589,9 @@ public class Logic
         // Location logic
         if (!CanAccessAll(data.requires)) return false;
 
+        // Song of the Universe custom logic
+        if (data.name == "Victory - Song of the Universe" && !Victory.HasMetRequiredFriends) return false;
+
         // Region logic
         if (!CanAccessRegion.ContainsKey(data.region)) CanAccessRegion.Add(data.region, false);
         return CanAccessRegion[data.region];

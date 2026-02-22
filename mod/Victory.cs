@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ArchipelagoRandomizer;
 
@@ -14,7 +15,8 @@ public class Victory
         SongOfTheStranger = 2,
         SongOfSix = 3,
         SongOfSeven = 4,
-        EchoesOfTheEye = 5
+        EchoesOfTheEye = 5,
+        SongOfTheUniverse = 6,
     }
 
     public static GoalSetting goalSetting = GoalSetting.SongOfFive;
@@ -29,8 +31,38 @@ public class Victory
             APRandomizer.OWMLModConsole.WriteLine($"{goal} is not a valid goal setting", OWML.Common.MessageType.Error);
     }
 
-    public static bool hasMetSolanum() => PlayerData.GetPersistentCondition("MET_SOLANUM");
-    public static bool hasMetPrisoner() => PlayerData.GetPersistentCondition("MET_PRISONER");
+    public static bool HasMetSolanum() => PlayerData.GetPersistentCondition("MET_SOLANUM");
+    public static bool HasMetPrisoner() => PlayerData.GetPersistentCondition("MET_PRISONER");
+    public static bool HasFinishedHearthsNeighbor1() => APRandomizer.SaveData.locationsChecked[Location.HN1_SIGNAL_GC_COCKPIT];
+    public static bool HasFinishedTheOutsider() => APRandomizer.SaveData.locationsChecked[Location.TO_CLIFFSIDE_DECAY];
+    public static bool HasFinishedAstralCodec() => APRandomizer.SaveData.locationsChecked[Location.AC_LC_ASTRAL_CODEC];
+    public static bool HasFinishedHearthsNeighbor2() => APRandomizer.SaveData.locationsChecked[Location.HN2_ASCEND];
+    public static bool HasFinishedFretsQuest() => APRandomizer.SaveData.locationsChecked[Location.FQ_LYRICS_DONE];
+    public static bool HasFinishedForgottenCastaways() => APRandomizer.SaveData.locationsChecked[Location.FC_MOURNING];
+    public static bool HasFinishedEchoHike() => APRandomizer.SaveData.locationsChecked[Location.EH_PHOSPHORS];
+    public static int FriendsMet => ((IEnumerable<bool>)[
+        HasMetSolanum(),
+        HasMetPrisoner(),
+        HasFinishedHearthsNeighbor1(),
+        HasFinishedTheOutsider(),
+        HasFinishedAstralCodec(),
+        HasFinishedHearthsNeighbor2(),
+        HasFinishedFretsQuest(),
+        HasFinishedForgottenCastaways(),
+        HasFinishedEchoHike(),
+    ]).Count(x => x);
+    public static bool HasMetRequiredFriends {
+        get {
+            if (APRandomizer.SlotRequiredFriends is not long required_friends)
+            {
+                // If there's an issue retrieving the required_friends option, just default to true instead of preventing victory entirely
+                APRandomizer.OWMLModConsole.WriteLine("Unable to read 'required_friends' from slot data.", OWML.Common.MessageType.Error);
+                return true;
+            }
+
+            return FriendsMet >= required_friends;
+        }
+    }
 
     public static void OnCompleteSceneLoad(OWScene _scene, OWScene loadScene)
     {
@@ -39,8 +71,8 @@ public class Victory
 
         if (loadScene != OWScene.EyeOfTheUniverse) return;
 
-        var metSolanum = hasMetSolanum();
-        var metPrisoner = hasMetPrisoner();
+        var metSolanum = HasMetSolanum();
+        var metPrisoner = HasMetPrisoner();
 
         APRandomizer.OWMLModConsole.WriteLine($"EyeOfTheUniverse scene loaded.\n" +
             $"MET_SOLANUM: {metSolanum}\n" +
@@ -91,6 +123,13 @@ public class Victory
         else if (goalSetting == GoalSetting.EchoesOfTheEye)
         {
             uniqueMessagePart = "Your goal is Echoes of the Eye, which doesn't involve warping to the Eye of the Universe.";
+        }
+        else if (goalSetting == GoalSetting.SongOfTheUniverse)
+        {
+            if (HasMetRequiredFriends)
+                isVictory = true;
+            else 
+                uniqueMessagePart = $"Your goal is Song of the Universe, but you have only met {FriendsMet} of the required {APRandomizer.SlotRequiredFriends} friends.";
         }
         else
         {

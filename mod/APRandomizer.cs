@@ -56,7 +56,9 @@ public class APRandomizer : ModBehaviour
     public static bool SlotEnabledSplitTranslator() =>
         SlotData.ContainsKey("split_translator") && (long)SlotData["split_translator"] == 1;
     public static bool SlotEnabledMod(string modOption) =>
-        SlotData.ContainsKey(modOption) && (long)SlotData[modOption] > 0;
+        SlotData.TryGetValue(modOption, out object value) && (long)value > 0;
+    public static long? SlotRequiredFriends =>
+        SlotData.TryGetValue("required_friends", out object value) ? (long)value : null;
 
     public static IModConsole OWMLModConsole { get => Instance.ModHelper.Console; }
     public static ArchConsoleManager InGameAPConsole;

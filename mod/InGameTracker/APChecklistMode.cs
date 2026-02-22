@@ -74,7 +74,18 @@ public class APChecklistMode : ShipLogMode
         { Victory.GoalSetting.SongOfSix, ("Victory - Song of Six", "Reach the Eye after meeting either Solanum or the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.SongOfSeven, ("Victory - Song of Seven", "Reach the Eye after meeting both Solanum and the Prisoner", true, true, "DB_VESSEL") },
         { Victory.GoalSetting.EchoesOfTheEye, ("Victory - Echoes of the Eye", "Meet the Prisoner and complete the DLC", false, false, "IP_SARCOPHAGUS") },
+        { Victory.GoalSetting.SongOfTheUniverse, ("Victory - Song of the Universe", "Reach the Eye after meeting enough friends", true, false, "DB_VESSEL") },
     };
+
+    private static readonly IEnumerable<(string modOption, Func<bool> completed, string description)> modGoalMetadata = [
+        ("enable_hn1_mod",      Victory.HasFinishedHearthsNeighbor1,   "scanned the Cockpit Signal (HN1)"),
+        ("enable_outsider_mod", Victory.HasFinishedTheOutsider,        "spoken to Friend (TO)"),
+        ("enable_ac_mod",       Victory.HasFinishedAstralCodec,        "acquired the Astral Codec (AC)"),
+        ("enable_hn2_mod",      Victory.HasFinishedHearthsNeighbor2,   "activated the Device (HN2)"),
+        ("enable_fq_mod",       Victory.HasFinishedFretsQuest,         "finished Tuner's song (FQ)"),
+        ("enable_fc_mod",       Victory.HasFinishedForgottenCastaways, "sat with Ditylum (FC)"),
+        ("enable_eh_mod",       Victory.HasFinishedEchoHike,           "met the Phosphors (EH)"),
+    ];
 
     // Runs when the mode is created
     public override void Initialize(ScreenPromptList centerPromptList, ScreenPromptList upperRightPromptList, OWAudioSource oneShotSource)
@@ -98,6 +109,9 @@ public class APChecklistMode : ShipLogMode
                 break;
             case Victory.GoalSetting.EchoesOfTheEye:
                 victoryCondition = $"<color={so7}>THE ECHOES OF THE EYE</color>";
+                break;
+            case Victory.GoalSetting.SongOfTheUniverse:
+                victoryCondition = $"<color={so7}>THE SONG OF THE UNIVERSE</color>";
                 break;
         }
 
@@ -256,16 +270,32 @@ public class APChecklistMode : ShipLogMode
             string goalEventName = goalMetadata.Item1;
             TrackerInfo info = new();
             info.description = goalMetadata.Item2;
+            if (goalEventName == "Victory - Song of the Universe")
+                info.description += $"\nYou need to have accomplished {APRandomizer.SlotRequiredFriends} of the following:";
             if (goalMetadata.Item3) // show whether you've met Solanum
-                if (Victory.hasMetSolanum())
+                if (Victory.HasMetSolanum())
                     info.description += "\n- <color=lime>You have already met Solanum</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met Solanum</color>";
             if (goalMetadata.Item4) // show whether you've met Prisoner
-                if (Victory.hasMetPrisoner())
+                if (Victory.HasMetPrisoner())
                     info.description += "\n- <color=lime>You have already met the Prisoner</color>";
                 else
                     info.description += "\n- <color=red>You have not yet met the Prisoner</color>";
+            if (goalEventName == "Victory - Song of the Universe")
+            {
+                if (APRandomizer.SlotEnabledEotEDLC())
+                    if (Victory.HasMetPrisoner())
+                        info.description += "\n- <color=lime>You have already met the Prisoner (DLC)</color>";
+                    else
+                        info.description += "\n- <color=red>You have not yet met the Prisoner (DLC)</color>";
+                foreach ((string modOption, Func<bool> completed, string description) in modGoalMetadata)
+                    if (APRandomizer.SlotEnabledMod(modOption))
+                        if (completed())
+                            info.description += $"\n- <color=lime>You have already {description}</color>";
+                        else
+                            info.description += $"\n- <color=red>You have not yet {description}</color>";
+            }
             info.thumbnail = goalMetadata.Item5;
 
             string displayName = Regex.Replace(goalEventName, "Victory - ", "");
