@@ -240,7 +240,7 @@ public class APRandomizer : ModBehaviour
         {
             var apworld_version = (string)SlotData["apworld_version"];
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "1.1.0";
+            var mod_version = "1.2.0";
             if (apworld_version != mod_version)
                 ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
