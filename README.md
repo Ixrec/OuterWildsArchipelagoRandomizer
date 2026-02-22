@@ -118,6 +118,7 @@ Again, this pack is just items. No locations, maps, or logic. But since PopTrack
 Outer Wilds story mods whose content has been fully integrated into this randomizer:
 
 - [Astral Codec](https://outerwildsmods.com/mods/astralcodec/)
+- [Echo Hike](https://outerwildsmods.com/mods/echohike/)
 - [Forgotten Castaways](https://outerwildsmods.com/mods/forgottencastaways/)
 - [Fret's Quest](https://outerwildsmods.com/mods/fretsquest/)
 - [Hearth's Neighbor](https://outerwildsmods.com/mods/hearthsneighbor/)
