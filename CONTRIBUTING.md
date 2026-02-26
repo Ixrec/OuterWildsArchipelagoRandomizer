@@ -16,7 +16,7 @@ Most [open issues](https://github.com/Ixrec/OuterWildsArchipelagoRandomizer/issu
 
 ## Story Mod Integrations
 
-This is the specific kind of contribution I've tried to make as easy as possible, since more high-quality Outer Wilds story mods keep coming out and most of them should need little to no "custom" code to integrate.
+This is the specific kind of contribution I've tried to make as easy as possible, since more high-quality Outer Wilds story mods keep coming out, most of them should need little to no "custom" code to integrate, and almost any story mod I'd be happy to accept. The one significant exception is story mods that are known to be buggy even without the randomizer (most notably The Stranger They Are), since integrating those would effectively make the randomizer buggy too.
 
 First, if you haven't already, actually play the randomizer at least once. You should have a solid grasp on the concepts of an "Archipelago item", an "Archipelago location" and "logic" before continuing, as well as the randomizer's existing items so you can write logic rules using them. Most of the work to integrate a new story mod is filling in a bunch of metadata for each AP location in that mod.
 
