@@ -15,8 +15,8 @@
   <ItemGroup>
     <!-- remember not to update this without also re-vendoring it from Solution Explorer ->
 	Archipelago.MultiClient.Net.dll -> Properties -> Path to the git repo's mod/ folder -->
-    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
-    <PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="1.5.0">
+    <PackageReference Include="Archipelago.MultiClient.Net" Version="6.7.1" />
+    <PackageReference Include="Archipelago.MultiClient.Net.Analyzers" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
