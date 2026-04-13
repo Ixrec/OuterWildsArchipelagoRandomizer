@@ -106,7 +106,7 @@ internal class Spawn
         if (spawnInSuitNextUpdate)
         {
             // hide the suit model inside the ship, so the player won't see a "duplicate" suit
-            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_Update hiding spacesuit");
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerSpawner_Update hiding ship spacesuit");
             Spacesuit.SetSpacesuitVisible(false);
 
             // The SuitUp() call must be done *after* SetSpacesuitVisible(), like in the base game's SPV.OnPressInteract(),
