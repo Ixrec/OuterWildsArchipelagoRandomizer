@@ -135,10 +135,10 @@ Outer Wilds quality of life/tooling/etc mods that are known to work without issu
 - Cheat and Debug Menu
 - Unity Explorer
 - Light Bramble (thanks Rever for testing this), although it makes the "Silent Running Mode" item pointless
-- Time Saver (thanks Jade for testing this)
 
 Outer Wilds mods that have been tried, but are known to have issues (this information might not be kept up to date, as I don't/can't test these myself):
 
+- Time Saver (thanks Jade and toasty for testing this): mostly works, but you must leave the "Always Start With Suit" option disabled.
 - NomaiVR (thanks Snout for testing this): Mostly works. Trying to grab the Translator or Signalscope *before donning the suit* will softlock, but this is fine once you're in the suit. The in-game console does not work reliably, so using the AP Text Client instead is recommended.
 - Quantum Space Buddies: Awkward but can *probably* be made to work. I believe you would have to use one of the "... Random Expedition" main menu buttons to connect to your AP server, immediately quit back to the main menu, then use either of QSB's main menu buttons to load the game with multiplayer. Please tell us if you can test this properly.
 
