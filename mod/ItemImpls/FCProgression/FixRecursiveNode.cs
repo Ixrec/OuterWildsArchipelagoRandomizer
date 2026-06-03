@@ -17,7 +17,11 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
             if (sector._idString != "Briar's Hollow") return;
             // For an unknown reason, the recursive node in Briar's Hollow is sometimes disabled. We forcibly re-enable it here
             GameObject loopNode = GameObject.Find("BriarsHollow_Body/Sector/Loop Node");
-            loopNode.SetActive(true);
+            if (!loopNode.activeSelf)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"PlayerSectorDetector_OnAddSector() Recursive mode disabled. Re-enabling", OWML.Common.MessageType.Warning);
+                loopNode.SetActive(true);
+            }
         }
     }
 }
