@@ -566,10 +566,10 @@ internal class LocationTriggers
     public static void DialogueConditionManager_OnEntry(DialogueConditionTrigger __instance, UnityEngine.GameObject hitObj)
     {
         APRandomizer.OWMLModConsole.WriteLine($"DialogueConditionTrigger.OnEntry: {__instance.name}, {__instance._conditionID}, _persistentCondition={__instance._persistentCondition}, {hitObj.name}");
-        switch (__instance._conditionID)
-        {
-            case "FoundGabbroShip": CheckLocation(Location.GD_SHIP); break;
-        }
+        if (__instance._conditionID == "FoundGabbroShip")
+            // ignore copy-pastes of Gabbro's ship in story mods, particularly the one on Fret's Quest's Bracket's Rest
+            if (APRandomizer.IsVanillaSystemLoaded())
+                CheckLocation(Location.GD_SHIP);
     }
 
     // In vanilla DB_VESSEL_X2 is for putting the dead warp core into the socket, but in rando that often forces
