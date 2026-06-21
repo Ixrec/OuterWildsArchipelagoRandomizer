@@ -89,7 +89,10 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
             if (APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[loc])) HasBeenFound = true;
             if (rend.material.name.Contains("TextChild")) IsChildText = true;
 
-            ItemFlags itemFlags = LocationScouter.ScoutedLocations[loc].Flags;
+            if (!LocationScouter.ScoutedLocations.TryGetValue(loc, out var scout))
+                return;
+
+            ItemFlags itemFlags = scout.Flags;
             if (itemFlags.HasFlag(ItemFlags.Advancement))
             {
                 DisplayImportance = CheckImportance.Progression;
