@@ -314,20 +314,24 @@ public class APRandomizer : ModBehaviour
 
     private static void APSession_ErrorReceived(Exception e, string message)
     {
-        if (!SocketWarningsAlreadyShown.Contains(message))
+        // writes to the console, so needs to run on the main thread
+        MainThreadDispatcher.Enqueue(() =>
         {
-            SocketWarningsAlreadyShown.Add(message);
+            if (!SocketWarningsAlreadyShown.Contains(message))
+            {
+                SocketWarningsAlreadyShown.Add(message);
 
-            APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
-                $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
+                APRandomizer.InGameAPConsole.AddText($"<color='orange'>Received an error from APSession.Socket. This means you may have lost connection to the AP server. " +
+                    $"In order to safely reconnect to the AP server, we recommend quitting and resuming at your earliest convenience.</color>");
 
-            APRandomizer.OWMLModConsole.WriteLine(
-                $"Received error from APSession.Socket: '{message}'\n" +
-                $"(duplicates of this error will be silently ignored)\n" +
-                $"\n" +
-                $"{e.StackTrace}",
-                MessageType.Warning);
-        }
+                APRandomizer.OWMLModConsole.WriteLine(
+                    $"Received error from APSession.Socket: '{message}'\n" +
+                    $"(duplicates of this error will be silently ignored)\n" +
+                    $"\n" +
+                    $"{e.StackTrace}",
+                    MessageType.Warning);
+            }
+        });
     }
 
     // Here we move received item processing off the websocket thread because this is believed to help prevent crashes
@@ -350,6 +354,9 @@ public class APRandomizer : ModBehaviour
                 $"{ex.StackTrace}",
                 MessageType.Error);
         }
+
+        // Run scheduled actions that need to run on the main thread
+        MainThreadDispatcher.DrainOnMainThread();
 
         // Manually invoke Update() methods on any non-Component classes that also want to do the "wait until Update()" workaround
         DeathLinkManager.Update();
@@ -375,17 +382,21 @@ public class APRandomizer : ModBehaviour
     }
     private static void APSession_OnMessageReceived(LogMessage message)
     {
-        try
+        // writes to the console, so needs to run on the main thread
+        MainThreadDispatcher.Enqueue(() =>
         {
-            ArchConsoleManager.AddAPMessage(message);
-        }
-        catch (Exception ex)
-        {
-            APRandomizer.OWMLModConsole.WriteLine(
-                $"Caught error in APSession_OnMessageReceived: '{ex.Message}'\n" +
-                $"{ex.StackTrace}",
-                MessageType.Error);
-        }
+            try
+            {
+                ArchConsoleManager.AddAPMessage(message);
+            }
+            catch (Exception ex)
+            {
+                APRandomizer.OWMLModConsole.WriteLine(
+                    $"Caught error in APSession_OnMessageReceived: '{ex.Message}'\n" +
+                    $"{ex.StackTrace}",
+                    MessageType.Error);
+            }
+        });
     }
 
     private static bool SyncItemCountWithAPServer(long itemId)
