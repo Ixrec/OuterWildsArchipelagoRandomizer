@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArchipelagoRandomizer.Compatibility.NomaiVR;
 using UnityEngine;
 using UnityEngine.UI;
 using static ArchipelagoRandomizer.DeathLinkManager;
@@ -38,6 +39,7 @@ public class ArchConsoleManager : MonoBehaviour
     private Material progressMat;
     private Text progressText;
     private ArchipelagoSession session;
+    private VRArchConsole vr;
     // separate from pauseConsoleText.text so we can avoid updating the Text object until the game's paused
     private string pauseConsoleContent = "";
     private bool pauseConsoleNeedsUpdate = false;
@@ -59,6 +61,8 @@ public class ArchConsoleManager : MonoBehaviour
 
     private void Start()
     {
+        vr = new VRArchConsole();
+        
         ConsoleMuted = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Mute");
         FilterPlayer = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: About Me Filter");
         DropAllAPServerMessages = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Drop All AP Server Messages");
@@ -108,6 +112,11 @@ public class ArchConsoleManager : MonoBehaviour
 
     private void Update()
     {
+        if (vr.vrLoaded && console != null)
+        {
+            vr.Update(console);
+        }
+
         // Clear console entries after enough time has passed
         if (gameplayConsoleTimers != null && gameplayConsoleTimers.Count > 0)
         {
@@ -166,6 +175,9 @@ public class ArchConsoleManager : MonoBehaviour
         filterButton.onClick.AddListener(OnClickFilterButton);
         consoleText = console.GetComponentInChildren<InputField>();
         pauseConsoleVisuals.SetActive(false);
+
+        if (vr.vrLoaded)
+            vr.SetUpConsoleForVR(console);
 
         // These are messages we really want the player to see, so show in both consoles (sadly we can't make a ding noise this early)
         foreach (string entry in WakeupConsoleMessages)
