@@ -5,7 +5,7 @@ namespace ArchipelagoRandomizer.Compatibility.NomaiVR;
 /// <summary>
 /// Keeps the in-game AP console (converted to a world-space canvas) positioned in front of the player in VR.
 ///
-/// This class does not cache the camera unlike NomaiVR's `FollowTarget`. See VRArchConsoleCompatibility on
+/// This class does not cache the camera unlike NomaiVR's `FollowTarget`. See VRArchConsole on
 /// why that's important.
 /// </summary>
 public class VRConsoleFollow : MonoBehaviour

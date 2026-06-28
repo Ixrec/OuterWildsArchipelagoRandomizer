@@ -87,6 +87,7 @@ public class APRandomizer : ModBehaviour
     public static bool ColorNomaiText = true;
     public static bool InstantTranslator = false;
     public static bool HasSeenSettingsText = false;
+    public static bool UnlockNotification = false;
 
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
     private static Task pendingSaveFileWrite = null;
@@ -430,7 +431,7 @@ public class APRandomizer : ModBehaviour
         {
             APInventoryMode.MarkItemAsNew(item);
             APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
-            LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
+            LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item], true);
 
             // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
@@ -605,6 +606,7 @@ public class APRandomizer : ModBehaviour
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
         ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         InstantTranslator = config.GetSettingsValue<bool>("Instant Translator");
+        UnlockNotification = config.GetSettingsValue<bool>("Show Unlock Notification");
         NomaiTextQoL.NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
 
         InGameAPConsole?.ModSettingsChanged(config);

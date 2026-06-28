@@ -358,7 +358,7 @@ public class ArchConsoleManager : MonoBehaviour
             Item item = ItemNames.itemNamesReversed[tokens[0]];
             uint count = uint.Parse(tokens[1]);
             APRandomizer.OWMLModConsole.WriteLine($"Received debug command '{text}'. Calling ApplyItemToPlayer({item}, {count}).");
-            LocationTriggers.ApplyItemToPlayer(item, count);
+            LocationTriggers.ApplyItemToPlayer(item, count, true);
             consoleText.text = "";
             return;
         }
