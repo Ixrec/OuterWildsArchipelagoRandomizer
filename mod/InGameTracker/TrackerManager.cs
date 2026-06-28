@@ -54,10 +54,14 @@ public class TrackerManager : MonoBehaviour
             session = s;
             logic.previouslyObtainedItems = s.Items.AllItemsReceived;
             logic.InitializeAccessibility();
-            s.Items.ItemReceived += logic.RecheckAccessibility;
-            s.Locations.CheckedLocationsUpdated += logic.CheckLocations;
+            // these end up doing UI work and need to run on the main thread
+            s.Items.ItemReceived += (helper) =>
+                MainThreadDispatcher.Enqueue(() => logic.RecheckAccessibility(helper));
+            s.Locations.CheckedLocationsUpdated += (checkedLocations) =>
+                MainThreadDispatcher.Enqueue(() => logic.CheckLocations(checkedLocations));
             logic.CheckLocations(s.Locations.AllLocationsChecked);
-            s.DataStorage.TrackHints(ReadHints);
+            s.DataStorage.TrackHints((hints) =>
+                MainThreadDispatcher.Enqueue(() => ReadHints(hints)));
         };
         APRandomizer.OnSessionClosed += (s, m) =>
         {
