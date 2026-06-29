@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Threading.Tasks;
+using ArchipelagoRandomizer.Compatibility.NomaiVR;
 
 namespace ArchipelagoRandomizer;
 
@@ -16,6 +17,8 @@ internal class SignalscopeManager
             if (_hasSignalscope != value)
             {
                 _hasSignalscope = value;
+                if (VRCompatibility.IsNomaiVRLoaded)
+                    VRToolHolster.ApplyHolsterAvailability(ToolMode.SignalScope);
             }
         }
     }

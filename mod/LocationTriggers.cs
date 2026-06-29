@@ -455,6 +455,9 @@ internal class LocationTriggers
                 APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
         }
+        
+        if (ItemNames.IsTranslator(item) && VRCompatibility.IsNomaiVRLoaded)
+            VRToolHolster.ApplyHolsterAvailability(ToolMode.Translator);
     }
 
 

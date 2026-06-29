@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using ArchipelagoRandomizer.Compatibility.NomaiVR;
+using HarmonyLib;
 using System.Collections.Generic;
 
 namespace ArchipelagoRandomizer;
@@ -39,6 +40,10 @@ internal class Translator
     public static bool hasDBTranslator = false;
     public static bool hasOtherTranslator = false;
     public static bool hasDeepBTranslator = false;
+
+    public static bool hasAnyTranslator =>
+        hasRegularTranslator || hasHGTTranslator || hasTHTranslator || hasBHTranslator ||
+        hasGDTranslator || hasDBTranslator || hasOtherTranslator || hasDeepBTranslator;
 
     private static TranslatorSector currentTranslatorSector = TranslatorSector.Other;
 
@@ -138,7 +143,11 @@ internal class Translator
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
         if (mode == ToolMode.Translator && !hasTranslatorForCurrentSector())
+        {
+            if (VRCompatibility.IsNomaiVRLoaded)
+                VRToolHolster.ShowTranslatorNotAvailableNotification(cannotTranslatePromptText);
             return false;
+        }
         return true;
     }
 
