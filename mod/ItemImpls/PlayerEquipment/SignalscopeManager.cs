@@ -32,6 +32,7 @@ internal class SignalscopeManager
         Locator.GetPromptManager().AddScreenPrompt(signalscopeNotAvailablePrompt, PromptPosition.Center, false);
     }
 
+    [HarmonyBefore("Raicuparta.NomaiVR")]
     [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {
