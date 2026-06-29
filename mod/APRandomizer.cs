@@ -40,6 +40,12 @@ public class APRandomizerSaveData
 public class APRandomizer : ModBehaviour
 {
     public static APRandomizer Instance;
+    
+    /// <summary>
+    /// If enabled items are only applied to the player via the `!debug` console command
+    /// (they aren't even loaded from save).
+    /// </summary>
+    public const bool UnlockItemsViaDebugOnly = false;
 
     public static APRandomizerSaveData SaveData;
     public static AssetBundle Assets;
@@ -151,8 +157,11 @@ public class APRandomizer : ModBehaviour
                 OWMLModConsole.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
                     $"and acquired one or more of {SaveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {SaveData.itemsAcquired.Count} total types.");
 
-                foreach (var kv in SaveData.itemsAcquired)
-                    LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                if (!UnlockItemsViaDebugOnly)
+                {
+                    foreach (var kv in SaveData.itemsAcquired)
+                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                }
 
                 if (MainMenu.ResumeRandomExpeditionGO != null)
                 {
@@ -431,7 +440,8 @@ public class APRandomizer : ModBehaviour
         {
             APInventoryMode.MarkItemAsNew(item);
             APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
-            LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item], true);
+            if (!UnlockItemsViaDebugOnly)
+                LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item], true);
 
             // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
