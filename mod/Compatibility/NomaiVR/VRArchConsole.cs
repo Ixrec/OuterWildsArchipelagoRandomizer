@@ -6,17 +6,17 @@ using Object = UnityEngine.Object;
 namespace ArchipelagoRandomizer.Compatibility.NomaiVR;
 
 /// <summary>
-/// Console compatibility for the NomaiVR mod
+/// Console compatibility for the NomaiVR mod.
+/// (Text entry into the console in VR is handled separately by <see cref="VRConsoleKeyboard"/>.)
 /// </summary>
-// TODO: One known issue that currently remains: it's not possible to enter text into the console in VR.
 public class VRArchConsole
 {
-    public readonly bool vrLoaded = VRCompatibility.IsNomaiVRLoaded;
-
     // The geometry of the first console we create under VR.
     // When reloading (for example after resetting the loop) NomaiVR mutates our prefab for the ArchRandoCanvas,
     // so we need to restore the geometry on every subsequent creation of the console.
     private CachedGeometry cachedConsoleGeometry;
+
+    private VRConsoleKeyboard vrConsoleKeyboard = new();
 
     private static readonly Type NomaiVrFollowTargetType =
         Type.GetType("NomaiVR.ReusableBehaviours.FollowTarget, NomaiVR");
@@ -60,7 +60,10 @@ public class VRArchConsole
     // 
     // It's also probably best not to rely on NomaiVR implementation details when we end up positioning the console
     // ourselves anyway (especially with the pause menu interactions & the whole re-create on scene load).
-    public void SetUpConsoleForVR(GameObject console)
+    //
+    // Additionally, this hands the console's InputField to VRConsoleKeyboard (via Configure) so text entry works
+    // in VR.
+    public void SetUpConsoleForVR(GameObject console, InputField consoleText)
     {
         var rootCanvas = console.GetComponent<Canvas>();
         if (rootCanvas == null) rootCanvas = console.GetComponentInChildren<Canvas>(true);
@@ -110,5 +113,7 @@ public class VRArchConsole
 
         if (rootCanvas.GetComponent<VRConsoleFollow>() == null)
             rootCanvas.gameObject.AddComponent<VRConsoleFollow>();
+
+        vrConsoleKeyboard.Configure(consoleText);
     }
 }

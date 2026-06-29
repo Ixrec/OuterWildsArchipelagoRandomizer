@@ -39,6 +39,7 @@ public class ArchConsoleManager : MonoBehaviour
     private Material progressMat;
     private Text progressText;
     private ArchipelagoSession session;
+    // only initialized if NomaiVR is loaded
     private VRArchConsole vr;
     // separate from pauseConsoleText.text so we can avoid updating the Text object until the game's paused
     private string pauseConsoleContent = "";
@@ -61,7 +62,8 @@ public class ArchConsoleManager : MonoBehaviour
 
     private void Start()
     {
-        vr = new VRArchConsole();
+        if (VRCompatibility.IsNomaiVRLoaded)
+            vr = new VRArchConsole();
         
         ConsoleMuted = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: Mute");
         FilterPlayer = APRandomizer.Instance.ModHelper.Config.GetSettingsValue<bool>("AP Console: About Me Filter");
@@ -112,7 +114,7 @@ public class ArchConsoleManager : MonoBehaviour
 
     private void Update()
     {
-        if (vr.vrLoaded && console != null)
+        if (vr != null && console != null)
         {
             vr.Update(console);
         }
@@ -176,8 +178,7 @@ public class ArchConsoleManager : MonoBehaviour
         consoleText = console.GetComponentInChildren<InputField>();
         pauseConsoleVisuals.SetActive(false);
 
-        if (vr.vrLoaded)
-            vr.SetUpConsoleForVR(console);
+        vr?.SetUpConsoleForVR(console, consoleText);
 
         // These are messages we really want the player to see, so show in both consoles (sadly we can't make a ding noise this early)
         foreach (string entry in WakeupConsoleMessages)
