@@ -503,6 +503,7 @@ public class APRandomizer : ModBehaviour
             Orbits.OnCompleteSceneLoad(scene, loadScene);
             Spawn.OnCompleteSceneLoad(scene, loadScene);
             Compatibility.NomaiVR.VRToolHolster.OnCompleteSceneLoad(scene, loadScene);
+            Compatibility.NomaiVR.VRShipMonitorText.OnCompleteSceneLoad(scene, loadScene);
             Hints.OnCompleteSceneLoad();
             // Hearth's Neighbor 2: Magistarium custom item impls
             MemoryCubeInterface.OnCompleteSceneLoad();
