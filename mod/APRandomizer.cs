@@ -511,11 +511,14 @@ public class APRandomizer : ModBehaviour
             ExpandedDictionary.OnCompleteSceneLoad();
         };
 
-        // update the Nomai text setting before any can be created
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
         {
+            // update the Nomai text setting before any can be created
             NomaiTextQoL.NomaiTextQoL.AutoNomaiText = AutoNomaiText;
             NomaiTextQoL.NomaiTextQoL.ColorNomaiText = ColorNomaiText;
+
+            // install the NomaiVR spawn-facing suppression before the scene's objects Awake
+            Compatibility.NomaiVR.VRSpawnFacing.EnsurePatches();
         };
 
         SetupSaveData();
