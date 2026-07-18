@@ -128,6 +128,7 @@ Outer Wilds story mods whose content has been fully integrated into this randomi
 Outer Wilds quality of life/tooling/etc mods that this randomizer goes out of its way to support:
 
 - Suit Log: All of the ship log's "in-game tracker" content is available in the Suit Log too.
+- NomaiVR: The randomizer has explicit support for the mod, such as to disable/enable tools correctly and to make interacting with the console possible (with some caveats such as the scrollbar being buggy). The mod may not support all possible interactions fully, some traps (such as the HUD Corruption Trap) also do not work. Story mods + VR are untested.
 
 Outer Wilds quality of life/tooling/etc mods that are known to work without issue:
 
@@ -139,7 +140,6 @@ Outer Wilds quality of life/tooling/etc mods that are known to work without issu
 Outer Wilds mods that have been tried, but are known to have issues (this information might not be kept up to date, as I don't/can't test these myself):
 
 - Time Saver (thanks Jade and toasty for testing this): mostly works, but you must leave the "Always Start With Suit" option disabled.
-- NomaiVR (thanks Snout for testing this): Mostly works. Trying to grab the Translator or Signalscope *before donning the suit* will softlock, but this is fine once you're in the suit. The in-game console does not work reliably, so using the AP Text Client instead is recommended.
 - Quantum Space Buddies: Awkward but can *probably* be made to work. I believe you would have to use one of the "... Random Expedition" main menu buttons to connect to your AP server, immediately quit back to the main menu, then use either of QSB's main menu buttons to load the game with multiplayer. Please tell us if you can test this properly.
 
 ## Contributing Features, Bugfixes, More Story Mods, etc
