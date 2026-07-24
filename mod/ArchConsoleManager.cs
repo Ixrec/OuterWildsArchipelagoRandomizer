@@ -70,7 +70,9 @@ public class ArchConsoleManager : MonoBehaviour
 
         APRandomizer.OnSessionOpened += (s) =>
         {
-            s.Locations.CheckedLocationsUpdated += UpdateProgress;
+            // this ends up doing UI work and need to run on the main thread
+            s.Locations.CheckedLocationsUpdated += (checkedLocations) =>
+                MainThreadDispatcher.Enqueue(() => UpdateProgress(checkedLocations));
             session = s;
             APRandomizer.HasSeenSettingsText = false;
         };
