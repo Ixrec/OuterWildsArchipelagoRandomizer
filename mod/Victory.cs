@@ -33,13 +33,13 @@ public class Victory
 
     public static bool HasMetSolanum() => PlayerData.GetPersistentCondition("MET_SOLANUM");
     public static bool HasMetPrisoner() => PlayerData.GetPersistentCondition("MET_PRISONER");
-    public static bool HasFinishedHearthsNeighbor1() => APRandomizer.SaveData.locationsChecked[Location.HN1_SIGNAL_GC_COCKPIT];
-    public static bool HasFinishedTheOutsider() => APRandomizer.SaveData.locationsChecked[Location.TO_CLIFFSIDE_DECAY];
-    public static bool HasFinishedAstralCodec() => APRandomizer.SaveData.locationsChecked[Location.AC_LC_ASTRAL_CODEC];
-    public static bool HasFinishedHearthsNeighbor2() => APRandomizer.SaveData.locationsChecked[Location.HN2_ASCEND];
-    public static bool HasFinishedFretsQuest() => APRandomizer.SaveData.locationsChecked[Location.FQ_LYRICS_DONE];
-    public static bool HasFinishedForgottenCastaways() => APRandomizer.SaveData.locationsChecked[Location.FC_MOURNING];
-    public static bool HasFinishedEchoHike() => APRandomizer.SaveData.locationsChecked[Location.EH_PHOSPHORS];
+    public static bool HasFinishedHearthsNeighbor1() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.HN1_SIGNAL_GC_COCKPIT, false);
+    public static bool HasFinishedTheOutsider() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.TO_CLIFFSIDE_DECAY, false);
+    public static bool HasFinishedAstralCodec() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.AC_LC_ASTRAL_CODEC, false);
+    public static bool HasFinishedHearthsNeighbor2() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.HN2_ASCEND, false);
+    public static bool HasFinishedFretsQuest() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.FQ_LYRICS_DONE, false);
+    public static bool HasFinishedForgottenCastaways() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.FC_MOURNING, false);
+    public static bool HasFinishedEchoHike() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.EH_PHOSPHORS, false);
     public static int FriendsMet => ((IEnumerable<bool>)[
         HasMetSolanum(),
         HasMetPrisoner(),
