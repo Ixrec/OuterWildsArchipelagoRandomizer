@@ -140,6 +140,18 @@ public enum Item
 
 public static class ItemNames
 {
+    private static readonly Item[] Translators = {
+        Item.Translator,
+        Item.TranslatorHGT,
+        Item.TranslatorTH,
+        Item.TranslatorBH,
+        Item.TranslatorGD,
+        Item.TranslatorDB,
+        Item.TranslatorOther,
+        Item.TranslatorDeepB,
+    };
+    public static bool IsTranslator(Item item) => Translators.Contains(item);
+    
     // Used to help the Inventory Tracker show a single "Story Mod Frequencies" entry for all of these similar items
     private static Item[] StoryModFrequencies = {
         Item.FrequencyNeighborDistress,

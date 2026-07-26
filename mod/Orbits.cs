@@ -24,6 +24,8 @@ internal class Orbits
     private static Dictionary<string, long> OrbitAngles = null;
     private static Dictionary<string, Vector3> RotationAxes = null;
 
+    internal static bool AreOrbitsRandomized => PlanetOrder != null || OrbitAngles != null || RotationAxes != null;
+
     public static void ApplySlotData(object planetOrderSlotData, object orbitAnglesSlotData, object rotationAxesSlotData)
     {
         PlanetOrder = null;

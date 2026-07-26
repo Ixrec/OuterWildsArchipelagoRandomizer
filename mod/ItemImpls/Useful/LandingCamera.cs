@@ -70,6 +70,7 @@ internal class LandingCamera
         noLandingCameraLiftoffPrompt.SetVisibility(false);
     }
 
+    [HarmonyBefore("Raicuparta.NomaiVR")] // NOTE: There is an additional Postfix for VR compatibility in VRLandingCamera.
     [HarmonyPrefix, HarmonyPatch(typeof(ShipCockpitController), nameof(ShipCockpitController.EnterLandingView))]
     public static bool ShipCockpitController_EnterLandingView_Prefix()
     {

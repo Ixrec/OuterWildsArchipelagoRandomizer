@@ -53,7 +53,7 @@
     <Target Name="CopyMCNet" AfterTargets="PostBuildEvent">
 	    <!-- The OS condition is for skipping this in CI -->
 	    <Copy Condition="'$(OS)' == 'Windows_NT'"
-			    SourceFiles="C:\Users\j-pop\.nuget\packages\archipelago.multiclient.net\$(ArchipelagoMultiClientDotNetVersion)\lib\net45\Archipelago.MultiClient.Net.dll"
+			    SourceFiles="C:\Users\$(UserName)\.nuget\packages\archipelago.multiclient.net\$(ArchipelagoMultiClientDotNetVersion)\lib\net45\Archipelago.MultiClient.Net.dll"
 			    DestinationFolder="$(TargetDir)"
 			    SkipUnchangedFiles="true" />
     </Target>

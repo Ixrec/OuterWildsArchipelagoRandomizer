@@ -62,6 +62,12 @@
       "tooltip": "With this on, your translator will translate Nomai Text instantly."
     },
 
+    "Show Unlock Notification": {
+      "type": "toggle",
+      "value": false,
+      "tooltip": "If enabled, show a text notification at the center of the screen whenever an item is unlocked."
+    },
+
     "Separator - Suit Upgrades": {
       "type": "separator"
     },

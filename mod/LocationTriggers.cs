@@ -2,7 +2,9 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using ArchipelagoRandomizer.Compatibility.NomaiVR;
 
 namespace ArchipelagoRandomizer;
 
@@ -281,6 +283,9 @@ internal class LocationTriggers
             { "TT_Tower_BH_1", Location.AT_BH_TOWER }
         };
 
+    private static ScreenPrompt itemUnlockedPrompt;
+    private static CancellationTokenSource itemUnlockedPromptCancelToken;
+
     // no longer in use, keeping as notes for when we edit flavor text to justify some items' existence
     /*static Dictionary<Location, Item> locationToVanillaItem = new Dictionary<Location, Item> {
         { Location.ET_FOSSIL, Item.SilentRunning },
@@ -361,8 +366,11 @@ internal class LocationTriggers
         }
     }
 
-    public static void ApplyItemToPlayer(Item item, uint count)
+    public static void ApplyItemToPlayer(Item item, uint count, bool showNotification = false)
     {
+        if (APRandomizer.UnlockNotification && count > 0 && showNotification)
+            ShowUnlockNotification(item);
+        
         if (ItemNames.itemToFrequency.ContainsKey(item))
         {
             SignalsAndFrequencies.SetFrequencyUsable(ItemNames.itemToFrequency[item], count > 0);
@@ -446,6 +454,15 @@ internal class LocationTriggers
             default:
                 APRandomizer.OWMLModConsole.WriteLine($"unknown item: {item}", OWML.Common.MessageType.Error);
                 break;
+        }
+
+        if (VRCompatibility.IsNomaiVRLoaded)
+        {
+            if (ItemNames.IsTranslator(item))
+            {
+                VRToolHolster.ApplyHolsterAvailability(ToolMode.Translator);
+            }
+            VRShipMonitorText.ApplyManagedTextForItem(item);
         }
     }
 
@@ -602,5 +619,30 @@ internal class LocationTriggers
         {
             case "IP_DREAM_LAKE_R2": CheckLocation(Location.VAULT_VISION); break;
         }
+    }
+
+    private static void ShowUnlockNotification(Item item)
+    {
+        var itemName = ItemNames.ItemToName(item);
+        
+        // despite the setting being called "notification", we use a prompt and not a notification, mainly because
+        // some items already show their own notification, and notifications are more "in-universe".
+        if (itemUnlockedPrompt == null)
+        {
+            itemUnlockedPrompt = new ScreenPrompt("");
+            itemUnlockedPrompt.SetDisplayState(ScreenPrompt.DisplayState.Attention);
+            Locator.GetPromptManager().AddScreenPrompt(itemUnlockedPrompt, PromptPosition.Center);
+        }
+            
+        itemUnlockedPrompt.SetText($"Unlocked {itemName}!");
+        itemUnlockedPrompt.SetVisibility(true);
+        
+        itemUnlockedPromptCancelToken?.Cancel();
+        itemUnlockedPromptCancelToken = new CancellationTokenSource();
+        Task.Run(async () => {
+            // when in VR, the prompt is shown attached to the right hand, give the player a bit more time to look at it.
+            await Task.Delay(VRCompatibility.IsNomaiVRLoaded ? 6000 : 3000);
+            itemUnlockedPrompt.SetVisibility(false);
+        }, itemUnlockedPromptCancelToken.Token);
     }
 }

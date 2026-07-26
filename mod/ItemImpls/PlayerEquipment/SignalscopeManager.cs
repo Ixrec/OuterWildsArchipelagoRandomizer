@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.Threading.Tasks;
+using ArchipelagoRandomizer.Compatibility.NomaiVR;
 
 namespace ArchipelagoRandomizer;
 
@@ -16,6 +17,8 @@ internal class SignalscopeManager
             if (_hasSignalscope != value)
             {
                 _hasSignalscope = value;
+                if (VRCompatibility.IsNomaiVRLoaded)
+                    VRToolHolster.ApplyHolsterAvailability(ToolMode.SignalScope);
             }
         }
     }
@@ -32,6 +35,7 @@ internal class SignalscopeManager
         Locator.GetPromptManager().AddScreenPrompt(signalscopeNotAvailablePrompt, PromptPosition.Center, false);
     }
 
+    [HarmonyBefore("Raicuparta.NomaiVR")]
     [HarmonyPrefix, HarmonyPatch(typeof(ToolModeSwapper), nameof(ToolModeSwapper.EquipToolMode))]
     public static bool ToolModeSwapper_EquipToolMode_Prefix(ToolMode mode)
     {

@@ -154,8 +154,11 @@ internal class MainMenu
                 {
                     // we don't overwrite the mod save file and the player's inventory until we're sure we can really start playing this new game
                     APRandomizer.Instance.ModHelper.Storage.Save<APRandomizerSaveData>(saveData, APRandomizer.SaveFileName);
-                    foreach (var kv in APRandomizer.SaveData.itemsAcquired)
-                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                    if (!APRandomizer.UnlockItemsViaDebugOnly)
+                    {
+                        foreach (var kv in APRandomizer.SaveData.itemsAcquired)
+                            LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                    }
 
                     // also wipe the vanilla save file, since we've bypassed the base game code that would normally do this
                     PlayerData.ResetGame();
@@ -178,11 +181,14 @@ internal class MainMenu
         lpu.titleMenuManager = titleManager;
         lpu.mainMenuButton = mainMenuButton;
 
-        // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
-        // so we wait to initialize the autosplitter conditions until we know we're about to leave the main menu and won't be switching profiles any more.
-        foreach (var kv in APRandomizer.SaveData.itemsAcquired)
-            if (ItemNames.itemToPersistentCondition.TryGetValue(kv.Key, out var condition))
-                PlayerData.SetPersistentCondition(condition, kv.Value > 0); // for now, only unique items have conditions
+        if (!APRandomizer.UnlockItemsViaDebugOnly)
+        {
+            // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
+            // so we wait to initialize the autosplitter conditions until we know we're about to leave the main menu and won't be switching profiles any more.
+            foreach (var kv in APRandomizer.SaveData.itemsAcquired)
+                if (ItemNames.itemToPersistentCondition.TryGetValue(kv.Key, out var condition))
+                    PlayerData.SetPersistentCondition(condition, kv.Value > 0); // for now, only unique items have conditions
+        }
     }
 
     class LoadProgressUpdater : MonoBehaviour

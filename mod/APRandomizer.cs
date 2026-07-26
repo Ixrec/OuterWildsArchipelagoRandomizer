@@ -40,6 +40,12 @@ public class APRandomizerSaveData
 public class APRandomizer : ModBehaviour
 {
     public static APRandomizer Instance;
+    
+    /// <summary>
+    /// If enabled items are only applied to the player via the `!debug` console command
+    /// (they aren't even loaded from save).
+    /// </summary>
+    public const bool UnlockItemsViaDebugOnly = false;
 
     public static APRandomizerSaveData SaveData;
     public static AssetBundle Assets;
@@ -87,6 +93,7 @@ public class APRandomizer : ModBehaviour
     public static bool ColorNomaiText = true;
     public static bool InstantTranslator = false;
     public static bool HasSeenSettingsText = false;
+    public static bool UnlockNotification = false;
 
     // Throttle save file writes to once per second to avoid IOExceptions for conflicting write attempts
     private static Task pendingSaveFileWrite = null;
@@ -150,8 +157,11 @@ public class APRandomizer : ModBehaviour
                 OWMLModConsole.WriteLine($"Existing save file loaded. You've checked {SaveData.locationsChecked.Where(kv => kv.Value).Count()} out of {SaveData.locationsChecked.Count} locations " +
                     $"and acquired one or more of {SaveData.itemsAcquired.Where(kv => kv.Value > 0).Count()} different item types out of {SaveData.itemsAcquired.Count} total types.");
 
-                foreach (var kv in SaveData.itemsAcquired)
-                    LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                if (!UnlockItemsViaDebugOnly)
+                {
+                    foreach (var kv in SaveData.itemsAcquired)
+                        LocationTriggers.ApplyItemToPlayer(kv.Key, kv.Value);
+                }
 
                 if (MainMenu.ResumeRandomExpeditionGO != null)
                 {
@@ -430,7 +440,8 @@ public class APRandomizer : ModBehaviour
         {
             APInventoryMode.MarkItemAsNew(item);
             APRandomizer.SaveData.itemsAcquired[item] = (uint)itemCountSoFar;
-            LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item]);
+            if (!UnlockItemsViaDebugOnly)
+                LocationTriggers.ApplyItemToPlayer(item, APRandomizer.SaveData.itemsAcquired[item], true);
 
             // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
@@ -491,6 +502,8 @@ public class APRandomizer : ModBehaviour
             DarkBrambleLayout.OnCompleteSceneLoad(scene, loadScene);
             Orbits.OnCompleteSceneLoad(scene, loadScene);
             Spawn.OnCompleteSceneLoad(scene, loadScene);
+            Compatibility.NomaiVR.VRToolHolster.OnCompleteSceneLoad(scene, loadScene);
+            Compatibility.NomaiVR.VRShipMonitorText.OnCompleteSceneLoad(scene, loadScene);
             Hints.OnCompleteSceneLoad();
             // Hearth's Neighbor 2: Magistarium custom item impls
             MemoryCubeInterface.OnCompleteSceneLoad();
@@ -498,11 +511,14 @@ public class APRandomizer : ModBehaviour
             ExpandedDictionary.OnCompleteSceneLoad();
         };
 
-        // update the Nomai text setting before any can be created
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
         {
+            // update the Nomai text setting before any can be created
             NomaiTextQoL.NomaiTextQoL.AutoNomaiText = AutoNomaiText;
             NomaiTextQoL.NomaiTextQoL.ColorNomaiText = ColorNomaiText;
+
+            // install the NomaiVR spawn-facing suppression before the scene's objects Awake
+            Compatibility.NomaiVR.VRSpawnFacing.EnsurePatches();
         };
 
         SetupSaveData();
@@ -605,6 +621,7 @@ public class APRandomizer : ModBehaviour
         AutoNomaiText = config.GetSettingsValue<bool>("Auto Expand Nomai Text");
         ColorNomaiText = config.GetSettingsValue<bool>("LocationAppearanceMatchesContents");
         InstantTranslator = config.GetSettingsValue<bool>("Instant Translator");
+        UnlockNotification = config.GetSettingsValue<bool>("Show Unlock Notification");
         NomaiTextQoL.NomaiTextQoL.TranslateTime = InstantTranslator ? 0f : 0.2f;
 
         InGameAPConsole?.ModSettingsChanged(config);
