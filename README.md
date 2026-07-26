@@ -14,7 +14,9 @@ I will now be moving on to other projects as my primary focus, but I still inten
 
 ## Contact
 
-For questions, feedback, or discussion related to the randomizer, please visit the "Outer Wilds" thread in [the Archipelago Discord server](https://discord.gg/8Z65BR2), or message me (`ixrec`) directly on Discord.
+For questions, feedback, or discussion related to the randomizer, please visit the `#outer-wilds` channel in [the Archipelago Discord server](https://discord.gg/8Z65BR2).
+
+Most of the randomizer is maintained by me, `Ixrec` (`ixrec` on Discord). The NomaiVR compatibility code is maintained by `theCapypara` (`capypara` on Discord).
 
 ## What is an "Archipelago Randomizer", and why would I want one?
 
