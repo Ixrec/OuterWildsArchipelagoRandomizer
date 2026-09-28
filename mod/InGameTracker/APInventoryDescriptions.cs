@@ -217,6 +217,13 @@ public class APInventoryDescriptions
                     infos.Add("An upgrade for your Little Scout that reports the structural integrity of a fragile surface it's attached to.");
                     infos.Add("Most useful on Brittle Hollow.");
                     break;
+                case Item.Medkit:
+                    infos.Add("Gossan persuaded Slate to add some medical duct tape and distilled sap wine to the ship's medkit.");
+                    infos.Add("Without it you can heal by eating marshmallows.");
+                    break;
+                case Item.ShipJetpackFuelTank:
+                    infos.Add("Some spaceship grade fuel from Slate's stash.");
+                    break;
                 case Item.OxygenCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
                     infos.Add("By default, your tank starts with 50% of that, at 3.75 minutes. Each upgrade adds another 50% or 3.75 minutes.");

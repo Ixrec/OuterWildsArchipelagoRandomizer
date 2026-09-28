@@ -411,6 +411,8 @@ internal class LocationTriggers
             case Item.EjectButton: EjectButton.hasEjectButton = (count > 0); break;
             case Item.VelocityMatcher: VelocityMatcher.hasVelocityMatcher = (count > 0); break;
             case Item.SurfaceIntegrityScanner: SurfaceIntegrity.hasSurfaceIntegrityScanner = (count > 0); break;
+            case Item.Medkit: MedkitAndJetpackFuel.hasMedkit = (count > 0); break;
+            case Item.ShipJetpackFuelTank: MedkitAndJetpackFuel.hasJetpackFuel = (count > 0); break;
             case Item.OxygenCapacityUpgrade: SuitResources.oxygenCapacityUpgrades = count; break;
             case Item.FuelCapacityUpgrade: SuitResources.fuelCapacityUpgrades = count; break;
             case Item.BoostDurationUpgrade: SuitResources.boostDurationUpgrades = count; break;
