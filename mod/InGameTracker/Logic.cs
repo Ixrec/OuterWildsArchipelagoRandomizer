@@ -68,27 +68,6 @@ public class Logic
         { SlotDataSpawn.Stranger, "Stranger Sunside Hangar" },
         { SlotDataSpawn.DeepBramble, "Deep Bramble" },
     };
-    public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
-    {
-        { "SS", "Sun Station" },
-        { "ST", "Hourglass Twins" },
-        { "ET", "Hourglass Twins" },
-        { "ETT", "Hourglass Twins" },
-        { "ATP", "Ash Twin Interior" },
-        { "ATT", "Hourglass Twins" },
-        { "TH", "Timber Hearth" },
-        { "THT", "Hourglass Twins" },
-        { "BHNG", "Brittle Hollow" },
-        { "WHS", "White Hole Station" },
-        { "BHF", "Hanging City Ceiling" },
-        { "BHT", "Hourglass Twins" },
-        { "GD", "Giant's Deep" },
-        { "GDT", "Hourglass Twins" },
-    };
-    public Dictionary<string, HashSet<string>> SlotDataWarpPlatformIdToRequiredItems = new Dictionary<string, HashSet<string>>
-    {
-        { "SS", [ "Spacesuit" ] },
-    };
     // end stuff copy-pasted from .apworld
 
     public void AddConnection(Dictionary<string, TrackerRegionData> regions, TrackerConnectionData connection)
@@ -355,37 +334,20 @@ public class Logic
             }
         }
 
-        // Hang on to the pertinent warp connections
-        string bhfConnection = null, bhngConnection = null, whsConnection = null;
-        
         foreach (var warpPair in warps)
         {
             var warpId1 = warpPair[0];
             var warpId2 = warpPair[1];
 
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId1, out var regionName1))
+            if (!WarpLogicHelper.WarpPlatformToLogicalRegion.TryGetValue(warpId1, out var regionName1))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
             }
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId2, out var regionName2))
+            if (!WarpLogicHelper.WarpPlatformToLogicalRegion.TryGetValue(warpId2, out var regionName2))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
-            }
-
-            // Check for Brittle Hollow warp connections
-            switch (warpId1)
-            {
-                case "BHF": bhfConnection = warpId2; break;
-                case "BHNG": bhngConnection = warpId2; break;
-                case "WHS": whsConnection = warpId2; break;
-            }
-            switch (warpId2)
-            {
-                case "BHF": bhfConnection = warpId1; break;
-                case "BHNG": bhngConnection = warpId1; break;
-                case "WHS": whsConnection = warpId1; break;
             }
 
             var requirements = new List<TrackerRequirement>();
@@ -396,7 +358,7 @@ public class Logic
             requirements.Add(nwctr);
 
             // these maps are for corner cases where one or more additional items are required
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId1, out var items1))
+            if (WarpLogicHelper.WarpPlatformRequiredItems.TryGetValue(warpId1, out var items1))
             {
                 foreach (var item in items1) {
                     var tr = new TrackerRequirement();
@@ -404,7 +366,7 @@ public class Logic
                     requirements.Add(tr);
                 }
             }
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId2, out var items2))
+            if (WarpLogicHelper.WarpPlatformRequiredItems.TryGetValue(warpId2, out var items2))
             {
                 foreach (var item in items2)
                 {
@@ -428,14 +390,8 @@ public class Logic
         }
 
         // Conditionally add warp-based connection to Black Hole Forge
-        List<string> hourglassTwins = ["ET", "ST", "ETT", "ATT", "THT", "BHT", "GDT"];
-        List<string> brittleHollow = ["BHNG", "WHS"];
-
-        bool hollowDirectlyConnectedToForge = brittleHollow.Contains(bhfConnection);
-        bool hollowAndTwinsConnected = hourglassTwins.Contains(bhngConnection) || hourglassTwins.Contains(whsConnection);
-        bool hollowIndirectlyConnectedToForge = hollowAndTwinsConnected && hourglassTwins.Contains(bhfConnection);
-
-        if (hollowDirectlyConnectedToForge || hollowIndirectlyConnectedToForge)
+        var warpHelper = new WarpLogicHelper() { Warps = warps };
+        if (warpHelper.ConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
         {
             AddConnection(TrackerRegions, new()
             {
