@@ -389,16 +389,88 @@ public class Logic
             AddConnection(TrackerRegions, reverseWarpConnection);
         }
 
+        // Check which connections require bigger fuel tank (multiple trips).
+        var hasFuelRequirement = new TrackerRequirement() { item = "Ship Fuel Capacity Upgrade" };
+        var startingWarpRegion = SlotDataSpawnToRegionName[spawn];
+        if (startingWarpRegion == "Timber Hearth Village" || startingWarpRegion == "Deep Bramble")
+            startingWarpRegion = "Timber Hearth";
+
         // Conditionally add warp-based connection to Black Hole Forge
         var warpHelper = new WarpLogicHelper() { Warps = warps };
         if (warpHelper.ConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
         {
+            APRandomizer.OWMLModConsole.WriteLine("Forge accessible with warp codes only");
             AddConnection(TrackerRegions, new()
             {
                 from = "Forge via Warps Only",
                 to = "Black Hole Forge",
                 requires = []
             });
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Forge requires ship");
+        var bhfRequirements = new List<TrackerRequirement>();
+        if (!warpHelper.ConnectionExists(startingWarpRegion, "Brittle Hollow", true))
+        {
+            APRandomizer.OWMLModConsole.WriteLine("Moving forge requires fuel upgrade");
+            bhfRequirements.Add(hasFuelRequirement);
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Moving forge doesn't require fuel upgrade");
+        AddConnection(TrackerRegions, new()
+        {
+            from = "Forge via Ship & Warps",
+            to = "Black Hole Forge",
+            requires = bhfRequirements,
+        });
+
+
+        var goalRequirements = new List<TrackerRequirement>();
+        if (!warpHelper.ConnectionExists(startingWarpRegion, "Ash Twin Interior", true))
+        {
+            APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core requires fuel upgrade");
+            goalRequirements.Add(hasFuelRequirement);
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core doesn't require fuel upgrade");
+        AddConnection(TrackerRegions, new()
+        {
+            from = "The Vessel",
+            to = "Bring Warp Core",
+            requires = goalRequirements,
+        });
+
+        if (APRandomizer.SlotEnabledMod("enable_fc_mod"))
+        {
+            // Get the BH warp core by 1) spawn on HGT, 2) have enough fuel to fetch it or 3) fetch by warping.
+            if (spawn == SlotDataSpawn.HourglassTwins)
+                AddConnection(TrackerRegions, new()
+                {
+                    from = "The Vessel",
+                    to = "Deep Bramble",
+                    requires = []
+                });
+            else
+            {
+                AddConnection(TrackerRegions, new()
+                {
+                    from = "The Vessel",
+                    to = "Deep Bramble",
+                    requires = [hasFuelRequirement]
+                });
+                if (warpHelper.ConnectionExists(startingWarpRegion, "Hourglass Twins", true))
+                {
+                    APRandomizer.OWMLModConsole.WriteLine("Fetching BH core requires fuel upgrade");
+                    AddConnection(TrackerRegions, new()
+                    {
+                        from = "The Vessel",
+                        to = "Deep Bramble",
+                        requires = [new TrackerRequirement() { item = "Nomai Warp Codes" }]
+                    });
+                }
+                else
+                    APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core doesn't require fuel upgrade");
+            }
         }
 
         // Build region logic recursively from Menu region
