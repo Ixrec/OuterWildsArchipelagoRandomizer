@@ -109,8 +109,9 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
                 bool isScroll = __instance.transform.GetComponentInParent<ScrollItem>() != null;
                 bool isSocketed = __instance.transform.GetComponentInParent<ScrollSocket>() != null;
                 bool isAProjectionWall = __instance.transform.GetComponentInParent<NomaiSharedWhiteboard>() != null;
+                bool isSolanumConversation = __instance.transform.GetComponentInParent<NomaiConversationManager>() != null;
 
-                if ((!isScroll || isSocketed) && !isAProjectionWall)
+                if ((!isScroll || isSocketed) && !isAProjectionWall && !isSolanumConversation)
                 {
                     __instance.ShowImmediate();
                 }
@@ -118,10 +119,10 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
         }
 
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiTextLine), nameof(NomaiTextLine.DetermineTextLineColor))]
-        public static bool NomaiTextLine_DetermineTextLineColor_Prefix(NomaiText __instance, ref NomaiTextLine.VisualState state, ref Color __result)
+        public static bool NomaiTextLine_DetermineTextLineColor_Prefix(NomaiTextLine __instance, ref NomaiTextLine.VisualState state, ref Color __result)
         {
             ArcHintData data = __instance.GetComponent<ArcHintData>();
-            if (!ColorNomaiText || data == null || state != NomaiTextLine.VisualState.UNREAD || data.Locations.Count == 0)
+            if (!ColorNomaiText || state != NomaiTextLine.VisualState.UNREAD || !__instance._active || data == null || data.Locations.Count == 0)
             {
                 return true;
             }
@@ -164,7 +165,8 @@ namespace ArchipelagoRandomizer.NomaiTextQoL
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiWallText), nameof(NomaiWallText.SetAsTranslated))]
         public static bool NomaiWallText_SetAsTranslated_Prefix(NomaiWallText __instance, ref int id)
         {
-            if (!AutoNomaiText) return true;
+            bool isSolanumConversation = __instance.transform.GetComponentInParent<NomaiConversationManager>() != null;
+            if (!AutoNomaiText || isSolanumConversation) return true;
             if (LocationTriggers.ManualScrollLocations.ContainsKey(__instance.gameObject.name.Replace("Arc_", ""))) return true;
             // This code is copied from the base game and overrides the original method
             base_SetAsTranslated(__instance, id);
