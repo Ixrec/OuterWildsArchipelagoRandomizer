@@ -48,6 +48,9 @@ internal class MainMenu
 
     public static void SetupTitleMenu(ITitleMenuManager titleManager)
     {
+        var newExpeditionWarning = APRandomizer.Instance.ModHelper.MenuHelper.PopupMenuManager.CreateThreeChoicePopup(
+            "Warning: Existing save data detected.\nStarting a new random expedition will reset your progression on this profile.\n\nAre you sure you want to proceed?",
+            "Switch profile", "Clear save and start", "Cancel");
         var hostAndPortInput = APRandomizer.Instance.ModHelper.MenuHelper.PopupMenuManager.CreateInputFieldPopup(
             "Connection Info (1/3): Hostname & Port\n\ne.g. \"localhost:38281\", \"archipelago.gg:12345\"",
             "Enter hostname:port...",
@@ -79,7 +82,11 @@ internal class MainMenu
         NewRandomExpeditionSA.OnSubmitAction += () =>
         {
             lastButtonClicked = NewRandomExpeditionSA;
-            StartConnInfoInput(true);
+            // Show warning only if regular, non randomizer save data exists.
+            if (APRandomizer.SaveData == null && StandaloneProfileManager.SharedInstance.currentProfileGameSave.loopCount > 1)
+                newExpeditionWarning.EnableMenu(true);
+            else
+                StartConnInfoInput(true);
         };
         ChangeConnInfoSA.OnSubmitAction += () =>
         {
@@ -105,6 +112,15 @@ internal class MainMenu
             if (connData.hostname != null && connData.hostname.Length > 0)
                 hostAndPortInput.GetInputField().text = connData.hostname + ':' + connData.port;
         }
+
+        newExpeditionWarning.OnPopupConfirm1 += () => {
+            var profileButton = GameObject.Find("TitleMenu/TitleCanvas/TitleLayoutGroup/MainMenuBlock/MainMenuLayoutGroup/Button-Profile");
+            profileButton.GetComponent<SubmitActionMenu>()?.Submit();
+        };
+
+        newExpeditionWarning.OnPopupConfirm2 += () => {
+            StartConnInfoInput(true);
+        };
 
         hostAndPortInput.OnPopupConfirm += () => {
             var inputText = hostAndPortInput.GetInputText();
