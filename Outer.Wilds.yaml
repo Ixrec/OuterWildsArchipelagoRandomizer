@@ -154,6 +154,8 @@ Outer Wilds:
     # Puts the spacesuit into the Archipelago item pool, forcing you to play suitless until it's found.
     # 
     # This option is incompatible with non-vanilla spawns (i.e. generation will fail), since those imply playing "shipless" at first, and almost nothing can be done both shipless and suitless.
+    # 
+    # Be warned that this is a harder setting for Outer Wilds and can require you to die multiple times to reach locations. Use at your own risk.
     'false': 50
     'true': 0
 
