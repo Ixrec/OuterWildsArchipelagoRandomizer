@@ -20,7 +20,7 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
             GameObject loopNode = GameObject.Find("BriarsHollow_Body/Sector/Loop Node");
             if (!loopNode.activeSelf)
             {
-                APRandomizer.OWMLModConsole.WriteLine($"PlayerSectorDetector_OnAddSector() Recursive mode disabled. Re-enabling", OWML.Common.MessageType.Warning);
+                APRandomizer.OWMLModConsole.WriteLine($"PlayerSectorDetector_OnAddSector() Recursive node disabled. Re-enabling", OWML.Common.MessageType.Warning);
                 loopNode.SetActive(true);
             }
         }
