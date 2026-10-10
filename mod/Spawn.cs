@@ -191,7 +191,7 @@ internal class Spawn
             playerTargetGO = GameObject.Find("BrittleHollow_Body/Sector_BH/Sector_Crossroads/Interactables_Crossroads/VisibleFrom_BH").transform.GetChild(3).gameObject;
             anchorBody = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).GetOWRigidbody();
             playerOffset = new Vector3(0, 0, -3);
-            Quaternion shipOffsetAngle = new Quaternion(0f, -0.7933533f, 0f, 0.6087614f); // equivalent to Rotate(0, -105, 0)
+            Quaternion shipOffsetAngle = new Quaternion(0f, -0.7933533f, 0f, 0.6087614f); // equivalent to euler angles (0, -105, 0)
             shipRotation = playerTargetGO.transform.rotation * shipOffsetAngle;
             shipPosition = anchorBody.transform.TransformPoint(new Vector3(-6, 15, 285));
         }
@@ -208,7 +208,8 @@ internal class Spawn
             playerTargetGO = GameObject.Find("RingWorld_Body/Sector_RingWorld/Sector_LightSideDockingBay/Geo_LightSideDockingBay/Structure_IP_Docking_Bay/DockingBay_Col");
             anchorBody = Locator.GetAstroObject(AstroObject.Name.RingWorld).GetComponent<OWRigidbody>();
             playerOffset = new Vector3(4, -11.75f, 25);
-            shipRotation = playerTargetGO.transform.rotation;
+            Quaternion shipOffsetAngle = new Quaternion(0f, 1, 0f, 0); // equivalent to euler angles (0, 180, 0)
+            shipRotation = playerTargetGO.transform.rotation * shipOffsetAngle;
             shipPosition = playerTargetGO.transform.TransformPoint(new Vector3(4, -12.25f, -5));
         }
         else throw new System.ArgumentException($"spawnChoice had an invalid value of {spawnChoice}");
