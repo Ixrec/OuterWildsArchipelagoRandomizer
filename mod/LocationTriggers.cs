@@ -155,7 +155,7 @@ internal class LocationTriggers
         { "DB_INITIAL_CAMP_X2", Location.TO_INITIAL_CAMP_TR },
 
         { "DB_NORTHERN_OBSERVATORY_X1", Location.TO_OBSERVATORY_BODY },
-        { "DB_NORTHERN_OBSERVATORY_X3", Location.TO_OBSERVATORY_OUTCOME },
+        { "DB_NORTHERN_OBSERVATORY_X4", Location.TO_OBSERVATORY_OUTCOME },
 
         // Astral Codec default locations
         { "codex_projection_projection_fact", Location.AC_PTM_ANOMALY_VORTEX },
