@@ -130,6 +130,11 @@
     "thumbnail": "IP_ZONE_2_CODE"
   },
   {
+    "locationModID": "SLF__IP_ZONE_3_X1",
+    "description": "Simply reach the Hidden Gorge by taking a raft past the Cinder Isles.",
+    "thumbnail": "IP_ZONE_3"
+  },
+  {
     "locationModID": "SLF__IP_ZONE_3_LAB_X1",
     "description": "Enter the Abandoned Temple through the narrow, ghost matter-filled passage from Hidden Gorge.",
     "thumbnail": "IP_ZONE_3_LAB"
