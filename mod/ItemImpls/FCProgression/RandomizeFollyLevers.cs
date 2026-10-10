@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
+    [HarmonyPatch]
     class RandomizeFollyLevers
     {
         public static void OnDeepBrambleLoadEvent()

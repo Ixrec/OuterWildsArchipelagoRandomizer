@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
+    [HarmonyPatch]
     class FixRecursiveNode
     {
         [HarmonyPostfix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.OnAddSector))]
