@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
+    [HarmonyPatch]
     class TamingTechniques
     {
         public static bool _hasTamingTechniques = false;
