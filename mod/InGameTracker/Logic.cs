@@ -68,27 +68,6 @@ public class Logic
         { SlotDataSpawn.Stranger, "Stranger Sunside Hangar" },
         { SlotDataSpawn.DeepBramble, "Deep Bramble" },
     };
-    public Dictionary<string, string> SlotDataWarpPlatformIdToRegionName = new Dictionary<string, string>
-    {
-        { "SS", "Sun Station" },
-        { "ST", "Hourglass Twins" },
-        { "ET", "Hourglass Twins" },
-        { "ETT", "Hourglass Twins" },
-        { "ATP", "Ash Twin Interior" },
-        { "ATT", "Hourglass Twins" },
-        { "TH", "Timber Hearth" },
-        { "THT", "Hourglass Twins" },
-        { "BHNG", "Brittle Hollow" },
-        { "WHS", "White Hole Station" },
-        { "BHF", "Hanging City Ceiling" },
-        { "BHT", "Hourglass Twins" },
-        { "GD", "Giant's Deep" },
-        { "GDT", "Hourglass Twins" },
-    };
-    public Dictionary<string, HashSet<string>> SlotDataWarpPlatformIdToRequiredItems = new Dictionary<string, HashSet<string>>
-    {
-        { "SS", [ "Spacesuit" ] },
-    };
     // end stuff copy-pasted from .apworld
 
     public void AddConnection(Dictionary<string, TrackerRegionData> regions, TrackerConnectionData connection)
@@ -355,37 +334,20 @@ public class Logic
             }
         }
 
-        // Hang on to the pertinent warp connections
-        string bhfConnection = null, bhngConnection = null, whsConnection = null;
-        
         foreach (var warpPair in warps)
         {
             var warpId1 = warpPair[0];
             var warpId2 = warpPair[1];
 
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId1, out var regionName1))
+            if (!WarpLogicHelper.WarpPlatformToLogicalRegion.TryGetValue(warpId1, out var regionName1))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
             }
-            if (!SlotDataWarpPlatformIdToRegionName.TryGetValue(warpId2, out var regionName2))
+            if (!WarpLogicHelper.WarpPlatformToLogicalRegion.TryGetValue(warpId2, out var regionName2))
             {
                 APRandomizer.OWMLModConsole.WriteLine($"slot_data['warps'] was invalid: {warpSlotData}", OWML.Common.MessageType.Error);
                 break;
-            }
-
-            // Check for Brittle Hollow warp connections
-            switch (warpId1)
-            {
-                case "BHF": bhfConnection = warpId2; break;
-                case "BHNG": bhngConnection = warpId2; break;
-                case "WHS": whsConnection = warpId2; break;
-            }
-            switch (warpId2)
-            {
-                case "BHF": bhfConnection = warpId1; break;
-                case "BHNG": bhngConnection = warpId1; break;
-                case "WHS": whsConnection = warpId1; break;
             }
 
             var requirements = new List<TrackerRequirement>();
@@ -396,7 +358,7 @@ public class Logic
             requirements.Add(nwctr);
 
             // these maps are for corner cases where one or more additional items are required
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId1, out var items1))
+            if (WarpLogicHelper.WarpPlatformRequiredItems.TryGetValue(warpId1, out var items1))
             {
                 foreach (var item in items1) {
                     var tr = new TrackerRequirement();
@@ -404,7 +366,7 @@ public class Logic
                     requirements.Add(tr);
                 }
             }
-            if (SlotDataWarpPlatformIdToRequiredItems.TryGetValue(warpId2, out var items2))
+            if (WarpLogicHelper.WarpPlatformRequiredItems.TryGetValue(warpId2, out var items2))
             {
                 foreach (var item in items2)
                 {
@@ -427,22 +389,88 @@ public class Logic
             AddConnection(TrackerRegions, reverseWarpConnection);
         }
 
+        // Check which connections require bigger fuel tank (multiple trips).
+        var hasFuelRequirement = new TrackerRequirement() { item = "Ship Fuel Capacity Upgrade" };
+        var startingWarpRegion = SlotDataSpawnToRegionName[spawn];
+        if (startingWarpRegion == "Timber Hearth Village" || startingWarpRegion == "Deep Bramble")
+            startingWarpRegion = "Timber Hearth";
+
         // Conditionally add warp-based connection to Black Hole Forge
-        List<string> hourglassTwins = ["ET", "ST", "ETT", "ATT", "THT", "BHT", "GDT"];
-        List<string> brittleHollow = ["BHNG", "WHS"];
-
-        bool hollowDirectlyConnectedToForge = brittleHollow.Contains(bhfConnection);
-        bool hollowAndTwinsConnected = hourglassTwins.Contains(bhngConnection) || hourglassTwins.Contains(whsConnection);
-        bool hollowIndirectlyConnectedToForge = hollowAndTwinsConnected && hourglassTwins.Contains(bhfConnection);
-
-        if (hollowDirectlyConnectedToForge || hollowIndirectlyConnectedToForge)
+        var warpHelper = new WarpLogicHelper() { Warps = warps };
+        if (warpHelper.ConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
         {
+            APRandomizer.OWMLModConsole.WriteLine("Forge accessible with warp codes only");
             AddConnection(TrackerRegions, new()
             {
                 from = "Forge via Warps Only",
                 to = "Black Hole Forge",
                 requires = []
             });
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Forge requires ship");
+        var bhfRequirements = new List<TrackerRequirement>();
+        if (!warpHelper.ConnectionExists(startingWarpRegion, "Brittle Hollow", true))
+        {
+            APRandomizer.OWMLModConsole.WriteLine("Moving forge requires fuel upgrade");
+            bhfRequirements.Add(hasFuelRequirement);
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Moving forge doesn't require fuel upgrade");
+        AddConnection(TrackerRegions, new()
+        {
+            from = "Forge via Ship & Warps",
+            to = "Black Hole Forge",
+            requires = bhfRequirements,
+        });
+
+
+        var goalRequirements = new List<TrackerRequirement>();
+        if (!warpHelper.ConnectionExists(startingWarpRegion, "Ash Twin Interior", true))
+        {
+            APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core requires fuel upgrade");
+            goalRequirements.Add(hasFuelRequirement);
+        }
+        else
+            APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core doesn't require fuel upgrade");
+        AddConnection(TrackerRegions, new()
+        {
+            from = "The Vessel",
+            to = "Bring Warp Core",
+            requires = goalRequirements,
+        });
+
+        if (APRandomizer.SlotEnabledMod("enable_fc_mod"))
+        {
+            // Get the BH warp core by 1) spawn on HGT, 2) have enough fuel to fetch it or 3) fetch by warping.
+            if (spawn == SlotDataSpawn.HourglassTwins)
+                AddConnection(TrackerRegions, new()
+                {
+                    from = "The Vessel",
+                    to = "Deep Bramble",
+                    requires = []
+                });
+            else
+            {
+                AddConnection(TrackerRegions, new()
+                {
+                    from = "The Vessel",
+                    to = "Deep Bramble",
+                    requires = [hasFuelRequirement]
+                });
+                if (warpHelper.ConnectionExists(startingWarpRegion, "Hourglass Twins", true))
+                {
+                    APRandomizer.OWMLModConsole.WriteLine("Fetching BH core requires fuel upgrade");
+                    AddConnection(TrackerRegions, new()
+                    {
+                        from = "The Vessel",
+                        to = "Deep Bramble",
+                        requires = [new TrackerRequirement() { item = "Nomai Warp Codes" }]
+                    });
+                }
+                else
+                    APRandomizer.OWMLModConsole.WriteLine("Fetching ATP core doesn't require fuel upgrade");
+            }
         }
 
         // Build region logic recursively from Menu region

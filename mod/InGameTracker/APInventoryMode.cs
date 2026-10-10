@@ -29,6 +29,7 @@ public class APInventoryMode : ShipLogMode
     {
         // Progression items you normally start with in vanilla
         new InventoryItemEntry(Item.Spacesuit, "Spacesuit"),
+        new InventoryItemEntry(Item.ShipFuelCapacityUpgrade, "Ship Fuel Capacity Upgrade"),
         new InventoryItemEntry(Item.LaunchCodes, "Launch Codes"),
         new InventoryItemEntry(Item.Translator, "Translator"),
         new InventoryItemEntry(Item.Signalscope, "Signalscope"),

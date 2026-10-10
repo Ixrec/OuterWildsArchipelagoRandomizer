@@ -280,6 +280,9 @@ public class APRandomizer : ModBehaviour
         if (SlotData.ContainsKey("warps"))
             WarpPlatforms.ApplySlotData(SlotData["warps"]);
 
+        if (SlotData.ContainsKey("shuffle_ship_fuel_capacity_upgrade"))
+            ShipFuel.ApplySlotData((long)SlotData["shuffle_ship_fuel_capacity_upgrade"]);
+
         Translator.splitTranslator = SlotEnabledSplitTranslator();
 
         // Ensure that our local items state matches APSession.Items.AllItemsReceived. It's possible for AllItemsReceived to be out of date,
