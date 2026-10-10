@@ -21,7 +21,7 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "DeepBramble") return;
 
-                    GameObject.Find("MagmasRecursion_Body/Sector/MoltenCore/DestructionVolume").transform.localScale = new Vector3(1, 1, 1);
+                    GameObject.Find("MagmasRecursion_Body/Sector/MoltenCore/DestructionVolume")?.transform.localScale = new Vector3(1, 1, 1);
                 }
             }
         }

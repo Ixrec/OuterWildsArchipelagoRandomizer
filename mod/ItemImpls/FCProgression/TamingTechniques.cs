@@ -19,10 +19,10 @@ namespace ArchipelagoRandomizer.ItemImpls.FCProgression
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "DeepBramble") return;
 
-                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(true);
-                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (1)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(true);
-                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (2)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts").SetActive(true);
-                    GameObject.Find("TheNursery_Body/Sector/nursery_tube/kevin/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_triggers").SetActive(true);
+                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts")?.SetActive(true);
+                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (1)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts")?.SetActive(true);
+                    GameObject.Find("BrightHollow_Body/Sector/observation_lab/fish/domestic_fish (2)/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_interacts")?.SetActive(true);
+                    GameObject.Find("TheNursery_Body/Sector/nursery_tube/kevin/Beast_Anglerfish/B_angler_root/B_angler_body01/B_angler_body02/eye_triggers")?.SetActive(true);
                 }
             }
         }
