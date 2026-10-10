@@ -602,10 +602,12 @@ internal class LocationTriggers
         }
 
         // I'll allow malfunctioning dream lanterns here since it's funny, and those can only be found next to a working one anyway.
+        // Note: EH Threader ("Grapple") also identifies itself as a DreamLantern, so also check for name match.
         if (__instance.GetItemType() == ItemType.DreamLantern)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"OWItem_PickUpItem_Postfix detected ItemType.DreamLantern");
-            CheckLocation(Location.ARTIFACT);
+            APRandomizer.OWMLModConsole.WriteLine($"OWItem_PickUpItem_Postfix detected ItemType.DreamLantern {__instance.name}");
+            if (__instance.name.Contains("DreamLanternItem"))
+                CheckLocation(Location.ARTIFACT);
         }
     }
 
