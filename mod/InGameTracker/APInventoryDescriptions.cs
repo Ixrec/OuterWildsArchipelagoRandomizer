@@ -126,6 +126,10 @@ public class APInventoryDescriptions
                     infos.Add("The spacesuit that enables breathing in outer space, displays various useful information on its HUD, and most importantly, lets you fly around with a jetpack.");
                     infos.Add("Unless you turned on the shuffle_spacesuit option when generating this world, you would've had this item from the start.");
                     break;
+                case Item.ShipFuelCapacityUpgrade:
+                    infos.Add("Very tightly compressed rocket fuel, enough for at least 22 minutes of reckless flying.");
+                    infos.Add("Unless you turned on the shuffle_ship_fuel_capacity_upgrade option when generating this world, you would've had this item from the start.");
+                    break;
                 case Item.LaunchCodes:
                     infos.Add("Codes from Hornfels that permit you to pilot your ship.");
                     break;

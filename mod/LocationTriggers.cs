@@ -386,6 +386,7 @@ internal class LocationTriggers
         {
             case Item.LaunchCodes: LaunchCodes.hasLaunchCodes = (count > 0); break;
             case Item.Spacesuit: Spacesuit.hasSpacesuit = (count > 0); break;
+            case Item.ShipFuelCapacityUpgrade: ShipFuel.hasFuelUpgrade = (count > 0); break;
             case Item.Translator: Translator.hasRegularTranslator = (count > 0); break;
             case Item.TranslatorHGT: Translator.hasHGTTranslator = (count > 0); break;
             case Item.TranslatorTH: Translator.hasTHTranslator = (count > 0); break;
