@@ -39,6 +39,7 @@ internal class WarpLogicHelper
     public Dictionary<string, HashSet<string>> WarpPlatformRequiredItems { get; } = new()
     {
         { "SS", [ "Spacesuit" ] },
+        { "ST", [ "Spacesuit" ] },
     };
 
     public bool ShiplessConnectionExists(string fromRegion, string toRegion, bool twoWay = false)
