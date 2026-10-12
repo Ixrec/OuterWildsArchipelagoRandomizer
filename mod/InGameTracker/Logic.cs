@@ -391,7 +391,7 @@ public class Logic
         }
 
         // Conditionally add warp-based connection to Black Hole Forge
-        if (warpHelper.ConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
+        if (warpHelper.ShiplessConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
         {
             AddConnection(TrackerRegions, new()
             {

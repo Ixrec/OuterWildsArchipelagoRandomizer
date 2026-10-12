@@ -8,11 +8,6 @@ internal class WarpLogicHelper
 {
     public List<List<string>> Warps { get; set; }
 
-    public Dictionary<string, string[]> ConnectedRegions { get; } = new()
-    {
-        { "Brittle Hollow", ["White Hole Station"] },
-        { "Hanging City Ceiling", ["White Hole Station", "Brittle Hollow"] },
-    };
     public Dictionary<string, string> WarpPlatformToLogicalRegion { get; } = new()
     {
         { "SS", "Sun Station" },
@@ -46,38 +41,49 @@ internal class WarpLogicHelper
         { "SS", [ "Spacesuit" ] },
     };
 
-    public bool ConnectionExists(string fromRegion, string toRegion, bool twoWay = false, List<string> skipRegions = null, StringBuilder routeText = null, int iteration = 0)
+    public bool ShiplessConnectionExists(string fromRegion, string toRegion, bool twoWay = false)
+    {
+        if (!RegionToWarpPlatforms.ContainsKey(fromRegion))
+            return false;
+        return ConnectionExistsRecursiveImpl(fromRegion, toRegion, twoWay, new List<string>(), new StringBuilder(), 0);
+    }
+
+    private Dictionary<string, string[]> ItemlessWarpRegionConnections { get; } = new()
+    {
+        { "Brittle Hollow", ["White Hole Station"] },
+        { "Hanging City Ceiling", ["White Hole Station", "Brittle Hollow"] },
+    };
+
+    // Here we make the strong assumption that all logic outside of this file is irrelevant,
+    // because this is only used to tell if a "shipless warp path" exists between two platforms
+    private bool ConnectionExistsRecursiveImpl(string fromRegion, string toRegion, bool twoWay, List<string> skipRegions, StringBuilder routeText, int iteration)
     {
         var prefix = new string('\t', iteration);
         iteration++;
-        // Avoid infinite recursion by keeping list of what regions have been checked.
-        skipRegions ??= new List<string>();
-        if (skipRegions.Contains(fromRegion) || !RegionToWarpPlatforms.ContainsKey(fromRegion))
-            return false;
-        routeText ??= new StringBuilder();
-        // Check not only local warps but also ones we can walk to (ie. BH's multiple warps).
-        var reachableRegions = new List<string>() { fromRegion };
-        var connectedRegions = ConnectedRegions.GetValueOrDefault(fromRegion, []);
-        if (twoWay) // Check if we can get back.
-        {
-            foreach (var region in connectedRegions)
-                if (ConnectedRegions.GetValueOrDefault(region, []).Contains(fromRegion))
-                    reachableRegions.Add(region);
-        }
-        else
-            reachableRegions.AddRange(connectedRegions);
-        skipRegions.AddRange(reachableRegions);
 
-        APRandomizer.OWMLModConsole.WriteLine($"{prefix}Checking {string.Join(", ", reachableRegions)}", OWML.Common.MessageType.Debug);
-        foreach (var region in reachableRegions)
-            foreach (var warp in RegionToWarpPlatforms[region])
+        if (skipRegions.Contains(fromRegion))
+            return false;
+        // Check not only local warps but also ones we can walk to (ie. BH's multiple warps).
+        var warpRegionsReachableWarpless = new List<string>() { fromRegion };
+        if (ItemlessWarpRegionConnections.ContainsKey(fromRegion))
+            if (twoWay) // Check if we can get back.
+                foreach (var region in ItemlessWarpRegionConnections[fromRegion])
+                    if (ItemlessWarpRegionConnections[region].Contains(fromRegion))
+                        warpRegionsReachableWarpless.Add(region);
+            else
+                warpRegionsReachableWarpless.AddRange(ItemlessWarpRegionConnections[fromRegion]);
+        skipRegions.AddRange(warpRegionsReachableWarpless);
+
+        APRandomizer.OWMLModConsole.WriteLine($"{prefix}Checking {string.Join(", ", warpRegionsReachableWarpless)}", OWML.Common.MessageType.Debug);
+        foreach (var region in warpRegionsReachableWarpless)
+            foreach (var fromWarp in RegionToWarpPlatforms[region])
             {
-                var toWarp = GetConnection(warp);
-                var targetRegion = WarpPlatformToLogicalRegion[toWarp];
-                APRandomizer.OWMLModConsole.WriteLine($"{prefix}{region}: {warp} - {targetRegion}: {toWarp}", OWML.Common.MessageType.Debug);
-                if (targetRegion == toRegion || ConnectionExists(targetRegion, toRegion, twoWay, skipRegions, routeText, iteration))
+                var toWarp = GetConnection(fromWarp);
+                var nextTargetRegion = WarpPlatformToLogicalRegion[toWarp];
+                APRandomizer.OWMLModConsole.WriteLine($"{prefix}{region}: {fromWarp} - {nextTargetRegion}: {toWarp}", OWML.Common.MessageType.Debug);
+                if (nextTargetRegion == toRegion || ConnectionExistsRecursiveImpl(nextTargetRegion, toRegion, twoWay, skipRegions, routeText, iteration))
                 {
-                    routeText.Insert(0, $", {warp} -> {toWarp}");
+                    routeText.Insert(0, $", {fromWarp} -> {toWarp}");
                     if (iteration == 1)
                         APRandomizer.OWMLModConsole.WriteLine($"Found route between {fromRegion} - {toRegion}{routeText}", OWML.Common.MessageType.Debug);
                     return true;
