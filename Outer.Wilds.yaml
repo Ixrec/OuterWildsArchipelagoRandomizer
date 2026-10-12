@@ -205,8 +205,8 @@ Outer Wilds:
     'true': 0
 
   enable_fq_mod:
-    # Incorporates Fret's Quest story mod content into the randomizer with an additional 1 item and 18 locations.
-    # If logsanity is enabled, that will add another 38 locations, for a total of 56 FQ locations.
+    # Incorporates Fret's Quest story mod content into the randomizer with an additional 1 item and 20 locations.
+    # If logsanity is enabled, that will add another 38 locations, for a total of 58 FQ locations.
     'false': 50
     'true': 0
 
