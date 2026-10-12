@@ -259,6 +259,8 @@ internal class SignalsAndFrequencies
             var locationName = LocationNames.signalToLocation[signalName.ToString()];
             LocationTriggers.CheckLocation(locationName);
         }
+        else if (LoadManager.s_currentScene != OWScene.EyeOfTheUniverse)
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerData_LearnSignal_Prefix called with non-EotU signal unknown to the randomizer: \"{signalName}\"", OWML.Common.MessageType.Warning);
     }
 
     // The above patches are enough to separate signalscope scans from signalscope knowledge,
