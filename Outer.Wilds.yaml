@@ -222,6 +222,12 @@ Outer Wilds:
     'false': 50
     'true': 0
 
+  enable_hs_mod:
+    # Incorporates Heliostudy story mod content into the randomizer with an additional 5 items and 20 locations.
+    # If logsanity is enabled, that will add another 28 locations, for a total of 48 HS locations.
+    'false': 50
+    'true': 0
+
   enable_outsider_mod:
     # Incorporates The Outsider story mod content into the randomizer with an additional 21 locations.
     # If logsanity is enabled, that will add another 44 locations, for a total of 65 TO (The Outsider) locations.

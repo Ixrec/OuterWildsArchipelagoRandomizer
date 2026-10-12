@@ -136,6 +136,13 @@ public enum Item
 
     // Echo Hike items
     Threader,
+
+    // Heliostudy items
+    FrequencyHeliochord,
+    DaucusOrb,
+    GlacialAbyssOrb,
+    TheBigOneOrb,
+    ShatteredGeodeOrb,
 };
 
 public static class ItemNames
@@ -319,6 +326,9 @@ public static class ItemNames
         // Forgotten Castaways frequency items
         { "Nomai Trailmarkers", Item.FrequencyNomaiTrailmarkers },
         { "Echolocation Tones", Item.FrequencyEcholocationTones },
+
+        // Heliostudy frequency items
+        { "Heliochord", Item.FrequencyHeliochord },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

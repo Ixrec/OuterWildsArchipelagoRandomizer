@@ -79,6 +79,13 @@ internal class SignalsAndFrequencies
         { "Alien Echolocation", "Echolocation Tones" },
         { "Warped Echolocation", "Echolocation Tones" },
         { "Ditylum Echolocation", "Echolocation Tones" },
+
+        // Heliostudy
+        { "Heliochord", "Heliocenter" },
+        { "Heliochord", "Daucus" },
+        { "Heliochord", "Glacial Abyss!" },
+        { "Heliochord", "The Big One" },
+        { "Heliochord", "Shattered Geode" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -163,6 +170,15 @@ internal class SignalsAndFrequencies
             "Alien Echolocation",
             "Warped Echolocation",
             "Ditylum Echolocation",
+        } },
+
+        // Heliostudy
+        { "Heliocenter", new HashSet<string>{
+            "Heliochord",
+            "Daucus",
+            "Glacial Abyss!",
+            "The Big One",
+            "Shattered Geode",
         } },
     };
 
