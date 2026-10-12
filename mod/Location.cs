@@ -822,9 +822,10 @@ public enum Location
     FQ_LYRICS_GB,
     FQ_LYRICS_DONE,
 
+    FQ_SIGNAL_TUNER,
     FQ_SIGNAL_HR_RIM_2,
     FQ_ERNESTO,
-
+    FQ_SIGNAL_HR_STRUM,
     FQ_STRUM_DIARY,
 
     FQ_SKELETON_SCROLL,
@@ -1823,9 +1824,10 @@ public static class LocationNames
         { Location.FQ_LYRICS_GB, "FQ: Green Base Lyric" },
         { Location.FQ_LYRICS_DONE, "FQ: Tuner's Song" },
 
+        { Location.FQ_SIGNAL_TUNER, "FQ: Scan Tuner Signal" },
         { Location.FQ_SIGNAL_HR_RIM_2, "FQ: Scan Rim's Second Radio Signal" },
         { Location.FQ_ERNESTO, "FQ: Talk to Ernesto" },
-
+        { Location.FQ_SIGNAL_HR_STRUM, "FQ: Scan Strum's Radio Signal" },
         { Location.FQ_STRUM_DIARY, "FQ: Strum's House Notes" },
 
         { Location.FQ_SKELETON_SCROLL, "FQ: Skeleton Scroll" },
@@ -2184,7 +2186,9 @@ public static class LocationNames
         { "Bridge's Radio", Location.FQ_SIGNAL_HR_BRIDGE },
         { "Reson's Radio", Location.FQ_SIGNAL_HR_RESON },
         { "Reson's Second Radio", Location.FQ_SIGNAL_HR_RESON_2 },
+        { "Tuner", Location.FQ_SIGNAL_TUNER },
         { "Rim's Second Radio", Location.FQ_SIGNAL_HR_RIM_2 },
+        { "Strum's Radio", Location.FQ_SIGNAL_HR_STRUM },
 
         // Forgotten Castways signals
         { "First Marker", Location.FC_SCAN_FIRST_MARKER },

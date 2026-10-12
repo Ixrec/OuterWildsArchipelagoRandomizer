@@ -63,6 +63,11 @@
   },
 
   {
+    "locationModID": "FQ_SIGNAL_TUNER",
+    "description": "Scan Tuner near the north pole of Green Base.",
+    "thumbnail": "TUNERS_SONG"
+  },
+  {
     "locationModID": "FQ_SIGNAL_HR_RIM_2",
     "description": "Scan Rim's Radio on the surface of Green Base next to the Ice Spire.",
     "thumbnail": "ICE_SPIRE"
@@ -72,7 +77,11 @@
     "description": "Talk to Ernesto near the south pole of Green Base.",
     "thumbnail": "ERNESTO"
   },
-
+  {
+    "locationModID": "FQ_SIGNAL_HR_STRUM",
+    "description": "Scan Strum's Radio on Bracket's Rest.",
+    "thumbnail": "STRUM"
+  },
   {
     "locationModID": "FQ_STRUM_DIARY",
     "description": "Find what's left of Strum's House on Green Base, then read either of the notes inside.",
