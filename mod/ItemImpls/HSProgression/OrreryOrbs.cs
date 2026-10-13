@@ -22,8 +22,10 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
                 {
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam5") return;
+                    if (ShatteredGeodeOrb == null) return;
 
-                    ShatteredGeodeOrb.enabled = true;
+                    ShatteredGeodeOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(true);
+                    ShatteredGeodeOrb.GetComponent<SphereCollider>().radius = 0.65f;
                 }
             }
         }
@@ -39,8 +41,10 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
                 {
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam5") return;
+                    if (TheBigOneOrb == null) return;
 
-                    TheBigOneOrb.enabled = true;
+                    TheBigOneOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(true);
+                    TheBigOneOrb.GetComponent<SphereCollider>().radius = 0.65f;
                 }
             }
         }
@@ -56,8 +60,10 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
                 {
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam5") return;
+                    if (DaucusOrb == null) return;
 
-                    DaucusOrb.enabled = true;
+                    DaucusOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(true);
+                    DaucusOrb.GetComponent<SphereCollider>().radius = 0.65f;
                 }
             }
         }
@@ -73,28 +79,35 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
                 {
                     if (APRandomizer.NewHorizonsAPI == null) return;
                     if (APRandomizer.NewHorizonsAPI.GetCurrentStarSystem() != "Jam5") return;
+                    if (GlacialAbyssOrb == null) return;
 
-                    GlacialAbyssOrb.enabled = true;
+                    GlacialAbyssOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(true);
+                    GlacialAbyssOrb.GetComponent<SphereCollider>().radius = 0.65f;
                 }
             }
         }
 
-        private static NomaiInterfaceOrb ShatteredGeodeOrb;
-        private static NomaiInterfaceOrb TheBigOneOrb;
-        private static NomaiInterfaceOrb DaucusOrb;
-        private static NomaiInterfaceOrb GlacialAbyssOrb;
+        private static GameObject ShatteredGeodeOrb;
+        private static GameObject TheBigOneOrb;
+        private static GameObject DaucusOrb;
+        private static GameObject GlacialAbyssOrb;
 
         public static void OnJam5LoadEvent()
         {
-            ShatteredGeodeOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb").GetComponent<NomaiInterfaceOrb>();
-            TheBigOneOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (1)").GetComponent<NomaiInterfaceOrb>();
-            DaucusOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (2)").GetComponent<NomaiInterfaceOrb>();
-            GlacialAbyssOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (3)").GetComponent<NomaiInterfaceOrb>();
+            ShatteredGeodeOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb");
+            TheBigOneOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (1)");
+            DaucusOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (2)");
+            GlacialAbyssOrb = GameObject.Find("Walker_Jam5_Station_Body/Sector/OrreryStation/Orrery/OrbRoot/Prefab_NOM_InterfaceOrb (3)");
 
-            ShatteredGeodeOrb.enabled = HasShatteredGeodeOrb;
-            TheBigOneOrb.enabled = HasTheBigOneOrb;
-            DaucusOrb.enabled = HasDaucusOrb;
-            GlacialAbyssOrb.enabled = HasGlacialAbyssOrb;
+            ShatteredGeodeOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(HasShatteredGeodeOrb);
+            TheBigOneOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(HasTheBigOneOrb);
+            DaucusOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(HasDaucusOrb);
+            GlacialAbyssOrb.transform.Find("Props_NOM_Orb").gameObject.SetActive(HasGlacialAbyssOrb);
+
+            ShatteredGeodeOrb.GetComponent<SphereCollider>().radius = HasShatteredGeodeOrb ? 0.65f : 0f;
+            TheBigOneOrb.GetComponent<SphereCollider>().radius = HasTheBigOneOrb ? 0.65f : 0f;
+            DaucusOrb.GetComponent<SphereCollider>().radius = HasDaucusOrb ? 0.65f : 0f;
+            GlacialAbyssOrb.GetComponent<SphereCollider>().radius = HasGlacialAbyssOrb ? 0.65f : 0f;
         }
     }
 }
