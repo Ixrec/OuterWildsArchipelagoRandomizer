@@ -334,6 +334,8 @@ public class Logic
             }
         }
         var warpHelper = new WarpLogicHelper() { Warps = warps };
+        if (APRandomizer.SlotData.TryGetValue("enable_eh_mod", out var ehEnabled) && (long)ehEnabled > 0)
+            warpHelper.ApplyEhModifications();
 
         foreach (var warpPair in warps)
         {
