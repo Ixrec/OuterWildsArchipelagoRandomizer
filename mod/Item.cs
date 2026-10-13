@@ -168,6 +168,7 @@ public static class ItemNames
         Item.FrequencyHearthianRadio,
         Item.FrequencyNomaiTrailmarkers,
         Item.FrequencyEcholocationTones,
+        Item.FrequencyHeliochord,
     };
     public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
@@ -335,7 +336,7 @@ public static class ItemNames
         { "Echolocation Tones", Item.FrequencyEcholocationTones },
 
         // Heliostudy frequency items
-        { "Heliochord", Item.FrequencyHeliochord },
+        { "Walker_Jam5_Harmonic", Item.FrequencyHeliochord },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 

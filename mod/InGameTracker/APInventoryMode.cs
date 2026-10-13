@@ -87,6 +87,12 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.ThermalInsulation, "FC: Thermal Insulation", false, "enable_fc_mod"),
         new InventoryItemEntry(Item.ProbabilityRule, "FC: Probability Rule", false, "enable_fc_mod"),
 
+        // Heliostudy custom items
+        new InventoryItemEntry(Item.DaucusOrb, "HS: Daucus Orb", false, "enable_hs_mod"),
+        new InventoryItemEntry(Item.GlacialAbyssOrb, "HS: Glacial Abyss! Orb", false, "enable_hs_mod"),
+        new InventoryItemEntry(Item.ShatteredGeodeOrb, "HS: Shattered Geode Orb", false, "enable_hs_mod"),
+        new InventoryItemEntry(Item.TheBigOneOrb, "HS: The Big One Orb", false, "enable_hs_mod"),
+
         // Non-progression ship and equipment upgrades
         new InventoryItemEntry(Item.Autopilot, "Autopilot"),
         new InventoryItemEntry(Item.LandingCamera, "Landing Camera"),

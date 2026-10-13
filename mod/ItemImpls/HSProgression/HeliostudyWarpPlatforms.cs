@@ -31,7 +31,11 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
 
         static PlayerSectorDetector PlayerSectors = null;
 
-        [HarmonyPrefix, HarmonyPatch(typeof(PlayerSectorDetector), nameof(PlayerSectorDetector.Awake))]
-        public static void PlayerSectorDetector_Awake(PlayerSectorDetector __instance) => PlayerSectors = __instance;
+        [HarmonyPrefix, HarmonyPatch(typeof(SectorDetector), nameof(SectorDetector.Awake))]
+        public static void PlayerSectorDetector_Awake(SectorDetector __instance)
+        {
+            if (__instance is PlayerSectorDetector playerSectorDetector)
+                PlayerSectors = playerSectorDetector;
+        }
     }
 }

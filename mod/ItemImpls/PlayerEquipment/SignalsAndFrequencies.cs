@@ -81,11 +81,11 @@ internal class SignalsAndFrequencies
         { "Ditylum Echolocation", "Echolocation Tones" },
 
         // Heliostudy
-        { "Heliochord", "Heliocenter" },
-        { "Heliochord", "Daucus" },
-        { "Heliochord", "Glacial Abyss!" },
-        { "Heliochord", "The Big One" },
-        { "Heliochord", "Shattered Geode" },
+        { "Walker_Jam5_Star_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet1_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet2_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet3_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet4_Signal", "Walker_Jam5_Harmonic" },
     };
 
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
@@ -173,12 +173,12 @@ internal class SignalsAndFrequencies
         } },
 
         // Heliostudy
-        { "Heliocenter", new HashSet<string>{
-            "Heliochord",
-            "Daucus",
-            "Glacial Abyss!",
-            "The Big One",
-            "Shattered Geode",
+        { "Walker_Jam5_Harmonic", new HashSet<string>{
+            "Walker_Jam5_Star_Signal",
+            "Walker_Jam5_Planet1_Signal",
+            "Walker_Jam5_Planet2_Signal",
+            "Walker_Jam5_Planet3_Signal",
+            "Walker_Jam5_Planet4_Signal",
         } },
     };
 
