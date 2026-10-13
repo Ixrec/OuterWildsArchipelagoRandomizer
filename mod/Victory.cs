@@ -40,6 +40,7 @@ public class Victory
     public static bool HasFinishedFretsQuest() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.FQ_LYRICS_DONE, false);
     public static bool HasFinishedForgottenCastaways() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.FC_MOURNING, false);
     public static bool HasFinishedEchoHike() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.EH_PHOSPHORS, false);
+    public static bool HasFinishedHeliostudy() => APRandomizer.SaveData.locationsChecked.GetValueOrDefault(Location.HS_COMPLETED, false);
     public static int FriendsMet => ((IEnumerable<bool>)[
         HasMetSolanum(),
         HasMetPrisoner(),
@@ -50,6 +51,7 @@ public class Victory
         HasFinishedFretsQuest(),
         HasFinishedForgottenCastaways(),
         HasFinishedEchoHike(),
+        HasFinishedHeliostudy(),
     ]).Count(x => x);
     public static bool HasMetRequiredFriends {
         get {

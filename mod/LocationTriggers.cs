@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ArchipelagoRandomizer.Compatibility.NomaiVR;
+using ArchipelagoRandomizer.ItemImpls.HSProgression;
 
 namespace ArchipelagoRandomizer;
 
@@ -273,6 +274,17 @@ internal class LocationTriggers
         { "EH_ENTRANCE_X1", Location.EH_ENTER },
         { "EH_CAVERN_X3", Location.EH_BEACON },
         { "EH_PHOSPHORS_X1", Location.EH_PHOSPHORS },
+
+        // Heliostudy default locations
+        { "Walker_Jam5_Station_ProjectRequirements_FrozenPlanet_Fact", Location.HS_REQUIREMENT_1 },
+        { "Walker_Jam5_Station_ProjectRequirements_Geysers_Fact", Location.HS_REQUIREMENT_2 },
+        { "Walker_Jam5_Station_ProjectRequirements_WarpAlignment_Fact", Location.HS_REQUIREMENT_3 },
+        { "Walker_Jam5_Station_ProjectRequirements_DoubleSand_Fact", Location.HS_REQUIREMENT_4 },
+        { "Walker_Jam5_Station_ProjectRequirements_OppositeSides_Fact", Location.HS_REQUIREMENT_5 },
+        { "Walker_Jam5_Station_ProjectRequirements_MiddleOrbit_Fact", Location.HS_REQUIREMENT_6 },
+        { "Walker_Jam5_Planet4_Core_Door", Location.HS_REQUIREMENT_7 },
+        { "Walker_Jam5_Planet4_Ice_Fact", Location.HS_SUBSURFACE_OCEAN },
+        { "Walker_Jam5_Platform_Combination", Location.HS_COMPLETED },
     };
 
     // manual scrolls
@@ -448,6 +460,10 @@ internal class LocationTriggers
             case Item.ProbabilityRule: QuantumProbability.hasProbabilityKnowledge = (count > 0); break;
             case Item.DeepBrambleCoordinates: DeepBrambleCoordinates.HasDeepBrambleCoordinates = (count > 0); break;
             case Item.Threader: Threader.hasThreader = (count > 0); break;
+            case Item.DaucusOrb: OrreryOrbs.HasDaucusOrb = (count > 0); break;
+            case Item.GlacialAbyssOrb: OrreryOrbs.HasGlacialAbyssOrb = (count > 0); break;
+            case Item.TheBigOneOrb: OrreryOrbs.HasTheBigOneOrb = (count > 0); break;
+            case Item.ShatteredGeodeOrb: OrreryOrbs.HasShatteredGeodeOrb = (count > 0); break;
 
             // for backwards-compatibility
             case Item.Spaceship: break; case Item.Nothing: break;

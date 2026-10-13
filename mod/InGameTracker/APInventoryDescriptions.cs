@@ -346,6 +346,23 @@ public class APInventoryDescriptions
                     infos.Add("A grapple beam device made by an unknown civilisation.");
                     infos.Add("Makes the Threader available at spawn camps.");
                     break;
+                // Heliostudy item descriptions
+                case Item.DaucusOrb:
+                    infos.Add("An orb that controls the location of Daucus.");
+                    infos.Add("Allows you to move the orb and the planet by proxy.");
+                    break;
+                case Item.GlacialAbyssOrb:
+                    infos.Add("An orb that controls the location of Glacial Abyss!.");
+                    infos.Add("Allows you to move the orb and the planet by proxy.");
+                    break;
+                case Item.TheBigOneOrb:
+                    infos.Add("An orb that controls the location of The Big One.");
+                    infos.Add("Allows you to move the orb and the planet by proxy.");
+                    break;
+                case Item.ShatteredGeodeOrb:
+                    infos.Add("An orb that controls the location of Shattered Geode.");
+                    infos.Add("Allows you to move the orb and the planet by proxy.");
+                    break;
                 default:
                     return GetErrorDescription(itemID);
             }
