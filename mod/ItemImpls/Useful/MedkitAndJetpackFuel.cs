@@ -1,15 +1,17 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 
 namespace ArchipelagoRandomizer;
 
 [HarmonyPatch]
 internal class MedkitAndJetpackFuel
 {
+    private static bool enabled = true;
     private static bool _hasMedkit = false;
 
     public static bool hasMedkit
     {
-        get => _hasMedkit;
+        get => _hasMedkit || !enabled;
         set
         {
             if (_hasMedkit != value)
@@ -28,7 +30,7 @@ internal class MedkitAndJetpackFuel
 
     public static bool hasJetpackFuel
     {
-        get => _hasJetpackFuel;
+        get => _hasJetpackFuel || !enabled;
         set
         {
             if (_hasJetpackFuel != value)
@@ -50,9 +52,9 @@ internal class MedkitAndJetpackFuel
         if (!__instance.GetComponentInParent<ShipBody>())
             return true;
 
-        __instance._healsPlayer = _hasMedkit;
-        __instance._refuelsPlayer = _hasJetpackFuel;
-        if (_hasMedkit && _hasJetpackFuel)
+        __instance._healsPlayer = hasMedkit;
+        __instance._refuelsPlayer = hasJetpackFuel;
+        if (hasMedkit && hasJetpackFuel)
             return true;
 
         if (__instance._playerResources == null)
@@ -60,13 +62,18 @@ internal class MedkitAndJetpackFuel
         bool needMedkit = __instance._playerResources.GetHealthFraction() < 1f;
         bool needFuel = __instance._playerResources.GetFuelFraction() < 1f;
 
-        var medkitText = !_hasMedkit ? "Medkit is Broken" : 
+        var medkitText = !hasMedkit ? "Medkit is Broken" : 
             (needMedkit ? "Use Medkit" : "Health Full");
-        var refuelText = !_hasJetpackFuel ? "Fuel Tank is Empty" : 
+        var refuelText = !hasJetpackFuel ? "Fuel Tank is Empty" : 
             (needFuel ? "Refill Jetpack" : "Jetpack Full");
 
-        __instance._interactVolume.SetKeyCommandVisible(_hasMedkit && needMedkit || _hasJetpackFuel && needFuel);
+        __instance._interactVolume.SetKeyCommandVisible(hasMedkit && needMedkit || hasJetpackFuel && needFuel);
         __instance._interactVolume.ChangePrompt($"{medkitText}\n{refuelText}");
         return false;
+    }
+
+    public static void ApplySlotData(string apworld_version)
+    {
+        enabled = Version.Parse(apworld_version) >= new Version(1, 4, 0);
     }
 }
