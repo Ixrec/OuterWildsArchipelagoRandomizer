@@ -53,6 +53,8 @@ public enum Item
     EjectButton,
     VelocityMatcher,
     SurfaceIntegrityScanner,
+    Medkit,
+    ShipJetpackFuelTank,
     VelocityIndicator,
     DistanceIndicator,
 
@@ -222,6 +224,8 @@ public static class ItemNames
         { Item.VelocityIndicator, "Velocity Indicator" },
         { Item.DistanceIndicator, "Distance Indicator" },
         { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
+        { Item.Medkit, "Medkit" },
+        { Item.ShipJetpackFuelTank, "Ship Jetpack Fuel Tank" },
         { Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade" },
         { Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade" },
         { Item.BoostDurationUpgrade, "Boost Duration Upgrade" },

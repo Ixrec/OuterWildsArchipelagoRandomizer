@@ -217,6 +217,13 @@ public class APInventoryDescriptions
                     infos.Add("An upgrade for your Little Scout that reports the structural integrity of a fragile surface it's attached to.");
                     infos.Add("Most useful on Brittle Hollow.");
                     break;
+                case Item.Medkit:
+                    infos.Add("Gossan persuaded Slate to add some medical duct tape and distilled sap wine to the ship's medkit.");
+                    infos.Add("Without it you can heal by eating marshmallows.");
+                    break;
+                case Item.ShipJetpackFuelTank:
+                    infos.Add("Some spaceship grade fuel from Slate's stash.");
+                    break;
                 case Item.VelocityIndicator:
                     infos.Add("Ship and suit firmware update added lines and reading showing movement relative to the target.");
                     break;
