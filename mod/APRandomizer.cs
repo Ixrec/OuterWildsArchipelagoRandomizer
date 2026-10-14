@@ -569,7 +569,7 @@ public class APRandomizer : ModBehaviour
                 }
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
-            DeepBrambleCoordinates.ChangeExitWarp();
+            WarpDrivePatch.EnsurePatchApplied();
         }
     }
 

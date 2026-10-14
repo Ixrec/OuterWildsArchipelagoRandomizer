@@ -458,7 +458,7 @@ internal class LocationTriggers
             case Item.TamingTechniques: TamingTechniques.HasTamingTechniques = (count > 0); break;
             case Item.CrystalRepairManual: CrystalManual.HasCrystalManual = (count > 0); break;
             case Item.ProbabilityRule: QuantumProbability.hasProbabilityKnowledge = (count > 0); break;
-            case Item.DeepBrambleCoordinates: DeepBrambleCoordinates.HasDeepBrambleCoordinates = (count > 0); break;
+            case Item.WarpDrive: WarpDrivePatch.HasWarpDrive = (count > 0); break;
             case Item.Threader: Threader.hasThreader = (count > 0); break;
             case Item.DaucusOrb: OrreryOrbs.HasDaucusOrb = (count > 0); break;
             case Item.GlacialAbyssOrb: OrreryOrbs.HasGlacialAbyssOrb = (count > 0); break;
