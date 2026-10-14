@@ -49,7 +49,7 @@ internal class WarpLogicHelper
         return ConnectionExistsRecursiveImpl(fromRegion, toRegion, twoWay, new List<string>(), new StringBuilder(), 0);
     }
 
-    private Dictionary<string, string[]> ItemlessWarpRegionConnections { get; } = new()
+    private Dictionary<string, List<string>> ItemlessWarpRegionConnections { get; } = new()
     {
         { "Brittle Hollow", ["White Hole Station"] },
         { "Hanging City Ceiling", ["White Hole Station", "Brittle Hollow"] },
@@ -106,5 +106,11 @@ internal class WarpLogicHelper
                 return connection[0];
         }
         return string.Empty;
+    }
+
+    public void ApplyEhModifications()
+    {
+        if (ItemlessWarpRegionConnections.TryGetValue("Brittle Hollow", out List<string> bhConnections))
+            bhConnections.Add("Hanging City Ceiling");
     }
 }
