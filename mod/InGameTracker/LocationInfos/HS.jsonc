@@ -1,0 +1,102 @@
+[
+  {
+    "locationModID": "HS_SIGNAL_HELIOCENTER",
+    "description": "Scan the signal emitted by the Heliocenter.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  },
+  {
+    "locationModID": "HS_SIGNAL_DAUCUS",
+    "description": "Scan the signal emitted by Daucus.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  },
+  {
+    "locationModID": "HS_SIGNAL_GLACIAL_ABYSS",
+    "description": "Scan the signal emitted by Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  },
+  {
+    "locationModID": "HS_SIGNAL_SHATTERED_GEODE",
+    "description": "Scan the signal emitted by Shattered Geode.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  },
+  {
+    "locationModID": "HS_SIGNAL_THE_BIG_ONE",
+    "description": "Scan the signal emitted by The Big One.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_1",
+    "description": "Reach the top of the tower on The Big One using Heliocenter's gravity and read the text wall with the first project requirement.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FrozenPlanet"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_2",
+    "description": "Transfer Glacial Abyss!'s water to The Big One and read the recorder in the ghost matter cave containing the second project requirement.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_Geysers"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_3",
+    "description": "Use Shattered Geode's warp transmitter to enter the enclosed structure on Daucus and read the text wall with the third project requirement.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_WarpAlignment"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_4",
+    "description": "Use The Big One to remove the sand from Daucus and read the scroll containing the fourth project requirement found buried in a certain structure.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_DoubleSand"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_5",
+    "description": "Complete the harmonic convergence puzzle on Shattered Geode and read about the fifth project requirement.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_OppositeSides"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_6",
+    "description": "Read the recorder in Shattered Geode's quantum cave which contains the sixth project requirement.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_MiddleOrbit"
+  },
+  {
+    "locationModID": "HS_REQUIREMENT_7",
+    "description": "Read the text on the door in the core of Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_SUBSURFACE_OCEAN",
+    "description": "Reach the subsurface ocean of Glacial Abyss! by either melting the ice or warping underneath it.",
+    "thumbnail": "Walker_Jam5_Planet4_Ice"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_1",
+    "description": "Visit the final door with the first project requirement met (A planet has solid ice) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_2",
+    "description": "Visit the final door with the second project requirement met (A planet has exposed geothermal activity) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_3",
+    "description": "Visit the final door with the third project requirement met (At least one warp receiver is aligned) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_4",
+    "description": "Visit the final door with the fourth project requirement met (More than one planet has sand) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_5",
+    "description": "Visit the final door with the fifth project requirement met (Any planets in the same orbit are on opposite sides of the sun) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETE_REQUIREMENT_6",
+    "description": "Visit the final door with the sixth project requirement met (The largest planet is not in the furthest orbit) to see the corresponding light illuminated.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "HS_COMPLETED",
+    "description": "Fulfill all of the requirements and talk to Adonsonia to learn about how to activate the invitation platform's device.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  }
+]

@@ -64,9 +64,11 @@ internal class Threader
             AddThreader("LonelyHermit", 59.8121f, 14.2851f, 274.7672f, 287.8107f, 127.3934f, 85.9663f, "GameWyrm.HearthsNeighbor");
         if (APRandomizer.Instance.ModHelper.Interaction.ModExists("cleric.DeepBramble"))
             AddThreader("Bramble's Doorstep", -5f, 5f, 13f, 10f, 30f, 20f, "DeepBramble");
+        if (APRandomizer.Instance.ModHelper.Interaction.ModExists("xen-42.ModJam5"))
+            AddThreader("Central Station", 3f, 0.5f, 8f, 340f, 115f, 45f, "Jam5");
         areThreadersAdded = true;
     }
-    
+
     public static void UpdateThreaders()
     {
         if (APRandomizer.NewHorizonsAPI == null) return;
@@ -88,6 +90,9 @@ internal class Threader
                 break;
             case "DeepBramble":
                 GameObject.Find("BramblesDoorstep_Body/Sector/Grapple")?.SetActive(hasThreader);
+                break;
+            case "Jam5":
+                GameObject.Find("CentralStation_Body/Sector/Grapple")?.SetActive(hasThreader);
                 break;
         }
     }

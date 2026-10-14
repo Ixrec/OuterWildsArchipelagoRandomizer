@@ -24,6 +24,7 @@ public enum TrackerCategory
     FretsQuest,
     ForgottenCastaways,
     EchoHike,
+    Heliostudy,
 }
 
 public class TrackerRequirement

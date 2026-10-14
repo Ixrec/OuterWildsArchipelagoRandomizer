@@ -1,0 +1,142 @@
+[
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet1_Harmonic_Hint",
+    "description": "Read the text wall next to the harmonic convergence puzzle on Shattered Geode.",
+    "thumbnail": "Walker_Jam5_Planet1_Harmonic"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet1_Warp_Hint",
+    "description": "Read the text wall in the building containing a warp transmitter on Shattered Geode.",
+    "thumbnail": "Walker_Jam5_Planet1_Warp"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet1_Quantum_Hint",
+    "description": "Read the text wall in the building containing a quantum rock on Shattered Geode.",
+    "thumbnail": "Walker_Jam5_Planet1_Quantum"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_OppositeSides_Fact",
+    "description": "Solve the harmonic convergence puzzle on Shattered Geode and read the related text.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_OppositeSides"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_MiddleOrbit_Fact",
+    "description": "Ride the quantum rock on Shattered Geode and read from the recorder within the cave.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_MiddleOrbit"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet2_Tower_Hint",
+    "description": "Read the text wall inside the tall tower on The Big One.",
+    "thumbnail": "Walker_Jam5_Planet2_Tower"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet2_GhostMatter_Hint",
+    "description": "Read the text wall outside the ghost matter cave on The Big One.",
+    "thumbnail": "Walker_Jam5_Planet2_GhostMatter"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_Geysers_Fact",
+    "description": "Read the recorder inside the ghost matter cave on The Big One.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_Geysers"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_FrozenPlanet_Fact",
+    "description": "Read the text wall at the top of the tall tower on The Big One.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FrozenPlanet"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet3_Buried_Hint",
+    "description": "Read from the scroll at the top of the buried structure on Daucus.",
+    "thumbnail": "Walker_Jam5_Planet3_Buried"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet3_NoDoor_Hint",
+    "description": "Read the text in one of the alcoves of the enclosed structure on Daucus.",
+    "thumbnail": "Walker_Jam5_Planet3_NoDoor"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_WarpAlignment_Fact",
+    "description": "Warp into the enclosed structure on Daucus and read the text within.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_WarpAlignment"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_DoubleSand_Fact",
+    "description": "Use The Big One to remove the sand from Daucus and read the scroll in the undersand chamber.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_DoubleSand"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Ice_Fact",
+    "description": "Either move Glacial Abyss! into the innermost orbit to melt its ice, or use the warp transmitter on Shattered Geode to reach the subsurface ocean.",
+    "thumbnail": "Walker_Jam5_Planet4_Ice"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Warp_Fact",
+    "description": "Visit the warp receiver in Glacial Abyss!'s subsurface ocean.",
+    "thumbnail": "Walker_Jam5_Planet4_Warp"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Geysers_Hint",
+    "description": "Read the text wall next to the warp receiver in Glacial Abyss!'s subsurface ocean.",
+    "thumbnail": "Walker_Jam5_Planet4_Geysers"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Core_Fact",
+    "description": "Enter the core of Glacial Abyss! by warping there while the surface remains frozen.",
+    "thumbnail": "Walker_Jam5_Planet4_Core"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Core_Warp",
+    "description": "Visit the orrery warp pad in the core of Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Planet4_Core"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_MissingWarp_Fact",
+    "description": "Visit the orrery warp pad in the core of Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Planet4_MissingWarp"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Planet4_Core_Door",
+    "description": "Read the text on the sealed door at the core of Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Planet4_Core"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_FinalLocation_Fact",
+    "description": "Read the text wall at the core of Glacial Abyss!.",
+    "thumbnail": "Walker_Jam5_Station_ProjectRequirements_FinalLocation"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Platform_Discovery",
+    "description": "Read the text wall next to the Heliostudy's introduction platform.",
+    "thumbnail": "Walker_Jam5_Platform"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Platform_Combination",
+    "description": "Complete all the requirements for the Heliostudy and learn how to activate the introduction platform from Adonsonia.",
+    "thumbnail": "Walker_Jam5_Platform"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_Fact",
+    "description": "Visit the Orrery Station.",
+    "thumbnail": "Walker_Jam5_Station_Orrery"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_Orrery_Fact",
+    "description": "Read from the recorder on the Orrery Station.",
+    "thumbnail": "Walker_Jam5_Station_Orrery"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_Orrery_Warp",
+    "description": "Read from the recorder on the Orrery Station.",
+    "thumbnail": "Walker_Jam5_Station_Orrery"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Station_ProjectRequirements_Count",
+    "description": "Read from the recorder on the Orrery Station.",
+    "thumbnail": "Walker_Jam5_Station_Orrery"
+  },
+  {
+    "locationModID": "SLF__Walker_Jam5_Star_Heliostudy_Fact",
+    "description": "Visit the Heliostudy.",
+    "thumbnail": "Walker_Jam5_Star_Heliostudy"
+  }
+]

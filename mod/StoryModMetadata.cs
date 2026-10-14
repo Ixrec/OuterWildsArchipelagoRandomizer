@@ -86,6 +86,16 @@ public class StoryModMetadata
         trackerCategoryImageFile = "EchoHike",
         trackerLocationInfosFilePrefix = "EH",
     };
+    private static ModMetadata HSMetadata = new ModMetadata
+    {
+        trackerCategoryName = "Heliostudy",
+        modManagerUniqueName = "2walker2.OWJam5ModProject",
+        slotDataOption = "enable_hs_mod",
+        logicCategory = "hs",
+        // screenshot taken in-game and overlayed with https://github.com/2walker2/OWJam5ModProject/blob/c98da2616805e7b5174de6572b3d2772634386e3/OWJam5ModProject/subtitle.png
+        trackerCategoryImageFile = "Heliostudy",
+        trackerLocationInfosFilePrefix = "HS",
+    };
 
     public static ModMetadata[] AllStoryMods = {
         OutsiderMetadata,
@@ -95,6 +105,7 @@ public class StoryModMetadata
         FQMetadata,
         FCMetadata,
         EHMetadata,
+        HSMetadata,
     };
 
     // The order of this dictionary determines the order of story mod tracker categories the user sees
@@ -107,6 +118,7 @@ public class StoryModMetadata
         { TrackerCategory.FretsQuest, FQMetadata },
         { TrackerCategory.ForgottenCastaways, FCMetadata },
         { TrackerCategory.EchoHike, EHMetadata },
+        { TrackerCategory.Heliostudy, HSMetadata },
     };
 
     public static Dictionary<string, ModMetadata> LogicCategoryToModMetadata = AllStoryMods.ToDictionary(mod => mod.logicCategory);

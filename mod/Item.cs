@@ -136,6 +136,13 @@ public enum Item
 
     // Echo Hike items
     Threader,
+
+    // Heliostudy items
+    FrequencyHeliochord,
+    DaucusOrb,
+    GlacialAbyssOrb,
+    TheBigOneOrb,
+    ShatteredGeodeOrb,
 };
 
 public static class ItemNames
@@ -161,6 +168,7 @@ public static class ItemNames
         Item.FrequencyHearthianRadio,
         Item.FrequencyNomaiTrailmarkers,
         Item.FrequencyEcholocationTones,
+        Item.FrequencyHeliochord,
     };
     public static bool IsStoryModFrequency(Item item) => StoryModFrequencies.Contains(item);
 
@@ -289,6 +297,13 @@ public static class ItemNames
 
         // Echo Hike items
         { Item.Threader, "Threader" },
+
+        // Heliostudy items
+        { Item.FrequencyHeliochord, "Heliochord Frequency" },
+        { Item.DaucusOrb, "Daucus Orb" },
+        { Item.GlacialAbyssOrb, "Glacial Abyss! Orb" },
+        { Item.TheBigOneOrb, "The Big One Orb" },
+        { Item.ShatteredGeodeOrb, "Shattered Geode Orb" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -319,6 +334,9 @@ public static class ItemNames
         // Forgotten Castaways frequency items
         { "Nomai Trailmarkers", Item.FrequencyNomaiTrailmarkers },
         { "Echolocation Tones", Item.FrequencyEcholocationTones },
+
+        // Heliostudy frequency items
+        { "Walker_Jam5_Harmonic", Item.FrequencyHeliochord },
     };
     public static Dictionary<Item, string> itemToFrequency = frequencyToItem.ToDictionary(fti => fti.Value, fti => fti.Key);
 
@@ -417,6 +435,11 @@ public static class ItemNames
         { Item.ThermalInsulation,              "HAS_AP_ITEM_FC_THERMAL_INSULATION" },
         { Item.ProbabilityRule,                "HAS_AP_ITEM_FC_PROBABILITY_RULE" },
         { Item.Threader,                       "HAS_AP_ITEM_EH_THREADER" },
+        { Item.FrequencyHeliochord,            "HAS_AP_ITEM_HS_FREQUENCY_HELIOCHORD" },
+        { Item.DaucusOrb,                      "HAS_AP_ITEM_HS_DAUCUS_ORB" },
+        { Item.GlacialAbyssOrb,                "HAS_AP_ITEM_HS_GLACIAL_ABYSS_ORB" },
+        { Item.TheBigOneOrb,                   "HAS_AP_ITEM_HS_THE_BIG_ONE_ORB" },
+        { Item.ShatteredGeodeOrb,              "HAS_AP_ITEM_HS_SHATTERED_GEODE_ORB" },
     };
 
     // leave these as null until we load the ids, so any attempt to work with ids before that will fail loudly

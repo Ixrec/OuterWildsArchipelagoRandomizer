@@ -4,6 +4,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using ArchipelagoRandomizer.InGameTracker;
 using ArchipelagoRandomizer.ItemImpls.FCProgression;
+using ArchipelagoRandomizer.ItemImpls.HSProgression;
 using HarmonyLib;
 using Newtonsoft.Json;
 using OWML.Common;
@@ -560,6 +561,12 @@ public class APRandomizer : ModBehaviour
                 }
                 // Echo Hike custom item impls
                 Threader.UpdateThreaders();
+                // Heliostudy custom item impls
+                if (system == "Jam5")
+                {
+                    ProjectRequirementLocations.OnJam5LoadEvent();
+                    OrreryOrbs.OnJam5LoadEvent();
+                }
             });
             // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
             DeepBrambleCoordinates.ChangeExitWarp();

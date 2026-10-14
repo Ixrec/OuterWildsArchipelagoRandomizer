@@ -81,6 +81,13 @@ internal class SignalsAndFrequencies
         { "Alien Echolocation", "Echolocation Tones" },
         { "Warped Echolocation", "Echolocation Tones" },
         { "Ditylum Echolocation", "Echolocation Tones" },
+
+        // Heliostudy
+        { "Walker_Jam5_Star_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet1_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet2_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet3_Signal", "Walker_Jam5_Harmonic" },
+        { "Walker_Jam5_Planet4_Signal", "Walker_Jam5_Harmonic" },
     };
 
     // Used only so the in-game tracker's Inventory Mode can show a list of signals under each frequency item
@@ -170,6 +177,15 @@ internal class SignalsAndFrequencies
             "Alien Echolocation",
             "Warped Echolocation",
             "Ditylum Echolocation",
+        } },
+
+        // Heliostudy
+        { "Walker_Jam5_Harmonic", new HashSet<string>{
+            "Walker_Jam5_Star_Signal",
+            "Walker_Jam5_Planet1_Signal",
+            "Walker_Jam5_Planet2_Signal",
+            "Walker_Jam5_Planet3_Signal",
+            "Walker_Jam5_Planet4_Signal",
         } },
     };
 
