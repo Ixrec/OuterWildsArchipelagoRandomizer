@@ -449,8 +449,6 @@ public class APRandomizer : ModBehaviour
             {
                 if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
                     PlayerData.SetPersistentCondition(condition, itemCountSoFar > 0); // for now, only unique items have conditions
-                // Prevent NH from telling you about the warp drive
-                PlayerData.SetPersistentCondition("NEW_HORIZONS_WARP_DRIVE_DIALOGUE", true);
             }
 
             return true;
@@ -514,6 +512,12 @@ public class APRandomizer : ModBehaviour
             MemoryCubeInterface.OnCompleteSceneLoad();
             // Forgotten Castaways custom item impls
             ExpandedDictionary.OnCompleteSceneLoad();
+
+            if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
+            {
+                // Prevent NH from telling you about the warp drive
+                PlayerData.SetPersistentCondition("KnowsAboutWarpDrive", true);
+            }
         };
 
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
@@ -540,6 +544,8 @@ public class APRandomizer : ModBehaviour
         Threader.AddThreaders();
         if (NewHorizonsAPI != null)
         {
+            NewHorizonsAPI.LoadConfigs(this);
+
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
             {
                 APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API ChangeStarSystemEvent system = {system}");
