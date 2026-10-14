@@ -8,12 +8,20 @@ using UnityEngine;
 namespace ArchipelagoRandomizer;
 
 // Here we don't use the usual [HarmonyPatch] annotations that are applied by CreateAndPatchAll() in the mod's Awake() method.
-// Since FC isn't a dependency, we can't guarantee FC will be loaded before us, so we have to wait until we are sure to manually apply this patch.
+// Since NH isn't a dependency, we can't guarantee NH will be loaded before us, so we have to wait until we are sure to manually apply this patch.
 
-internal class WarpDrivePatch
+internal class WarpDrive
 {
+    public static void RemoveEntryRequirements()
+    {
+        APRandomizer.OWMLModConsole.WriteLine("RemoveEntryRequirements() changing system warp requirements");
+        APRandomizer.NewHorizonsAPI.DefineStarSystem("GameWyrm.HearthsNeighbor", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
+        APRandomizer.NewHorizonsAPI.DefineStarSystem("DeepBramble", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
+    }
+
     private static GameObject WarpDriveVisuals = null;
     private static bool _hasWarpDrive = false;
+    private static Type nhm;
 
     public static bool HasWarpDrive
     {
@@ -26,11 +34,22 @@ internal class WarpDrivePatch
 
                 if (_hasWarpDrive)
                 { // Initializing the warp drive visuals doesn't seem to work mid-loop, or is at least hacky
-                    var nd = new NotificationData(NotificationTarget.Player, "ADVANCED WARP CORE NOW INSTALLED", 10);
+                    var nd = new NotificationData(NotificationTarget.Player, "ADVANCED WARP CORE INSTALLED IN SHIP\nINTERSTELLAR TRAVEL NOW POSSIBLE", 10);
                     NotificationManager.SharedInstance.PostNotification(nd, false);
                     if (WarpDriveVisuals != null)
                     {
                         WarpDriveVisuals.SetActive(true);
+                    }
+                    if (nhm != null)
+                    {
+                        var enableWarpDriveFunctionalityMethod = nhm.GetMethod("EnableWarpDriveFunctionality");
+                        if (enableWarpDriveFunctionalityMethod == null)
+                        {
+                            APRandomizer.OWMLModConsole.WriteLine($"failed to enable warp drive, enableWarpDriveFunctionalityMethod was null", OWML.Common.MessageType.Warning);
+                            return;
+                        }
+                        var newHorizons = APRandomizer.Instance.ModHelper.Interaction.TryGetMod("xen.NewHorizons");
+                        enableWarpDriveFunctionalityMethod.Invoke(newHorizons, new object[] { });
                     }
                 }
             }
@@ -53,7 +72,7 @@ internal class WarpDrivePatch
             return false;
         }
 
-        var nhm = Type.GetType("NewHorizons.Main, NewHorizons");
+        nhm = Type.GetType("NewHorizons.Main, NewHorizons");
         if (nhm == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, NHM was null", OWML.Common.MessageType.Warning);
@@ -67,22 +86,22 @@ internal class WarpDrivePatch
             return false;
         }
 
-        var enableWarpDriveVisualsMethod = nhm.GetMethod("EnableWarpDriveVisuals", BindingFlags.Public);
+        var enableWarpDriveVisualsMethod = nhm.GetMethod("EnableWarpDriveVisuals");
         if (enableWarpDriveVisualsMethod == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, enableWarpDriveVisualsMethod was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
-        var canWarpPostfixPatch = typeof(WarpDrivePatch).GetMethod("CanWarp_PrefixPatch", BindingFlags.NonPublic | BindingFlags.Static);
+        var canWarpPostfixPatch = typeof(WarpDrive).GetMethod("CanWarp_PrefixPatch", BindingFlags.NonPublic | BindingFlags.Static);
         if (canWarpPostfixPatch == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, CanWarp_PrefixPatch was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
-        var hideWarpDrivePostfixPatch = typeof(WarpDrivePatch).GetMethod("HideWarpDrive_PostfixPatch", BindingFlags.NonPublic | BindingFlags.Static);
-        if (canWarpPostfixPatch == null)
+        var hideWarpDrivePostfixPatch = typeof(WarpDrive).GetMethod("HideWarpDrive_PostfixPatch", BindingFlags.NonPublic | BindingFlags.Static);
+        if (hideWarpDrivePostfixPatch == null)
         {
             APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, HideWarpDrive_PostfixPatch was null", OWML.Common.MessageType.Warning);
             return false;
@@ -109,6 +128,7 @@ internal class WarpDrivePatch
     {
         if (!HasWarpDrive)
         {
+            APRandomizer.OWMLModConsole.WriteLine("HideWarpDrive_PostfixPatch() hiding warp drive visuals", OWML.Common.MessageType.Info);
             WarpDriveVisuals = GameObject.Find("Ship_Body/WarpDrive");
             WarpDriveVisuals.SetActive(false);
         }

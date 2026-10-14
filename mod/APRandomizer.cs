@@ -568,8 +568,9 @@ public class APRandomizer : ModBehaviour
                     OrreryOrbs.OnJam5LoadEvent();
                 }
             });
-            // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
-            WarpDrivePatch.EnsurePatchApplied();
+            // Removes prerequisite to warp into the Deep Bramble
+            WarpDrive.RemoveEntryRequirements();
+            WarpDrive.EnsurePatchApplied();
         }
     }
 

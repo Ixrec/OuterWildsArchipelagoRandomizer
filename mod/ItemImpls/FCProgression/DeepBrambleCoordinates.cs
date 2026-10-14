@@ -2,12 +2,12 @@
 
 namespace ArchipelagoRandomizer.ItemImpls.FCProgression
 {
-    [HarmonyPatch]
     static class DeepBrambleCoordinates
     {
-        public static void ChangeExitWarp()
+        public static void ChangeEnterWarp()
         {
-            APRandomizer.NewHorizonsAPI.DefineStarSystem("DeepBramble", "{ \"factRequiredToEnterViaWarpDrive\": \"\"}", APRandomizer.Instance);
+            APRandomizer.OWMLModConsole.WriteLine("ChangeEnterWarp() changing Deep Bramble warp requirements");
+            APRandomizer.NewHorizonsAPI.DefineStarSystem("DeepBramble", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
         }
     }
 }
