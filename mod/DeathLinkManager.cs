@@ -67,7 +67,10 @@ public class DeathLinkManager
             case "All Deaths": overrideSetting = DeathLinkSetting.AllDeaths; effectiveSetting = DeathLinkSetting.AllDeaths; break;
         }
 
-        EnableDeathLinkIfNeeded();
+        if (effectiveSetting == DeathLinkSetting.Off)
+            DisableDeathLinkIfActive();
+        else
+            EnableDeathLinkIfNeeded();
     }
 
     public static void DisableDeathLinkIfActive()

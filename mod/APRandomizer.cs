@@ -236,7 +236,7 @@ public class APRandomizer : ModBehaviour
         // compatibility warnings
         if (SlotEnabledEotEDLC() && EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.Owned)
         {
-            ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with enable_eote_dlc: true, " +
+            ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP slot was generated with enable_eote_dlc: true, " +
                 $"but <color=red>the DLC is not installed</color>.");
         }
         foreach (var mod in StoryModMetadata.AllStoryMods)
@@ -244,16 +244,16 @@ public class APRandomizer : ModBehaviour
             var option = mod.slotDataOption;
             bool modEnabled = (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
             if (modEnabled && !Instance.ModHelper.Interaction.ModExists(mod.modManagerUniqueName))
-                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP world was generated with {option}: true, " +
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP slot was generated with {option}: true, " +
                     $"but <color=red>the mod {mod.modManagerUniqueName} is not installed</color>.");
         }
         if (SlotData.ContainsKey("apworld_version"))
         {
             var apworld_version = (string)SlotData["apworld_version"];
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "1.3.0";
+            var mod_version = "1.3.1";
             if (apworld_version != mod_version)
-                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This Archipelago multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
         }
 

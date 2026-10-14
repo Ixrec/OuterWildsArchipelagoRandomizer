@@ -66,7 +66,9 @@ internal class SignalsAndFrequencies
         { "Bridge's Radio", "Hearthian Radio" },
         { "Reson's Radio", "Hearthian Radio" },
         { "Reson's Second Radio", "Hearthian Radio" },
+        { "Tuner", "Traveler" }, // Tuner uses the vanilla frequency, not the FQ frequency
         { "Rim's Second Radio", "Hearthian Radio" },
+        { "Strum's Radio", "Hearthian Radio" },
 
         // Forgotten Castaways
         // left out Ditylum (Traveler) because it is only available during the finale
@@ -88,14 +90,18 @@ internal class SignalsAndFrequencies
         { "Walker_Jam5_Planet4_Signal", "Walker_Jam5_Harmonic" },
     };
 
+    // Used only so the in-game tracker's Inventory Mode can show a list of signals under each frequency item
     public static Dictionary<string, HashSet<string>> frequencyToSignals = new Dictionary<string, HashSet<string>>
     {
+        // OW Ventures frequency is not an item, so this first set doesn't really matter,
+        // but we're maintaining it anyway for completeness.
         { "Traveler", new HashSet<string>{
             "Traveler_Chert",
             "Traveler_Esker",
             "Traveler_Riebeck",
             "Traveler_Gabbro",
             "Traveler_Feldspar",
+            "Tuner",
         } },
         { "Quantum", new HashSet<string>{
             "Quantum_TH_MuseumShard",
@@ -154,6 +160,7 @@ internal class SignalsAndFrequencies
             "Reson's Radio",
             "Reson's Second Radio",
             "Rim's Second Radio",
+            "Strum's Radio",
         } },
 
         // Forgotten Castaways
@@ -275,6 +282,8 @@ internal class SignalsAndFrequencies
             var locationName = LocationNames.signalToLocation[signalName.ToString()];
             LocationTriggers.CheckLocation(locationName);
         }
+        else if (LoadManager.s_currentScene != OWScene.EyeOfTheUniverse)
+            APRandomizer.OWMLModConsole.WriteLine($"PlayerData_LearnSignal_Prefix called with non-EotU signal unknown to the randomizer: \"{signalName}\"", OWML.Common.MessageType.Warning);
     }
 
     // The above patches are enough to separate signalscope scans from signalscope knowledge,
