@@ -544,8 +544,6 @@ public class APRandomizer : ModBehaviour
         Threader.AddThreaders();
         if (NewHorizonsAPI != null)
         {
-            NewHorizonsAPI.LoadConfigs(this);
-
             NewHorizonsAPI.GetChangeStarSystemEvent().AddListener(system =>
             {
                 APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API ChangeStarSystemEvent system = {system}");
@@ -579,7 +577,6 @@ public class APRandomizer : ModBehaviour
                 }
             });
             // Removes prerequisite to warp into the Deep Bramble
-            WarpDrive.RemoveEntryRequirements();
             WarpDrive.EnsurePatchApplied();
         }
     }

@@ -2,6 +2,7 @@
 using HarmonyLib;
 using OWML.ModHelper;
 using System;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -12,13 +13,11 @@ namespace ArchipelagoRandomizer;
 
 internal class WarpDrive
 {
-    public static void RemoveEntryRequirements()
-    {
-        APRandomizer.OWMLModConsole.WriteLine("RemoveEntryRequirements() changing system warp requirements");
-        // For each system with a warp requirement, set the requirement to TH_VILLAGE_X1, which is granted upon wakingg for the first time
-        APRandomizer.NewHorizonsAPI.DefineStarSystem("GameWyrm.HearthsNeighbor", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
-        APRandomizer.NewHorizonsAPI.DefineStarSystem("DeepBramble", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
-    }
+    // List of systems that we want to remove the entry requirements for
+    private static string[] SkipEntrySystems = {
+        "GameWyrm.HearthsNeighbor",
+        "DeepBramble",
+    };
 
     private static GameObject WarpDriveVisuals = null;
     private static bool _hasWarpDrive = false;
@@ -67,50 +66,70 @@ internal class WarpDrive
 
     private static bool ApplyPatches()
     {
+        // CanWarp Patch
         var scm = Type.GetType("NewHorizons.Handlers.StarChartHandler, NewHorizons"); // since this is from another assembly we need the explicit ", AssemblyName"
         if (scm == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, SCM was null", OWML.Common.MessageType.Warning);
-            return false;
-        }
-
-        nhm = Type.GetType("NewHorizons.Main, NewHorizons");
-        if (nhm == null)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, NHM was null", OWML.Common.MessageType.Warning);
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply CanWarpPatch, SCM was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
         var canWarpMethod = scm.GetMethod("CanWarp", BindingFlags.Public | BindingFlags.Static);
         if (canWarpMethod == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, canWarpMethod was null", OWML.Common.MessageType.Warning);
-            return false;
-        }
-
-        var enableWarpDriveVisualsMethod = nhm.GetMethod("EnableWarpDriveVisuals");
-        if (enableWarpDriveVisualsMethod == null)
-        {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, enableWarpDriveVisualsMethod was null", OWML.Common.MessageType.Warning);
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply CanWarpPatch, canWarpMethod was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
         var canWarpPostfixPatch = typeof(WarpDrive).GetMethod("CanWarp_PrefixPatch", BindingFlags.NonPublic | BindingFlags.Static);
         if (canWarpPostfixPatch == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, CanWarp_PrefixPatch was null", OWML.Common.MessageType.Warning);
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply CanWarpPatch, CanWarp_PrefixPatch was null", OWML.Common.MessageType.Warning);
+            return false;
+        }
+
+        var harmony = new Harmony("Ixrec.ArchipelagoRandomizer.DelayedPatches");
+        harmony.Patch(canWarpMethod, prefix: new HarmonyMethod(canWarpPostfixPatch));
+
+        // HasUnlockedSystem Patch
+        var hasUnlockedSystemMethod = scm.GetMethod("HasUnlockedSystem", BindingFlags.Public | BindingFlags.Static);
+        if (hasUnlockedSystemMethod == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply HasUnlockedSystemPatch, hasUnlockedSystemMethod was null", OWML.Common.MessageType.Warning);
+            return false;
+        }
+
+        var hasUnlockedSystemPostfixPatch = typeof(WarpDrive).GetMethod("HasUnlockedSystem_PostfixPatch", BindingFlags.NonPublic | BindingFlags.Static);
+        if (hasUnlockedSystemPostfixPatch == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply HasUnlockedSystemPatch, HasUnlockedSystem_PostfixPatch was null", OWML.Common.MessageType.Warning);
+            return false;
+        }
+
+        harmony.Patch(hasUnlockedSystemMethod, postfix: new HarmonyMethod(hasUnlockedSystemPostfixPatch));
+
+        // WarpDriveVisuals Patch
+        nhm = Type.GetType("NewHorizons.Main, NewHorizons");
+        if (nhm == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDriveVisualsPatch, NHM was null", OWML.Common.MessageType.Warning);
+            return false;
+        }
+
+        var enableWarpDriveVisualsMethod = nhm.GetMethod("EnableWarpDriveVisuals");
+        if (enableWarpDriveVisualsMethod == null)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDriveVisualsPatch, enableWarpDriveVisualsMethod was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
         var hideWarpDrivePostfixPatch = typeof(WarpDrive).GetMethod("HideWarpDrive_PostfixPatch", BindingFlags.NonPublic | BindingFlags.Static);
         if (hideWarpDrivePostfixPatch == null)
         {
-            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDrivePatch, HideWarpDrive_PostfixPatch was null", OWML.Common.MessageType.Warning);
+            APRandomizer.OWMLModConsole.WriteLine($"failed to apply WarpDriveVisualsPatch, HideWarpDrive_PostfixPatch was null", OWML.Common.MessageType.Warning);
             return false;
         }
 
-        var harmony = new Harmony("Ixrec.ArchipelagoRandomizer.DelayedPatches");
-        harmony.Patch(canWarpMethod, prefix: new HarmonyMethod(canWarpPostfixPatch));
         harmony.Patch(enableWarpDriveVisualsMethod, postfix: new HarmonyMethod(hideWarpDrivePostfixPatch));
         APRandomizer.OWMLModConsole.WriteLine($"successfully applied WarpDrivePatch", OWML.Common.MessageType.Success);
         return true;
@@ -135,5 +154,11 @@ internal class WarpDrive
             WarpDriveVisuals = GameObject.Find("Ship_Body/WarpDrive");
             WarpDriveVisuals.SetActive(false);
         }
+    }
+
+    private static void HasUnlockedSystem_PostfixPatch(ref bool __result, string system)
+    {
+        if (SkipEntrySystems.Contains(system))
+            __result = true;
     }
 }
