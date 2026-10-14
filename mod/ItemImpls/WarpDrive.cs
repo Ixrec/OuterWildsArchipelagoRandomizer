@@ -15,6 +15,7 @@ internal class WarpDrive
     public static void RemoveEntryRequirements()
     {
         APRandomizer.OWMLModConsole.WriteLine("RemoveEntryRequirements() changing system warp requirements");
+        // For each system with a warp requirement, set the requirement to TH_VILLAGE_X1, which is granted upon wakingg for the first time
         APRandomizer.NewHorizonsAPI.DefineStarSystem("GameWyrm.HearthsNeighbor", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
         APRandomizer.NewHorizonsAPI.DefineStarSystem("DeepBramble", "{ \"factRequiredForWarp\": \"TH_VILLAGE_X1\"}", APRandomizer.Instance);
     }
@@ -33,8 +34,8 @@ internal class WarpDrive
                 _hasWarpDrive = value;
 
                 if (_hasWarpDrive)
-                { // Initializing the warp drive visuals doesn't seem to work mid-loop, or is at least hacky
-                    var nd = new NotificationData(NotificationTarget.Player, "ADVANCED WARP CORE INSTALLED IN SHIP\nINTERSTELLAR TRAVEL NOW POSSIBLE", 10);
+                {
+                    var nd = new NotificationData(NotificationTarget.Player, "ADVANCED WARP CORE INSTALLED ONTO SHIP\nINTERSTELLAR TRAVEL NOW POSSIBLE", 10);
                     NotificationManager.SharedInstance.PostNotification(nd, false);
                     if (WarpDriveVisuals != null)
                     {
@@ -42,6 +43,7 @@ internal class WarpDrive
                     }
                     if (nhm != null)
                     {
+                        // Force-enable the warp drive immediately
                         var enableWarpDriveFunctionalityMethod = nhm.GetMethod("EnableWarpDriveFunctionality");
                         if (enableWarpDriveFunctionalityMethod == null)
                         {
@@ -126,6 +128,7 @@ internal class WarpDrive
 
     private static void HideWarpDrive_PostfixPatch()
     {
+        // Preventing the warp drive from being added makes it hard to add ourselves. Instead we just disable it immediately afterwards
         if (!HasWarpDrive)
         {
             APRandomizer.OWMLModConsole.WriteLine("HideWarpDrive_PostfixPatch() hiding warp drive visuals", OWML.Common.MessageType.Info);

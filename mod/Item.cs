@@ -260,7 +260,7 @@ public static class ItemNames
         { Item.TranslatorDB, "Translator (Dark Bramble)" },
         { Item.TranslatorOther, "Translator (Other)" },
 
-        { Item.WarpDrive, "Warp Drive" },
+        { Item.WarpDrive, "Interstellar Warp Drive" },
 
         // Hearth's Neighbor items
         { Item.FrequencyNeighborDistress, "Neighbor's Distress Signal Frequency" },

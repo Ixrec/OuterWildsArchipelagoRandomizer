@@ -446,8 +446,12 @@ public class APRandomizer : ModBehaviour
 
             // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
+            {
                 if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
                     PlayerData.SetPersistentCondition(condition, itemCountSoFar > 0); // for now, only unique items have conditions
+                // Prevent NH from telling you about the warp drive
+                PlayerData.SetPersistentCondition("NEW_HORIZONS_WARP_DRIVE_DIALOGUE", true);
+            }
 
             return true;
         }
