@@ -20,7 +20,7 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
             "Walker_Jam5_Planet4",
         };
 
-        // We want to disable the Heliostudy warp platforms if you do not have the AP item, but otherwise default begavior is acceptable,
+        // We want to disable the Heliostudy warp platforms if you do not have the AP item, but otherwise default behavior is acceptable,
         // as the player has complete control over the system and the manual warps would introduce strange behaviors.
         [HarmonyPrefix, HarmonyPatch(typeof(NomaiWarpTransmitter), nameof(NomaiWarpTransmitter.FixedUpdate))]
         public static bool NomaiWarpTransmitter_FixedUpdate_Prefix(NomaiWarpTransmitter __instance)

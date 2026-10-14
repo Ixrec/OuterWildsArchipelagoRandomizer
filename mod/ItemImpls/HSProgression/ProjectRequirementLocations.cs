@@ -34,8 +34,7 @@ namespace ArchipelagoRandomizer.ItemImpls.HSProgression
                 // If each requirement is met, the corresponding orb will be active
                 if (orbs[i].activeSelf)
                 {
-                    Location location;
-                    Location.TryParse($"HS_COMPLETE_REQUIREMENT_{i + 1}", out location);
+                    Location.TryParse($"HS_COMPLETE_REQUIREMENT_{i + 1}", out Location location);
                     LocationTriggers.CheckLocation(location);
                 }
             }
