@@ -1,6 +1,7 @@
-﻿using HarmonyLib;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HarmonyLib;
 using UnityEngine;
 
 namespace ArchipelagoRandomizer;
@@ -8,10 +9,11 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class ShipLights
 {
+    private static bool enabled = true;
     private static bool _hasLights = false;
     public static bool hasLights
     {
-        get => _hasLights;
+        get => _hasLights || !enabled;
         set
         {
             if (_hasLights != value)
@@ -117,5 +119,10 @@ internal class ShipLights
     {
         if (!hasLights)
             GlobalMessenger.RemoveListener("EnterShip", new Callback(__instance.TurnOff));
+    }
+
+    public static void ApplySlotData(string apworld_version)
+    {
+        enabled = Version.Parse(apworld_version) >= new Version(1, 4, 0);
     }
 }

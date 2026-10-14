@@ -258,6 +258,7 @@ public class APRandomizer : ModBehaviour
             // Disable item effects for incompatible versions.
             MedkitAndJetpackFuel.ApplySlotData(apworld_version);
             VelocityAndDistanceIndicator.ApplySlotData(apworld_version);
+            ShipLights.ApplySlotData(apworld_version);
         }
 
         if (SlotData.ContainsKey("death_link"))
