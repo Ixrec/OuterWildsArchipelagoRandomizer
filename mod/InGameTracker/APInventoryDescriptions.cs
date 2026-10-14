@@ -231,6 +231,9 @@ public class APInventoryDescriptions
                     infos.Add("Ship and suit firmware update added a reading showing distance to the target.");
                     infos.Add("Without it you might be able to use signalscope to measure distances.");
                     break;
+                case Item.ShipLights:
+                    infos.Add("Selection of good old incandescent light bulbs for both the interior and exterior of the ship, most notably the ship's headlights.");
+                    break;
                 case Item.OxygenCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
                     infos.Add("By default, your tank starts with 50% of that, at 3.75 minutes. Each upgrade adds another 50% or 3.75 minutes.");
