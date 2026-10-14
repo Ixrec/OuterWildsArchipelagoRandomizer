@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HarmonyLib;
 
 namespace ArchipelagoRandomizer;
@@ -6,11 +7,12 @@ namespace ArchipelagoRandomizer;
 [HarmonyPatch]
 internal class VelocityAndDistanceIndicator
 {
+    private static bool enabled = true;
     private static bool _hasVelocityIndicator = false;
 
     public static bool hasVelocityIndicator
     {
-        get => _hasVelocityIndicator;
+        get => _hasVelocityIndicator || !enabled;
         set
         {
             if (_hasVelocityIndicator != value)
@@ -29,7 +31,7 @@ internal class VelocityAndDistanceIndicator
 
     public static bool hasDistanceIndicator
     {
-        get => _hasDistanceIndicator;
+        get => _hasDistanceIndicator || !enabled;
         set
         {
             if (_hasDistanceIndicator != value)
@@ -43,6 +45,7 @@ internal class VelocityAndDistanceIndicator
             }
         }
     }
+
 
     [HarmonyPrefix, HarmonyPatch(typeof(LockOnReticule), nameof(LockOnReticule.EnableMotionLines))]
     public static void LockOnReticule_EnableMotionLines_Prefix(ref bool value)
@@ -96,8 +99,8 @@ internal class VelocityAndDistanceIndicator
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.Update))]
     public static void ShipPromptController_Update_Postfix(ShipPromptController __instance)
     {
-        noVelocityIndicatorPrompt.SetVisibility(!_hasVelocityIndicator && ShipMVPrompt.IsVisible());
-        noDistanceIndicatorPrompt.SetVisibility(!_hasDistanceIndicator && ShipMVPrompt.IsVisible());
+        noVelocityIndicatorPrompt.SetVisibility(!hasVelocityIndicator && ShipMVPrompt.IsVisible());
+        noDistanceIndicatorPrompt.SetVisibility(!hasDistanceIndicator && ShipMVPrompt.IsVisible());
     }
 
     [HarmonyPostfix, HarmonyPatch(typeof(ShipPromptController), nameof(ShipPromptController.HideAllPrompts))]
@@ -105,5 +108,10 @@ internal class VelocityAndDistanceIndicator
     {
         noVelocityIndicatorPrompt.SetVisibility(false);
         noDistanceIndicatorPrompt.SetVisibility(false);
+    }
+
+    public static void ApplySlotData(string apworld_version)
+    {
+        enabled = Version.Parse(apworld_version) >= new Version(1, 4, 0);
     }
 }
