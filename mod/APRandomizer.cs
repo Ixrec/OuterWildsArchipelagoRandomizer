@@ -255,6 +255,7 @@ public class APRandomizer : ModBehaviour
             if (apworld_version != mod_version)
                 ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
+            VelocityAndDistanceIndicator.ApplySlotData(apworld_version);
         }
 
         if (SlotData.ContainsKey("death_link"))

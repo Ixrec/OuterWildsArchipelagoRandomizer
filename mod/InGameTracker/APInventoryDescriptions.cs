@@ -217,6 +217,13 @@ public class APInventoryDescriptions
                     infos.Add("An upgrade for your Little Scout that reports the structural integrity of a fragile surface it's attached to.");
                     infos.Add("Most useful on Brittle Hollow.");
                     break;
+                case Item.VelocityIndicator:
+                    infos.Add("Ship and suit firmware update added lines and reading showing movement relative to the target.");
+                    break;
+                case Item.DistanceIndicator:
+                    infos.Add("Ship and suit firmware update added a reading showing distance to the target.");
+                    infos.Add("Without it you might be able to use signalscope to measure distances.");
+                    break;
                 case Item.OxygenCapacityUpgrade:
                     infos.Add("An Outer Wilds Ventures standard-issue oxygen tank holds 7.5 minutes of oxygen.");
                     infos.Add("By default, your tank starts with 50% of that, at 3.75 minutes. Each upgrade adds another 50% or 3.75 minutes.");
