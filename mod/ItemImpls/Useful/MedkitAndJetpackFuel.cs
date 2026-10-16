@@ -38,7 +38,7 @@ internal class MedkitAndJetpackFuel
                 _hasJetpackFuel = value;
                 if (_hasJetpackFuel)
                 {
-                    var nd = new NotificationData(NotificationTarget.All, "SPACESHIP JETPACK FUEL TANK HAS BEEN FILLED", 10);
+                    var nd = new NotificationData(NotificationTarget.All, "SPACESHIP JETPACK REFUELER TANK HAS BEEN FILLED", 10);
                     NotificationManager.SharedInstance.PostNotification(nd, false);
                 }
             }
