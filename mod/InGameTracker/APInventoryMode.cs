@@ -99,6 +99,8 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.EjectButton, "Eject Button"),
         new InventoryItemEntry(Item.VelocityMatcher, "Velocity Matcher"),
         new InventoryItemEntry(Item.SurfaceIntegrityScanner, "Surface Integrity Scanner"),
+        new InventoryItemEntry(Item.ShipMedkit, "Ship Medkit"),
+        new InventoryItemEntry(Item.ShipJetpackRefueler, "Ship Jetpack Refueler"),
         new InventoryItemEntry(Item.VelocityIndicator, "Velocity Indicator"),
         new InventoryItemEntry(Item.DistanceIndicator, "Distance Indicator"),
         new InventoryItemEntry(Item.OxygenCapacityUpgrade, "Suit Upgrade: Oxygen Capacity"),
