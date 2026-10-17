@@ -20,7 +20,7 @@ internal class ShipLights
             {
                 _hasLights = value;
                 
-                if (_hasLights && APRandomizer.APSession != null)
+                if (_hasLights && lightObjects != null && APRandomizer.APSession != null)
                 {
                     var nd = new NotificationData(NotificationTarget.All, "SPACESHIP LIGHT BULBS INSTALLED", 10);
                     NotificationManager.SharedInstance.PostNotification(nd, false);
