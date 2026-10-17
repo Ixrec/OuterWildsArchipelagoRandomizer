@@ -57,6 +57,7 @@ public enum Item
     ShipJetpackRefueler,
     VelocityIndicator,
     DistanceIndicator,
+    ShipLights,
 
     // The following items are non-unique, i.e. the player can and likely will receive more than 1 of each.
     // The tracker currently relies on this item order to tell whether to display an X or a number.
@@ -226,6 +227,7 @@ public static class ItemNames
         { Item.SurfaceIntegrityScanner, "Surface Integrity Scanner" },
         { Item.ShipMedkit, "Ship Medkit" },
         { Item.ShipJetpackRefueler, "Ship Jetpack Refueler" },
+        { Item.ShipLights, "Ship Lights" },
         { Item.OxygenCapacityUpgrade, "Oxygen Capacity Upgrade" },
         { Item.FuelCapacityUpgrade, "Fuel Capacity Upgrade" },
         { Item.BoostDurationUpgrade, "Boost Duration Upgrade" },
