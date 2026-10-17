@@ -298,6 +298,13 @@ public class Logic
                 to = "Deep Bramble via Warp Drive",
                 requires = [new() { item = "Launch Codes" }]
             });
+            if (APRandomizer.SlotEnabledMod("enable_ac_mod") && APRandomizer.SlotEnabledLogsanity())
+            {
+                TrackerLocations["AC Ship Log: Flashback Vision"].requires.AddRange([
+                    new() { item = "Launch Codes" },
+                    new() { item = "Deep Bramble Coordinates" },
+                ]);
+            }
         }
 
         // just hardcode the vanilla warps again, it's easier than deriving these strings from the maps in WarpPlatforms.cs
