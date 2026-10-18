@@ -492,7 +492,7 @@ public class APChecklistMode : ShipLogMode
         SelectionWrapper.Open();
         SelectionWrapper.SetName("AP Tracker");
         SelectionWrapper.SetItems(checklistCategoryItems);
-        SelectionWrapper.SetSelectedIndex(0);
+        SelectionWrapper.SetSelectedIndex(IsInChecklist ? SelectionWrapper.GetSelectedIndex() : 0);
         SelectionWrapper.UpdateList();
         SelectionRootObject.name = "ArchipelagoSelectorMode";
         IsInChecklist = false;
