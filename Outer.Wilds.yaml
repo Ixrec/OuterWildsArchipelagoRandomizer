@@ -138,6 +138,17 @@ Outer Wilds:
     'false': 50
     'true': 0
 
+  warp_platform_plando:
+    # Allows you to connect warp platforms manually. Any undefined platforms will be connected randomly, regardless of randomize_warp_platforms option.
+    # Example (connects Ash Twin Tower -> Ash Twin Project and Timber Hearth -> Black Hole Forge):
+    #   warp_platform_plando:
+    #     ATT: ATP
+    #     TH: BHF
+    # Warp platform abbreviations:
+    #   SS (Sun Station), ET, ATP, TH, BHNG (Brittle Hollow Northern Glacier), BHF, GD,
+    #   ST (Sun Tower), ETT, ATT, THT, BHT, GDT, WHS
+    {}
+
   split_translator:
     # Splits the "Translator" item into 6 items: 5 for the main planets and their satellites, plus a
     # "Translator (Other)" for smaller parts of the vanilla system and systems added by story mods.
@@ -300,6 +311,16 @@ Outer Wilds:
     Ship Damage Trap: 2
     Suit Puncture Trap: 1
     Supernova Trap: 0
+
+  shuffle_equipment:
+    # Choose how much of your non-progression equipment gets taken away and shuffled into the item pool.
+    # 
+    # Easy: Surface Integrity Scanner, Eject Button, Landing Camera
+    # Normal: Autopilot, Velocity Matcher + everything above
+    # Hard: Velocity Indicator, Distance Indicator, Ship Medkit, Ship Jetpack Refueler, Ship Lights + everything above
+    easy: 0
+    normal: 50
+    hard: 0
 
   upgrade_counts:
     # Choose the number of upgrades shuffled into the item pool.
