@@ -148,7 +148,7 @@ internal class WarpDrive
     private static void HideWarpDrive_PostfixPatch()
     {
         // Preventing the warp drive from being added makes it hard to add ourselves. Instead we just disable it immediately afterwards
-        if (!HasWarpDrive)
+        if (!HasWarpDrive && APRandomizer.APWorldVersion >= Version.Parse("1.4.1"))
         {
             APRandomizer.OWMLModConsole.WriteLine("HideWarpDrive_PostfixPatch() hiding warp drive visuals", OWML.Common.MessageType.Info);
             WarpDriveVisuals = GameObject.Find("Ship_Body/WarpDrive");
@@ -160,6 +160,7 @@ internal class WarpDrive
     { // The default entrance is interesting, but the associated ship log requires the translator. Here we use a free location on the other side of the warp.
         if (system == "Samster68.BanjoGalaxy")
         {
+            // In case a user has FQ installed, but not enabled in yaml
             if (!LocationNames.locationToArchipelagoId.ContainsKey(Location.FQ_NEW_GALAXY)) return;
 
             __result = APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[Location.FQ_NEW_GALAXY]);

@@ -53,6 +53,7 @@ public class APRandomizer : ModBehaviour
     public static string SaveFileName;
     public static ArchipelagoSession APSession;
 
+    public static Version APWorldVersion;
     public static Dictionary<string, object> SlotData;
     public static bool SlotEnabledLogsanity() =>
         SlotData.ContainsKey("logsanity") && (long)SlotData["logsanity"] > 0;
@@ -249,11 +250,11 @@ public class APRandomizer : ModBehaviour
         }
         if (SlotData.ContainsKey("apworld_version"))
         {
-            var apworld_version = (string)SlotData["apworld_version"];
+            APWorldVersion = Version.Parse((string)SlotData["apworld_version"]);
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "1.3.1";
-            if (apworld_version != mod_version)
-                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
+            var mod_version = Version.Parse("1.4.0");
+            if (APWorldVersion != mod_version)
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{APWorldVersion}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
         }
 
