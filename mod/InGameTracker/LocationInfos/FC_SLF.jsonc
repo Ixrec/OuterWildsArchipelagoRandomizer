@@ -21,7 +21,7 @@
   },
   {
     "locationModID": "SLF__WARP_TO_DB_FACT",
-    "description": "Using your ship's warp drive, you can warp into the Deep Bramble.",
+    "description": "Using the device in the Vessel, warp to the Deep Bramble.",
     "thumbnail": "STRANDED_NOMAI_ENTRY"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "locationModID": "SLF__NOMAI_WARP_FACT_FC",
-    "description": "Using your ship's warp drive, you can warp out of the Deep Bramble.",
+    "description": "A recorder in Bramble's Doorstep reveals that the Nomai warped there using the same device.",
     "thumbnail": "START_DIMENSION_ENTRY_FC"
   },
   {

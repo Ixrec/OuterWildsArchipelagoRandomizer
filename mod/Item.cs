@@ -103,6 +103,8 @@ public enum Item
     TranslatorDB,
     TranslatorOther,
 
+    WarpDrive,
+
     // Hearth's Neighbor items
     FrequencyNeighborDistress,
     FrequencyLavaCore,
@@ -137,7 +139,6 @@ public enum Item
     CrystalRepairManual,
     ThermalInsulation,
     ProbabilityRule,
-    DeepBrambleCoordinates,
 
     // Echo Hike items
     Threader,
@@ -269,6 +270,8 @@ public static class ItemNames
         { Item.TranslatorDB, "Translator (Dark Bramble)" },
         { Item.TranslatorOther, "Translator (Other)" },
 
+        { Item.WarpDrive, "Interstellar Warp Drive" },
+
         // Hearth's Neighbor items
         { Item.FrequencyNeighborDistress, "Neighbor's Distress Signal Frequency" },
         { Item.FrequencyLavaCore, "Lava Core Signals Frequency" },
@@ -303,7 +306,6 @@ public static class ItemNames
         { Item.CrystalRepairManual, "Crystal Repair Manual" },
         { Item.ThermalInsulation, "Thermal Insulation" },
         { Item.ProbabilityRule, "Probability Rule" },
-        { Item.DeepBrambleCoordinates, "Deep Bramble Coordinates" },
 
         // Echo Hike items
         { Item.Threader, "Threader" },
@@ -422,6 +424,7 @@ public static class ItemNames
         { Item.ProjectionRangePatch, "HAS_AP_ITEM_PROJECTION_RANGE_PATCH" },
         { Item.AlarmBypassPatch,     "HAS_AP_ITEM_ALARM_BYPASS_PATCH" },
         // story mod progression items
+        { Item.WarpDrive,                      "HAS_AP_ITEM_WARP_DRIVE" },
         { Item.FrequencyNeighborDistress,      "HAS_AP_ITEM_HN1_NEIGHBORS_DISTRESS_SIGNAL_FREQUENCY" },
         { Item.FrequencyLavaCore,              "HAS_AP_ITEM_HN1_LAVA_CORE_SIGNALS_FREQUENCY" },
         { Item.FrequencyGalacticCommunication, "HAS_AP_ITEM_HN1_GALACTIC_COMMUNICATION_FREQUENCY" },
@@ -431,7 +434,6 @@ public static class ItemNames
         { Item.MagistariumDormitoryAccessCode, "HAS_AP_ITEM_HN2_DORMITORY_ACCESS_CODE" },
         { Item.MagistariumEngineAccessCode,    "HAS_AP_ITEM_HN2_ENGINE_ACCESS_CODE" },
         { Item.FrequencyHearthianRadio,        "HAS_AP_ITEM_FQ_HEARTHIAN_RADIO_FREQUENCY" },
-        { Item.DeepBrambleCoordinates,         "HAS_AP_ITEM_FC_DEEP_BRAMBLE_COORDINATES" },
         { Item.TranslatorDeepB,                "HAS_AP_ITEM_FC_TRANSLATOR" },
         { Item.ExpandedDictionary,             "HAS_AP_ITEM_FC_EXPANDED_DICTIONARY" },
         { Item.FrequencyNomaiTrailmarkers,     "HAS_AP_ITEM_FC_NOMAI_TRAILMARKERS_FREQUENCY" },

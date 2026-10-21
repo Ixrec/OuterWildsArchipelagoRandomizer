@@ -69,6 +69,7 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.FrequencyDSR, "Frequency: Deep Space Radio"),
         new InventoryItemEntry("NaturalPhenomenaFrequency", "Frequency: Natural Phenomena"),
         new InventoryItemEntry("StoryModFrequencies", "Story Mod Frequencies"),
+        new InventoryItemEntry("WarpDrive", "Interstellar Warp Drive"),
 
         // Hearth's Neighbor 2: Magistarium custom items
         new InventoryItemEntry(Item.MemoryCubeInterface, "HN2: Memory Cube Interface", false, "enable_hn2_mod"),
@@ -80,7 +81,6 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry(Item.Threader, "Threader", false, "enable_eh_mod"),
 
         // Forgotten Castaways custom items
-        new InventoryItemEntry(Item.DeepBrambleCoordinates, "FC: Deep Bramble Coordinates", false, "enable_fc_mod"),
         new InventoryItemEntry(Item.ExpandedDictionary, "FC: Expanded Translator Dictionary", false, "enable_fc_mod"),
         new InventoryItemEntry(Item.TamingTechniques, "FC: Anglerfish Taming Techniques", false, "enable_fc_mod"),
         new InventoryItemEntry(Item.CrystalRepairManual, "FC: Crystal Repair Manual", false, "enable_fc_mod"),
@@ -252,7 +252,13 @@ public class APInventoryMode : ShipLogMode
                     continue;
             }
             if (item.ID is "NaturalPhenomenaFrequency" && !APRandomizer.SlotEnabledMod("enable_fc_mod"))
+                continue;
+            if (item.ID is "WarpDrive")
+            {
+                var anyWarpDriveModEnabled = StoryModMetadata.AllWarpDriveMods.Any(sm => APRandomizer.SlotData.ContainsKey(sm.slotDataOption) && (long)APRandomizer.SlotData[sm.slotDataOption] > 0);
+                if (!anyWarpDriveModEnabled)
                     continue;
+            }
 
             VisibleItemEntries.Add(name, item);
 
