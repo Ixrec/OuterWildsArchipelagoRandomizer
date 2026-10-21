@@ -131,13 +131,14 @@ internal class WarpDrive
         }
 
         harmony.Patch(enableWarpDriveVisualsMethod, postfix: new HarmonyMethod(hideWarpDrivePostfixPatch));
-        APRandomizer.OWMLModConsole.WriteLine($"successfully applied WarpDrivePatch", OWML.Common.MessageType.Success);
+        APRandomizer.OWMLModConsole.WriteLine($"successfully applied Warp Drive Patches", OWML.Common.MessageType.Success);
         return true;
     }
 
     private static bool CanWarp_PrefixPatch(ref bool __result)
     {
-        if (!HasWarpDrive)
+        // Only block warping on newer slots
+        if (!HasWarpDrive && APRandomizer.APWorldVersion >= Version.Parse("1.4.1"))
         {
             __result = false;
             return false;
@@ -164,6 +165,14 @@ internal class WarpDrive
             if (!LocationNames.locationToArchipelagoId.ContainsKey(Location.FQ_NEW_GALAXY)) return;
 
             __result = APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[Location.FQ_NEW_GALAXY]);
+            return;
+        }
+
+        // For older slots, block Deep Bramble warp with the item
+        if (APRandomizer.APWorldVersion < Version.Parse("1.4.1") && system == "DeepBramble")
+        {
+            __result = HasWarpDrive;
+            return;
         }
 
         if (SkipEntrySystems.Contains(system))
