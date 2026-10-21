@@ -157,7 +157,14 @@ internal class WarpDrive
     }
 
     private static void HasUnlockedSystem_PostfixPatch(ref bool __result, string system)
-    {
+    { // The default entrance is interesting, but the associated ship log requires the translator. Here we use a free location on the other side of the warp.
+        if (system == "Samster68.BanjoGalaxy")
+        {
+            if (!LocationNames.locationToArchipelagoId.ContainsKey(Location.FQ_NEW_GALAXY)) return;
+
+            __result = APRandomizer.APSession.Locations.AllLocationsChecked.Contains(LocationNames.locationToArchipelagoId[Location.FQ_NEW_GALAXY]);
+        }
+
         if (SkipEntrySystems.Contains(system))
             __result = true;
     }
