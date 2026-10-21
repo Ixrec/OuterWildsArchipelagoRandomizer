@@ -1,0 +1,79 @@
+﻿using System;
+using HarmonyLib;
+
+namespace ArchipelagoRandomizer;
+
+[HarmonyPatch]
+internal class MedkitAndJetpackFuel
+{
+    private static bool enabled = true;
+    private static bool _hasMedkit = false;
+
+    public static bool hasMedkit
+    {
+        get => _hasMedkit || !enabled;
+        set
+        {
+            if (_hasMedkit != value)
+            {
+                _hasMedkit = value;
+                if (_hasMedkit)
+                {
+                    var nd = new NotificationData(NotificationTarget.All, "SPACESHIP MEDKIT HAS BEEN REPAIRED", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
+            }
+        }
+    }
+
+    private static bool _hasJetpackFuel = false;
+
+    public static bool hasJetpackFuel
+    {
+        get => _hasJetpackFuel || !enabled;
+        set
+        {
+            if (_hasJetpackFuel != value)
+            {
+                _hasJetpackFuel = value;
+                if (_hasJetpackFuel)
+                {
+                    var nd = new NotificationData(NotificationTarget.All, "SPACESHIP JETPACK REFUELER TANK HAS BEEN FILLED", 10);
+                    NotificationManager.SharedInstance.PostNotification(nd, false);
+                }
+            }
+        }
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PlayerRecoveryPoint), nameof(PlayerRecoveryPoint.OnGainFocus))]
+    public static bool PlayerRecoveryPoint_OnGainFocus_Prefix(PlayerRecoveryPoint __instance)
+    {
+        if (!__instance.GetComponentInParent<ShipBody>())
+            return true;
+
+        __instance._healsPlayer = hasMedkit;
+        __instance._refuelsPlayer = hasJetpackFuel;
+        if (hasMedkit && hasJetpackFuel)
+            return true;
+
+        if (__instance._playerResources == null)
+            __instance._playerResources = Locator.GetPlayerTransform().GetComponent<PlayerResources>();
+        bool needMedkit = __instance._playerResources.GetHealthFraction() < 1f;
+        bool needFuel = __instance._playerResources.GetFuelFraction() < 1f;
+
+        var medkitText = !hasMedkit ? "Medkit is Broken" : 
+            (needMedkit ? "Use Medkit" : "Health Full");
+        var refuelText = !hasJetpackFuel ? "Fuel Tank is Empty" : 
+            (needFuel ? "Refill Jetpack" : "Jetpack Full");
+
+        __instance._interactVolume.SetKeyCommandVisible(hasMedkit && needMedkit || hasJetpackFuel && needFuel);
+        __instance._interactVolume.ChangePrompt($"{medkitText}\n{refuelText}");
+        return false;
+    }
+
+    public static void ApplySlotData(string apworld_version)
+    {
+        enabled = Version.Parse(apworld_version) >= new Version(1, 4, 0);
+    }
+}
