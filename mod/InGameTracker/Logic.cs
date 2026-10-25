@@ -163,11 +163,12 @@ public class Logic
         {
             string name = loc.name;
 
-            // Here we only care about `category` values used in locations.jsonc, so e.g. the "dlc|hn1" in items.jsonc can be ignored
+            // Here we only care about `category` values used in locations.jsonc, and "base&dlc" on some victory events is the only & or |
+            // in that file, so we don't need any generic & or | handling with proper recursion.
             if (!logsanity && (loc.logsanity ?? false)) continue;
             if (!enable_eote_dlc && (loc.category == "dlc")) continue;
             if (dlc_only && (loc.category == "base")) continue;
-            if ((!enable_eote_dlc || dlc_only) && (loc.category == "base+dlc")) continue; // only used on some victory events, but may as well
+            if ((!enable_eote_dlc || dlc_only) && (loc.category == "base&dlc")) continue;
 
             StoryModMetadata.ModMetadata mod = null;
             if (loc.category != null && StoryModMetadata.LogicCategoryToModMetadata.ContainsKey(loc.category))
