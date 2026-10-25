@@ -51,7 +51,7 @@ internal class GhostMatterWavelength
             psr.gameObject.layer = newLayer;
     }
 
-     // This patch prevents the scout from showing "! Hazard" when it's inside ghost matter.
+    // This patch prevents the scout from showing "! Hazard" when it's inside ghost matter.
     [HarmonyPostfix, HarmonyPatch(typeof(HazardDetector), nameof(HazardDetector.GetDisplayDangerMarker))]
     public static void HazardDetector_GetDisplayDangerMarker_Postfix(HazardDetector __instance, ref bool __result)
     {
