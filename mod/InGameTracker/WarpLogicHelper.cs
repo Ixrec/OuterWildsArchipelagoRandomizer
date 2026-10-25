@@ -42,7 +42,7 @@ internal class WarpLogicHelper
         { "ST", [ "Spacesuit" ] },
     };
 
-    public bool ShiplessConnectionExists(string fromRegion, string toRegion, bool twoWay = false)
+    public bool WarpOnlyConnectionExists(string fromRegion, string toRegion, bool twoWay = false)
     {
         if (!RegionToWarpPlatforms.ContainsKey(fromRegion))
             return false;
@@ -106,11 +106,5 @@ internal class WarpLogicHelper
                 return connection[0];
         }
         return string.Empty;
-    }
-
-    public void ApplyEhModifications()
-    {
-        if (ItemlessWarpRegionConnections.TryGetValue("Brittle Hollow", out List<string> bhConnections))
-            bhConnections.Add("Hanging City Ceiling");
     }
 }

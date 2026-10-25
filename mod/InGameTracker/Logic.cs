@@ -342,8 +342,6 @@ public class Logic
             }
         }
         var warpHelper = new WarpLogicHelper() { Warps = warps };
-        if (APRandomizer.SlotData.TryGetValue("enable_eh_mod", out var ehEnabled) && (long)ehEnabled > 0)
-            warpHelper.ApplyEhModifications();
 
         foreach (var warpPair in warps)
         {
@@ -401,12 +399,20 @@ public class Logic
         }
 
         // Conditionally add warp-based connection to Black Hole Forge
-        if (warpHelper.ShiplessConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
+        if (warpHelper.WarpOnlyConnectionExists("Brittle Hollow", "Hanging City Ceiling"))
         {
+            var hccWarpsOnly = new TrackerRegionData("Raise Forge then HCC via Warps Only");
+            TrackerRegions.Add("Raise Forge then HCC via Warps Only", hccWarpsOnly);
             AddConnection(TrackerRegions, new()
             {
-                from = "Forge via Warps Only",
-                to = "Black Hole Forge",
+                from = "Brittle Hollow",
+                to = "Raise Forge then HCC via Warps Only",
+                requires = [new() { item = "Spacesuit" }, new() { item = "Nomai Warp Codes" }]
+            });
+            AddConnection(TrackerRegions, new()
+            {
+                from = "Raise Forge then HCC via Warps Only",
+                to = "Hanging City Ceiling (After Raising Forge)",
                 requires = []
             });
         }
