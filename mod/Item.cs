@@ -113,6 +113,7 @@ public enum Item
     // The Outsider has no signal frequencies or custom items
 
     // Astral Codec items
+    AstralVision,
     FrequencyAstralCodec,
 
     // Hearth's Neighbor 2: Magistarium items
@@ -283,6 +284,7 @@ public static class ItemNames
         // The Outsider has no signal frequencies or custom items
 
         // Astral Codec items
+        { Item.AstralVision, "Astral Vision" },
         { Item.FrequencyAstralCodec, "Astral Codec Frequency" },
 
         // Hearth's Neighbor 2: Magistarium items
@@ -434,6 +436,7 @@ public static class ItemNames
         { Item.FrequencyNeighborDistress,      "HAS_AP_ITEM_HN1_NEIGHBORS_DISTRESS_SIGNAL_FREQUENCY" },
         { Item.FrequencyLavaCore,              "HAS_AP_ITEM_HN1_LAVA_CORE_SIGNALS_FREQUENCY" },
         { Item.FrequencyGalacticCommunication, "HAS_AP_ITEM_HN1_GALACTIC_COMMUNICATION_FREQUENCY" },
+        { Item.AstralVision,                   "HAS_AP_ITEM_AC_ASTRAL_VISION" },
         { Item.FrequencyAstralCodec,           "HAS_AP_ITEM_AC_ASTRAL_CODEC_FREQUENCY" },
         { Item.MemoryCubeInterface,            "HAS_AP_ITEM_HN2_MEMORY_CUBE_INTERFACE" },
         { Item.MagistariumLibraryAccessCode,   "HAS_AP_ITEM_HN2_LIBRARY_ACCESS_CODE" },

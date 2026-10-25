@@ -454,6 +454,7 @@ internal class LocationTriggers
             case Item.LimboWarpPatch: SimulationGlitches.hasLimboWarpPatch = (count > 0); break;
             case Item.ProjectionRangePatch: SimulationGlitches.hasProjectionRangePatch = (count > 0); break;
             case Item.AlarmBypassPatch: SimulationGlitches.hasAlarmBypassPatch = (count > 0); break;
+            case Item.AstralVision: AstralVision.hasAstralVision = (count > 0); break;
             case Item.MemoryCubeInterface: MemoryCubeInterface.hasMemoryCubeInterface = (count > 0); break;
             case Item.MagistariumLibraryAccessCode: MagistariumAccessCodes.hasLibraryAccess = (count > 0); break;
             case Item.MagistariumDormitoryAccessCode: MagistariumAccessCodes.hasDormitoriesAccess = (count > 0); break;
