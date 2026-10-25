@@ -85,7 +85,7 @@ public class APChecklistMode : ShipLogMode
         ("enable_fq_mod",       Victory.HasFinishedFretsQuest,         "finished Tuner's song (FQ)"),
         ("enable_fc_mod",       Victory.HasFinishedForgottenCastaways, "sat with Ditylum (FC)"),
         ("enable_eh_mod",       Victory.HasFinishedEchoHike,           "met the Phosphors (EH)"),
-        ("enable_hs_mod",       Victory.HasFinishedHeliostudy,         "was instructed by Adonsonia (HS)"),
+        ("enable_hs_mod",       Victory.HasFinishedHeliostudy,         "been instructed by Adonsonia (HS)"),
     ];
 
     // Runs when the mode is created
