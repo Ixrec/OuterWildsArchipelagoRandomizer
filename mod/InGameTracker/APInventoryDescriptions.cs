@@ -332,10 +332,11 @@ public class APInventoryDescriptions
                     infos.Add("After the Stranger's inhabitants discovered the simulation's alarm bells don't work on the deceased, they developed a 'temporary' hack that simply refuses to import your brainwaves if no heartbeat is detected.");
                     infos.Add("This patches the simulation to undo that hack, allowing you to exploit the original glitch to bypass alarm bells in the simulation.");
                     break;
-                // Forgotten Castaways item descriptions
-                case Item.DeepBrambleCoordinates:
-                    infos.Add("These coordinates tell you the warp path between the Deep Bramble and the Outer Wilds. With them, you can warp in and out using your ship's warp drive.");
+                // Mod item descriptions
+                case Item.WarpDrive:
+                    infos.Add("This makeshift advanced warp core Slate managed to cobble together allows for interstellar travel.");
                     break;
+                // Forgotten Castaways item descriptions
                 case Item.ExpandedDictionary:
                     infos.Add("Updates your translator with a dictionary of Dree vocabulary and writing samples, allowing you to read Dree text.");
                     break;

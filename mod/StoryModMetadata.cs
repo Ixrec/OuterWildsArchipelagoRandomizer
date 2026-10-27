@@ -108,6 +108,14 @@ public class StoryModMetadata
         HSMetadata,
     };
 
+    public static ModMetadata[] AllWarpDriveMods = {
+        HN1Metadata,
+        HN2Metadata,
+        FCMetadata,
+        EHMetadata,
+        HSMetadata,
+    };
+
     // The order of this dictionary determines the order of story mod tracker categories the user sees
     public static Dictionary<TrackerCategory, ModMetadata> TrackerCategoryToModMetadata = new Dictionary<TrackerCategory, ModMetadata>
     {

@@ -53,6 +53,7 @@ public class APRandomizer : ModBehaviour
     public static string SaveFileName;
     public static ArchipelagoSession APSession;
 
+    public static Version APWorldVersion;
     public static Dictionary<string, object> SlotData;
     public static bool SlotEnabledLogsanity() =>
         SlotData.ContainsKey("logsanity") && (long)SlotData["logsanity"] > 0;
@@ -249,16 +250,16 @@ public class APRandomizer : ModBehaviour
         }
         if (SlotData.ContainsKey("apworld_version"))
         {
-            var apworld_version = (string)SlotData["apworld_version"];
+            APWorldVersion = Version.Parse((string)SlotData["apworld_version"]);
             // We don't take this from manifest.json because here we don't want the "-rc" suffix for Relase Candidate versions.
-            var mod_version = "1.4.0";
-            if (apworld_version != mod_version)
-                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{apworld_version}</color>, " +
+            var mod_version = Version.Parse("1.4.0");
+            if (APWorldVersion != mod_version)
+                ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{APWorldVersion}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
             // Disable item effects for incompatible versions.
-            MedkitAndJetpackFuel.ApplySlotData(apworld_version);
-            VelocityAndDistanceIndicator.ApplySlotData(apworld_version);
-            ShipLights.ApplySlotData(apworld_version);
+            MedkitAndJetpackFuel.ApplySlotData(APWorldVersion);
+            VelocityAndDistanceIndicator.ApplySlotData(APWorldVersion);
+            ShipLights.ApplySlotData(APWorldVersion);
         }
 
         if (SlotData.ContainsKey("death_link"))
@@ -450,8 +451,10 @@ public class APRandomizer : ModBehaviour
 
             // SetPersistentCondition() is not safe to call on the main menu because e.g. it can lead to Switch Profile mistakently copying save data onto other profiles,
             if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
+            {
                 if (ItemNames.itemToPersistentCondition.TryGetValue(item, out var condition))
                     PlayerData.SetPersistentCondition(condition, itemCountSoFar > 0); // for now, only unique items have conditions
+            }
 
             return true;
         }
@@ -514,6 +517,12 @@ public class APRandomizer : ModBehaviour
             MemoryCubeInterface.OnCompleteSceneLoad();
             // Forgotten Castaways custom item impls
             ExpandedDictionary.OnCompleteSceneLoad();
+
+            if (LoadManager.GetCurrentScene() != OWScene.TitleScreen)
+            {
+                // Prevent NH from telling you about the warp drive
+                PlayerData.SetPersistentCondition("KnowsAboutWarpDrive", true);
+            }
         };
 
         LoadManager.OnStartSceneLoad += (scene, loadScene) =>
@@ -572,8 +581,8 @@ public class APRandomizer : ModBehaviour
                     OrreryOrbs.OnJam5LoadEvent();
                 }
             });
-            // Adds a prerequisite to warping out of the Deep Bramble, for the Deep Bramble Spawn.
-            DeepBrambleCoordinates.ChangeExitWarp();
+            // Removes prerequisite to warp into the Deep Bramble
+            WarpDrive.EnsurePatchApplied();
         }
     }
 

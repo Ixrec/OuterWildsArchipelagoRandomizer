@@ -72,8 +72,8 @@ internal class MedkitAndJetpackFuel
         return false;
     }
 
-    public static void ApplySlotData(string apworld_version)
+    public static void ApplySlotData(Version apworld_version)
     {
-        enabled = Version.Parse(apworld_version) >= new Version(1, 4, 0);
+        enabled = apworld_version >= new Version(1, 4, 0);
     }
 }
