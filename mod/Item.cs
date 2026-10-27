@@ -149,6 +149,9 @@ public enum Item
     GlacialAbyssOrb,
     TheBigOneOrb,
     ShatteredGeodeOrb,
+
+    // Deprecated items
+    DeepBrambleCoordinates,
 };
 
 public static class ItemNames
@@ -316,6 +319,9 @@ public static class ItemNames
         { Item.GlacialAbyssOrb, "Glacial Abyss! Orb" },
         { Item.TheBigOneOrb, "The Big One Orb" },
         { Item.ShatteredGeodeOrb, "Shattered Geode Orb" },
+
+        // Deprecated items
+        { Item.DeepBrambleCoordinates, "Deep Bramble Coordinates" },
     };
 
     public static Dictionary<string, Item> itemNamesReversed = itemNames.ToDictionary(itemName => itemName.Value, itemName => itemName.Key);
@@ -434,6 +440,7 @@ public static class ItemNames
         { Item.MagistariumDormitoryAccessCode, "HAS_AP_ITEM_HN2_DORMITORY_ACCESS_CODE" },
         { Item.MagistariumEngineAccessCode,    "HAS_AP_ITEM_HN2_ENGINE_ACCESS_CODE" },
         { Item.FrequencyHearthianRadio,        "HAS_AP_ITEM_FQ_HEARTHIAN_RADIO_FREQUENCY" },
+        { Item.DeepBrambleCoordinates,         "HAS_AP_ITEM_FC_DEEP_BRAMBLE_COORDINATES" },
         { Item.TranslatorDeepB,                "HAS_AP_ITEM_FC_TRANSLATOR" },
         { Item.ExpandedDictionary,             "HAS_AP_ITEM_FC_EXPANDED_DICTIONARY" },
         { Item.FrequencyNomaiTrailmarkers,     "HAS_AP_ITEM_FC_NOMAI_TRAILMARKERS_FREQUENCY" },

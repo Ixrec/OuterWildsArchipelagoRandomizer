@@ -257,9 +257,9 @@ public class APRandomizer : ModBehaviour
                 ArchConsoleManager.WakeupConsoleMessages.Add($"<color=red>Warning</color>: This AP multiworld was generated with .apworld version <color=red>{APWorldVersion}</color>, " +
                     $"but you're playing version <color=red>{mod_version}</color> of the mod. This may lead to game-breaking bugs.");
             // Disable item effects for incompatible versions.
-            MedkitAndJetpackFuel.ApplySlotData(apworld_version);
-            VelocityAndDistanceIndicator.ApplySlotData(apworld_version);
-            ShipLights.ApplySlotData(apworld_version);
+            MedkitAndJetpackFuel.ApplySlotData(APWorldVersion);
+            VelocityAndDistanceIndicator.ApplySlotData(APWorldVersion);
+            ShipLights.ApplySlotData(APWorldVersion);
         }
 
         if (SlotData.ContainsKey("death_link"))
