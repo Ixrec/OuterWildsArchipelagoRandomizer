@@ -15,9 +15,10 @@ internal class GhostMatterWavelength
         if (loadScene != OWScene.SolarSystem) return;
 
         var all_psrs = GameObject.FindObjectsOfType<ParticleSystemRenderer>();
-        var wisp_psrs = all_psrs.Where(psr => psr.mesh?.name == "Effects_GM_WillOWisp");
+        var wisp_psrs = all_psrs.Where(psr => psr.name.Contains("Effects_GM_AuroraWisps"));
 
         ghostMatterParticleRenderers = wisp_psrs.ToList();
+        ApplyGhostMatterState();
     }
 
     private static bool _hasGhostMatterKnowledge = false;
@@ -36,41 +37,18 @@ internal class GhostMatterWavelength
                     var nd = new NotificationData(NotificationTarget.Player, "RECONFIGURING CAMERA TO CAPTURE GHOST MATTER WAVELENGTH", 10);
                     NotificationManager.SharedInstance.PostNotification(nd, false);
                 }
+                ApplyGhostMatterState();
             }
         }
     }
 
-    // These two patches prevent camera photos from showing ghost matter until you have the item.
-
-    // The game enables and disables some of these particle renderers on its own at various times,
-    // so to ensure sure this works at all and avoid any weird side effects, we need to wait until
-    // the moment the camera is being used to actually disable the relevant renderers, *and* we
-    // need to re-enable the ones that were enabled before.
-    static List<ParticleSystemRenderer> disabledParticleRenderers = new();
-
-    [HarmonyPrefix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
-    public static void ProbeLauncher_TakeSnapshotWithCamera_Prefix(ProbeCamera camera)
+    // Sets rendering layer of all GM effects.
+    // They get moved to dreamworld layer if they should not be rendered as there's no GM in the dreamworld.
+    private static void ApplyGhostMatterState()
     {
-        if (!hasGhostMatterKnowledge)
-        {
-            foreach (var psr in ghostMatterParticleRenderers)
-            {
-                psr.enabled = false;
-                disabledParticleRenderers.Add(psr);
-            }
-        }
-    }
-    [HarmonyPostfix, HarmonyPatch(typeof(ProbeLauncher), nameof(ProbeLauncher.TakeSnapshotWithCamera))]
-    public static void ProbeLauncher_TakeSnapshotWithCamera_Postfix(ProbeCamera camera)
-    {
-        if (!hasGhostMatterKnowledge)
-        {
-            foreach (var psr in disabledParticleRenderers)
-            {
-                psr.enabled = true;
-            }
-            disabledParticleRenderers.Clear();
-        }
+        int newLayer = hasGhostMatterKnowledge ? 22 : 28; // 22 visible to probe, 28 dreamworld
+        foreach (var psr in ghostMatterParticleRenderers)
+            psr.gameObject.layer = newLayer;
     }
 
     // This patch prevents the scout from showing "! Hazard" when it's inside ghost matter.
