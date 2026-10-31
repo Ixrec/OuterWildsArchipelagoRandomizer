@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +7,7 @@ namespace ArchipelagoRandomizer;
 
 internal class AstralVision
 {
+    private static bool enabled = true;
     private static bool _hasAstralVision = false;
 
     public static bool hasAstralVision
@@ -15,7 +15,7 @@ internal class AstralVision
         get => _hasAstralVision;
         set
         {
-            if (_hasAstralVision != value)
+            if (_hasAstralVision != value && enabled)
             {
                 _hasAstralVision = value;
 
@@ -30,6 +30,8 @@ internal class AstralVision
     private static bool conditionSetInSession = false;
     public static void OnSolarSystemLoadedEvent()
     {
+        if (!enabled)
+            return;
         // Set persistent condition first time we are loading up the game, as a failsafe if the player gets the item while not online or if they disable the vision via tesseract and quit.
         // If the player doesn't have launch codes they could softlock themselves out of the vision.
         if (hasAstralVision && !conditionSetInSession)
@@ -81,5 +83,10 @@ internal class AstralVision
         }
         enteredTesseractMethod.Invoke(tesseractInteraction, [true, true]);
         return true;
+    }
+
+    public static void ApplySlotData(Version apworld_version)
+    {
+        enabled = apworld_version >= new Version(1, 4, 1);
     }
 }

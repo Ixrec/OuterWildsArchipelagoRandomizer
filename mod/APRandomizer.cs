@@ -260,6 +260,7 @@ public class APRandomizer : ModBehaviour
             MedkitAndJetpackFuel.ApplySlotData(APWorldVersion);
             VelocityAndDistanceIndicator.ApplySlotData(APWorldVersion);
             ShipLights.ApplySlotData(APWorldVersion);
+            AstralVision.ApplySlotData(APWorldVersion);
         }
 
         if (SlotData.ContainsKey("death_link"))
