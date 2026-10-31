@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,24 +19,27 @@ internal class AstralVision
             {
                 _hasAstralVision = value;
 
+                PlayerData.SetPersistentCondition("CODEX_ENTERED_TESSERACT", value);
                 ChangeTesseractState(value);
                 if (_hasAstralVision)
-                {
-                    // The animation takes care of everything.
-                    // If the animation can't be shown (mod not installed, not in base system),
-                    // just set the appropriate condition.
-                    if (!TryShowAstralVisionAnimation())
-                        PlayerData.SetPersistentCondition("CODEX_ENTERED_TESSERACT", true);
-                }
+                    TryShowAstralVisionAnimation();
             }
         }
     }
 
+    private static bool conditionSetInSession = false;
     public static void OnSolarSystemLoadedEvent()
     {
-        if (hasAstralVision)
-            return;
-        ChangeTesseractState(false);
+        // Set persistent condition first time we are loading up the game, as a failsafe if the player gets the item while not online or if they disable the vision via tesseract and quit.
+        // If the player doesn't have launch codes they could softlock themselves out of the vision.
+        if (hasAstralVision && !conditionSetInSession)
+        {
+            PlayerData.SetPersistentCondition("CODEX_ENTERED_TESSERACT", hasAstralVision);
+            conditionSetInSession = true;
+        }
+        // Hide the tesseract.
+        if (!hasAstralVision)
+            ChangeTesseractState(false);
     }
 
     private static void ChangeTesseractState(bool enabled)
