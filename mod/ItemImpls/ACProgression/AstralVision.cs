@@ -18,6 +18,7 @@ internal class AstralVision
             {
                 _hasAstralVision = value;
 
+                ChangeTesseractState(value);
                 if (_hasAstralVision)
                 {
                     // The animation takes care of everything.
@@ -27,6 +28,25 @@ internal class AstralVision
                         PlayerData.SetPersistentCondition("CODEX_ENTERED_TESSERACT", true);
                 }
             }
+        }
+    }
+
+    public static void OnSolarSystemLoadedEvent()
+    {
+        if (hasAstralVision)
+            return;
+        ChangeTesseractState(false);
+    }
+
+    private static void ChangeTesseractState(bool enabled)
+    {
+        GameObject.Find("LingeringChime_Body/Sector/Station/Tesseract")?.GetComponent<BoxShape>()?.enabled = enabled;
+        var points = GameObject.Find("LingeringChime_Body/Sector/Station/Tesseract/Points");
+        if (points != null)
+        {
+            points.GetComponent<ParticleSystemRenderer>().enabled = enabled;
+            foreach (var point in points.GetComponentsInChildren<LineRenderer>())
+                point.enabled = enabled;
         }
     }
 

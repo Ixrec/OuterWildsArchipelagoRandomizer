@@ -557,6 +557,11 @@ public class APRandomizer : ModBehaviour
             NewHorizonsAPI.GetStarSystemLoadedEvent().AddListener(system =>
             {
                 APRandomizer.OWMLModConsole.WriteLine($"NewHorizons API StarSystemLoadedEvent system = {system}");
+                if (system == "SolarSystem")
+                {
+                    // Astral Codec item impls
+                    AstralVision.OnSolarSystemLoadedEvent();
+                }
                 if (system == "Jam3")
                 {
                     // Hearth's Neighbor 2: Magistarium custom item impls
