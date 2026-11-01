@@ -187,6 +187,10 @@ public class APInventoryDescriptions
                     infos.Add("However, it will not protect you from strong current from electrical wires, a damaged space ship, or jellyfish tentacles.");
                     infos.Add("Did you know a jellyfish's fluffier inner tentacles are actually called 'oral arms'? I can't forget that, so now you can't either.");
                     break;
+                case Item.AstralVision:
+                    infos.Add("Your mind opened to fourth dimensional thinking and you started seeing things left by some ancient civilisation.");
+                    infos.Add("If combined with Ghost Matter Wavelength, you can see ghost matter without taking pictures.");
+                    break;
                 case Item.MemoryCubeInterface:
                     infos.Add("You figured out how to interface with the strange 'memory cubes' in the Magistarium without getting nauseous. Turns out they're voice-activated, and they understand Hearthian, so you just talk to them.");
                     break;

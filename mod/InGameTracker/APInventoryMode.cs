@@ -71,6 +71,9 @@ public class APInventoryMode : ShipLogMode
         new InventoryItemEntry("StoryModFrequencies", "Story Mod Frequencies"),
         new InventoryItemEntry(Item.WarpDrive, "Interstellar Warp Drive"),
 
+        // Astral Codec custom items
+        new InventoryItemEntry(Item.AstralVision, "AC: Astral Vision", false, "enable_ac_mod"),
+
         // Hearth's Neighbor 2: Magistarium custom items
         new InventoryItemEntry(Item.MemoryCubeInterface, "HN2: Memory Cube Interface", false, "enable_hn2_mod"),
         new InventoryItemEntry(Item.MagistariumLibraryAccessCode, "HN2: Magistarium Library Access Code", false, "enable_hn2_mod"),

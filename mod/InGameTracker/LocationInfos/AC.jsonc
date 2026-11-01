@@ -58,13 +58,13 @@
   },
   {
     "locationModID": "AC_ET_HOLOGRAM",
-    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms. This requires passing through the Lingering Chime tesseract to make the GM cairns visible.",
+    "description": "At the Reunion Memorial, translate the Nomai text on the cairns until Translation Probe Cinder starts showing holograms.",
     "thumbnail": "codex_ember_signal"
   },
 
   {
     "locationModID": "AC_IL_CORE",
-    "description": "In the Interloper core, translate the Nomai text wheel left by the Astral Codec systems (not the one left by the Nomai). This requires passing through the Lingering Chime tesseract to make the GM text wheel visible.",
+    "description": "In the Interloper core, translate the Nomai text wheel left by the Astral Codec systems (not the one left by the Nomai).",
     "thumbnail": "codex_interloper"
   },
 
@@ -85,7 +85,7 @@
   },
   {
     "locationModID": "AC_DB_HOLOGRAM",
-    "description": "At the Dark Bramble Research Station, pick up the scroll sitting on a bench outside, which causes Translation Probe Thicket to start showing holograms. Note that the scroll will be invisible if you haven't entered the Lingering Chime tesseract yet.",
+    "description": "At the Dark Bramble Research Station, pick up the scroll sitting on a bench outside, which causes Translation Probe Thicket to start showing holograms.",
     "thumbnail": "codex_bramble_signal"
   },
 
