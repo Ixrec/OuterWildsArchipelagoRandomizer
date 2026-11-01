@@ -17,6 +17,8 @@ internal class StrangerLightModulator
         {
             _hasLightModulator = value;
 
+            ApplyModulatorFlag(_hasLightModulator);
+
             if (_hasLightModulator)
             {
                 var nd = new NotificationData(NotificationTarget.Player, "FLASHLIGHT AND SCOUT LIGHTS UPGRADED TO CONTROL DEVICES INSIDE THE STRANGER USING THE INHABITANTS' EYESHINE WAVELENGTH.", 10);
@@ -77,14 +79,6 @@ internal class StrangerLightModulator
             sensorsNeedingModulator.AddRange(__instance._lightSensors);
     }
 
-    [HarmonyPrefix, HarmonyPatch(typeof(RaftController), nameof(RaftController.Awake))]
-    public static void RaftController_Awake(RaftController __instance)
-    {
-        // RaftController._lightSensors' type is the abstract LightSensor class, but in practice it's also only using SingleLightSensors
-        foreach (var ls in __instance._lightSensors)
-            sensorsNeedingModulator.Add(ls.GetComponent<SingleLightSensor>());
-    }
-
     [HarmonyPrefix, HarmonyPatch(typeof(SingleLightSensor), nameof(SingleLightSensor.UpdateIllumination))]
     public static bool SingleLightSensor_UpdateIllumination_Prefix(SingleLightSensor __instance)
     {
@@ -106,5 +100,53 @@ internal class StrangerLightModulator
                 showPromptIfPlayerClose(__instance.transform.position);
             }
         }
+    }
+
+    private static List<InteractReceiver> raftPushIRs = new();
+
+    public static void ApplyModulatorFlagToIR(bool hasModulator, InteractReceiver ir)
+    {
+        if (hasModulator)
+        {
+            ir.ChangePrompt(UITextType.PushRaftPrompt);
+            ir.SetKeyCommandVisible(true);
+        }
+        else
+        {
+            ir.ChangePrompt("Requires Stranger Light Modulator");
+            ir.SetKeyCommandVisible(false);
+        }
+    }
+
+    private static void ApplyModulatorFlag(bool hasModulator)
+    {
+        APRandomizer.OWMLModConsole.WriteLine($"ApplyModulatorFlag {hasModulator} for {raftPushIRs.Count} IRs");
+        foreach (var ir in raftPushIRs)
+            ApplyModulatorFlagToIR(hasModulator, ir);
+    }
+
+    // RaftController.Start() -> Initialize() calls ir.SetPromptText(), so we have to edit it after that
+    [HarmonyPostfix, HarmonyPatch(typeof(RaftController), nameof(RaftController.Start))]
+    public static void RaftController_Start_Postfix(RaftController __instance)
+    {
+        // RaftController._lightSensors' type is the abstract LightSensor class, but in practice it's also only using SingleLightSensors
+        foreach (var ls in __instance._lightSensors)
+            sensorsNeedingModulator.Add(ls.GetComponent<SingleLightSensor>());
+
+        var ir = __instance._interactReceiver;
+        if (ir)
+        {
+            raftPushIRs.Add(ir);
+            ApplyModulatorFlagToIR(_hasLightModulator, ir);
+        }
+    }
+
+    [HarmonyPrefix, HarmonyPatch(typeof(RaftController), nameof(RaftController.OnPressInteract))]
+    public static bool RaftController_OnPressInteract(RaftController __instance)
+    {
+        if (!_hasLightModulator)
+            return false; // skip vanilla impl so the raft does not get pushed
+
+        return true;
     }
 }
