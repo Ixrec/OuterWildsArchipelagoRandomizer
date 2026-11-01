@@ -1,7 +1,11 @@
 ﻿using HarmonyLib;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OWML.Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -88,6 +92,57 @@ internal class SuitResources
     private static int initialBoostDuration = 50;
     private static int boostDurationPerUpgrade = 50;
 
+    public static void ApplySlotData(Version worldVersion, Dictionary<string, object> slotData)
+    {
+        var upgradeMaximaAdded = worldVersion >= new Version(1, 4, 1);
+
+        // Before this update, the % increase per upgrade always defaults to 50%
+        // and is only changed by client/mod settings, so nothing to do here.
+        if (!upgradeMaximaAdded)
+            return;
+
+        var upgradeCounts = slotData["upgrade_counts"];
+        if (upgradeCounts is not JObject upgradeCountsObject)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Invalid upgrade_counts value: {JsonConvert.SerializeObject(slotData)}", MessageType.Error);
+            return;
+        }
+        var upgradeMaxima = slotData["upgrade_maxima"];
+        if (upgradeMaxima is not JObject upgradeMaximaObject)
+        {
+            APRandomizer.OWMLModConsole.WriteLine($"Invalid upgrade_maxima value: {JsonConvert.SerializeObject(slotData)}", MessageType.Error);
+            return;
+        }
+
+        long oxygenCount = 3;
+        long fuelCount = 3;
+        long boostCount = 3;
+        foreach (var (key, value) in upgradeCountsObject)
+        {
+            switch (key) {
+                case "Oxygen Capacity Upgrade": oxygenCount = (long)value; break;
+                case "Fuel Capacity Upgrade": fuelCount = (long)value; break;
+                case "Boost Duration Upgrade": boostCount = (long)value; break;
+            }
+        }
+        long oxygenMax = 200;
+        long fuelMax = 200;
+        long boostMax = 200;
+        foreach (var (key, value) in upgradeMaximaObject)
+        {
+            switch (key)
+            {
+                case "Maximum Oxygen Capacity %": oxygenMax = (long)value; break;
+                case "Maximum Fuel Capacity %": fuelMax = (long)value; break;
+                case "Maximum Boost Duration %": boostMax = (long)value; break;
+            }
+        }
+
+        oxygenCapacityPerUpgrade = (int)((oxygenMax - 50) / oxygenCount);
+        fuelCapacityPerUpgrade = (int)((fuelMax - 50) / fuelCount);
+        boostDurationPerUpgrade = (int)((boostMax - 50) / boostCount);
+    }
+
     public static void ModSettingsChanged(IModConfig config)
     {
         var initialFuelSettingString = config.GetSettingsValue<string>("Fuel Capacity: Initial % of Vanilla");
@@ -97,7 +152,8 @@ internal class SuitResources
         if (initialFuelCapacity != initialFuelSettingNumber || fuelCapacityPerUpgrade != fuelUpgradeSettingNumber)
         {
             initialFuelCapacity = initialFuelSettingNumber;
-            fuelCapacityPerUpgrade = fuelUpgradeSettingNumber;
+            if (fuelUpgradeSettingNumber != 50)
+                fuelCapacityPerUpgrade = fuelUpgradeSettingNumber;
             ApplyMaxFuel();
         }
 
@@ -108,7 +164,8 @@ internal class SuitResources
         if (initialOxygenCapacity != initialOxygenSettingNumber || oxygenCapacityPerUpgrade != oxygenUpgradeSettingNumber)
         {
             initialOxygenCapacity = initialOxygenSettingNumber;
-            oxygenCapacityPerUpgrade = oxygenUpgradeSettingNumber;
+            if (oxygenUpgradeSettingNumber != 50)
+                oxygenCapacityPerUpgrade = oxygenUpgradeSettingNumber;
             ApplyMaxOxygen();
         }
 
@@ -119,7 +176,8 @@ internal class SuitResources
         if (initialBoostDuration != initialBoostSettingNumber || boostDurationPerUpgrade != boostUpgradeSettingNumber)
         {
             initialBoostDuration = initialBoostSettingNumber;
-            boostDurationPerUpgrade = boostUpgradeSettingNumber;
+            if (boostUpgradeSettingNumber != 50)
+                boostDurationPerUpgrade = boostUpgradeSettingNumber;
             ApplyMaxBoost();
         }
     }
