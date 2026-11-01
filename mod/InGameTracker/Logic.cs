@@ -438,38 +438,44 @@ public class Logic
         }
     }
 
+    private bool isSimpleCategoryEnabled(string category)
+    {
+        if (category == "dlc")
+            return APRandomizer.SlotEnabledEotEDLC();
+        else if (category == "base")
+            return !APRandomizer.SlotEnabledDLCOnly();
+        else
+        {
+            var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(category, out var mod);
+            if (!found)
+            {
+                APRandomizer.OWMLModConsole.WriteLine($"isSimpleCategoryEnabled early returning false because {category} was not recognized", OWML.Common.MessageType.Error);
+                return false; // this is for a story mod we haven't integrated yet, so ignore it
+            }
+            var option = mod.slotDataOption;
+            return (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
+        }
+    }
+
     private bool IsConnectionActive(TrackerConnectionData connection)
     {
         if (connection.category == null)
             return true;
 
-        // we have one 'x&y' category in connections.jsonc, but no 'x|y's, so here we only worry about & for now
+        bool allContentEnabled = false;
+
         HashSet<string> categories = new();
         if (connection.category.Contains("&"))
+            allContentEnabled = true;
             foreach (var category in connection.category.Split('&'))
-                categories.Add(category);
+                allContentEnabled &= isSimpleCategoryEnabled(category);
+        else if (connection.category.Contains("|"))
+            allContentEnabled = false;
+            foreach (var category in connection.category.Split('|'))
+                allContentEnabled |= isSimpleCategoryEnabled(category);
         else
-            categories.Add(connection.category);
+            allContentEnabled = isSimpleCategoryEnabled(connection.category);
 
-        // only use this connection (and its regions) if all the relevant dlcs/story mods were enabled when generating this slot
-        bool allContentEnabled = true;
-        foreach (var category in categories)
-        {
-            if (category == "dlc")
-                allContentEnabled &= APRandomizer.SlotEnabledEotEDLC();
-            else if (connection.category == "base")
-                allContentEnabled &= !APRandomizer.SlotEnabledDLCOnly();
-            else {
-                var found = StoryModMetadata.LogicCategoryToModMetadata.TryGetValue(category, out var mod);
-                if (!found)
-                {
-                    APRandomizer.OWMLModConsole.WriteLine($"IsConnectionActive early returning false for {connection.from}->{connection.to} because {category} (in {connection.category}) was not recognized", OWML.Common.MessageType.Error);
-                    return false; // this is for a story mod we haven't integrated yet, so ignore it
-                }
-                var option = mod.slotDataOption;
-                allContentEnabled &= (APRandomizer.SlotData.ContainsKey(option) && (long)APRandomizer.SlotData[option] > 0);
-            }
-        }
         return allContentEnabled;
     }
 
