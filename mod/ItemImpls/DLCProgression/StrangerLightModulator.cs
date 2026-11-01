@@ -120,7 +120,7 @@ internal class StrangerLightModulator
 
     private static void ApplyModulatorFlag(bool hasModulator)
     {
-        APRandomizer.OWMLModConsole.WriteLine($"ApplyModulatorFlag {hasModulator} for {raftPushIRs.Count} IRs");
+        //APRandomizer.OWMLModConsole.WriteLine($"ApplyModulatorFlag {hasModulator} for {raftPushIRs.Count} IRs");
         foreach (var ir in raftPushIRs)
             ApplyModulatorFlagToIR(hasModulator, ir);
     }
