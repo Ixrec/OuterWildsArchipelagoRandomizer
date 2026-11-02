@@ -466,15 +466,21 @@ public class Logic
 
         HashSet<string> categories = new();
         if (connection.category.Contains("&"))
+        {
             allContentEnabled = true;
             foreach (var category in connection.category.Split('&'))
                 allContentEnabled &= isSimpleCategoryEnabled(category);
+        }
         else if (connection.category.Contains("|"))
+        {
             allContentEnabled = false;
             foreach (var category in connection.category.Split('|'))
                 allContentEnabled |= isSimpleCategoryEnabled(category);
+        }
         else
+        {
             allContentEnabled = isSimpleCategoryEnabled(connection.category);
+        }
 
         return allContentEnabled;
     }
