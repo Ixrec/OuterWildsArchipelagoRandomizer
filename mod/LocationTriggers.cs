@@ -360,7 +360,7 @@ internal class LocationTriggers
             {
                 // TODO: session.Socket.OnError ?
                 var checkLocationTask = Task.Run(() => APRandomizer.APSession.Locations.CompleteLocationChecks(locationId));
-                if (!checkLocationTask.Wait(TimeSpan.FromSeconds(2)))
+                if (!checkLocationTask.Wait(TimeSpan.FromSeconds(5)))
                 {
                     var msg = $"AP server timed out when we tried to tell it that you checked location '{LocationNames.locationNames[location]}'. Did the connection go down?";
                     APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);

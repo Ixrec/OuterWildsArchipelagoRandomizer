@@ -52,7 +52,7 @@ namespace ArchipelagoRandomizer
                 APRandomizer.WriteToSaveFile();
                 APRandomizer.OWMLModConsole.WriteLine($"Cached {ScoutedLocations.Count} location scouts in save data.", OWML.Common.MessageType.Success);
             }));
-            if (!scoutTask.Wait(TimeSpan.FromSeconds(5)))
+            if (!scoutTask.Wait(TimeSpan.FromSeconds(30)))
             {
                 APRandomizer.OWMLModConsole.WriteLine("Scouting failed! Hints will not be available this session. There was likely an APWorld mismatch, check the server logs for more info.", OWML.Common.MessageType.Error);
             }

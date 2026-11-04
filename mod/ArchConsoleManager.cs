@@ -398,7 +398,7 @@ public class ArchConsoleManager : MonoBehaviour
         var _ = Task.Run(() =>
         {
             var sayPacketTask = Task.Run(() => APRandomizer.APSession.Say(text));
-            if (!sayPacketTask.Wait(TimeSpan.FromSeconds(2)))
+            if (!sayPacketTask.Wait(TimeSpan.FromSeconds(5)))
             {
                 var msg = $"AP server timed out when we tried to send the message '{text}'. Did the connection go down?";
                 APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);

@@ -176,7 +176,7 @@ internal class Hints
         TextIDToDisplayText[textId1] = removeOpeningAngleBrackets($"Ignoring everywhere you went before asking me for hints, the best item I know of is '{itemName}' at '{locationName}'.");
 
         var scoutHintedLocationTask = Task.Run(() => APRandomizer.APSession.Locations.ScoutLocationsAsync(true, [LocationNames.locationToArchipelagoId[locationToScout]]));
-        if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(2)))
+        if (!scoutHintedLocationTask.Wait(TimeSpan.FromSeconds(5)))
         {
             var msg = $"AP server timed out when we tried to tell it about your hint for location '{LocationNames.locationNames[stuffToHint[0].Key]}'. Did the connection go down?";
             APRandomizer.OWMLModConsole.WriteLine(msg, OWML.Common.MessageType.Warning);
